@@ -102,6 +102,7 @@ function hydrate() {
   }
   hydratePanel();
   hydrateAccountPage();
+  hydratePrivacyPage();
 }
 
 function hydrateLesson(k, s) {
@@ -157,6 +158,19 @@ function hydrateAccountPage() {
     box.innerHTML = providers.map((p) => `<a class="btn" href="/auth/${p.id}?next=${encodeURIComponent(next)}" data-astro-reload>${PROVIDER_ICON[p.id] || ""}Continue with ${esc(p.name)}</a>`).join("");
     root.querySelector("[data-no-providers]").hidden = providers.length > 0;
   }
+}
+const CONTACT_MSG = {
+  sent: ["Thanks, your message was sent.", ""],
+  empty: ["Please write a message first.", "bad"],
+  long: ["That message is too long. Please keep it under 4000 characters.", "bad"],
+  busy: ["The form is getting a lot of messages right now. Please try again tomorrow.", "bad"],
+};
+function hydratePrivacyPage() {
+  const el = $("[data-contact-msg]"); if (!el) return;
+  const q = new URLSearchParams(location.search);
+  const m = CONTACT_MSG[q.get("sent") ? "sent" : q.get("error")];
+  el.hidden = !m;
+  if (m) { el.textContent = m[0]; el.className = "msg " + m[1]; }
 }
 async function signOut() {
   await flush();
