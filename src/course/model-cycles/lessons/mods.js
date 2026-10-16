@@ -10,7 +10,7 @@ import { noteLock } from "./helpers.js";
    Settings the mod's guide doesn't spell out are listed under "Check on your unit".
    ============================================================ */
 
-const modHome=(n,bpm)=>({k:"play",t:`Go to this lesson's own pattern: hold [PATTERN], press [T4] (bank D), then press [TRIG ${n}]. If anything plays there, clear it with [FUNC] + [PLAY]. Press [TEMPO], set ${bpm} BPM with [LEVEL/DATA], and press [BACK].`,hl:`h:pattern p:t4 p:s${n} p:tempo t:level p:back`,hear:`D0${n} on the screen, at ${bpm} BPM.`});
+const modHome=(n,bpm)=>({k:"play",t:`Go to this lesson's own pattern: hold [PATTERN], press [T4] (bank D), then press [TRIG ${n}]. If anything plays there, clear it with [FUNC] + [PLAY]. Press [TEMPO], set ${bpm} BPM with [LEVEL/DATA], and press [BACK].`,hl:`h:pattern p:t4 p:s${n} p:tempo t:level p:back`,hear:`D${String(n).padStart(2,"0")} on the screen, at ${bpm} BPM.`});
 const setMachine=(pad,machine,hear)=>({k:"play",t:`Set the machine: hold [TRACK] and press [T${pad}]. Press [MACHINES], turn [LEVEL/DATA] to ${machine}, and press [BACK].`,hl:`h:track p:t${pad} p:machines t:level p:back`,hear});
 const save={k:"play",t:"Save the pattern: hold [FUNC] and long-press [SETTINGS].",hl:"h:func p:settings",hear:"Saved to the project, so it's there next time you switch on."};
 
@@ -292,5 +292,166 @@ export const MOD_LESSONS = [
     {k:"check",t:"Arp is UP, Oct is 2, and you hold A, C and E. What plays?",q:["A, C, E over and over","E, C, A, then lower","!A, C, E, then A, C, E an octave higher, then back to the start","Only A"],a:"Oct 2 adds the same notes one octave up, so UP climbs through both octaves before starting again.",hear:"Octaves make an arpeggio feel bigger without new notes."}
   ],
   challenge:"Hold each chord of lesson 11 for one bar while live recording: A minor ([TRIG 9], [TRIG 12], [TRIG 16]), F major ([TRIG 5], [TRIG 9], [TRIG 12]), D minor ([TRIG 2], [TRIG 5], [TRIG 9]) and E minor ([TRIG 4], [TRIG 7], [TRIG 11]). Set T5's LEN to 64 first."
+},
+/* ---------------- Per-track filter ---------------- */
+{ id:"m10", mod:"Per-track filter", unit:"Modded Cycles", title:"A filter on every track", minutes:35,
+  goal:"Learn what low-pass and high-pass filters do, and use the per-track filter to darken chords, thin out hats and make a filter pluck.",
+  listen:"No track this time. Play B01 and listen to your hats and chords. In lesson 6 you darkened them by turning modulation down; this lesson does it with a real filter.",
+  concepts:[
+    {h:"The original: the synth filter",p:["Most synths make a bright, harmonic-rich wave and then carve it with a filter. A low-pass filter lets the lows through and removes the highs above its cutoff; a high-pass does the opposite. Resonance boosts the frequencies right at the cutoff.","Robert Moog's ladder filter removes 24 dB per octave above the cutoff. Oberheim's SEM module (1974) used a gentler 12 dB-per-octave, 2-pole design that keeps more of the sound's body. This mod adds a 2-pole filter to every track."]},
+    {h:"One knob, both ways",p:["DJ mixers made the single filter knob famous: turn left and the music gets muffled (low-pass), turn right and it gets thin (high-pass), centre is off. The mod's cutoff works the same way: L values on the left, OFF in the middle, H values on the right."]},
+    {h:"The bridge: lessons 6 and 8",p:["In lesson 6 the Cycles had no filter, so you darkened sounds by turning modulation down, which makes fewer harmonics at the source. A filter removes harmonics after they're made. Both darken, but a filter can also go thin, and it can move.","In lesson 8 an LFO moved a knob for you. The filter's cutoff, resonance, envelope amount and decay are LFO destinations too (FREQ, RESO, FENV, FDEC)."]},
+    {h:"Check on your unit",p:["Hold [MACHINES] and turn [SWEEP] (cutoff), [CONTOUR] (resonance), [COLOR] (envelope amount) or [SHAPE] (envelope decay). Pressing [MACHINES] alone still opens the machine menu. The filter can't be combined with Model-TG or with LFO 2, 3, 4.","If you flashed Model-TG instead, [MACHINES] + [SWEEP] and [CONTOUR] give you its own low-pass filter and resonance on every machine: the low-pass steps here work, the high-pass and envelope ones don't."]}
+  ],
+  steps:[
+    {k:"learn",fig:"mfilter",t:"A low-pass filter keeps the lows and removes the highs, so a sound gets darker. A high-pass does the opposite, so it gets thinner. On this mod one knob does both: left is low-pass, right is high-pass, the centre is off.",hear:"Low-pass for warmth and distance, high-pass for space and lightness."},
+    modHome(10,90),
+    {k:"play",t:"Build a loop to filter: press [RECORD]. On T1, kicks on [TRIG 1] and [TRIG 9]. On T3, hats on [TRIG 1], [TRIG 3], [TRIG 5], [TRIG 7], [TRIG 9], [TRIG 11], [TRIG 13] and [TRIG 15]. On T6, one chord on [TRIG 1], with [DECAY] at about 100. Press [RECORD] again, then [PLAY].",hl:"p:record h:track p:t1 p:s1 p:s9 p:t3 p:t6 t:decay p:play",hear:"A plain loop: kick, steady hats, one ringing chord per bar."},
+    {k:"play",t:"Darken the chord: select [T6]. Hold [MACHINES] and turn [SWEEP] left to about L30. Let go of [MACHINES].",hl:"h:track p:t6 h:machines t:sweep",hear:"The chord sounds further away, as if through a wall."},
+    {k:"play",t:"Add resonance: hold [MACHINES] and turn [CONTOUR] up to about 70. Then sweep [SWEEP] slowly while still holding [MACHINES].",hl:"h:machines t:contour t:sweep",hear:"A whistling peak moves through the chord as you sweep."},
+    {k:"play",t:"Make it a filter pluck: hold [MACHINES], turn [COLOR] (envelope amount) to about +40 and [SHAPE] (envelope decay) short.",hl:"h:machines t:color t:shape",hear:"Each chord opens bright and closes fast: the classic synth pluck."},
+    {k:"play",t:"Thin the hats: select [T3]. Hold [MACHINES] and turn [SWEEP] right to about H30.",hl:"h:track p:t3 h:machines t:sweep",hear:"The hats lose their body and become a light, airy tick."},
+    {k:"play",t:"Lock one hat: press [RECORD]. Hold [TRIG 7], then hold [MACHINES] and turn [SWEEP] back to OFF. Press [RECORD] again.",hl:"p:record h:s7 h:machines t:sweep",hear:"One full-bodied hat among thin ones: a small accent."},
+    {k:"play",t:"Let it move: select [T6] and press [LFO]. Set DST to FREQ and DEP to about 30, then press [BACK]. Set [LFO SPEED] to 32.",hl:"h:track p:t6 p:lfo t:level p:back t:lfospd",hear:"The chord's cutoff drifts open and closed every few bars."},
+    save,
+    {k:"check",t:"You want the hats thinner and lighter. Which filter setting?",q:["L: low-pass","!H: high-pass","OFF","Resonance at the top"],a:"A high-pass removes the lows and keeps the highs, so hats lose their body and get lighter. A low-pass would make them darker instead.",hear:"Left darker, right thinner."},
+    {k:"check",t:"What does resonance do?",q:["Changes the tempo","Adds reverb","!Boosts the frequencies right at the cutoff","Removes the highs"],a:"Resonance adds a peak at the cutoff. Sweep the cutoff with resonance up and you hear that peak move.",hear:"A little adds character. A lot whistles."}
+  ],
+  challenge:"Perform a filter build: start T6 at L64 (nearly closed) and open it to OFF over 8 bars, the way a DJ brings a track in."
+},
+/* ---------------- LFO 2, 3, 4 ---------------- */
+{ id:"m11", mod:"LFO 2, 3, 4", unit:"Modded Cycles", title:"Layers of movement", minutes:30,
+  goal:"Combine two LFOs on one sound, a slow sweep and a faster movement, and use the extra LFOs for live play.",
+  listen:"No track this time. Listen to wind, or the sea: a slow swell with faster ripples on top. That's two speeds of movement at once.",
+  concepts:[
+    {h:"The original: several LFOs",p:["Modular synthesists patch many LFOs at once, each moving a different thing at a different speed. Most synths since have two or more; your MicroFreak has an LFO plus a cycling envelope that can act as a second one. Stock, each Model:Cycles track has just one."]},
+    {h:"Slow plus fast",p:["One slow LFO gives a sound a shape over several bars. A second, faster one adds life inside each note. Together they stop a sound from feeling static or mechanical."]},
+    {h:"The mod",p:["On the LFO page, press [LFO] again to reach LFO 2, 3 and 4. LFO 2 is saved with the sound and can be locked to steps; LFO 3 and 4 are for live play and aren't saved. The mod is credited to DavidCaruso's work."]},
+    {h:"The bridge: lesson 8",p:["In lesson 8 one LFO moved one knob. Here LFO 1 keeps that job and LFO 2 adds a second movement on top."]},
+    {h:"Check on your unit",p:["The mod's guide doesn't list LFO 2, 3 and 4's rows. This lesson assumes they look like LFO 1's (WAV, MUL, DST, DEP) and that each has its own speed row. It can't be combined with the per-track filter mod."]}
+  ],
+  steps:[
+    {k:"learn",fig:"mlfos",t:"Two LFOs on one sound add their movements together. A slow one shapes the sound over bars; a fast one adds a ripple inside each note.",hear:"Slow for shape, fast for life."},
+    modHome(11,90),
+    {k:"play",t:"One long chord: select [T6] (CHORD). Press [RECORD], place a chord on [TRIG 1] and press [GATE] so it lights. Hold [TRIG 1], press [LEVEL/DATA] until LEN shows, and set it to 16. Press [RECORD] again, then [PLAY].",hl:"h:track p:t6 p:record p:s1 p:gate h:s1 p:level t:level p:play",hear:"One chord held for the whole bar."},
+    {k:"play",t:"LFO 1, the slow one: hold [LFO] and turn [SWEEP] to about 40. Set [LFO SPEED] to 32.",hl:"h:lfo t:sweep t:lfospd",hear:"The chord's wavetable sweeps slowly, one cycle every few bars."},
+    {k:"play",t:"LFO 2, the fast one: press [LFO], then press [LFO] again for LFO 2. Set WAV to SIN, DST to PAN and DEP to about 30. Set its speed to a quick value. Press [BACK].",hl:"p:lfo t:level p:back",hear:"The chord now swings left and right while it slowly sweeps. Use headphones."},
+    {k:"play",t:"Compare: open LFO 2 again and set DEP to 0, then back to 30.",hl:"p:lfo t:level",hear:"With only one LFO it's smooth but flat. With both, it breathes."},
+    {k:"play",t:"Lock LFO 2 to one step: press [RECORD], open LFO 2's page, hold [TRIG 1] and set DEP to 63. Press [RECORD] again.",hl:"p:record p:lfo h:s1 t:level",hear:"LFO 2 is saved with the sound, so its settings can be locked per step."},
+    {k:"play",t:"Live movement: open LFO 3, set DST to REVERB SEND (or another destination) and play with DEP while the loop runs.",hl:"p:lfo t:level",hear:"LFO 3 and 4 aren't saved: use them for moves you only want in the moment."},
+    save,
+    {k:"check",t:"Which of the extra LFOs is saved with the sound and can be locked to steps?",q:["!LFO 2","LFO 3","LFO 4","None of them"],a:"LFO 2 is stored with the sound and accepts parameter locks. LFO 3 and 4 are for live play.",hear:"Write with LFO 2, perform with 3 and 4."},
+    {k:"check",t:"Why combine a slow and a fast LFO?",q:["To change the tempo","!The slow one shapes the sound over bars and the fast one adds life inside each note","To make the sound louder","Because one LFO can't reach every knob"],a:"Two speeds of movement at once make a sound feel alive, like a swell with ripples on top.",hear:"Slow for shape, fast for life."}
+  ],
+  challenge:"Give your bass in B01 a slow LFO 1 on [SWEEP] and a very small LFO 2 on PITCH (vibrato). Keep LFO 2's depth tiny."
+},
+/* ---------------- 6-channel USB audio ---------------- */
+{ id:"m12", mod:"6-channel USB audio", unit:"Modded Cycles", title:"Six tracks into Live", minutes:40,
+  goal:"Record each Model:Cycles track to its own channel in Live, rebuild the space there, and mix your night track from six faders.",
+  listen:"No track this time. Play B01 and listen for which track you'd like a little louder or quieter. Until now you could only balance them on the Cycles.",
+  concepts:[
+    {h:"The original: multitrack recording",p:["Studios record each instrument to its own track so every part can be balanced, panned and processed later. Separate recordings of each part are called stems. Elektron's Overbridge sends stems from several of its machines over USB, but the stock Model:Cycles sends only its stereo mix."]},
+    {h:"The mod",p:["With 6-channel USB audio, track 1 arrives on USB input 1, track 2 on input 2, and so on, at 48 kHz. Each channel is the dry track before pan, delay and reverb. The stereo mix is no longer sent over USB, so the mix happens in Live. The mod builds on scottmetoyer's ms-multi-output."]},
+    {h:"The bridge: lesson 16",p:["In lesson 16 you recorded the Cycles into Live as one stereo track. Now each track is its own audio track, so you can fix the balance after recording and add effects to one part only."]},
+    {h:"Check on your unit",p:["On macOS nothing needs installing: the Cycles shows six inputs. On Windows the guide uses FlexASIO with channels = 6 and a 48 kHz project. Playing your computer's audio through the Cycles is unreliable in this mode, so use another output. Live's menu names here are from Live 11 and 12."]}
+  ],
+  steps:[
+    {k:"learn",fig:"mstems",t:"Each Cycles track arrives in Live on its own channel. The channels are dry: no pan, delay or reverb. You rebuild the space in Live and mix the six faders.",hear:"Six faders instead of one stereo pair."},
+    {k:"play",t:"Connect the Cycles to your computer with USB and open Live. In Live's Settings, open Audio and set the Audio Input Device to Model:Cycles and the sample rate to 48000.",hl:"",hear:"Live now listens to the Cycles."},
+    {k:"play",t:"Turn on the six inputs: in the same Audio settings, open Input Config and enable mono inputs 1 to 6. Close the settings.",hl:"",hear:"Each track can now pick its own Cycles input."},
+    {k:"play",t:"Make six audio tracks: insert six audio tracks (Cmd+T on a Mac, Ctrl+T on Windows). On each, set Audio From to Ext. In and pick input 1, 2, 3, 4, 5 and 6 in order. Name them kick, snare, hats, perc, bass, chords.",hl:"",hear:"One Live track per Cycles track."},
+    {k:"play",t:"Listen in: set every track's Monitor to In. On the Cycles, go to B01 (hold [PATTERN], press [T2], press [TRIG 1]) and press [PLAY].",hl:"h:pattern p:t2 p:s1 p:play",hear:"Each Live meter moves with its own track. It sounds dry: the delay and reverb aren't there."},
+    {k:"play",t:"Rebuild the space: in Live, put a Reverb on Return A and a delay on Return B. Turn up the chords' and hats' sends to taste.",hl:"",hear:"The night track gets its room back, now set per track in Live."},
+    {k:"play",t:"Record it: arm all six tracks, press Live's record button in the Arrangement view, then press [PLAY] on the Cycles. Stop after 16 bars.",hl:"p:play",hear:"Six clips, one per track, all lined up."},
+    {k:"play",t:"Mix: balance the six faders and pan the hats and perc a little apart. Solo each track once to hear what it's really doing.",hl:"",hear:"Things you couldn't hear in the stereo mix stand out on their own."},
+    {k:"check",t:"Why don't the six channels include the Cycles' reverb?",q:["The reverb is broken","!Each channel is the dry track; delay and reverb are applied to the mix, which isn't sent in this mode","Live removes it","Reverb only works on T6"],a:"The stems are taken before pan, delay and reverb. Rebuild the space in Live with return tracks.",hear:"Dry stems, wet mix in Live."},
+    {k:"check",t:"Which Cycles track arrives on USB input 3?",q:["T1","!T3","T6","All of them"],a:"Track 1 goes to input 1, track 2 to input 2, and so on up to track 6.",hear:"Name the Live tracks after the Cycles tracks."}
+  ],
+  challenge:"Record the five sections of lesson 15 as six stems and rebalance the breakdown in Live: bring the chords up and the hats down."
+},
+/* ---------------- workflow tweaks ---------------- */
+{ id:"m13", mod:"Workflow tweaks", unit:"Modded Cycles", title:"Faster hands", minutes:30,
+  goal:"Play mutes like a dub engineer with latching mute, and use the small workflow mods (trig preview, quick trig removal, dimmed lock trigs, numbers and the browser) to work faster.",
+  listen:"No track this time. Think of a dub mix: instruments drop out and come back while the groove keeps going. Every drop is a hand on the mixing desk.",
+  concepts:[
+    {h:"The original: the desk as an instrument",p:["In 1970s Jamaica, engineers like King Tubby and Lee \"Scratch\" Perry played the mixing desk live: muting the drums for a bar, letting the bass carry, bringing everything back on the one. Mutes became part of the music, not just a fix."]},
+    {h:"Latching mute",p:["Stock, you hold [FUNC] and press a pad to mute it. With latching mute, hold [TRACK] and tap [FUNC] once: [FUNC] stays lit and every pad tap mutes or unmutes its track. A short tap on [FUNC] alone exits. By drumkilla."]},
+    {h:"The small ones",p:["Trig preview: with the sequencer stopped, hold a trig and press [PAGE] to hear that step alone. Quick removal: a trig pressed and released within half a second is removed. Dimmed lock trigs: lock trigs light steady and dim instead of blinking. Numbers: the track's volume and pan show as numbers. Browser: three names at a time, long names scroll. The last few are by djd_oz and drumkilla."]},
+    {h:"The bridge: lessons 13 and 16",p:["In lesson 13 you threw sounds into dub delays; in lesson 16 you performed your arrangement with mutes. Latching mute makes those mutes one tap each, so both hands are free."]},
+    {h:"Check on your unit",p:["These are separate mods: you may have flashed only some of them. With Model-TG, mutes also apply at once. The startup animation mod only changes the boot logo."]}
+  ],
+  steps:[
+    {k:"learn",fig:{grid:{title:"Mutes as arrangement",edit:false,presets:[
+      {name:"Everything",bpm:90,note:"The full groove.",rows:[{n:"Kick",s:"kick",v:hits("1,9")},{n:"Snare",s:"snare",v:hits("5,13")},{n:"Hat",s:"hat",v:hits("3,7,11,15",.6)},{n:"Bass",s:"bass",note:33,v:hits("1,4,11")}]},
+      {name:"Drop the drums",bpm:90,note:"Only the bass: the dub drop.",rows:[{n:"Kick",s:"kick",v:hits("")},{n:"Snare",s:"snare",v:hits("")},{n:"Hat",s:"hat",v:hits("")},{n:"Bass",s:"bass",note:33,v:hits("1,4,11")}]},
+      {name:"Drums and bass",bpm:90,note:"Hats out: heavier and emptier.",rows:[{n:"Kick",s:"kick",v:hits("1,9")},{n:"Snare",s:"snare",v:hits("5,13")},{n:"Hat",s:"hat",v:hits("")},{n:"Bass",s:"bass",note:33,v:hits("1,4,11")}]}
+    ]}},t:"Switch between the three while it plays. Nothing is rewritten: only mutes change. That's how a dub engineer arranges live.",hear:"The return after a drop hits harder than the groove ever did on its own."},
+    modHome(13,90),
+    {k:"play",t:"Build a groove: press [RECORD]. T1 kicks on [TRIG 1] and [TRIG 9]. T2 snares on [TRIG 5] and [TRIG 13]. T3 hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15]. On T5 (TONE), hold [FUNC] and turn [PITCH] to -12, then place notes on [TRIG 1], [TRIG 4] and [TRIG 11]. Press [RECORD] again, then [PLAY].",hl:"p:record h:track p:t1 p:t2 p:t3 p:t5 h:func t:pitch p:play",hear:"The groove from the drawing."},
+    {k:"play",t:"Latch the mutes: hold [TRACK] and tap [FUNC]. [FUNC] stays lit. Tap [T1], [T2] and [T3] to drop the drums, then tap them again on the 1 to bring them back.",hl:"h:track p:func p:t1 p:t2 p:t3",hear:"One tap per track, no holding: a dub drop."},
+    {k:"play",t:"Play the desk for 16 bars: drop and return tracks on the bar lines. Tap [FUNC] alone to leave latching mute.",hl:"p:t1 p:t2 p:t3 p:t5 p:func",hear:"An arrangement made only from mutes."},
+    {k:"play",t:"Read the numbers: select [T3] and turn [LEVEL/DATA]. Its volume shows as a number (0–127). Hold [FUNC] and turn it to see pan (-64 to 63). Set the hats to exactly 80, panned 10 to the right.",hl:"h:track p:t3 t:level h:func",hear:"Exact values instead of a bar: easy to match tracks or write down a mix."},
+    {k:"play",t:"Preview a step: press [STOP]. Press [RECORD], hold [TRIG 5] on T2 and press [PAGE].",hl:"p:stop p:record h:s5 p:page",hear:"That one snare plays on its own, with all its settings."},
+    {k:"play",t:"Remove quickly: on T3, tap [TRIG 7] and let go at once. The hat is removed. Place it again, then hold it longer: its settings show instead.",hl:"p:s7 h:s7",hear:"A quick tap removes; a long hold edits."},
+    {k:"play",t:"Spot lock trigs: on T5, hold [FUNC] and press [TRIG 8]. Press [RECORD] to leave grid recording.",hl:"h:func p:s8 p:record",hear:"Lock trigs (no note, only settings) now light dim and steady instead of blinking."},
+    {k:"play",t:"Browse faster: press [FUNC] + [MACHINES]. Three names show at once: > marks the cursor and ■ a folder. Press [BACK].",hl:"h:func p:machines p:back",hear:"Long names scroll, so you can read them in full."},
+    save,
+    {k:"check",t:"Latching mute is on. How do you mute T3?",q:["Hold [FUNC] and press [T3]","!Tap [T3]","Hold [T3] for two seconds","Press [PAGE]"],a:"With latching mute on, [FUNC] stays lit, so a single tap on a pad mutes or unmutes that track. A short tap on [FUNC] alone exits.",hear:"Both hands free for the desk."},
+    {k:"check",t:"With the sequencer stopped, how do you hear one step on its own?",q:["Press [PLAY]","!Hold its trig and press [PAGE]","Mute every other track","Turn [CHANCE] to 100"],a:"Trig preview plays that step with its note, length and locks, even on a muted track.",hear:"Check a step without starting the pattern."}
+  ],
+  challenge:"Record a 32-bar mute performance of B01 into Live, using only latching mute. Count the bars before each return."
+},
+/* ---------------- MIDI out during THRU ---------------- */
+{ id:"m14", mod:"MIDI OUT during THRU", unit:"Modded Cycles", title:"Play the MicroFreak from the Cycles", minutes:40,
+  goal:"Understand MIDI OUT and THRU, sequence your MicroFreak from a Cycles track, and keep a keyboard in the chain with the THRU mod.",
+  listen:"No track this time. Play your bassline from lesson 10 and imagine it on a different synth, with a real analog filter. That's what MIDI lets you do.",
+  concepts:[
+    {h:"The original: MIDI",p:["MIDI was agreed by synth makers in 1983, led by Dave Smith of Sequential and Ikutaro Kakehashi of Roland; the first public demo joined a Sequential Prophet-600 and a Roland Jupiter-6. It sends notes, velocity, clock and knob moves between instruments, not sound."]},
+    {h:"OUT and THRU",p:["A MIDI OUT sends what the instrument itself plays. A MIDI THRU copies what arrives at MIDI IN, so you can chain instruments. The Cycles has one port that does either, set in the MIDI PORTS menu."]},
+    {h:"The mod",p:["Stock, THRU only forwards what comes in, so the Cycles' own notes are lost. With this mod, THRU sends both: the incoming notes and the Cycles' own clock and notes. A second version of the mod (Live MIDI OUT + THRU toggle) lets you switch between the two with [FUNC] + a press of [LEVEL/DATA]. Both are by AveyCole; you can only flash one."]},
+    {h:"The bridge: lesson 10",p:["Your bassline from lesson 10 can now play the MicroFreak, layered with the Cycles' own TONE or on its own. Layering two sounds that each do one job is lesson 7's idea again."]},
+    {h:"Check on your unit",p:["Both units use 3.5 mm MIDI jacks with DIN adapters; the Cycles' OUT POL setting must match the cable type (STD for standard Type A). Check that the MicroFreak listens on MIDI channel 1 in its own MIDI settings. If the Cycles follows an incoming clock and also sends clock, turn CLK OUT off to avoid double clock."]}
+  ],
+  steps:[
+    {k:"learn",fig:"mmidi",t:"OUT sends the Cycles' own notes. Stock THRU only copies what comes in. With the mod, THRU sends both, so a keyboard and the Cycles can play the MicroFreak through one cable.",hear:"MIDI carries instructions, not sound: connect the MicroFreak's audio separately."},
+    {k:"play",t:"Cables: connect the Cycles' MIDI OUT/THRU (with its DIN adapter) to the MicroFreak's MIDI IN (with its adapter) using a standard MIDI cable. Connect the MicroFreak's audio out to your mixer or interface.",hl:"",hear:"Two cables: MIDI between the boxes, audio from the MicroFreak."},
+    modHome(14,90),
+    {k:"play",t:"Ports: press [SETTINGS], open CONFIG, then MIDI, then PORTS. Set OUT TO to MID and OUT/THRU to OUT. Press [BACK] until you're out.",hl:"p:settings t:level p:level p:back",hear:"The port now sends the Cycles' MIDI."},
+    {k:"play",t:"Channel: in the same MIDI menu, open OUT CHAN and set T5 OUT to 1. Press [BACK].",hl:"p:settings t:level p:back",hear:"Track 5 will talk on channel 1, the MicroFreak's."},
+    {k:"play",t:"Let T5 send: press [FUNC] + [TRACK], select [T5] (hold [TRACK], press [T5]), and check MOUT. Press [BACK].",hl:"h:func p:track h:track p:t5 t:level p:back",hear:"T5 now sends its notes, velocity and length out of the MIDI port."},
+    {k:"play",t:`Write a line: press [RECORD] and on T5 place notes on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 11]. On [TRIG 7], ${noteLock} 7 semitones up. Press [RECORD] again, then [PLAY].`,hl:"p:record p:s1 p:s4 p:s7 p:s11 h:s7 p:level t:level p:play",hear:"The MicroFreak plays the line along with the Cycles' TONE."},
+    {k:"play",t:"Choose the layer: turn T5's [LEVEL/DATA] down to 0 to hear only the MicroFreak, or keep both for a layer. Shape the MicroFreak's filter while it plays.",hl:"t:level",hear:"The Cycles sequences, the MicroFreak sings."},
+    {k:"play",t:"Sync: in MIDI SYNC, set CLK OUT to ON so the MicroFreak's arpeggiator and LFO can follow the Cycles' tempo.",hl:"p:settings t:level",hear:"Tempo-synced movement on both boxes."},
+    {k:"play",t:"Try THRU with the mod: back in PORTS, set OUT/THRU to THR. Press [PLAY] again.",hl:"p:settings t:level p:play",hear:"With the mod, the MicroFreak still plays the Cycles' notes. Stock THRU would go silent. A keyboard into the Cycles' MIDI IN would now pass through too."},
+    save,
+    {k:"check",t:"Stock THRU is set and the Cycles is playing. What does the MicroFreak receive?",q:["The Cycles' notes","Both","!Only what arrives at the Cycles' MIDI IN","Audio"],a:"Stock THRU only copies the input. The mod adds the Cycles' own notes and clock to it.",hear:"OUT: mine. THRU: theirs. THRU with the mod: both."},
+    {k:"check",t:"What does MOUT on a track do?",q:["Mutes the track","!Sends that track's notes, velocity and length out over MIDI","Changes the machine","Records audio"],a:"With MOUT checked, the track's sequencer data goes out on its MIDI channel (set in OUT CHAN) as well as playing its own sound.",hear:"One track, two instruments."}
+  ],
+  challenge:"Send T6 to the MicroFreak too: set T6 OUT to 1 and turn MOUT on for T6. The CHORD track sends only its trig note over MIDI, so the MicroFreak plays the chord's root: a bass under your chords."
+},
+/* ---------------- tempo up to 546 BPM ---------------- */
+{ id:"m15", mod:"Tempo up to 546 BPM", unit:"Modded Cycles", title:"When rhythm turns into pitch", minutes:25,
+  goal:"Hear how a rhythm becomes a tone when it gets fast enough, using tempos past the stock 300 BPM limit.",
+  listen:"No track this time. Tap a table slowly, then faster and faster. At some point you stop hearing taps and start hearing a buzz.",
+  concepts:[
+    {h:"The original idea: one continuum",p:["In his 1957 essay \"…how time passes…\", the composer Karlheinz Stockhausen argued that rhythm and pitch are the same thing at different speeds. Repeat a click a few times a second and you hear a rhythm. Past roughly 20 times a second, the ear hears a low tone instead."]},
+    {h:"The numbers",p:["At 90 BPM, sixteenth notes come 6 times a second. At 300 BPM, the stock limit, they come 20 times a second: right at the edge. At 546 BPM they come about 36 times a second, which sounds like a low D. Halving the rate drops the tone an octave, just like halving a string's speed."]},
+    {h:"The mod",p:["The tempo is stored as 1/120 of a BPM in 16 bits, which is why the ceiling is 546 (65,535 ÷ 120). Tap tempo and incoming MIDI clock follow it, and tempo-synced LFOs stay accurate at those speeds."]},
+    {h:"The bridge: lessons 1 and 9",p:["In lesson 1 you felt the pulse and the grid. In lesson 9 an octave was a doubling. Here they meet: double the pulse and the buzz goes up an octave."]},
+    {h:"Check on your unit",p:["Projects saved above 300 BPM reopen at 120 BPM on the stock firmware. Fast retrigs and heavy machines add processor load, so keep this to a simple sound. Save this pattern at a normal tempo."]}
+  ],
+  steps:[
+    {k:"learn",fig:"mpitch",t:"Sixteenth notes at 90 BPM are a pulse. At 300 they flutter. At 546 they come about 36 times a second and turn into a low buzz.",hear:"The ear stops counting at about 20 per second."},
+    modHome(15,120),
+    {k:"play",t:"A tick on every step: select [T3] (METAL) and turn [DECAY] very short. Press [RECORD] and place trigs on all 16 trig keys. Press [RECORD] again, then [PLAY].",hl:"h:track p:t3 t:decay p:record p:play",hear:"Steady sixteenth-note ticks."},
+    {k:"play",t:"Speed up: press [TEMPO] and turn [LEVEL/DATA] slowly up to 300.",hl:"p:tempo t:level",hear:"The ticks blur into a flutter."},
+    {k:"play",t:"Go past the limit: keep turning to 546 BPM.",hl:"t:level",hear:"A low, rough tone. The rhythm has become a note."},
+    {k:"play",t:"Drop an octave: press [RECORD] and remove every even trig ([TRIG 2], [TRIG 4] … [TRIG 16]). Press [RECORD] again.",hl:"p:record p:s2 p:s4 p:s16 p:record",hear:"Half the rate: back below the edge, a flutter again, an octave lower."},
+    {k:"play",t:"Put the even trigs back the same way. Then turn [LEVEL/DATA] slowly down from 546 towards 300.",hl:"p:record t:level",hear:"The buzz slides down in pitch as the tempo falls, until it breaks back into ticks."},
+    {k:"play",t:"Back to safety: set the tempo to 120 and press [BACK]. Then save: hold [FUNC] and long-press [SETTINGS].",hl:"t:level p:back h:func p:settings",hear:"Saved below 300, the pattern opens the same on stock firmware."},
+    {k:"check",t:"Why does the 546 BPM hat pattern sound like a note?",q:["The machine changed","!Above about 20 hits a second, the ear hears a pitch instead of separate hits","The reverb is on","It's out of tune"],a:"Repeated clicks fast enough fuse into a tone. Sixteenths at 546 BPM are about 36 per second, a low D.",hear:"Rhythm and pitch: the same thing at different speeds."},
+    {k:"check",t:"You save a project at 400 BPM and later load it on the stock firmware. What happens?",q:["It plays at 400 BPM","It won't load","!It opens at 120 BPM","It plays at 300 BPM"],a:"The stock firmware can't store tempos above 300, so the mod's guide says such projects reopen at 120 BPM.",hear:"Save fast experiments, then set a normal tempo before you save the project."}
+  ],
+  challenge:"Set the tempo to 412.5 BPM. Sixteenths then come 27.5 times a second, the pitch of the lowest A on a piano. Compare it with 546 and write down which you'd use as a drone."
 },
 ];
