@@ -182,5 +182,70 @@ export const MOD_FIGS = (()=>{
     s+=T(400,404,"RTE sets how fast it steps. Every note lands on its own sequencer step when you record it.","fs");
     return svgFig("0 0 800 420",s,"An A minor chord arpeggiated up, down, up and down, and up over two octaves");
   },
+  /* per-track filter */
+  mfilter(){
+    let s=T(400,34,"One knob, two filters: low-pass left, high-pass right","fh");
+    const panel=(x,title,kind,label)=>{let g=box(x,60,230,200)+T(x+115,86,title,"fl")+T(x+115,250,label,"fs");
+      const y0=110,y1=220,xa=x+20,xb=x+210,xc=x+115;
+      g+=`<line x1="${xa}" y1="${y1}" x2="${xb}" y2="${y1}" class="ln"/>`+T(xa,y1+14,"low","fs","start")+T(xb,y1+14,"high","fs","end");
+      if(kind==="lp")g+=`<path d="M${xa} 140 L${xc-30} 140 Q${xc-12} 140 ${xc-6} 118 Q${xc} 140 ${xc+16} 180 L${xc+44} ${y1}" ${stroke("var(--turn)")}/>`;
+      if(kind==="off")g+=`<path d="M${xa} 140 L${xb} 140" ${stroke("var(--faint)")}/>`;
+      if(kind==="hp")g+=`<path d="M${xb} 140 L${xc+30} 140 Q${xc+12} 140 ${xc+6} 118 Q${xc} 140 ${xc-16} 180 L${xc-44} ${y1}" ${stroke("var(--hold)")}/>`;
+      return g;};
+    s+=panel(30,"L: low-pass","lp","keeps the lows: darker")+panel(285,"OFF (centre)","off","everything passes")+panel(540,"H: high-pass","hp","keeps the highs: thinner");
+    s+=T(400,300,"Hold MACHINES and turn:","fb");
+    s+=T(400,330,"SWEEP cutoff · CONTOUR resonance · COLOR envelope amount · SHAPE envelope decay","fm");
+    s+=T(400,362,"A 2-pole filter: a gentle 12 dB per octave slope, so it shapes rather than chops.","fm");
+    s+=T(400,394,"Let go of MACHINES and the knobs are the machine's again.","fs");
+    return svgFig("0 0 800 420",s,"A low-pass curve, an open filter and a high-pass curve, with the knobs that set them");
+  },
+  /* LFO 2, 3, 4 */
+  mlfos(){
+    let s=T(400,34,"Two LFOs on one knob: slow sweep plus fast wobble","fh");
+    const x0=90,w=620;
+    const row=(y,lab,f,c,a=26)=>{const pts=[];for(let i=0;i<=300;i++){const t=i/300;pts.push([x0+w*t,y-f(t)*a]);}return T(x0-14,y+4,lab,"fs","end")+`<line x1="${x0}" y1="${y}" x2="${x0+w}" y2="${y}" class="grid"/>`+`<path d="${P(pts)}" ${stroke(c,2.5)}/>`;};
+    const slow=t=>Math.sin(2*Math.PI*t),fast=t=>Math.sin(2*Math.PI*12*t);
+    s+=row(100,"LFO 1",slow,"var(--turn)")+row(185,"LFO 2",t=>.5*fast(t),"var(--hold)")+row(285,"together",t=>slow(t)+.4*fast(t),"var(--done)",28);
+    s+=T(400,350,"Each LFO has its own wave, speed and depth. Their movements add up on the knob.","fb");
+    s+=T(400,378,"LFO 2 is saved with the sound and can be locked per step; LFO 3 and 4 are for live play.","fm");
+    s+=T(400,404,"On the LFO page, press LFO again to reach LFO 2, 3 and 4.","fs");
+    return svgFig("0 0 800 420",s,"A slow LFO, a fast LFO, and the two combined on one destination");
+  },
+  /* six-channel USB audio */
+  mstems(){
+    let s=T(400,34,"Six tracks, six channels into Live","fh");
+    const names=["T1 kick","T2 snare","T3 hats","T4 perc","T5 bass","T6 chords"],cols=["var(--led)","var(--hold)","var(--turn)","var(--done)","var(--led)","var(--turn)"];
+    names.forEach((n,i)=>{const y=62+i*44;s+=fill(85,y,150,34,"var(--surface-2)",8)+T(160,y+22,n,"fm");
+      s+=arrow(241,y+17,465,y+17)+T(353,y+11,"USB input "+(i+1),"fs");
+      s+=fill(471,y,200,34,"var(--surface)",8)+`<rect x="471" y="${y}" width="8" height="34" rx="3" style="fill:${cols[i]}"/>`+T(575,y+22,"Live audio track "+(i+1),"fm");});
+    s+=T(400,356,"Each channel is the dry track, before pan, delay and reverb.","fb");
+    s+=T(400,384,"Rebuild the space in Live with return tracks, then mix the six faders.","fm");
+    s+=T(400,408,"48 kHz, one mono channel per track. The stereo mix is no longer sent over USB.","fs");
+    return svgFig("0 0 800 420",s,"Six Model:Cycles tracks sent as six USB channels into six Live audio tracks");
+  },
+  /* MIDI to the MicroFreak */
+  mmidi(){
+    let s=T(400,34,"OUT, THRU, and THRU with the mod","fh");
+    const dev=(x,y,n,c="var(--surface-2)")=>fill(x,y,150,46,c,10)+T(x+75,y+29,n,"fl");
+    const rows=[["OUT (stock)",80,null,"the Cycles' notes and clock go out"],["THRU (stock)",180,"keyboard","only the keyboard's notes pass through"],["THRU + mod",280,"keyboard","the keyboard's notes and the Cycles' own"]];
+    rows.forEach(([lab,y,src,note])=>{s+=T(30,y+28,lab,"fm","start");
+      if(src)s+=dev(140,y,src,"var(--surface)")+arrow(292,y+23,335,y+23);
+      s+=dev(340,y,"Model:Cycles","var(--turn-soft)")+arrow(492,y+23,565,y+23)+dev(570,y,"MicroFreak","var(--hold-soft)");
+      s+=T(720,y+66,note,"fs","end");});
+    s+=T(400,392,"Each Cycles track that sends MIDI needs MOUT on and its own channel.","fb");
+    return svgFig("0 0 800 420",s,"Three MIDI chains: the Cycles alone, a keyboard passed through, and both with the mod");
+  },
+  /* tempo past 300 BPM */
+  mpitch(){
+    let s=T(400,34,"Speed up a rhythm and it turns into a tone","fh");
+    const rows=[[90,"6 per second: a pulse"],[300,"20 per second: a flutter"],[546,"36 per second: a low buzz"]];
+    rows.forEach(([bpm,lab],r)=>{const y=90+r*80,rate=bpm/60*4,n=Math.round(rate);s+=T(120,y+5,bpm+" BPM","fl","end");
+      for(let i=0;i<n;i++){const x=150+i*(560/n);s+=`<line x1="${x}" y1="${y-16}" x2="${x}" y2="${y+16}" style="stroke:${r===2?"var(--led)":r===1?"var(--hold)":"var(--turn)"};stroke-width:2"/>`;}
+      s+=T(150,y+38,"16th notes for about a second: "+lab,"fs","start");});
+    s+=T(400,338,"Around 20 hits a second, the ear stops counting and starts hearing a pitch.","fb");
+    s+=T(400,366,"Rhythm and pitch are the same thing at different speeds.","fm");
+    s+=T(400,396,"Projects saved above 300 BPM open at 120 BPM on the stock firmware.","fs");
+    return svgFig("0 0 800 420",s,"Sixteenth notes at 90, 300 and 546 BPM, getting dense enough to become a tone");
+  },
   };
 })();
