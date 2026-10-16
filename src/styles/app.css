@@ -43,9 +43,9 @@ h3{font-weight:700}
 /* header */
 .top{display:flex;flex-wrap:wrap;align-items:center;gap:14px 24px;padding-bottom:14px;border-bottom:1px solid var(--line)}
 .brand{display:flex;align-items:baseline;gap:10px}
-.brand h1{font-size:2.6rem;line-height:.9}
+.brand h1{font-size:3.12rem;line-height:.9}
 /* logo: three REPs in one grid cell, colors and offsets set per layer by Logo.astro */
-:root{--logo-blue:#1434f5;--logo-yellow:#fce64e;--logo-ink:var(--fg)}
+:root{--logo-blue:#1434f5;--logo-yellow:#fce64e;--logo-ink:var(--fg)} /* first paint only */
 .logo{display:inline-grid;padding:0 .1em .1em 0;font-family:"Manrope",var(--display);text-decoration:none;letter-spacing:-.01em;cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
 .logo span{grid-area:1/1;font-weight:var(--w);color:var(--c);transform:translate(var(--x),var(--y));transition:transform .25s ease,color .25s ease}
 @media (prefers-reduced-motion:reduce){.logo span{transition:none}}

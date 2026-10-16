@@ -1,6 +1,7 @@
 ---
 // The Rep Rep Rep mark: three REPs (Manrope ExtraBold, Regular, ExtraLight) stacked on top of each other.
-// Every page view and every click reshuffles which weight gets which color, the stacking order and the offsets.
+// Every page view and every click picks a new set of three electric colors (far from the last set, each clearly
+// apart from the others and from the page background), plus a new stacking order and offsets.
 const layers = [
   // starting look, from the original sketch (used until the script runs, and without JS)
   { w: 800, c: "ink", x: 0.045, y: 0.03, z: 1 },
@@ -15,10 +16,48 @@ const layers = [
 </a>
 <script is:inline data-astro-rerun>
   (function () {
-    var colors = ["var(--logo-blue)", "var(--logo-yellow)", "var(--logo-ink)"];
     function shuffle(a) {
       for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; }
       return a;
+    }
+    // fully saturated HSL -> [r, g, b] in 0..1
+    function rgb(h, l) {
+      var a = Math.min(l, 1 - l);
+      return [0, 8, 4].map(function (n) {
+        var k = (n + h / 30) % 12;
+        return l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
+      });
+    }
+    function lum(c) {
+      var v = c.map(function (x) { return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+      return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+    }
+    function contrast(a, b) { return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05); }
+    function hueGap(a, b) { var d = Math.abs(a - b) % 360; return Math.min(d, 360 - d); }
+    function bgLum() {
+      var m = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g);
+      return m ? lum(m.slice(0, 3).map(function (x) { return x / 255; })) : 0;
+    }
+    function lastHue() { try { return +sessionStorage.getItem("rrr-logo-hue"); } catch (e) { return NaN; } }
+    // three hues roughly a third of the wheel apart, all at full saturation, each readable on the
+    // background and clearly apart from the other two in brightness, so all three layers always show
+    function palette() {
+      var bg = bgLum(), prev = lastHue(), best = null;
+      for (var t = 0; t < 300; t++) {
+        var h = Math.random() * 360;
+        if (!isNaN(prev) && hueGap(h, prev) < 80 && t < 200) continue;
+        var hs = [h, h + 110 + Math.random() * 30, h + 230 + Math.random() * 30].map(function (x) { return x % 360; });
+        var ls = hs.map(function () { return 0.42 + Math.random() * 0.3; });
+        var L = hs.map(function (x, i) { return lum(rgb(x, ls[i])); });
+        var score = Math.min(contrast(L[0], bg), contrast(L[1], bg), contrast(L[2], bg));
+        var pair = Math.min(contrast(L[0], L[1]), contrast(L[1], L[2]), contrast(L[0], L[2]));
+        var ok = score >= 2.2 && pair >= 1.35;
+        var rank = Math.min(score / 2.2, pair / 1.35);
+        if (!best || rank > best.rank) best = { rank: rank, hs: hs, ls: ls, h: h };
+        if (ok) break;
+      }
+      try { sessionStorage.setItem("rrr-logo-hue", Math.round(best.h)); } catch (e) {}
+      return best.hs.map(function (x, i) { return "hsl(" + Math.round(x) + " 100% " + Math.round(best.ls[i] * 100) + "%)"; });
     }
     // each layer gets its own offset slot (plus a little jitter) so all three always show,
     // and the slots stay within a small box so the word still reads as one REP
@@ -26,7 +65,7 @@ const layers = [
       return shuffle([0, 0.045, 0.09]).map(function (v) { return (v + Math.random() * 0.02).toFixed(3) + "em"; });
     }
     function remix(el) {
-      var c = shuffle(colors.slice()), x = slots(), y = slots();
+      var c = shuffle(palette()), x = slots(), y = slots();
       // ExtraBold stays at the back so it never hides the thinner weights
       var z = [1].concat(shuffle([2, 3]));
       Array.prototype.forEach.call(el.children, function (s, i) {
