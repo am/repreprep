@@ -59,7 +59,7 @@ Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. 
    - Store the keys as secrets: `npx wrangler secret put GOOGLE_CLIENT_ID`, then `GOOGLE_CLIENT_SECRET`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`.
    The account page only shows the providers whose keys are set.
 
-To deploy on every push instead, connect the GitHub repository in the Cloudflare dashboard (Workers & Pages → repreprep → Settings → Build), with build command `npm run build` and deploy command `npx wrangler deploy`.
+Pushes to `main` deploy automatically through GitHub Actions (`.github/workflows/deploy.yml`), and every pull request gets a preview link at `pr-<number>-repreprep.<subdomain>.workers.dev`, posted as a PR comment. The workflow needs a `CLOUDFLARE_API_TOKEN` repository secret (an API token from the "Edit Cloudflare Workers" template, plus Account → D1 → Edit) and a `CLOUDFLARE_ACCOUNT_ID` repository variable. Previews share the production D1 database.
 
 ## License and contributing
 
