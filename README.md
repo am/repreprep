@@ -60,3 +60,7 @@ Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. 
    The account page only shows the providers whose keys are set.
 
 To deploy on every push instead, connect the GitHub repository in the Cloudflare dashboard (Workers & Pages → repreprep → Settings → Build), with build command `npm run build` and deploy command `npx wrangler deploy`.
+
+## License and contributing
+
+The code is MIT ([LICENSE](LICENSE)). The lessons, drawings and explanations are CC BY-NC-SA 4.0 ([LICENSE-CONTENT.md](LICENSE-CONTENT.md)). To help, read [CONTRIBUTING.md](CONTRIBUTING.md).
