@@ -1,0 +1,23 @@
+{
+  "name": "repreprep",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Rep Rep Rep: hands-on lessons for the Model:Cycles, MicroFreak and Ableton Live",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro build && wrangler dev",
+    "deploy": "astro build && wrangler deploy",
+    "check": "node scripts/check-course.mjs"
+  },
+  "dependencies": {
+    "@astrojs/cloudflare": "14.4.0",
+    "arctic": "^3.7.0",
+    "astro": "7.4.0"
+  },
+  "devDependencies": {
+    "wrangler": "^4.151.1"
+  },
+  "engines": { "node": ">=22" }
+}

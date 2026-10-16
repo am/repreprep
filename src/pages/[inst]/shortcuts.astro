@@ -1,0 +1,10 @@
+---
+import Base from "../../layouts/Base.astro";
+import { INSTRUMENTS } from "../../course/index.js";
+import { shortcuts } from "../../course/views.js";
+export function getStaticPaths() {
+  return INSTRUMENTS.filter((I) => I.ready && I.shortcuts).map((I) => ({ params: { inst: I.slug }, props: { I } }));
+}
+const { I } = Astro.props;
+---
+<Base title={`${I.name} shortcuts`} inst={I} tab="shortcuts"><Fragment set:html={shortcuts(I)} /></Base>

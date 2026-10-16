@@ -1,0 +1,65 @@
+---
+import "../styles/app.css";
+import { ClientRouter } from "astro:transitions";
+import { INSTRUMENTS } from "../course/index.js";
+
+interface Props { title?: string; description?: string; inst?: any; tab?: string }
+const { title, description = "Hands-on lessons that teach music production on your own instruments, one short practice at a time.", inst, tab } = Astro.props;
+const full = title ? `${title} · Rep Rep Rep` : "Rep Rep Rep";
+const tabs = inst?.ready ? [["lessons", "Lessons", ""], ["panel", "Panel guide", "/panel"], ["machines", "Machines", "/machines"], ["shortcuts", "Shortcuts", "/shortcuts"]] : [];
+// steps per lesson, so the browser can count progress without loading the whole course
+const sizes = inst?.ready ? JSON.stringify(Object.fromEntries(inst.lessons.map((l: any) => [l.id, l.steps.length]))) : undefined;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>{full}</title>
+  <meta name="description" content={description}>
+  <link rel="canonical" href={canonical}>
+  <meta property="og:title" content={full}>
+  <meta property="og:description" content={description}>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..800;1,62..125,400..800&family=IBM+Plex+Mono:wght@500;600;700&display=swap">
+  <script is:inline>
+    /* apply the saved layout before the first paint: full-window player, step panel width */
+    window.__rrrLayout = function () {
+      try {
+        var s = JSON.parse(localStorage.getItem("repreprep-progress-v1") || "null") || {};
+        var r = document.documentElement;
+        r.classList.toggle("focus", !!s.focus && !!document.getElementById("player"));
+        if (s.stepW) r.style.setProperty("--sw", s.stepW + "px"); else r.style.removeProperty("--sw");
+      } catch (e) {}
+    };
+    document.addEventListener("astro:after-swap", window.__rrrLayout);
+  </script>
+  <ClientRouter fallback="swap" />
+</head>
+<body data-inst={inst?.key} data-sizes={sizes}>
+  <div class="wrap">
+    <header class="top">
+      <div class="brand"><span class="dot"></span><h1><a href="/">Rep Rep Rep</a></h1></div>
+      <nav class="instr" aria-label="Instrument">
+        {INSTRUMENTS.map((x) => x.ready
+          ? <a href={`/${x.slug}`} aria-current={x === inst ? "page" : undefined}>{x.name}</a>
+          : <span class="off">{x.name}<small>next</small></span>)}
+      </nav>
+      {inst?.ready && <div class="meter"><span id="meterTxt">0 / 0 steps</span><span class="bar"><i id="meterBar"></i></span></div>}
+      <a class="acct" href="/account" id="acct">Sign in</a>
+    </header>
+    {tabs.length > 0 && (
+      <nav class="tabs" aria-label="Sections">
+        {tabs.map(([k, label, sub]) => <a href={`/${inst.slug}${sub}`} aria-current={tab === k ? "page" : undefined}>{label}</a>)}
+      </nav>
+    )}
+    <main id="view"><slot /></main>
+    <p class="foot">{inst?.foot} <span class="sync" id="sync"></span></p>
+  </div>
+  <script is:inline>window.__rrrLayout();</script>
+  <script>import "../client/app.js";</script>
+</body>
+</html>

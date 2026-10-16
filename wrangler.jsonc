@@ -1,0 +1,10 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "repreprep",
+  "compatibility_date": "2026-09-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // Progress and accounts. `wrangler deploy` creates the database on first deploy;
+  // the tables are created by the app itself the first time it runs.
+  "d1_databases": [{ "binding": "DB", "database_name": "repreprep" }],
+  "observability": { "enabled": true }
+}
