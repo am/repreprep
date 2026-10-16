@@ -5,7 +5,7 @@ import { INSTRUMENTS } from "../../../../course/index.js";
 /* /model-cycles/lessons/<lesson> is the intro; /model-cycles/lessons/<lesson>/<n> is step n */
 export function getStaticPaths() {
   return INSTRUMENTS.filter((I) => I.ready).flatMap((I) =>
-    I.lessons.filter((L) => !L.song).flatMap((L) =>
+    I.lessons.filter((L) => L.kind === "lesson").flatMap((L) =>
       L.steps.map((_, i) => ({ params: { inst: I.slug, lesson: L.slug, step: i ? String(i) : undefined }, props: { I, L, act: i } }))));
 }
 const { I, L, act } = Astro.props;
