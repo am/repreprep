@@ -10,7 +10,7 @@ import { INSTRUMENTS } from "../course/index.js";
   </div>
   <div class="cards">
     {INSTRUMENTS.map((I) => I.ready
-      ? <a class="icard" href={`/${I.slug}`}><h3>{I.name}</h3><p>{I.lessons.filter((l: any) => !l.song).length} lessons and {I.lessons.filter((l: any) => l.song).length} song studies</p></a>
+      ? <a class="icard" href={`/${I.slug}`}><h3>{I.name}</h3><p>{I.lessons.filter((l: any) => l.kind === "lesson").length} lessons and {I.lessons.filter((l: any) => l.kind === "song").length} song studies</p></a>
       : <div class="icard off"><h3>{I.name}</h3><p>Coming next</p></div>)}
   </div>
   <p class="msg">Your progress is saved in this browser. <a href="/account">Sign in</a> to keep it on every device.</p>

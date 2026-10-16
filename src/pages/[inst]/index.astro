@@ -7,14 +7,16 @@ export function getStaticPaths() {
 }
 const { I } = Astro.props;
 const first = I.lessons[0];
-const units = [...new Set(I.lessons.filter((l) => !l.song).map((l) => l.unit))];
-const songs = I.lessons.filter((l) => l.song).length;
+const main = I.lessons.filter((l) => l.kind === "lesson");
+const units = [...new Set(main.map((l) => l.unit))];
+const songs = I.lessons.filter((l) => l.kind === "song").length;
+const mods = I.lessons.filter((l) => l.kind === "mod").length;
 ---
-<Base title={`${I.name} course`} description={`${I.lessons.filter((l) => !l.song).length} hands-on lessons on the ${I.name}: ${units.join(", ").toLowerCase()}.`} inst={I} tab="lessons">
+<Base title={`${I.name} course`} description={`${main.length} hands-on lessons on the ${I.name}: ${units.join(", ").toLowerCase()}.`} inst={I} tab="lessons">
   <div class="page">
       <div class="eyebrow">{I.name} course</div>
       <h2>Learn music production on your {I.name}</h2>
-      <p class="goal">{I.lessons.filter((l) => !l.song).length} lessons in {units.length} parts ({units.join(", ")}), plus {songs} song studies. Each lesson teaches one idea with drawings and playable examples, then you practise it on the device, click by click.</p>
+      <p class="goal">{main.length} lessons in {units.length} parts ({units.join(", ")}), plus {songs} song studies{mods ? ` and ${mods} Modded Cycles lessons for the custom firmware` : ""}. Each lesson teaches one idea with drawings and playable examples, then you practise it on the device, click by click.</p>
       <div class="row">
         <a class="btn primary" href={first.path} data-continue data-label-start="Start lesson 1" data-label-continue="Continue">Start lesson 1</a>
         <span class="msg" data-continue-what></span>

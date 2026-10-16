@@ -5,10 +5,11 @@ import { UNIT_2_LESSONS } from "./lessons/unit2.js";
 import { UNIT_3_LESSONS } from "./lessons/unit3.js";
 import { UNIT_4_LESSONS } from "./lessons/unit4.js";
 import { SONG_LESSONS } from "./lessons/songs.js";
+import { MOD_LESSONS } from "./lessons/mods.js";
 import { CYCLES_SOON, CYCLES_MACHINES, CYCLES_SHORTCUTS } from "./reference.js";
 
-/* Lessons run in this order; song studies come last. */
-const lessons=[...CYCLES_LESSONS,...UNIT_2_LESSONS,...UNIT_3_LESSONS,...UNIT_4_LESSONS,...SONG_LESSONS];
+/* Lessons run in this order: the course, song studies, then Modded Cycles (custom-firmware lessons). */
+const lessons=[...CYCLES_LESSONS,...UNIT_2_LESSONS,...UNIT_3_LESSONS,...UNIT_4_LESSONS,...SONG_LESSONS,...MOD_LESSONS];
 
 export const MODEL_CYCLES={
   key:"cycles", slug:"model-cycles", name:"Model:Cycles", ready:true,
