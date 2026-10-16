@@ -6,5 +6,11 @@
   // Progress and accounts. `wrangler deploy` creates the database on first deploy;
   // the tables are created by the app itself the first time it runs.
   "d1_databases": [{ "binding": "DB", "database_name": "repreprep" }],
+  // The site's address. Deploys attach both and Cloudflare creates their DNS records and certificates.
+  // www → repreprep.studio is a Redirect Rule in the zone (static pages are served before the Worker runs).
+  "routes": [
+    { "pattern": "repreprep.studio", "custom_domain": true },
+    { "pattern": "www.repreprep.studio", "custom_domain": true }
+  ],
   "observability": { "enabled": true }
 }
