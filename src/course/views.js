@@ -9,31 +9,40 @@ const prog = (l) => `<span class="s" data-prog="${l.id}"></span>`;
 const lessonLink = (l, cls, cur, inner) =>
   `<a class="${cls}" href="${l.path}" data-lesson="${l.id}" data-path="${l.path}" aria-current="${l === cur}">${inner}</a>`;
 
-/* lesson list: units, then song studies */
+/* the small line under a lesson's title in lists: a song study's artist, or the mod a Modded Cycles lesson needs */
+const byLine = (l) => (l.song ? l.song.split(" – ")[0] : l.mod ? `needs ${l.mod}` : "");
+const extraItem = (l, cls, cur) => lessonLink(l, cls, cur, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}<small class="by">${esc(byLine(l))}</small></span>${prog(l)}`);
+
+/* lesson list: units, then song studies, then Modded Cycles (lessons for the custom firmware) */
 export function rail(I, cur) {
   let lastUnit = "";
   const unitHd = (u) => (u === lastUnit ? "" : ((lastUnit = u), `<div class="unit">${esc(u)}</div>`));
-  const main = I.lessons.filter((l) => !l.song);
-  const songs = I.lessons.filter((l) => l.song);
+  const main = I.lessons.filter((l) => l.kind === "lesson");
+  const mods = I.lessons.filter((l) => l.kind === "mod");
+  const songs = I.lessons.filter((l) => l.kind === "song");
   return `<div class="lbl">${main.length + (I.soon || []).length} lessons</div>`
     + main.map((l) => unitHd(l.unit || "") + lessonLink(l, "wk", cur, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}</span>${prog(l)}`)).join("")
     + (I.soon || []).map(([w, u, t]) => unitHd(u) + `<div class="wk soon"><span class="n">L${String(w).padStart(2, "0")}</span><span class="t">${esc(t)}</span><small>soon</small></div>`).join("")
-    + (songs.length ? `<div class="unit">Song studies</div>` + songs.map((l) => lessonLink(l, "wk", cur, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}<small class="by">${esc(l.song.split(" – ")[0])}</small></span>${prog(l)}`)).join("") : "");
+    + (songs.length ? `<div class="unit">Song studies</div>` + songs.map((l) => extraItem(l, "wk", cur)).join("") : "")
+    + (mods.length ? `<div class="unit">Modded Cycles</div>` + mods.map((l) => extraItem(l, "wk", cur)).join("") : "");
 }
 
 /* lesson picker in the player header: every lesson grouped by unit, one click to jump */
 function lessonMenu(I, L) {
   const groups = [];
   const add = (u, html) => { let g = groups.find((g) => g.u === u); if (!g) groups.push((g = { u, h: "" })); g.h += html; };
-  I.lessons.filter((l) => !l.song).forEach((l) => add(l.unit || "", lessonLink(l, "pm-i", L, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}</span>${prog(l)}`)));
+  I.lessons.filter((l) => l.kind === "lesson").forEach((l) => add(l.unit || "", lessonLink(l, "pm-i", L, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}</span>${prog(l)}`)));
   (I.soon || []).forEach(([w, u, t]) => add(u, `<div class="pm-i soon"><span class="n">L${String(w).padStart(2, "0")}</span><span class="t">${esc(t)}</span><small>soon</small></div>`));
-  I.lessons.filter((l) => l.song).forEach((l) => add("Song studies", lessonLink(l, "pm-i", L, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}</span>${prog(l)}`)));
+  I.lessons.filter((l) => l.kind === "song").forEach((l) => add("Song studies", lessonLink(l, "pm-i", L, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}</span>${prog(l)}`)));
+  I.lessons.filter((l) => l.kind === "mod").forEach((l) => add("Modded Cycles", lessonLink(l, "pm-i", L, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}</span>${prog(l)}`)));
   return `<div class="pmenu">${groups.map((g) => `<div class="pm-g"><div class="pm-h">${esc(g.u)}</div>${g.h}</div>`).join("")}</div>`;
 }
 
+const eyebrowUnit = (L) => (L.mod ? `needs ${esc(L.mod)} · ` : L.unit ? esc(L.unit) + " · " : "");
+
 function introCard(I, L) {
   const ideas = (L.concepts || []).map((c) => `<li>${esc(c.h)}</li>`).join("");
-  return `<div class="intro"><div class="eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}about ${L.minutes} min</div>
+  return `<div class="intro"><div class="eyebrow">${wkLabel(L)} · ${eyebrowUnit(L)}about ${L.minutes} min</div>
     <h3>${esc(L.title)}</h3>
     <p class="ptxt"><b>You will learn to</b> ${esc(L.goal.charAt(0).toLowerCase() + L.goal.slice(1))}</p>
     ${ideas ? `<div class="ideas"><div class="lbl">Ideas in this lesson</div><ul>${ideas}</ul></div>` : ""}
@@ -68,7 +77,7 @@ export function player(I, L, act) {
 export function lessonText(I, L, act) {
   const steps = L.steps.map((st, i) => `<li class="step ${i === act ? "active" : ""}" data-step="${i}" data-href="${stepPath(L, i)}"><button class="ck" data-check="${i}" aria-label="Mark step ${i + 1} done" aria-pressed="false"></button><div><div class="num"><a href="${stepPath(L, i)}">${KIND[st.k || "play"]}</a></div><div class="txt">${fmtStep(I, st)}</div>${st.a ? `<details class="ans"><summary>Answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? `<p class="hear ${st.k === "check" ? "rule" : ""}">${keyify(I, st.hear, "")}</p>` : ""}</div></li>`).join("");
   const nx = nextLesson(I, L);
-  return `<article class="lesson"><div class="eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}${L.minutes} min</div><h2>${esc(L.title)}</h2><p class="goal">${esc(L.goal)}</p>
+  return `<article class="lesson"><div class="eyebrow">${wkLabel(L)} · ${eyebrowUnit(L)}${L.minutes} min</div><h2>${esc(L.title)}</h2><p class="goal">${esc(L.goal)}</p>
     <div class="listen"><b>Listen first.</b> ${linkSongs(esc(L.listen))}</div>
     ${L.concepts.map((c) => `<section class="concept"><h3>${esc(c.h)}</h3>${c.p.map((p) => `<p>${keyify(I, p, "")}</p>`).join("")}</section>`).join("")}
     <ol class="steps">${steps}</ol>
@@ -95,6 +104,6 @@ export function shortcuts(I) {
 /* instrument home: the whole course as unit cards */
 export function courseMap(I) {
   const groups = [];
-  I.lessons.forEach((l) => { const u = l.song ? "Song studies" : l.unit || ""; let g = groups.find((g) => g.u === u); if (!g) groups.push((g = { u, ls: [] })); g.ls.push(l); });
-  return groups.map((g) => `<section class="ucard"><h3>${esc(g.u)}</h3>${g.ls.map((l) => lessonLink(l, "wk", null, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</section>`).join("");
+  I.lessons.forEach((l) => { const u = l.kind === "song" ? "Song studies" : l.kind === "mod" ? "Modded Cycles" : l.unit || ""; let g = groups.find((g) => g.u === u); if (!g) groups.push((g = { u, ls: [] })); g.ls.push(l); });
+  return groups.map((g) => `<section class="ucard"><h3>${esc(g.u)}</h3>${g.ls.map((l) => l.kind === "lesson" ? lessonLink(l, "wk", null, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}</span>${prog(l)}`) : extraItem(l, "wk", null)).join("")}</section>`).join("");
 }

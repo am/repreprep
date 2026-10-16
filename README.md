@@ -24,13 +24,14 @@ Open http://localhost:4321. On your own computer the account page offers a **loc
 | A lesson (its intro) | `/model-cycles/lessons/05` |
 | A step in a lesson | `/model-cycles/lessons/05/3` |
 | A song study | `/model-cycles/songs/looped/2` |
+| A Modded Cycles lesson | `/model-cycles/mods/acid-bass` |
 | Panel guide, one control | `/model-cycles/panel/lfo` |
 | Machines, shortcuts | `/model-cycles/machines`, `/model-cycles/shortcuts` |
 | Sign in, back up progress | `/account` |
 
 ## Where things are
 
-- `src/course/`: the course itself. `model-cycles/lessons/` (one file per unit plus `songs.js`), `model-cycles/figures/` (the drawings), `model-cycles/controls.js` (panel drawing and the description of every key and knob), `reference.js` (machines and shortcuts). `shared/` holds the step formatting, the playable grid and the Spotify links.
+- `src/course/`: the course itself. `model-cycles/lessons/` (one file per unit, plus `songs.js` and `mods.js` for the Modded Cycles custom-firmware lessons), `model-cycles/figures/` (the drawings), `model-cycles/controls.js` (panel drawing and the description of every key and knob), `reference.js` (machines and shortcuts). `shared/` holds the step formatting, the playable grid and the Spotify links.
 - `src/course/views.js`: the page markup (player, lesson text, lesson list).
 - `src/pages/`: one file per kind of address. `api/` and `auth/` are the only parts that run on the server.
 - `src/client/`: the browser script (progress, saving, the quiz, the drum grids).

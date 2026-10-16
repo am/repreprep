@@ -13,7 +13,11 @@ export const INSTRUMENTS=[
 ];
 export const instrumentBySlug=slug=>INSTRUMENTS.find(i=>i.slug===slug);
 
-export const wkLabel=L=>L.song?"Song study":"Lesson "+L.week;
+/* three kinds of lesson: the main course ("lesson"), Modded Cycles lessons for custom firmware ("mod")
+   and song studies ("song"). Each kind has its own address folder and short label. */
+export const kindOf=L=>L.song?"song":L.mod?"mod":"lesson";
+const KINDS={lesson:{dir:"lessons",pre:"L"},mod:{dir:"mods",pre:"M"},song:{dir:"songs",pre:"S"}};
+export const wkLabel=L=>L.song?"Song study":L.mod?"Modded Cycles":"Lesson "+L.week;
 export const pad2=n=>String(n).padStart(2,"0");
 const slugify=s=>s.normalize("NFKD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 
@@ -22,9 +26,10 @@ const slugify=s=>s.normalize("NFKD").replace(/[̀-ͯ]/g,"").toLowerCase().replac
 INSTRUMENTS.filter(I=>I.ready).forEach(I=>I.lessons.forEach((L,i)=>{
   const g=L.goal.charAt(0).toLowerCase()+L.goal.slice(1);
   L.steps.unshift({intro:true,k:"intro",hl:"",t:`${wkLabel(L)}: ${L.title}. In this lesson you will ${g}`});
-  L.slug=L.song?slugify(L.title):pad2(L.week);
-  L.path=`/${I.slug}/${L.song?"songs":"lessons"}/${L.slug}`;
-  L.short=L.song?"S"+pad2(I.lessons.filter(l=>l.song).indexOf(L)+1):"L"+pad2(L.week);
+  const k=L.kind=kindOf(L);
+  L.slug=k==="lesson"?pad2(L.week):slugify(L.title);
+  L.path=`/${I.slug}/${KINDS[k].dir}/${L.slug}`;
+  L.short=KINDS[k].pre+pad2(k==="lesson"?L.week:I.lessons.filter(l=>kindOf(l)===k).indexOf(L)+1);
 }));
 export const stepPath=(L,i)=>i?`${L.path}/${i}`:L.path;
 export const nextLesson=(I,L)=>I.lessons[I.lessons.indexOf(L)+1];
