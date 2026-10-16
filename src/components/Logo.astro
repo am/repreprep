@@ -1,0 +1,47 @@
+---
+// The Rep Rep Rep mark: three REPs (Manrope ExtraBold, Regular, ExtraLight) stacked on top of each other.
+// Every page view and every click reshuffles which weight gets which color, the stacking order and the offsets.
+const layers = [
+  // starting look, from the original sketch (used until the script runs, and without JS)
+  { w: 800, c: "ink", x: 0.045, y: 0.03, z: 1 },
+  { w: 400, c: "blue", x: 0.09, y: 0.09, z: 2 },
+  { w: 200, c: "yellow", x: 0, y: 0, z: 3 },
+];
+---
+<a href="/" class="logo" id="logo" aria-label="Rep Rep Rep, home">
+  {layers.map((l) => (
+    <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em;z-index:${l.z}`}>REP</span>
+  ))}
+</a>
+<script is:inline data-astro-rerun>
+  (function () {
+    var colors = ["var(--logo-blue)", "var(--logo-yellow)", "var(--logo-ink)"];
+    function shuffle(a) {
+      for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; }
+      return a;
+    }
+    // each layer gets its own offset slot (plus a little jitter) so all three always show,
+    // and the slots stay within a small box so the word still reads as one REP
+    function slots() {
+      return shuffle([0, 0.045, 0.09]).map(function (v) { return (v + Math.random() * 0.02).toFixed(3) + "em"; });
+    }
+    function remix(el) {
+      var c = shuffle(colors.slice()), x = slots(), y = slots();
+      // ExtraBold stays at the back so it never hides the thinner weights
+      var z = [1].concat(shuffle([2, 3]));
+      Array.prototype.forEach.call(el.children, function (s, i) {
+        s.style.setProperty("--c", c[i]);
+        s.style.setProperty("--x", x[i]);
+        s.style.setProperty("--y", y[i]);
+        s.style.zIndex = z[i];
+      });
+    }
+    var el = document.getElementById("logo");
+    if (!el) return;
+    remix(el);
+    el.addEventListener("click", function (e) {
+      remix(el);
+      if (location.pathname === "/") e.preventDefault();
+    });
+  })();
+</script>
