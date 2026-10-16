@@ -55,6 +55,7 @@ jobs:
           npx wrangler versions upload --preview-alias "pr-${{ github.event.pull_request.number }}" \
             --message "PR #${{ github.event.pull_request.number }} @ ${GITHUB_SHA::7}" | tee upload.log
           url=$(grep -o "https://pr-${{ github.event.pull_request.number }}-[^ ]*workers\.dev" upload.log | head -1)
+          [ -n "$url" ] || echo "::warning::wrangler printed no preview URL (are workers_dev and preview_urls on?)"
           echo "url=$url" >> "$GITHUB_OUTPUT"
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

@@ -8,6 +8,9 @@
   "d1_databases": [{ "binding": "DB", "database_name": "repreprep" }],
   // The site's address. Deploys attach both and Cloudflare creates their DNS records and certificates.
   // www → repreprep.studio is a Redirect Rule in the zone (static pages are served before the Worker runs).
+  // With routes set, workers.dev and preview URLs would default to off; PR previews need them.
+  "workers_dev": true,
+  "preview_urls": true,
   "routes": [
     { "pattern": "repreprep.studio", "custom_domain": true },
     { "pattern": "www.repreprep.studio", "custom_domain": true }
