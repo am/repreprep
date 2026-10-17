@@ -295,7 +295,7 @@ html.focus body .pbody{grid-template-columns:minmax(0,1fr) 14px var(--sw,clamp(3
 .foot a{color:var(--muted)}
 
 /* Learn steps: our own drawings and playable grids, shown in place of the panel */
-.figwrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:auto}
+.figwrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:auto;container-type:size}
 svg.fig{width:100%;height:100%;max-height:100%;display:block}
 .fig text{fill:var(--fg);font-family:var(--body)}
 .fig .fh{font-family:var(--display);font-weight:var(--fw-bold);font-size:22px}
@@ -312,31 +312,33 @@ svg.fig{width:100%;height:100%;max-height:100%;display:block}
 .fig .mark{stroke:var(--fg);stroke-width:2;stroke-dasharray:5 4}
 .fig .box{fill:var(--surface-2);stroke:var(--line)}
 .fig .arr{stroke:var(--turn);stroke-width:2;fill:none;marker-end:none}
-.gp{width:100%;max-width:900px;display:flex;flex-direction:column;gap:var(--s3);padding:var(--s2)}
-.gp .gt{font-family:var(--display);font-weight:var(--fw-bold);font-size:var(--fs-xl)}
+/* playable grid: as wide as the drawing area allows while all its rows still fit in its height; text scales with it */
+.gp{--gw:min(100cqi - 16px,(100cqh - 260px) / (var(--rows,2) * 1.25) * 16 + 90px);width:var(--gw);font-size:clamp(13px,calc(var(--gw) / 48),26px);display:flex;flex-direction:column;gap:.7em;padding:var(--s2)}
+.gp .gt{font-family:var(--display);font-weight:var(--fw-bold);font-size:1.3em}
 .gtabs{display:flex;flex-wrap:wrap;gap:var(--s2)}
-.gtabs button{border:1px solid var(--line);background:transparent;border-radius:var(--r-pill);padding:var(--s1) var(--s3);font-size:var(--fs-sm);cursor:pointer}
+.gtabs button{border:1px solid var(--line);background:transparent;border-radius:var(--r-pill);padding:.3em .8em;font-size:.92em;cursor:pointer}
 .gtabs button[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .gg{display:grid;grid-template-columns:minmax(64px,auto) repeat(var(--n),minmax(0,1fr));gap:var(--s1);align-items:stretch}
-.gg .hd{text-align:center;font-family:var(--mono);font-size:var(--fs-s);color:var(--faint);line-height:1.2}
+.gg .hd{text-align:center;font-family:var(--mono);font-size:.82em;color:var(--faint);line-height:1.2}
 .gg .hd.b{color:var(--fg);font-weight:var(--fw-bold)}
-.gg .hd small{display:block;font-size:var(--fs-2xs);color:var(--faint);font-weight:var(--fw-regular)}
+.gg .hd small{display:block;font-size:.8em;color:var(--faint);font-weight:var(--fw-regular)}
 .gg .hd small.u{text-decoration:underline}
-.gg .rl{font-size:var(--fs-s);font-weight:var(--fw-semibold);display:flex;flex-direction:column;justify-content:center;padding-right:var(--s2)}
-.gg .rl small{font-family:var(--mono);font-size:var(--fs-2xs);color:var(--faint);font-weight:var(--fw-regular)}
+.gg .rl{font-size:.82em;font-weight:var(--fw-semibold);display:flex;flex-direction:column;justify-content:center;padding-right:var(--s2)}
+.gg .rl small{font-family:var(--mono);font-size:.8em;color:var(--faint);font-weight:var(--fw-regular)}
 .cell{position:relative;aspect-ratio:1/1.25;min-height:26px;border:1px solid var(--line);border-radius:var(--r-s);background:var(--surface);cursor:pointer;padding:0;overflow:hidden}
 .cell.bt{background:var(--surface-2)}
 .cell i{position:absolute;left:3px;right:3px;bottom:3px;height:calc((100% - 6px) * var(--v));border-radius:var(--r-xs);background:var(--c);opacity:0;transition:opacity .1s}
 .cell.on i{opacity:1}
 .cell.out{opacity:.25;cursor:default}
 .cell.now{outline:2px solid var(--fg);outline-offset:-2px}
+.gp .btn{font-size:1em}
 .gctl{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s3) var(--s4)}
-.gbpm{font-family:var(--mono);font-size:var(--fs-s);color:var(--muted)}
-.gsw{display:flex;align-items:center;gap:var(--s2);font-size:var(--fs-sm)}
+.gbpm{font-family:var(--mono);font-size:.82em;color:var(--muted)}
+.gsw{display:flex;align-items:center;gap:var(--s2);font-size:.92em}
 .gsw input{width:160px;accent-color:var(--turn)}
 .gsw b{font-family:var(--mono);font-weight:var(--fw-semibold);min-width:3.2em}
-.gnote{font-size:var(--fs-sm);color:var(--muted);flex-basis:100%}
-.ghint{margin:0;font-size:var(--fs-s);color:var(--faint)}
+.gnote{font-size:.92em;color:var(--muted);flex-basis:100%}
+.ghint{margin:0;font-size:.82em;color:var(--faint)}
 .pstep .h .kind{display:inline-block;padding:1px var(--s2);border-radius:var(--r-pill);margin-right:var(--s2);font-weight:var(--fw-semibold);letter-spacing:var(--ls-caps)}
 .kind.k-intro{background:var(--surface);color:var(--fg)}
 .kind.k-learn{background:var(--turn-soft);color:var(--turn)}
@@ -358,7 +360,7 @@ svg.fig{width:100%;height:100%;max-height:100%;display:block}
 .wk.soon{cursor:default;opacity:.5}
 .wk .t small.by{display:block;font-size:var(--fs-xs);color:var(--muted)}
 .wk.soon small{font-family:var(--mono);font-size:var(--fs-2xs);color:var(--faint)}
-@media (max-width:900px){.figwrap{height:auto}svg.fig{height:auto}}
+@media (max-width:900px){.figwrap{height:auto;container-type:inline-size}svg.fig{height:auto}}
 .legend[hidden]{display:none!important}
 .cell{min-width:0}
 @media (max-width:600px){.gg{gap:2px;grid-template-columns:46px repeat(var(--n),minmax(0,1fr))}.cell{min-height:22px;border-radius:var(--r-xs)}.cell i{left:1px;right:1px;bottom:1px}.gg .hd small{display:none}.gg .hd{font-size:var(--fs-2xs)}.gg .rl{font-size:var(--fs-xs)}}
