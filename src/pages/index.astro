@@ -1,17 +1,45 @@
 ---
 import Base from "../layouts/Base.astro";
+import Logo from "../components/Logo.astro";
 import { INSTRUMENTS } from "../course/index.js";
+const count = (I: any) => {
+  const songs = I.lessons.filter((l: any) => l.song).length;
+  return `${I.lessons.length - songs} lessons · ${songs} song studies`;
+};
 ---
-<Base>
-  <div class="page">
-    <div class="eyebrow">Practice, repeat, make music</div>
-    <h2>Learn music production on the gear you own</h2>
-    <p class="goal">Short lessons that teach one idea at a time (rhythm, sound, notes and harmony, space and arrangement), explained with drawings and playable examples, then practised on your instrument step by step.</p>
+<Base home>
+  <div class="home" id="home">
+    <section class="scene">
+      <h1 class="mark"><Logo dance /></h1>
+      <span class="cue" aria-hidden="true"></span>
+    </section>
+    <section class="scene">
+      <h2>Learn music by playing it.</h2>
+      <p>One idea at a time, in short lessons on the gear you own.</p>
+    </section>
+    <section class="scene">
+      <h2>Rep after rep.</h2>
+      <nav class="gear" aria-label="Pick your instrument">
+        {INSTRUMENTS.map((I) => I.ready
+          ? <a class="go" href={`/${I.slug}`}><b>{I.name}</b><small>{count(I)}</small></a>
+          : <span class="soon"><b>{I.name}</b><small>coming next</small></span>)}
+      </nav>
+    </section>
   </div>
-  <div class="cards">
-    {INSTRUMENTS.map((I) => I.ready
-      ? <a class="icard" href={`/${I.slug}`}><h3>{I.name}</h3><p>{I.lessons.filter((l: any) => !l.song).length} lessons and {I.lessons.filter((l: any) => l.song).length} song studies</p></a>
-      : <div class="icard off"><h3>{I.name}</h3><p>Coming next</p></div>)}
-  </div>
-  <p class="msg">Your progress is saved in this browser. <a href="/account">Sign in</a> to keep it on every device.</p>
 </Base>
+<script is:inline data-astro-rerun>
+  (function () {
+    var home = document.getElementById("home");
+    if (!home || !("IntersectionObserver" in window)) return;
+    home.classList.add("anim");
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.35 });
+    home.querySelectorAll(".scene").forEach(function (s) { io.observe(s); });
+    function onScroll() {
+      if (!home.isConnected) return removeEventListener("scroll", onScroll);
+      home.classList.toggle("scrolled", scrollY > 40);
+    }
+    addEventListener("scroll", onScroll, { passive: true });
+  })();
+</script>
