@@ -467,3 +467,5 @@ html:has(.home){scroll-snap-type:y mandatory}
 .gear .soon{opacity:.5}
 @media (max-width:560px){.scene .mark{font-size:40vw}.gear{width:100%}.gear a{flex:1 1 100%}.gear span{flex:1 1 40%}}
 @media (prefers-reduced-motion:reduce){.gear a{transition:none}.cue::after{animation:none;top:24px;opacity:1}.home.anim .scene>*:not(.cue){opacity:1;transform:none;transition:none}}
+/* everything drawn on the left (panel, figures, playable grids) uses the hardware's plain sans; only the device's LCD keeps its screen font */
+.pstage *:not(.lcd-big):not(.lcd-small){font-family:var(--panel)}
