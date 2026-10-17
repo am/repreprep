@@ -4,7 +4,8 @@
 // showing before, each clearly apart from the others and from the page background) and new offsets. Every 10 to 40 seconds it glitches: a short
 // burst of blinks, slices and jumps that lands on a new remix. ExtraLight is always on top, Regular in the middle.
 // With `dance` set (the home page), it moves on a 90 BPM grid instead: one layer at a time does something small
-// on each beat, and the first beat of each bar brings a color change. The variants are compared on /lab/logo.
+// on each beat, and the first beat of each bar brings a color change, while all three layers float very slowly.
+// The variants are compared on /lab/logo.
 interface Props { dance?: "snappulse" | "split" | "kick"; bpm?: number }
 const { dance, bpm = 90 } = Astro.props;
 const layers = [
@@ -131,9 +132,12 @@ const layers = [
       el._last = i;
       return el.children[i];
     }
-    // a short, soft dip to about half opacity
+        // a short, soft fade toward the page background (a tint, not transparency, so it never blends with the
+    // layers underneath); depth is how much color stays at the bottom of the dip
     function pulse(s, depth) {
-      s.animate([{ opacity: 1 }, { opacity: depth || 0.5, offset: 0.3 }, { opacity: 1 }], { duration: 220, easing: "ease-out" });
+      var c = getComputedStyle(s).color, bg = getComputedStyle(document.body).backgroundColor;
+      var dip = "color-mix(in oklab, " + c + " " + Math.round((depth || 0.5) * 100) + "%, " + bg + ")";
+      s.animate([{ color: c }, { color: dip, offset: 0.3 }, { color: c }], { duration: 220, easing: "ease-out" });
     }
     // a layer moves to a new spot (glide speed set in CSS per dance); on the bar another layer jolts and the colors swap
     function drift(el, down, s) {
@@ -162,8 +166,8 @@ const layers = [
       kick: function (el, down) {
         var top = el.children[2], s = el.children[el._mover = el._mover === 0 ? 1 : 0];
         drift(el, false, s);
-        pulse(top, down ? 0.3 : 0.55);
         if (down) recolor(el);
+        pulse(top, down ? 0.3 : 0.55);
       },
     };
     var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;

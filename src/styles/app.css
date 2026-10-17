@@ -402,7 +402,13 @@ html:has(.home){scroll-snap-type:y mandatory}
 .wrap:has(.home) .foot{scroll-snap-align:end}
 .scene .mark .logo{transform-origin:50% 55%}
 /* dancing logos: quick snaps */
-.logo[data-dance] span{transition:transform .14s cubic-bezier(.2,.9,.3,1)}
+.logo[data-dance] span{transition:transform .14s cubic-bezier(.2,.9,.3,1);animation:float var(--fd) ease-in-out var(--fdl) infinite}
+/* a slow float on top of the beat moves (it uses `translate`, the beat uses `transform`), each layer on its own clock */
+.logo[data-dance] span:nth-child(1){--fd:9.3s;--fdl:-2s}
+.logo[data-dance] span:nth-child(2){--fd:11.7s;--fdl:-7s}
+.logo[data-dance] span:nth-child(3){--fd:7.9s;--fdl:-4s}
+@keyframes float{0%,100%{translate:0 0}25%{translate:.018em -.014em}50%{translate:-.012em .02em}75%{translate:-.02em -.008em}}
+@media (prefers-reduced-motion:reduce){.logo[data-dance] span{animation:none}}
 .scene .mark{font-size:clamp(6rem,30vw,26rem);line-height:.82;margin:0}
 .scene h2{font-size:clamp(2.2rem,6.4vw,5.6rem);line-height:1.02;letter-spacing:-.025em;max-width:13ch}
 .scene p{margin:.9em 0 0;font-size:clamp(1.1rem,1.8vw,1.45rem);color:var(--muted);max-width:30ch}
