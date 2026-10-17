@@ -5,6 +5,7 @@
 // burst of blinks, slices and jumps that lands on a new remix. ExtraLight is always on top, Regular in the middle.
 // With `dance` set (the home page), it moves on a 90 BPM grid instead: one layer at a time does something small
 // on each beat, and the first beat of each bar brings a color change, while all three layers float very slowly.
+// Hovering shows a TAP key; tapping the logo sets the tempo, like TAP TEMPO on the Model:Cycles, with a quiet click.
 // The variants are compared on /lab/logo.
 interface Props { dance?: "snappulse" | "split" | "kick"; bpm?: number }
 const { dance, bpm = 90 } = Astro.props;
@@ -15,11 +16,23 @@ const layers = [
   { w: 200, c: "yellow", x: 0, y: 0 },
 ];
 ---
-<a href="/" class="logo" aria-label="Rep Rep Rep, home" data-dance={dance} data-bpm={dance ? bpm : undefined}>
-  {layers.map((l) => (
-    <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>REP</span>
-  ))}
-</a>
+{dance ? (
+  /* a dancing logo is also a tap-tempo key: hovering shows the key, tapping sets the beat */
+  <span class="logo-wrap">
+    <a href="/" class="logo" aria-label="Rep Rep Rep. Tap to set the tempo" data-dance={dance} data-bpm={bpm}>
+      {layers.map((l) => (
+        <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>REP</span>
+      ))}
+    </a>
+    <span class="tap" aria-hidden="true"><i></i><b>TAP</b></span>
+  </span>
+) : (
+  <a href="/" class="logo" aria-label="Rep Rep Rep, home">
+    {layers.map((l) => (
+      <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>REP</span>
+    ))}
+  </a>
+)}
 <script is:inline data-astro-rerun>
   (function () {
     function shuffle(a) {
@@ -108,15 +121,66 @@ const layers = [
       })(frames);
     }
     // beats are scheduled from a fixed start time so they never drift
+    // beats are scheduled from a fixed start time so they never drift; tap() can restart them at a new tempo.
+    // The tap key's light flashes on every beat, like the TEMPO key on the Model:Cycles.
     function beats(el, bpm, onBeat) {
-      var ms = 60000 / bpm, t0 = performance.now(), n = 0;
-      (function tick() {
+      var st = el._beat = { ms: 60000 / bpm, t0: performance.now(), n: 0, timer: 0 }, key = tapKey(el);
+      st.tick = function tick() {
+        clearTimeout(st.timer);
         if (!el.isConnected) return; // page swapped; the new page starts its own loop
-        if (!document.hidden) onBeat(n % 4 === 0, ms);
-        n++;
-        if (performance.now() - (t0 + n * ms) > ms) t0 = performance.now() - n * ms; // back from a background tab
-        setTimeout(tick, Math.max(0, t0 + n * ms - performance.now()));
-      })();
+        if (!document.hidden) {
+          onBeat(st.n % 4 === 0, st.ms);
+          if (st.sound > 0) { click(st.n % 4 === 0); st.sound--; }
+          if (key) { key.classList.toggle("down", st.n % 4 === 0); key.classList.add("lit"); later(90, function () { key.classList.remove("lit"); }); }
+        }
+        st.n++;
+        if (performance.now() - (st.t0 + st.n * st.ms) > st.ms) st.t0 = performance.now() - st.n * st.ms; // back from a background tab
+        st.timer = setTimeout(tick, Math.max(0, st.t0 + st.n * st.ms - performance.now()));
+      };
+      st.tick();
+    }
+    // a quiet, dry metronome, like the Model:Cycles click: "clack" on the bar, "tik" on the other beats.
+    // Browsers only allow sound after a tap, so it starts with the first tap and stops four bars after the last one.
+    var audio;
+    function click(down) {
+      try {
+        audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+        var t = audio.currentTime, len = down ? 0.03 : 0.018;
+        var buf = audio.createBuffer(1, Math.ceil(audio.sampleRate * len), audio.sampleRate), d = buf.getChannelData(0);
+        for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 4);
+        var src = audio.createBufferSource(), f = audio.createBiquadFilter(), g = audio.createGain();
+        src.buffer = buf;
+        f.type = "bandpass"; f.frequency.value = down ? 1500 : 3200; f.Q.value = down ? 4 : 6;
+        g.gain.value = down ? 0.22 : 0.12;
+        src.connect(f); f.connect(g); g.connect(audio.destination);
+        src.start(t);
+      } catch (e) {}
+    }
+    function tapKey(el) { var w = el.parentNode; return w && w.classList.contains("logo-wrap") ? w.querySelector(".tap") : null; }
+    // tap tempo: each tap lands on a beat (the first tap of a run is the downbeat); from the second tap on,
+    // the tempo is the average gap of the last few taps, kept within the Model:Cycles range of 30 to 300 BPM.
+    // A pause of two seconds starts a new run.
+    function tap(el) {
+      var st = el._beat, key = tapKey(el), now = performance.now(), t = el._taps || [];
+      if (!st) return;
+      if (t.length && now - t[t.length - 1] > 2000) { t = []; el._tapN = 0; }
+      t.push(now);
+      el._taps = t = t.slice(-5);
+      if (t.length > 1) {
+        st.ms = Math.min(2000, Math.max(200, (t[t.length - 1] - t[0]) / (t.length - 1)));
+        try { localStorage.setItem("rrr-bpm", Math.round(60000 / st.ms)); } catch (e) {}
+      }
+      st.sound = 16 + 1; // this tap's beat plus four bars
+      st.n = el._tapN = (el._tapN || 0);
+      el._tapN++;
+      st.t0 = now - st.n * st.ms;
+      st.tick();
+      if (key) {
+        key.querySelector("b").textContent = t.length > 1 ? Math.round(60000 / st.ms) + " BPM" : "TAP";
+        key.classList.add("on");
+        clearTimeout(el._tapOff);
+        el._tapOff = setTimeout(function () { key.classList.remove("on"); key.querySelector("b").textContent = "TAP"; }, 2500);
+      }
     }
     function later(ms, f) { setTimeout(f, ms); }
     function slot() { return rand(0, 0.11).toFixed(3) + "em"; }
@@ -175,7 +239,9 @@ const layers = [
       el.dataset.on = "1";
       remix(el);
       var d = DANCES[el.dataset.dance];
-      if (d && !reduce) beats(el, +el.dataset.bpm, function (down) { d(el, down); });
+      var saved = 0;
+      try { saved = +localStorage.getItem("rrr-bpm"); } catch (e) {}
+      if (d && !reduce) beats(el, saved || +el.dataset.bpm, function (down) { d(el, down); });
       else if (!reduce) {
         (function next() {
           setTimeout(function () {
@@ -186,7 +252,7 @@ const layers = [
         })();
       }
       el.addEventListener("click", function (e) {
-        remix(el);
+        if (d && el._beat) tap(el); else remix(el);
         if (location.pathname === "/" || d) e.preventDefault();
       });
     });

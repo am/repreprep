@@ -409,6 +409,17 @@ html:has(.home){scroll-snap-type:y mandatory}
 .logo[data-dance] span:nth-child(3){--fd:7.9s;--fdl:-4s}
 @keyframes float{0%,100%{translate:0 0}25%{translate:.018em -.014em}50%{translate:-.012em .02em}75%{translate:-.02em -.008em}}
 @media (prefers-reduced-motion:reduce){.logo[data-dance] span{animation:none}}
+/* the tap-tempo key next to a dancing logo: shown on hover/focus (always on touch screens), its light flashes
+   on every beat and brighter on the bar; while tapping it reads out the tempo */
+.logo-wrap{position:relative;display:inline-block}
+.tap{position:absolute;right:-.1em;bottom:-.2em;display:flex;align-items:center;gap:7px;padding:6px 10px 6px 8px;border:1px solid var(--line);border-bottom-width:2px;border-radius:7px;background:var(--surface);font:600 12px/1 var(--mono);letter-spacing:.08em;color:var(--fg);opacity:0;transform:translateY(4px);transition:opacity .25s ease,transform .25s ease;pointer-events:none;white-space:nowrap}
+.tap i{width:7px;height:7px;border-radius:50%;background:var(--dev-led-off);transition:background .12s ease,box-shadow .12s ease}
+.tap.lit i{background:var(--led);box-shadow:0 0 8px var(--led)}
+.tap.lit:not(.down) i{opacity:.6}
+.logo-wrap:hover .tap,.logo-wrap:focus-within .tap,.tap.on{opacity:1;transform:none}
+.logo-wrap:hover .logo{cursor:pointer}
+@media (hover:none){.tap{opacity:.85;transform:none}}
+@media (prefers-reduced-motion:reduce){.tap{display:none}}
 .scene .mark{font-size:clamp(6rem,30vw,26rem);line-height:.82;margin:0}
 .scene h2{font-size:clamp(2.2rem,6.4vw,5.6rem);line-height:1.02;letter-spacing:-.025em;max-width:13ch}
 .scene p{margin:.9em 0 0;font-size:clamp(1.1rem,1.8vw,1.45rem);color:var(--muted);max-width:30ch}
