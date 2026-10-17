@@ -420,19 +420,7 @@ html:has(.home){scroll-snap-type:y mandatory}
 .logo-wrap:hover .logo{cursor:pointer}
 @media (hover:none){.tap{opacity:.85;transform:none}}
 @media (prefers-reduced-motion:reduce){.tap{display:none}}
-/* digital noise on the logo layers (tried on /lab/logo). The noise tile is a speckle mask: holes punched
-   through a layer, jumped to a new spot several times a second so it reads as static. */
-:root{--noise:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.45' numOctaves='1' seed='7' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1 0 0 0 0'/%3E%3CfeComponentTransfer%3E%3CfeFuncA type='discrete' tableValues='0 0 1 1 1'/%3E%3C/feComponentTransfer%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
-@keyframes static{0%{mask-position:0 0}17%{mask-position:-61px 37px}33%{mask-position:83px -29px}50%{mask-position:-17px -91px}67%{mask-position:47px 71px}83%{mask-position:-97px 13px}}
-/* static: the bold bottom layer always fizzes */
-.logo[data-noise="static"] span:nth-child(1){-webkit-mask:var(--noise) 0 0/360px;mask:var(--noise) 0 0/360px;animation:float var(--fd) ease-in-out var(--fdl) infinite,static .42s steps(1) infinite}
-/* lines: the middle layer is cut into scanlines that slowly roll */
-@keyframes roll{to{mask-position:0 12px}}
-.logo[data-noise="lines"] span:nth-child(2){-webkit-mask:repeating-linear-gradient(#000 0 3px,transparent 3px 6px);mask:repeating-linear-gradient(#000 0 3px,transparent 3px 6px);animation:float var(--fd) ease-in-out var(--fdl) infinite,roll 1.2s linear infinite}
-/* fizz: the pulsing layer breaks into static for the length of the pulse */
-.logo[data-noise="fizz"] span.fizz{-webkit-mask:var(--noise) 0 0/360px;mask:var(--noise) 0 0/360px;animation:float var(--fd) ease-in-out var(--fdl) infinite,static .12s steps(1) infinite}
 .logo-wrap .defs{position:absolute;width:0;height:0}
-@media (prefers-reduced-motion:reduce){.logo[data-noise] span{-webkit-mask:none;mask:none}}
 .scene .mark{font-size:clamp(6rem,30vw,26rem);line-height:.82;margin:0}
 .scene h2{font-size:clamp(2.2rem,6.4vw,5.6rem);line-height:1.02;letter-spacing:-.025em;max-width:13ch}
 .scene p{margin:.9em 0 0;font-size:clamp(1.1rem,1.8vw,1.45rem);color:var(--muted);max-width:30ch}
@@ -456,9 +444,3 @@ html:has(.home){scroll-snap-type:y mandatory}
 .gear .soon{opacity:.5}
 @media (max-width:560px){.scene .mark{font-size:40vw}.gear{width:100%}.gear a{flex:1 1 100%}.gear span{flex:1 1 40%}}
 @media (prefers-reduced-motion:reduce){.gear a{transition:none}.cue::after{animation:none;top:24px;opacity:1}.home.anim .scene>*:not(.cue){opacity:1;transform:none;transition:none}}
-/* /lab/logo: the beat variants side by side */
-.lab{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,520px),1fr));gap:20px;margin-top:24px}
-.lab section{padding:48px 28px 24px;border:1px solid var(--line);border-radius:16px;text-align:center}
-.lab .mark{font-size:clamp(4.5rem,11vw,9rem);line-height:.82;margin-bottom:28px}
-.lab h3{font-size:1.2rem}
-.lab p{margin:.4em auto 0;color:var(--muted);max-width:42ch}

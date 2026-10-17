@@ -3,12 +3,12 @@
 // Every page view and every click picks a new hand-picked set of three electric colors (far from the colors
 // showing before, each clearly apart from the others and from the page background) and new offsets. Every 10 to 40 seconds it glitches: a short
 // burst of blinks, slices and jumps that lands on a new remix. ExtraLight is always on top, Regular in the middle.
-// With `dance` set (the home page), it moves on a 90 BPM grid instead: one layer at a time does something small
-// on each beat, and the first beat of each bar brings a color change, while all three layers float very slowly.
+// With `dance` set (the home page), it moves on a 90 BPM grid instead: on each beat one layer snaps to a new spot
+// while another pulses toward the background, the off-beats get a tiny random accent, and the first beat of each bar
+// tears a layer and brings a new palette; all three layers also float very slowly.
 // Hovering shows a TAP key; tapping the logo sets the tempo, like TAP TEMPO on the Model:Cycles, with a quiet click.
-// The variants are compared on /lab/logo.
-interface Props { dance?: "snappulse" | "split" | "kick"; noise?: "static" | "lines" | "tear" | "fizz"; bpm?: number }
-const { dance, noise, bpm = 90 } = Astro.props;
+interface Props { dance?: boolean; bpm?: number }
+const { dance, bpm = 90 } = Astro.props;
 const layers = [
   // starting look, from the original sketch (used until the script runs, and without JS)
   { w: 800, c: "ink", x: 0.045, y: 0.03 },
@@ -19,21 +19,19 @@ const layers = [
 {dance ? (
   /* a dancing logo is also a tap-tempo key: hovering shows the key, tapping sets the beat */
   <span class="logo-wrap">
-    <a href="/" class="logo" aria-label="Rep Rep Rep. Tap to set the tempo" data-dance={dance} data-noise={noise} data-bpm={bpm}>
+    <a href="/" class="logo" aria-label="Rep Rep Rep. Tap to set the tempo" data-dance data-bpm={bpm}>
       {layers.map((l) => (
         <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>REP</span>
       ))}
     </a>
     <span class="tap" aria-hidden="true"><i></i><b>TAP</b></span>
-    {noise === "tear" && (
-      /* horizontal bands of noise that push a layer sideways: a digital tear */
-      <svg class="defs" width="0" height="0" aria-hidden="true">
-        <filter id="rrr-tear" x="-10%" y="-10%" width="120%" height="120%">
-          <feTurbulence type="fractalNoise" baseFrequency="0.0001 0.09" numOctaves="1" seed="2" />
-          <feDisplacementMap in="SourceGraphic" scale="34" xChannelSelector="R" yChannelSelector="B" />
-        </filter>
-      </svg>
-    )}
+    {/* horizontal bands of noise that push a layer sideways: a digital tear */}
+    <svg class="defs" width="0" height="0" aria-hidden="true">
+      <filter id="rrr-tear" x="-10%" y="-10%" width="120%" height="120%">
+        <feTurbulence type="fractalNoise" baseFrequency="0.0001 0.09" numOctaves="1" seed="2" />
+        <feDisplacementMap in="SourceGraphic" scale="34" xChannelSelector="R" yChannelSelector="B" />
+      </filter>
+    </svg>
   </span>
 ) : (
   <a href="/" class="logo" aria-label="Rep Rep Rep, home">
@@ -205,15 +203,14 @@ const layers = [
       el._last = i;
       return el.children[i];
     }
-        // a short, soft fade toward the page background (a tint, not transparency, so it never blends with the
+    // a short, soft fade toward the page background (a tint, not transparency, so it never blends with the
     // layers underneath); depth is how much color stays at the bottom of the dip
     function pulse(s, depth, ms) {
       var c = getComputedStyle(s).color, bg = getComputedStyle(document.body).backgroundColor;
       var dip = "color-mix(in oklab, " + c + " " + Math.round((depth || 0.5) * 100) + "%, " + bg + ")";
       s.animate([{ color: c }, { color: dip, offset: 0.3 }, { color: c }], { duration: ms || 220, easing: "ease-out" });
-      if (s.parentNode.dataset.noise === "fizz") { s.classList.add("fizz"); later(240, function () { s.classList.remove("fizz"); }); }
     }
-    // tear noise: the layer that moves is torn sideways for a moment, with fresh noise each time
+    // the layer is torn sideways for a moment, with fresh noise each time
     function tear(s, scale, ms) {
       var t = document.querySelector("#rrr-tear feTurbulence"), d = document.querySelector("#rrr-tear feDisplacementMap");
       if (!t) return;
@@ -234,7 +231,7 @@ const layers = [
       }
       else if (r < 0.85) tear(s, 9 + Math.random() * 8, 70);
     }
-    // a layer moves to a new spot (glide speed set in CSS per dance); on the bar another layer jolts and the colors swap
+    // a layer snaps to a new spot; on the bar another layer jolts and the colors swap
     function drift(el, down, s) {
       s = s || pick(el);
       s.style.setProperty("--x", slot());
@@ -248,29 +245,18 @@ const layers = [
       }
       return s;
     }
-    var DANCES = {
-      // a layer snaps to a new spot and that same layer pulses
-      snappulse: function (el, down) { pulse(drift(el, down)); },
-      // one layer snaps to a new spot while a different layer pulses
-      split: function (el, down) {
-        var p = pick(el), m = drift(el, down, pick(el, p));
-        pulse(p);
-        // with tear noise, the full tear lands on the bar and the other beats get a small random accent
-        if (el.dataset.noise === "tear") { if (down) tear(m); else later(Math.random() * 40, function () { accent(el); }); }
-      },
-      // the ExtraLight layer (on top) pulses on every beat like a kick; the other two take turns moving
-      kick: function (el, down) {
-        var top = el.children[2], s = el.children[el._mover = el._mover === 0 ? 1 : 0];
-        drift(el, false, s);
-        if (down) recolor(el);
-        pulse(top, down ? 0.3 : 0.55);
-      },
-    };
+    // each beat one layer snaps to a new spot while a different layer pulses; the bar gets the full tear,
+    // the other beats a small random accent
+    function dance(el, down) {
+      var p = pick(el), m = drift(el, down, pick(el, p));
+      pulse(p);
+      if (down) tear(m); else later(Math.random() * 40, function () { accent(el); });
+    }
     var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     Array.prototype.forEach.call(document.querySelectorAll(".logo:not([data-on])"), function (el) {
       el.dataset.on = "1";
       remix(el);
-      var d = DANCES[el.dataset.dance];
+      var d = el.hasAttribute("data-dance") && dance;
       var saved = 0;
       try { saved = +localStorage.getItem("rrr-bpm"); } catch (e) {}
       if (d && !reduce) beats(el, saved || +el.dataset.bpm, function (down) { d(el, down); });
