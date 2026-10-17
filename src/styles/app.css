@@ -400,6 +400,8 @@ section.box h3{margin-bottom:6px}
 html:has(.home){scroll-snap-type:y mandatory}
 .scene{scroll-snap-align:start;scroll-snap-stop:always}
 .wrap:has(.home) .foot{scroll-snap-align:end}
+.scene .mark .logo{transform-origin:50% 55%}
+.logo[data-bpm] span{transition-duration:.08s} /* colors swap on the beat, not after it */
 .scene .mark{font-size:clamp(6rem,30vw,26rem);line-height:.82;margin:0}
 .scene h2{font-size:clamp(2.2rem,6.4vw,5.6rem);line-height:1.02;letter-spacing:-.025em;max-width:13ch}
 .scene p{margin:.9em 0 0;font-size:clamp(1.1rem,1.8vw,1.45rem);color:var(--muted);max-width:30ch}

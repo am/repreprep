@@ -3,6 +3,10 @@
 // Every page view and every click picks a new set of three electric colors (far from the last set, each clearly
 // apart from the others and from the page background) and new offsets. Every 10 to 40 seconds it glitches: a short
 // burst of blinks, slices and jumps that lands on a new remix. ExtraLight is always on top, Regular in the middle.
+// With `bpm` set (the home page), it dances instead of glitching: a pulse on every beat, and on the first beat
+// of each bar a bigger pulse that swaps to a new remix.
+interface Props { bpm?: number }
+const { bpm } = Astro.props;
 const layers = [
   // starting look, from the original sketch (used until the script runs, and without JS)
   { w: 800, c: "ink", x: 0.045, y: 0.03 },
@@ -10,7 +14,7 @@ const layers = [
   { w: 200, c: "yellow", x: 0, y: 0 },
 ];
 ---
-<a href="/" class="logo" id="logo" aria-label="Rep Rep Rep, home">
+<a href="/" class="logo" id="logo" aria-label="Rep Rep Rep, home" data-bpm={bpm}>
   {layers.map((l) => (
     <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>REP</span>
   ))}
@@ -99,7 +103,28 @@ const layers = [
     var el = document.getElementById("logo");
     if (!el) return;
     remix(el);
-    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    // a steady 4/4 pulse: every beat a small bump, the first beat of each bar a bigger one plus a remix.
+    // Beats are scheduled from a fixed start time so they never drift.
+    function dance(el, bpm) {
+      var ms = 60000 / bpm, t0 = performance.now(), n = 0;
+      (function tick() {
+        if (!el.isConnected) return;
+        if (!document.hidden) {
+          var down = n % 4 === 0;
+          if (down) remix(el);
+          el.animate(down
+            ? [{ transform: "scale(1)", filter: "brightness(1)" }, { transform: "scale(1.09)", filter: "brightness(1.35)", offset: 0.12 }, { transform: "scale(1)", filter: "brightness(1)" }]
+            : [{ transform: "scale(1)", opacity: 1 }, { transform: "scale(1.03)", opacity: 0.8, offset: 0.15 }, { transform: "scale(1)", opacity: 1 }],
+            { duration: ms * (down ? 0.9 : 0.6), easing: "cubic-bezier(.2,.7,.3,1)" });
+        }
+        n++;
+        if (performance.now() - (t0 + n * ms) > ms) t0 = performance.now() - n * ms; // came back from a background tab
+        setTimeout(tick, Math.max(0, t0 + n * ms - performance.now()));
+      })();
+    }
+    var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (el.dataset.bpm && !reduce) dance(el, +el.dataset.bpm);
+    else if (!reduce) {
       (function next() {
         setTimeout(function () {
           if (!el.isConnected) return; // page swapped; the new page starts its own loop
