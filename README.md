@@ -59,6 +59,8 @@ Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. 
    - Store the keys as secrets: `npx wrangler secret put GOOGLE_CLIENT_ID`, then `GOOGLE_CLIENT_SECRET`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`.
    The account page only shows the providers whose keys are set.
 
+Messages sent from the contact form on `/privacy` are emailed to you and also stored in D1 (kept for a year; `npm run messages` lists the latest). Email needs Email Routing enabled on the repreprep.studio zone, your address verified there as a destination, and that address stored as a secret: `npx wrangler secret put CONTACT_TO`.
+
 Pushes to `main` deploy automatically through GitHub Actions (`.github/workflows/deploy.yml`), and every pull request gets a preview link at `pr-<number>-repreprep.<subdomain>.workers.dev`, posted as a PR comment. The workflow needs a `CLOUDFLARE_API_TOKEN` repository secret (an API token from the "Edit Cloudflare Workers" template, plus Account → D1 → Edit) and a `CLOUDFLARE_ACCOUNT_ID` repository variable. Previews share the production D1 database.
 
 ## License and contributing

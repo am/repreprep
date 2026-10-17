@@ -59,7 +59,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       </nav>
     )}
     <main id="view"><slot /></main>
-    <p class="foot">{inst?.foot} <span class="sync" id="sync"></span></p>
+    <p class="foot">{inst?.foot} <span class="sync" id="sync"></span> <a href="/privacy">Privacy</a></p>
   </div>
   <script is:inline>window.__rrrLayout();</script>
   <script>import "../client/app.js";</script>

@@ -8,6 +8,8 @@ const SCHEMA = [
   `CREATE TABLE IF NOT EXISTS sessions (id TEXT PRIMARY KEY, user_id TEXT NOT NULL REFERENCES users(id) ON DELETE CASCADE, expires_at INTEGER NOT NULL)`,
   `CREATE INDEX IF NOT EXISTS sessions_user ON sessions(user_id)`,
   `CREATE TABLE IF NOT EXISTS progress (user_id TEXT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE, data TEXT NOT NULL, updated_at INTEGER NOT NULL)`,
+  /* messages sent from the form on /privacy; user_id is kept only while the account exists */
+  `CREATE TABLE IF NOT EXISTS messages (id INTEGER PRIMARY KEY AUTOINCREMENT, created_at INTEGER NOT NULL, user_id TEXT REFERENCES users(id) ON DELETE SET NULL, reply_to TEXT, body TEXT NOT NULL)`,
 ];
 let ready = null;
 export function db() {

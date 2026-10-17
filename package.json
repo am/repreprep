@@ -9,7 +9,8 @@
     "build": "astro build",
     "preview": "astro build && wrangler dev",
     "deploy": "astro build && wrangler deploy",
-    "check": "node scripts/check-course.mjs"
+    "check": "node scripts/check-course.mjs",
+    "messages": "wrangler d1 execute repreprep --remote --command \"SELECT id, datetime(created_at/1000,'unixepoch') AS sent, reply_to, body FROM messages ORDER BY created_at DESC LIMIT 50\""
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.4.0",

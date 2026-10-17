@@ -6,13 +6,13 @@ import Base from "../layouts/Base.astro";
     <h2>Your progress</h2>
     <p class="msg bad" data-acct-error hidden>Sign-in didn't work. Please try again.</p>
     <div data-signed-out hidden>
-      <p>Your ticks, finished lessons and notes are saved in this browser. Sign in to keep them on every device. When you sign in, what you did here is added to your account.</p>
+      <p>Your ticks, finished lessons and notes are saved in this browser. Sign in to keep them on every device. When you sign in, what you did here is added to your account. <a href="/privacy">What the site keeps</a>.</p>
       <div class="signin" data-providers></div>
       <p class="msg" data-no-providers hidden>Sign-in isn't set up on this site yet.</p>
     </div>
     <div data-signed-in hidden>
       <p>Signed in as <b data-who></b>. Your progress is saved to your account and follows you to any device where you sign in.</p>
-      <div class="row"><button class="btn" data-signout>Sign out</button></div>
+      <div class="row"><button class="btn" data-signout>Sign out</button><a class="btn" href="/api/export" download data-astro-reload>Download my account data</a></div>
     </div>
     <section class="box">
       <h3>Back up or move your progress</h3>
@@ -25,7 +25,7 @@ import Base from "../layouts/Base.astro";
     </section>
     <section class="box" data-signed-in hidden>
       <h3>Delete your account</h3>
-      <p class="msg">Removes your account and everything saved with it from this site. Your progress stays in this browser.</p>
+      <p class="msg">Removes your account and everything saved with it from this site. Your progress stays in this browser. See <a href="/privacy">Privacy</a> for what the site keeps.</p>
       <div class="row"><button class="btn" data-delete>Delete my account</button></div>
     </section>
   </div>
