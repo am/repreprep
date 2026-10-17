@@ -53,7 +53,7 @@
 *{box-sizing:border-box}
 html,body{background:var(--bg)}
 body{color:var(--fg);font-family:var(--body);font-size:var(--fs-root);line-height:var(--lh-body)}
-.wrap{max-width:1380px;margin:0 auto;padding-inline:var(--s5);padding-block:var(--s4) var(--s8)}
+.wrap{max-width:1380px;margin:0 auto;padding-inline:var(--s5);padding-block:var(--s4) 0}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--turn);outline-offset:2px}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
@@ -79,7 +79,6 @@ h3{font-weight:var(--fw-bold)}
 .meter{margin-left:auto;display:flex;align-items:center;gap:var(--s3);font-family:var(--mono);font-size:var(--fs-s);color:var(--muted)}
 .meter .bar{width:140px;height:6px;border-radius:var(--r-xs);background:var(--surface-2);overflow:hidden}
 .meter .bar i{display:block;height:100%;background:var(--done);width:0;transition:width .4s}
-.sync{font-family:var(--mono);font-size:var(--fs-xs);color:var(--faint)}
 
 .tabs{display:flex;gap:var(--s1);margin:var(--s4) 0 var(--s6);flex-wrap:wrap}
 .tabs a{text-decoration:none;display:inline-block;background:none;border:none;border-bottom:2px solid transparent;padding:var(--s2) var(--s3);font-family:var(--display);font-weight:var(--fw-semibold);letter-spacing:var(--ls-key);text-transform:uppercase;font-size:var(--fs-s);color:var(--muted);cursor:pointer}
@@ -297,8 +296,15 @@ html.focus body .pbody{grid-template-columns:minmax(0,1fr) 14px var(--sw,clamp(3
 .info .sec{margin-top:var(--s2);font-size:var(--fs-sm);color:var(--muted)}
 /* the short intro paragraph at the top of a reference page */
 .lede{max-width:70ch;margin:0 0 var(--s5)}
-.foot{margin-top:var(--s7);font-size:var(--fs-s);color:var(--faint);max-width:80ch}
-.foot a{color:var(--muted)}
+/* footer: its own band at the bottom, one column per topic */
+.foot{margin-top:var(--s8);border-top:1px solid var(--line);background:var(--surface);font-size:var(--fs-sm);color:var(--muted)}
+.foot-in{max-width:1380px;margin:0 auto;padding:var(--s7) var(--s5) var(--s8);display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--s6) var(--s7);align-items:start}
+.foot-in section:first-child{max-width:28ch}
+.foot p{margin:0}
+.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s1)}
+.foot a{color:var(--fg);text-decoration-color:var(--faint);text-underline-offset:3px}
+.foot a:hover{text-decoration-color:currentColor}
+.foot-brand{margin-bottom:var(--s2);font-family:var(--display);font-weight:var(--fw-black);font-size:var(--fs-lg);color:var(--fg)}
 
 /* Learn steps: our own drawings and playable grids, shown in place of the panel */
 .figwrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:auto;container-type:size}
@@ -428,7 +434,7 @@ section.box h3{margin-bottom:var(--s2)}
 .scene:first-child{padding-top:0}
 /* each scene snaps into place; the footer gets its own snap point so it stays reachable */
 html:has(.home){scroll-snap-type:y mandatory}
-.wrap:has(.home) .foot{scroll-snap-align:end}
+body:has(.home) .foot{scroll-snap-align:end}
 .scene .mark .logo{transform-origin:50% 55%}
 /* dancing logos: quick snaps */
 .logo[data-dance] span{transition:transform .14s cubic-bezier(.2,.9,.3,1);animation:float var(--fd) ease-in-out var(--fdl) infinite}
