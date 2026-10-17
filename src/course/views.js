@@ -33,7 +33,7 @@ function lessonMenu(I, L) {
 
 function introCard(I, L) {
   const ideas = (L.concepts || []).map((c) => `<li>${esc(c.h)}</li>`).join("");
-  return `<div class="intro"><div class="t-eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}about ${L.minutes} min</div>
+  return `<div class="introcard"><div class="t-eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}about ${L.minutes} min</div>
     <h3 class="t-title">${esc(L.title)}</h3>
     <p class="ptxt t-body"><b>You will learn to</b> ${esc(L.goal.charAt(0).toLowerCase() + L.goal.slice(1))}</p>
     ${ideas ? `<div class="ideas t-body"><div class="t-label">Ideas in this lesson</div><ul>${ideas}</ul></div>` : ""}
@@ -80,16 +80,16 @@ export function lessonText(I, L, act) {
 
 export function panelGuide(I, sel) {
   const c = I.controls[sel];
-  return `<p class="intro">Every key and knob on the ${I.name}, with what it does. Click any control on the panel. ${keyify(I, I.panelIntro || "", "")}</p>
+  return `<p class="lede t-body">Every key and knob on the ${I.name}, with what it does. Click any control on the panel. ${keyify(I, I.panelIntro || "", "")}</p>
   <div class="refgrid"><div class="dockcard" data-panel-guide="/${I.slug}/panel">${withHl(I.draw(), "", sel)}</div><div class="card info" id="info"><div class="tag">${esc(c.kind)}</div><h3>${esc(c.name)}</h3><p>${keyify(I, c.desc, "")}</p>${c.sub ? `<p class="sec">Second label on the panel: <b>${esc(c.sub)}</b></p>` : ""}</div></div>`;
 }
 export function machines(I) {
-  return `<p class="intro">The six machines and what their four machine knobs do, from the machine table and tips in Elektron’s Model:Cycles manual (OS 1.13).</p>
+  return `<p class="lede t-body">The six machines and what their four machine knobs do, from the machine table and tips in Elektron’s Model:Cycles manual (OS 1.13).</p>
   <div class="ref">${I.machines.map((m) => `<div class="card"><div class="tag">${esc(m.tag)}</div><h3>${m.n}</h3><p>${esc(m.p)}</p><dl>${Object.entries(m.m).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl></div>`).join("")}</div>
   <div class="card" style="margin-top:12px"><h3>Every machine also has</h3><dl><dt>PITCH</dt><dd>-24 to +24 semitones</dd><dt>DECAY</dt><dd>0–127, length of the sound</dd><dt>VOL+DIST</dt><dd>60 is clean; above adds level and distortion</dd><dt>PUNCH</dt><dd>compression-like accent</dd><dt>GATE</dt><dd>hold notes for their LEN</dd><dt>LFO</dt><dd>one per track, 7 waves: triangle, sine, square, saw, envelope, ramp, random</dd></dl></div>`;
 }
 export function shortcuts(I) {
-  return `<p class="intro">The combinations you'll use most, from the manual's key-shortcut list.</p><div class="card tblwrap"><table class="sc"><tbody>${I.shortcuts.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${keyify(I, b, "")}</td></tr>`).join("")}</tbody></table></div>`;
+  return `<p class="lede t-body">The combinations you'll use most, from the manual's key-shortcut list.</p><div class="card tblwrap"><table class="sc"><tbody>${I.shortcuts.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${keyify(I, b, "")}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
 /* instrument home: the whole course as unit cards */
