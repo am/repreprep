@@ -82,7 +82,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       <header class="top">
         <div class="brand"><h1><Logo /></h1></div>
         {/* on phones every option below folds into a menu opened by a knob; on wider screens the menu is just the rest of the header */}
-        <button class="knob" type="button" aria-expanded="false" aria-controls="hmenu" aria-label="Menu" data-menu><svg viewBox="0 0 44 44" aria-hidden="true"><g transform="rotate(45 22 22)"><circle class="kn-cap" cx="22" cy="22" r="17"/><line class="kn-mark" x1="22" y1="23" x2="22" y2="5.5"/></g></svg></button>
+        <button class="knob" type="button" aria-expanded="false" aria-controls="hmenu" aria-label="Menu" data-menu><svg viewBox="0 0 44 44" aria-hidden="true"><g transform="rotate(45 22 22)"><circle class="kn-cap" cx="22" cy="22" r="13.6"/><line class="kn-mark" x1="22" y1="22" x2="22" y2="8.4"/></g></svg></button>
         <div class="hmenu" id="hmenu">
           <nav class="instr" aria-label="Instrument">
             {INSTRUMENTS.map((x) => x.ready
