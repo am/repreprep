@@ -3,6 +3,7 @@ import "../styles/app.css";
 import { ClientRouter } from "astro:transitions";
 import { INSTRUMENTS } from "../course/index.js";
 import Logo from "../components/Logo.astro";
+import ThemeSwitch from "../components/ThemeSwitch.astro";
 
 interface Props { title?: string; description?: string; inst?: any; tab?: string; home?: boolean }
 const { title, description = "Hands-on lessons that teach music production on your own instruments, one short practice at a time.", inst, tab, home } = Astro.props;
@@ -37,6 +38,26 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       } catch (e) {}
     };
     document.addEventListener("astro:after-swap", window.__rrrLayout);
+    /* theme: auto follows the system, light and dark are saved choices; applied before the first paint */
+    (function () {
+      function get() { try { return localStorage.getItem("rrr-theme") || "auto"; } catch (e) { return "auto"; } }
+      function apply() {
+        var t = get(), r = document.documentElement;
+        if (t === "light" || t === "dark") r.setAttribute("data-theme", t); else r.removeAttribute("data-theme");
+        Array.prototype.forEach.call(document.querySelectorAll("[data-theme-set]"), function (b) { b.setAttribute("aria-checked", String(b.getAttribute("data-theme-set") === t)); });
+      }
+      apply();
+      document.addEventListener("DOMContentLoaded", apply);
+      document.addEventListener("astro:after-swap", apply);
+      matchMedia("(prefers-color-scheme: light)").addEventListener("change", function () { if (get() === "auto") window.dispatchEvent(new Event("rrr-theme")); });
+      document.addEventListener("click", function (e) {
+        var b = e.target.closest && e.target.closest("[data-theme-set]");
+        if (!b) return;
+        try { localStorage.setItem("rrr-theme", b.getAttribute("data-theme-set")); } catch (e) {}
+        apply();
+        window.dispatchEvent(new Event("rrr-theme"));
+      });
+    })();
   </script>
   <ClientRouter fallback="swap" />
 </head>
@@ -44,7 +65,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <div class="wrap">
     {home ? (
       /* the home page is the logo and the instrument picker, so its header keeps only the account link */
-      <header class="top bare"><a class="acct" href="/account" id="acct">Sign in</a></header>
+      <header class="top bare"><ThemeSwitch /><a class="acct" href="/account" id="acct">Sign in</a></header>
     ) : (
       <header class="top">
         <div class="brand"><h1><Logo /></h1></div>
@@ -54,6 +75,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
             : <span class="off">{x.name}<small>next</small></span>)}
         </nav>
         {inst?.ready && <div class="meter"><span id="meterTxt">0 / 0 steps</span><span class="bar"><i id="meterBar"></i></span></div>}
+        <ThemeSwitch />
         <a class="acct" href="/account" id="acct">Sign in</a>
       </header>
     )}

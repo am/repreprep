@@ -253,6 +253,13 @@ const layers = [
       if (down) tear(m); else later(Math.random() * 40, function () { accent(el); });
     }
     var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    // a new theme means a new background: switch to a palette made for it
+    if (!window.__rrrLogoTheme) {
+      window.__rrrLogoTheme = true;
+      window.addEventListener("rrr-theme", function () {
+        Array.prototype.forEach.call(document.querySelectorAll(".logo[data-on]"), recolor);
+      });
+    }
     Array.prototype.forEach.call(document.querySelectorAll(".logo:not([data-on])"), function (el) {
       el.dataset.on = "1";
       remix(el);

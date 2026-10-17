@@ -2,7 +2,7 @@
    the browser script (src/client/app.js) then fills in ticks, progress dots and notes. */
 import { esc } from "./shared/html.js";
 import { linkSongs } from "./shared/songs.js";
-import { KIND, keyify, fmtStep, quiz, withHl } from "./shared/text.js";
+import { KIND, keyify, fmtStep, hearNote, quiz, withHl } from "./shared/text.js";
 import { wkLabel, stepPath, nextLesson, renderFig } from "./index.js";
 
 const prog = (l) => `<span class="s" data-prog="${l.id}"></span>`;
@@ -33,11 +33,11 @@ function lessonMenu(I, L) {
 
 function introCard(I, L) {
   const ideas = (L.concepts || []).map((c) => `<li>${esc(c.h)}</li>`).join("");
-  return `<div class="intro"><div class="eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}about ${L.minutes} min</div>
-    <h3>${esc(L.title)}</h3>
-    <p class="ptxt"><b>You will learn to</b> ${esc(L.goal.charAt(0).toLowerCase() + L.goal.slice(1))}</p>
-    ${ideas ? `<div class="ideas"><div class="lbl">Ideas in this lesson</div><ul>${ideas}</ul></div>` : ""}
-    ${L.listen ? `<p class="lis"><span class="lbl">Listen first</span> ${linkSongs(esc(L.listen))}</p>` : ""}</div>`;
+  return `<div class="intro"><div class="t-eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}about ${L.minutes} min</div>
+    <h3 class="t-title">${esc(L.title)}</h3>
+    <p class="ptxt t-body"><b>You will learn to</b> ${esc(L.goal.charAt(0).toLowerCase() + L.goal.slice(1))}</p>
+    ${ideas ? `<div class="ideas t-body"><div class="t-label">Ideas in this lesson</div><ul>${ideas}</ul></div>` : ""}
+    ${L.listen ? `<p class="t-note"><span class="t-label">Listen first</span>${linkSongs(esc(L.listen))}</p>` : ""}</div>`;
 }
 
 /* the step player: drawing or panel on the left, the step on the right */
@@ -55,7 +55,7 @@ export function player(I, L, act) {
     <div class="phead"><details class="picker"><summary class="ttl" title="Jump to another lesson">${wkLabel(L)} · ${esc(L.title)}<span class="caret" aria-hidden="true"></span></summary>${lessonMenu(I, L)}</details><div class="dots" style="--p:${L.steps.length > 1 ? act / (L.steps.length - 1) : 0}">${dots}</div><button class="maxbtn" data-max>Maximize</button></div>
     <div class="pbody" id="pbody"><div class="pstage">${stage}</div><div class="gutter" id="gutter" role="separator" aria-orientation="vertical" aria-label="Resize the step panel" tabindex="0" title="Drag to resize · double-click to reset"></div>
       <div class="pstep" id="now"><div class="h"><span class="kind k-${k}">${KIND[k]}</span><span data-donemark hidden> · done</span></div>
-        ${st.intro ? introCard(I, L) : `<div class="ptxt">${fmtStep(I, st)}</div>`}${st.q ? quiz(I, st) : st.a ? `<details class="ans"><summary>Show the answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? `<p class="hear ${k === "check" ? "rule" : ""}">${keyify(I, st.hear, "")}</p>` : ""}
+        ${st.intro ? introCard(I, L) : `<div class="ptxt">${fmtStep(I, st)}</div>`}${st.q ? quiz(I, st) : st.a ? `<details class="ans"><summary>Show the answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? hearNote(I, st) : ""}
         <div class="ctl" id="ctlinfo" hidden></div>
         <div class="grow"></div>
         <div class="legend"${k !== "play" ? " hidden" : ""}><span><i style="background:var(--hl-press)"></i>press</span><span><i style="background:var(--hl-hold)"></i>hold down</span><span><i style="background:var(--hl-turn)"></i>turn</span><span>click a control to learn it · ← → keys move between steps</span></div>
@@ -66,10 +66,10 @@ export function player(I, L, act) {
 
 /* the lesson text below the player: ideas, every step as a list, challenge, notes */
 export function lessonText(I, L, act) {
-  const steps = L.steps.map((st, i) => `<li class="step ${i === act ? "active" : ""}" data-step="${i}" data-href="${stepPath(L, i)}"><button class="ck" data-check="${i}" aria-label="Mark step ${i + 1} done" aria-pressed="false"></button><div><div class="num"><a href="${stepPath(L, i)}">${KIND[st.k || "play"]}</a></div><div class="txt">${fmtStep(I, st)}</div>${st.a ? `<details class="ans"><summary>Answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? `<p class="hear ${st.k === "check" ? "rule" : ""}">${keyify(I, st.hear, "")}</p>` : ""}</div></li>`).join("");
+  const steps = L.steps.map((st, i) => `<li class="step ${i === act ? "active" : ""}" data-step="${i}" data-href="${stepPath(L, i)}"><button class="ck" data-check="${i}" aria-label="Mark step ${i + 1} done" aria-pressed="false"></button><div><div class="num"><a href="${stepPath(L, i)}">${KIND[st.k || "play"]}</a></div><div class="txt">${fmtStep(I, st)}</div>${st.a ? `<details class="ans"><summary>Answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? hearNote(I, st) : ""}</div></li>`).join("");
   const nx = nextLesson(I, L);
   return `<article class="lesson"><div class="eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}${L.minutes} min</div><h2>${esc(L.title)}</h2><p class="goal">${esc(L.goal)}</p>
-    <div class="listen"><b>Listen first.</b> ${linkSongs(esc(L.listen))}</div>
+    <p class="t-note listen"><span class="t-label">Listen first</span>${linkSongs(esc(L.listen))}</p>
     ${L.concepts.map((c) => `<section class="concept"><h3>${esc(c.h)}</h3>${c.p.map((p) => `<p>${keyify(I, p, "")}</p>`).join("")}</section>`).join("")}
     <ol class="steps">${steps}</ol>
     <section class="challenge"><h3>This lesson's challenge</h3><p>${keyify(I, L.challenge, "")}</p></section>
