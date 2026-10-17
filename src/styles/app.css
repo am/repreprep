@@ -401,10 +401,8 @@ html:has(.home){scroll-snap-type:y mandatory}
 .scene{scroll-snap-align:start;scroll-snap-stop:always}
 .wrap:has(.home) .foot{scroll-snap-align:end}
 .scene .mark .logo{transform-origin:50% 55%}
-/* dancing logos: hard cuts (glitchy), except drift, which glides */
-.logo[data-dance] span{transition:none}
-.logo[data-dance="drift"] span{transition:transform .45s cubic-bezier(.3,.7,.2,1)}
-.logo[data-dance="snap"] span,.logo[data-dance="snappulse"] span{transition:transform .14s cubic-bezier(.2,.9,.3,1)}
+/* dancing logos: quick snaps */
+.logo[data-dance] span{transition:transform .14s cubic-bezier(.2,.9,.3,1)}
 .scene .mark{font-size:clamp(6rem,30vw,26rem);line-height:.82;margin:0}
 .scene h2{font-size:clamp(2.2rem,6.4vw,5.6rem);line-height:1.02;letter-spacing:-.025em;max-width:13ch}
 .scene p{margin:.9em 0 0;font-size:clamp(1.1rem,1.8vw,1.45rem);color:var(--muted);max-width:30ch}

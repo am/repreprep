@@ -3,10 +3,9 @@
 import Base from "../../layouts/Base.astro";
 import Logo from "../../components/Logo.astro";
 const variants = [
-  ["drift", "D · Drift", "The one you liked, as before: one layer glides to a new spot each beat. On the bar another layer jolts and the colors swap."],
-  ["snap", "E · Snappy drift", "Same as D, but the glide is quick (about a seventh of a second), so it lands on the beat."],
-  ["snappulse", "F · Snappy drift + pulse", "E, and the layer that moves also dips to half opacity for a moment."],
-  ["pulse", "G · Soft pulse", "No moves. One layer dips to about half opacity on each beat; on the bar a deeper dip and the colors swap."],
+  ["snappulse", "F · Snappy drift + pulse", "As before: each beat one layer snaps to a new spot and pulses. On the bar another layer jolts and the colors swap."],
+  ["split", "H · Move one, pulse another", "Each beat one layer snaps to a new spot while a different layer pulses. On the bar another layer jolts and the colors swap."],
+  ["kick", "I · Steady pulse", "The thin top layer pulses on every beat like a kick drum, deeper on the bar where the colors swap. The other two layers take turns moving."],
 ] as const;
 ---
 <Base title="Logo beats" noindex>

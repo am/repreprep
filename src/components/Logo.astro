@@ -5,7 +5,7 @@
 // burst of blinks, slices and jumps that lands on a new remix. ExtraLight is always on top, Regular in the middle.
 // With `dance` set (the home page), it moves on a 90 BPM grid instead: one layer at a time does something small
 // on each beat, and the first beat of each bar brings a color change. The variants are compared on /lab/logo.
-interface Props { dance?: "drift" | "snap" | "snappulse" | "pulse"; bpm?: number }
+interface Props { dance?: "snappulse" | "split" | "kick"; bpm?: number }
 const { dance, bpm = 90 } = Astro.props;
 const layers = [
   // starting look, from the original sketch (used until the script runs, and without JS)
@@ -118,10 +118,10 @@ const layers = [
       var s = el.children, c = [0, 1, 2].map(function (i) { return s[i].style.getPropertyValue("--c"); });
       [0, 1, 2].forEach(function (i) { s[i].style.setProperty("--c", c[(i + 2) % 3]); });
     }
-    // one layer per beat, never the same one twice in a row
-    function pick(el) {
+    // one layer per beat, never the same one twice in a row (and never `not`, when given)
+    function pick(el, not) {
       var i;
-      do { i = Math.floor(Math.random() * 3); } while (i === el._last);
+      do { i = Math.floor(Math.random() * 3); } while (i === el._last || el.children[i] === not);
       el._last = i;
       return el.children[i];
     }
@@ -130,8 +130,8 @@ const layers = [
       s.animate([{ opacity: 1 }, { opacity: depth || 0.5, offset: 0.3 }, { opacity: 1 }], { duration: 220, easing: "ease-out" });
     }
     // a layer moves to a new spot (glide speed set in CSS per dance); on the bar another layer jolts and the colors swap
-    function drift(el, down) {
-      var s = pick(el);
+    function drift(el, down, s) {
+      s = s || pick(el);
       s.style.setProperty("--x", slot());
       s.style.setProperty("--y", slot());
       if (down) {
@@ -144,13 +144,19 @@ const layers = [
       return s;
     }
     var DANCES = {
-      drift: drift,
-      snap: drift,
-      // snap, and the layer that moves also pulses softly
+      // a layer snaps to a new spot and that same layer pulses
       snappulse: function (el, down) { pulse(drift(el, down)); },
-      // no moves: one layer pulses softly each beat; on the bar a deeper pulse and the colors swap
-      pulse: function (el, down) {
-        pulse(pick(el), down ? 0.3 : 0.55);
+      // one layer snaps to a new spot while a different layer pulses
+      split: function (el, down) {
+        var p = pick(el);
+        drift(el, down, pick(el, p));
+        pulse(p);
+      },
+      // the ExtraLight layer (on top) pulses on every beat like a kick; the other two take turns moving
+      kick: function (el, down) {
+        var top = el.children[2], s = el.children[el._mover = el._mover === 0 ? 1 : 0];
+        drift(el, false, s);
+        pulse(top, down ? 0.3 : 0.55);
         if (down) rotate(el);
       },
     };
