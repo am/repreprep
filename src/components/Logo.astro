@@ -1,7 +1,7 @@
 ---
 // The Rep Rep Rep mark: three REPs (Manrope ExtraBold, Regular, ExtraLight) stacked on top of each other.
 // Every page view and every click picks a new set of three electric colors (far from the last set, each clearly
-// apart from the others and from the page background) and new offsets. Every few seconds it glitches: a short
+// apart from the others and from the page background) and new offsets. Every 10 to 40 seconds it glitches: a short
 // burst of blinks, slices and jumps that lands on a new remix. ExtraLight is always on top, Regular in the middle.
 const layers = [
   // starting look, from the original sketch (used until the script runs, and without JS)
@@ -105,7 +105,7 @@ const layers = [
           if (!el.isConnected) return; // page swapped; the new page starts its own loop
           if (!document.hidden) glitch(el);
           next();
-        }, rand(2500, 7000));
+        }, rand(10000, 40000));
       })();
     }
     el.addEventListener("click", function (e) {
