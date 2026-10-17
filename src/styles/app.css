@@ -298,8 +298,9 @@ html.focus body .pbody{grid-template-columns:minmax(0,1fr) 14px var(--sw,clamp(3
 .lede{max-width:70ch;margin:0 0 var(--s5)}
 /* footer: its own band at the bottom, one column per topic */
 .foot{margin-top:var(--s8);border-top:1px solid var(--line);background:var(--surface);font-size:var(--fs-sm);color:var(--muted)}
-.foot-in{max-width:1380px;margin:0 auto;padding:var(--s7) var(--s5) var(--s8);display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:var(--s6) var(--s7);align-items:start}
-.foot-in section:first-child{max-width:28ch}
+.foot-in{max-width:1380px;margin:0 auto;padding:var(--s7) var(--s5) var(--s8);display:flex;flex-wrap:wrap;justify-content:space-between;gap:var(--s6) var(--s7);align-items:start}
+.foot-in section:first-child{max-width:36ch}
+.foot .foot-note{margin-top:var(--s3);font-size:var(--fs-s);color:var(--faint)}
 .foot p{margin:0}
 .foot ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s1)}
 .foot a{color:var(--fg);text-decoration-color:var(--faint);text-underline-offset:3px}
