@@ -390,20 +390,32 @@ section.box h3{margin-bottom:6px}
 .ucard .wk:hover{background:var(--surface-2)}
 .top+#view{margin-top:24px}
 
-/* home: one screen, the logo as the hero, then the instrument picker (the page's only links into the course) */
-.top.bare{border-bottom:0;justify-content:flex-end;padding-bottom:0}
+/* home: one idea per screen, each centered in the viewport, revealed as you scroll.
+   The instrument picker at the end is the page's only set of links into the course. */
+.top.bare{position:absolute;top:18px;right:20px;border:0;padding:0}
 .top.bare+#view{margin-top:0}
-.hero{min-height:calc(100svh - 150px);display:flex;flex-direction:column;justify-content:center;padding-block:4vh 2vh}
-.hero .mark{font-size:clamp(5.5rem,28vw,23rem);line-height:.82;margin:0 0 .12em -.04em}
-.hero h2{font-size:clamp(1.9rem,5.4vw,4.4rem);line-height:1.02;letter-spacing:-.02em;max-width:14ch}
-.hero p{margin:.7em 0 0;font-size:clamp(1.05rem,1.6vw,1.3rem);color:var(--muted);max-width:42ch}
-.gear{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(28px,5vh,52px)}
-.gear a,.gear span{display:flex;flex-direction:column;gap:2px;padding:14px 22px;border:1px solid var(--line);border-radius:14px;text-decoration:none;color:inherit}
-.gear b{font-family:var(--display);font-weight:700;font-size:1.15rem}
+.scene{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12vh 0;position:relative}
+.scene:first-child{padding-top:0}
+.scene .mark{font-size:clamp(6rem,30vw,26rem);line-height:.82;margin:0}
+.scene h2{font-size:clamp(2.2rem,6.4vw,5.6rem);line-height:1.02;letter-spacing:-.025em;max-width:13ch}
+.scene p{margin:.9em 0 0;font-size:clamp(1.1rem,1.8vw,1.45rem);color:var(--muted);max-width:30ch}
+/* scroll hint: a thin line with a dot sliding down it */
+.cue{position:absolute;bottom:5vh;left:50%;width:1px;height:56px;margin-left:-.5px;background:var(--line);overflow:hidden;transition:opacity .4s ease}
+.cue::after{content:"";position:absolute;left:-2px;top:-6px;width:5px;height:5px;border-radius:50%;background:var(--fg);animation:cue 2.2s cubic-bezier(.6,0,.4,1) infinite}
+@keyframes cue{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(62px);opacity:0}}
+.scrolled .cue{opacity:0}
+/* reveal: only once the script has run, so the page reads fine without it */
+.home.anim .scene>*:not(.cue){opacity:0;transform:translateY(28px);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
+.home.anim .scene>*:nth-child(2){transition-delay:.12s}
+.home.anim .scene>*:nth-child(3){transition-delay:.24s}
+.home.anim .scene.in>*:not(.cue){opacity:1;transform:none}
+.gear{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;margin-top:clamp(32px,6vh,60px)}
+.gear a,.gear span{display:flex;flex-direction:column;gap:2px;padding:16px 26px;border:1px solid var(--line);border-radius:16px;text-decoration:none;color:inherit}
+.gear b{font-family:var(--display);font-weight:700;font-size:1.2rem}
 .gear small{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:var(--muted)}
 .gear a{background:var(--fg);color:var(--bg);border-color:var(--fg);transition:transform .15s ease}
 .gear a small{color:inherit;opacity:.7}
 .gear a:hover{transform:translateY(-2px)}
 .gear .soon{opacity:.5}
-@media (max-width:560px){.hero .mark{font-size:38vw}.gear a{flex:1 1 100%}.gear span{flex:1 1 40%}}
-@media (prefers-reduced-motion:reduce){.gear a{transition:none}}
+@media (max-width:560px){.scene .mark{font-size:40vw}.gear{width:100%}.gear a{flex:1 1 100%}.gear span{flex:1 1 40%}}
+@media (prefers-reduced-motion:reduce){.gear a{transition:none}.cue::after{animation:none;top:24px;opacity:1}.home.anim .scene>*:not(.cue){opacity:1;transform:none;transition:none}}

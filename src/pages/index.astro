@@ -8,14 +8,41 @@ const count = (I: any) => {
 };
 ---
 <Base home>
-  <section class="hero">
-    <h1 class="mark"><Logo /></h1>
-    <h2>Learn music by playing it.</h2>
-    <p>Short lessons on the gear you own. One idea at a time, rep after rep.</p>
-    <nav class="gear" aria-label="Pick your instrument">
-      {INSTRUMENTS.map((I) => I.ready
-        ? <a class="go" href={`/${I.slug}`}><b>{I.name}</b><small>{count(I)}</small></a>
-        : <span class="soon"><b>{I.name}</b><small>coming next</small></span>)}
-    </nav>
-  </section>
+  <div class="home" id="home">
+    <section class="scene">
+      <h1 class="mark"><Logo /></h1>
+      <span class="cue" aria-hidden="true"></span>
+    </section>
+    <section class="scene">
+      <h2>Learn music by playing it.</h2>
+    </section>
+    <section class="scene">
+      <h2>One idea at a time.</h2>
+      <p>Short lessons on the gear you own, practised step by step.</p>
+    </section>
+    <section class="scene">
+      <h2>Rep after rep.</h2>
+      <nav class="gear" aria-label="Pick your instrument">
+        {INSTRUMENTS.map((I) => I.ready
+          ? <a class="go" href={`/${I.slug}`}><b>{I.name}</b><small>{count(I)}</small></a>
+          : <span class="soon"><b>{I.name}</b><small>coming next</small></span>)}
+      </nav>
+    </section>
+  </div>
 </Base>
+<script is:inline data-astro-rerun>
+  (function () {
+    var home = document.getElementById("home");
+    if (!home || !("IntersectionObserver" in window)) return;
+    home.classList.add("anim");
+    var io = new IntersectionObserver(function (es) {
+      es.forEach(function (e) { if (e.isIntersecting) { e.target.classList.add("in"); io.unobserve(e.target); } });
+    }, { threshold: 0.35 });
+    home.querySelectorAll(".scene").forEach(function (s) { io.observe(s); });
+    function onScroll() {
+      if (!home.isConnected) return removeEventListener("scroll", onScroll);
+      home.classList.toggle("scrolled", scrollY > 40);
+    }
+    addEventListener("scroll", onScroll, { passive: true });
+  })();
+</script>
