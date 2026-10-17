@@ -3,14 +3,14 @@
 import Base from "../../layouts/Base.astro";
 import Logo from "../../components/Logo.astro";
 const variants = [
-  ["shift", "A · Shift", "Each beat one layer snaps to a new spot. On the bar it also takes a new color."],
-  ["blink", "B · Blink", "Each beat one layer blinks off for a moment. On the bar it blinks twice and the colors swap between layers."],
-  ["slice", "C · Slice", "Each beat a thin band of one layer slides sideways and snaps back. On the bar the colors swap between layers."],
-  ["drift", "D · Drift", "Each beat one layer glides to a new spot. On the bar another layer jolts and the colors swap between layers."],
+  ["drift", "D · Drift", "The one you liked, as before: one layer glides to a new spot each beat. On the bar another layer jolts and the colors swap."],
+  ["snap", "E · Snappy drift", "Same as D, but the glide is quick (about a seventh of a second), so it lands on the beat."],
+  ["snappulse", "F · Snappy drift + pulse", "E, and the layer that moves also dips to half opacity for a moment."],
+  ["pulse", "G · Soft pulse", "No moves. One layer dips to about half opacity on each beat; on the bar a deeper dip and the colors swap."],
 ] as const;
 ---
 <Base title="Logo beats" noindex>
-  <div class="page"><h2>Logo beats</h2><p class="goal">Four ways for the home logo to move at 90 BPM. Click a logo to remix its colors.</p></div>
+  <div class="page"><h2>Logo beats</h2><p class="goal">A few ways for the home logo to move at 90 BPM. Click a logo to remix its colors.</p></div>
   <div class="lab">
     {variants.map(([d, name, text]) => (
       <section>

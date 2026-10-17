@@ -5,7 +5,7 @@
 // burst of blinks, slices and jumps that lands on a new remix. ExtraLight is always on top, Regular in the middle.
 // With `dance` set (the home page), it moves on a 90 BPM grid instead: one layer at a time does something small
 // on each beat, and the first beat of each bar brings a color change. The variants are compared on /lab/logo.
-interface Props { dance?: "shift" | "blink" | "slice" | "drift"; bpm?: number }
+interface Props { dance?: "drift" | "snap" | "snappulse" | "pulse"; bpm?: number }
 const { dance, bpm = 90 } = Astro.props;
 const layers = [
   // starting look, from the original sketch (used until the script runs, and without JS)
@@ -125,44 +125,33 @@ const layers = [
       el._last = i;
       return el.children[i];
     }
+    // a short, soft dip to about half opacity
+    function pulse(s, depth) {
+      s.animate([{ opacity: 1 }, { opacity: depth || 0.5, offset: 0.3 }, { opacity: 1 }], { duration: 220, easing: "ease-out" });
+    }
+    // a layer moves to a new spot (glide speed set in CSS per dance); on the bar another layer jolts and the colors swap
+    function drift(el, down) {
+      var s = pick(el);
+      s.style.setProperty("--x", slot());
+      s.style.setProperty("--y", slot());
+      if (down) {
+        var o = pick(el), x = o.style.getPropertyValue("--x");
+        o.style.transition = "none";
+        o.style.setProperty("--x", (parseFloat(x) + 0.08).toFixed(3) + "em");
+        later(60, function () { o.style.setProperty("--x", x); o.style.transition = ""; });
+        rotate(el);
+      }
+      return s;
+    }
     var DANCES = {
-      // a layer snaps to a new offset; on the bar it also takes a fresh color
-      shift: function (el, down) {
-        var s = pick(el), i = Array.prototype.indexOf.call(el.children, s);
-        s.style.setProperty("--x", slot());
-        s.style.setProperty("--y", slot());
-        if (down) s.style.setProperty("--c", palette()[i]);
-      },
-      // a layer blinks off for a moment; on the bar it blinks twice and the colors swap between layers
-      blink: function (el, down) {
-        var s = pick(el);
-        s.style.opacity = "0";
-        later(70, function () { s.style.opacity = ""; });
-        if (down) {
-          later(140, function () { s.style.opacity = "0"; rotate(el); });
-          later(210, function () { s.style.opacity = ""; });
-        }
-      },
-      // a thin band of one layer slides sideways and snaps back; on the bar the colors swap between layers
-      slice: function (el, down) {
-        var s = pick(el), x = s.style.getPropertyValue("--x"), top = rand(5, 75);
-        s.style.clipPath = "inset(" + top.toFixed(0) + "% 0 " + (100 - top - rand(10, 25)).toFixed(0) + "% 0)";
-        s.style.setProperty("--x", (parseFloat(x) + (Math.random() < 0.5 ? -1 : 1) * rand(0.04, 0.1)).toFixed(3) + "em");
-        later(down ? 140 : 80, function () { s.style.clipPath = ""; s.style.setProperty("--x", x); });
+      drift: drift,
+      snap: drift,
+      // snap, and the layer that moves also pulses softly
+      snappulse: function (el, down) { pulse(drift(el, down)); },
+      // no moves: one layer pulses softly each beat; on the bar a deeper pulse and the colors swap
+      pulse: function (el, down) {
+        pulse(pick(el), down ? 0.3 : 0.55);
         if (down) rotate(el);
-      },
-      // a layer glides to a new spot; on the bar another layer jolts for one frame and the colors swap
-      drift: function (el, down) {
-        var s = pick(el);
-        s.style.setProperty("--x", slot());
-        s.style.setProperty("--y", slot());
-        if (down) {
-          var o = pick(el), x = o.style.getPropertyValue("--x");
-          o.style.transition = "none";
-          o.style.setProperty("--x", (parseFloat(x) + 0.08).toFixed(3) + "em");
-          later(60, function () { o.style.setProperty("--x", x); o.style.transition = ""; });
-          rotate(el);
-        }
       },
     };
     var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
