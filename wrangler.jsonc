@@ -5,7 +5,10 @@
   "compatibility_flags": ["nodejs_compat"],
   // Progress and accounts. `wrangler deploy` creates the database on first deploy;
   // the tables are created by the app itself the first time it runs.
-  "d1_databases": [{ "binding": "DB", "database_name": "repreprep" }],
+  "d1_databases": [{ "binding": "DB", "database_name": "repreprep", "database_id": "1cc38e06-08ce-4bdd-9095-b9352b9bd580" }],
+  // Contact-form messages are emailed through Cloudflare Email Routing (enabled on repreprep.studio).
+  // The recipient is the CONTACT_TO secret and must be a verified destination address.
+  "send_email": [{ "name": "MAIL" }],
   // The site's address. Deploys attach both and Cloudflare creates their DNS records and certificates.
   // www → repreprep.studio is a Redirect Rule in the zone (static pages are served before the Worker runs).
   // With routes set, workers.dev and preview URLs would default to off; PR previews need them.
