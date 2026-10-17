@@ -14,18 +14,18 @@ import Base from "../layouts/Base.astro";
       <p>Signed in as <b data-who></b>. Your progress is saved to your account and follows you to any device where you sign in.</p>
       <div class="row"><button class="btn" data-signout>Sign out</button><a class="btn" href="/api/export" download data-astro-reload>Download my account data</a></div>
     </div>
-    <section class="box">
-      <h3>Back up or move your progress</h3>
-      <p class="msg">Download a copy of your progress, or load one. A <code>progress.json</code> from the old local version of the course works too.</p>
+    <section class="card">
+      <h3 class="t-title t-card">Back up or move your progress</h3>
+      <p class="t-body">Download a copy of your progress, or load one. A <code>progress.json</code> from the old local version of the course works too.</p>
       <div class="row">
         <button class="btn" data-export>Download progress</button>
         <label class="btn">Load a progress file<input type="file" accept="application/json,.json" data-import hidden></label>
         <span class="msg" data-import-msg></span>
       </div>
     </section>
-    <section class="box" data-signed-in hidden>
-      <h3>Delete your account</h3>
-      <p class="msg">Removes your account and everything saved with it from this site. Your progress stays in this browser. See <a href="/privacy">Privacy</a> for what the site keeps.</p>
+    <section class="card" data-signed-in hidden>
+      <h3 class="t-title t-card">Delete your account</h3>
+      <p class="t-body">Removes your account and everything saved with it from this site. Your progress stays in this browser. See <a href="/privacy">Privacy</a> for what the site keeps.</p>
       <div class="row"><button class="btn" data-delete>Delete my account</button></div>
     </section>
   </div>

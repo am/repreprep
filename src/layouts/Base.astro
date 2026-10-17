@@ -85,8 +85,25 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       </nav>
     )}
     <main id="view"><slot /></main>
-    <p class="foot">{inst?.foot} <span class="sync" id="sync"></span> <a href="/privacy">Privacy</a></p>
   </div>
+  <footer class="foot">
+    <div class="foot-in">
+      <section>
+        <div class="foot-brand">Rep Rep Rep</div>
+        <p>Learn music by playing it, one idea at a time, on the gear you own.</p>
+        <p class="foot-note"><span id="sync">Progress saved in this browser.</span></p>
+      </section>
+      <section>
+        <h2 class="t-label">About</h2>
+        <ul>
+          <li><a href="/privacy">Privacy</a></li>
+          <li><a href="https://github.com/am/repreprep">Source code on GitHub</a></li>
+          <li><a href="https://github.com/am/repreprep/blob/main/CONTRIBUTING.md">Contribute a lesson or fix</a></li>
+          <li>Code MIT, lessons CC BY-NC-SA 4.0</li>
+        </ul>
+      </section>
+    </div>
+  </footer>
   <script is:inline>window.__rrrLayout();</script>
   <script>import "../client/app.js";</script>
 </body>
