@@ -1,19 +1,26 @@
 ---
 import Base from "../layouts/Base.astro";
+import { SIGN_IN } from "../lib/features.js";
 ---
-<Base title="Your account" description="Sign in to keep your progress on every device.">
+<Base title={SIGN_IN ? "Your account" : "Your progress"} description={SIGN_IN ? "Sign in to keep your progress on every device." : "Back up your progress or load a saved copy."}>
   <div class="page" id="account">
     <h2>Your progress</h2>
-    <p class="msg bad" data-acct-error hidden>Sign-in didn't work. Please try again.</p>
-    <div data-signed-out hidden>
-      <p>Your ticks, finished lessons and notes are saved in this browser. Sign in to keep them on every device. When you sign in, what you did here is added to your account. <a href="/privacy">What the site keeps</a>.</p>
-      <div class="signin" data-providers></div>
-      <p class="msg" data-no-providers hidden>Sign-in isn't set up on this site yet.</p>
-    </div>
-    <div data-signed-in hidden>
-      <p>Signed in as <b data-who></b>. Your progress is saved to your account and follows you to any device where you sign in.</p>
-      <div class="row"><button class="btn" data-signout>Sign out</button><a class="btn" href="/api/export" download data-astro-reload>Download my account data</a></div>
-    </div>
+    {SIGN_IN ? (
+      <Fragment>
+        <p class="msg bad" data-acct-error hidden>Sign-in didn't work. Please try again.</p>
+        <div data-signed-out hidden>
+          <p>Your ticks, finished lessons and notes are saved in this browser. Sign in to keep them on every device. When you sign in, what you did here is added to your account. <a href="/privacy">What the site keeps</a>.</p>
+          <div class="signin" data-providers></div>
+          <p class="msg" data-no-providers hidden>Sign-in isn't set up on this site yet.</p>
+        </div>
+        <div data-signed-in hidden>
+          <p>Signed in as <b data-who></b>. Your progress is saved to your account and follows you to any device where you sign in.</p>
+          <div class="row"><button class="btn" data-signout>Sign out</button><a class="btn" href="/api/export" download data-astro-reload>Download my account data</a></div>
+        </div>
+      </Fragment>
+    ) : (
+      <p>Your ticks, finished lessons and notes are saved in this browser. <a href="/privacy">What the site keeps</a>.</p>
+    )}
     <section class="box">
       <h3>Back up or move your progress</h3>
       <p class="msg">Download a copy of your progress, or load one. A <code>progress.json</code> from the old local version of the course works too.</p>
@@ -23,10 +30,17 @@ import Base from "../layouts/Base.astro";
         <span class="msg" data-import-msg></span>
       </div>
     </section>
-    <section class="box" data-signed-in hidden>
-      <h3>Delete your account</h3>
-      <p class="msg">Removes your account and everything saved with it from this site. Your progress stays in this browser. See <a href="/privacy">Privacy</a> for what the site keeps.</p>
-      <div class="row"><button class="btn" data-delete>Delete my account</button></div>
+    <section class="box">
+      <h3>Delete your progress</h3>
+      <p class="msg">Removes your ticks, finished lessons and notes{SIGN_IN ? " from this browser and, if you're signed in, from your account" : " from this browser"}. This can't be undone, so download a copy first if you might want it back.</p>
+      <div class="row"><button class="btn danger" data-clear>Delete my progress</button><span class="msg" data-clear-msg></span></div>
     </section>
+    {SIGN_IN && (
+      <section class="box" data-signed-in hidden>
+        <h3>Delete your account</h3>
+        <p class="msg">Removes your account and everything saved with it from this site. Your progress stays in this browser. See <a href="/privacy">Privacy</a> for what the site keeps.</p>
+        <div class="row"><button class="btn danger" data-delete>Delete my account</button></div>
+      </section>
+    )}
   </div>
 </Base>

@@ -6,6 +6,7 @@ import { CYCLES_CONTROLS, iconSvg } from "../course/model-cycles/controls.js";
 import { keyify } from "../course/shared/text.js";
 import { esc } from "../course/shared/html.js";
 import { gridStop, mountGrids } from "./audio.js";
+import { SIGN_IN } from "../lib/features.js";
 
 const PANELS = { cycles: { controls: CYCLES_CONTROLS, icon: iconSvg } };
 const $ = (s) => document.querySelector(s);
@@ -57,6 +58,7 @@ document.addEventListener("visibilitychange", () => { if (document.visibilitySta
 
 /* who's signed in; then merge: the newer of this browser and the account wins */
 async function loadAccount() {
+  if (!SIGN_IN) { meLoaded = true; hydrate(); return; }
   try {
     const r = await fetch("/api/me", { cache: "no-store" });
     if (r.ok) { const j = await r.json(); me = j.user; providers = j.providers || []; }
@@ -138,7 +140,7 @@ function hydrateOverview(s) {
    ACCOUNT
    ============================================================ */
 function renderAcct() {
-  const a = $("#acct"); if (!a) return;
+  const a = $("#acct"); if (!a || !SIGN_IN) return;
   a.textContent = me ? me.name || me.email || "Your account" : "Sign in";
 }
 const PROVIDER_ICON = {
@@ -146,7 +148,7 @@ const PROVIDER_ICON = {
   github: '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M12 2a10 10 0 0 0-3.2 19.5c.5.1.7-.2.7-.5v-1.7c-2.8.6-3.4-1.3-3.4-1.3-.5-1.2-1.1-1.5-1.1-1.5-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.4 1.1 2.9.8.1-.6.4-1.1.6-1.3-2.2-.3-4.6-1.1-4.6-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.8 1a9.6 9.6 0 0 1 5 0c1.9-1.3 2.8-1 2.8-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.7-4.6 5 .4.3.7.9.7 1.9V21c0 .3.2.6.7.5A10 10 0 0 0 12 2z"/></svg>',
 };
 function hydrateAccountPage() {
-  const root = $("#account"); if (!root || !meLoaded) return;
+  const root = $("#account"); if (!SIGN_IN || !root || !meLoaded) return;
   const q = new URLSearchParams(location.search);
   root.querySelector("[data-acct-error]").hidden = q.get("error") !== "signin";
   root.querySelectorAll("[data-signed-in]").forEach((el) => (el.hidden = !me));
@@ -188,6 +190,13 @@ function exportProgress() {
   const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
   const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: "repreprep-progress.json" });
   a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+}
+/* clears ticks, finished lessons and notes; layout choices stay */
+function clearProgress() {
+  if (!confirm("Delete your progress? Your ticks, finished lessons and notes will be removed. Download a copy first if you might want them back.")) return;
+  state.inst = {};
+  persist(); hydrate();
+  const msg = $("[data-clear-msg]"); if (msg) msg.textContent = "Progress deleted.";
 }
 async function importProgress(file) {
   const msg = $("[data-import-msg]");
@@ -255,6 +264,7 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("[data-signout]")) { signOut(); return; }
   if (e.target.closest("[data-delete]")) { deleteAccount(); return; }
   if (e.target.closest("[data-export]")) { exportProgress(); return; }
+  if (e.target.closest("[data-clear]")) { clearProgress(); return; }
   const ctl = e.target.closest("svg .c");
   if (ctl) {
     const guide = ctl.closest("[data-panel-guide]");
