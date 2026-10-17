@@ -2,6 +2,7 @@
 import "../styles/app.css";
 import { ClientRouter } from "astro:transitions";
 import { INSTRUMENTS } from "../course/index.js";
+import Logo from "../components/Logo.astro";
 
 interface Props { title?: string; description?: string; inst?: any; tab?: string }
 const { title, description = "Hands-on lessons that teach music production on your own instruments, one short practice at a time.", inst, tab } = Astro.props;
@@ -25,6 +26,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:ital,wdth,wght@0,62..125,400..800;1,62..125,400..800&family=IBM+Plex+Mono:wght@500;600;700&display=swap">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;800&text=REP&display=block">
   <script is:inline>
     /* apply the saved layout before the first paint: full-window player, step panel width */
     window.__rrrLayout = function () {
@@ -42,7 +44,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 <body data-inst={inst?.key} data-sizes={sizes}>
   <div class="wrap">
     <header class="top">
-      <div class="brand"><span class="dot"></span><h1><a href="/">Rep Rep Rep</a></h1></div>
+      <div class="brand"><h1><Logo /></h1></div>
       <nav class="instr" aria-label="Instrument">
         {INSTRUMENTS.map((x) => x.ready
           ? <a href={`/${x.slug}`} aria-current={x === inst ? "page" : undefined}>{x.name}</a>

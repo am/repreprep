@@ -52,7 +52,7 @@ Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. 
 1. Put this folder in a GitHub repository.
 2. Sign in: `npx wrangler login`.
 3. Deploy: `npm run deploy`. The first deploy creates the `repreprep` D1 database; the app creates its tables on first use.
-4. Add the domain: in the Cloudflare dashboard, Workers & Pages → repreprep → Settings → Domains & Routes → add `repreprep.studio`.
+4. The domain: `repreprep.studio` and `www.repreprep.studio` are custom domains in `wrangler.jsonc`, attached on every deploy (the zone must be in the same Cloudflare account). www redirects to the root through a Redirect Rule in the zone (Rules → Redirect Rules → "Redirect from WWW to root").
 5. Set up sign-in (either or both):
    - **Google**: in Google Cloud Console create an OAuth client (type "Web application") with redirect URI `https://repreprep.studio/auth/google/callback`.
    - **GitHub**: in GitHub → Settings → Developer settings → OAuth Apps, create an app with callback URL `https://repreprep.studio/auth/github/callback`.
