@@ -68,11 +68,11 @@ export function player(I, L, act) {
 export function lessonText(I, L, act) {
   const steps = L.steps.map((st, i) => `<li class="step ${i === act ? "active" : ""}" data-step="${i}" data-href="${stepPath(L, i)}"><button class="ck" data-check="${i}" aria-label="Mark step ${i + 1} done" aria-pressed="false"></button><div><div class="num"><a href="${stepPath(L, i)}">${KIND[st.k || "play"]}</a></div><div class="txt">${fmtStep(I, st)}</div>${st.a ? `<details class="ans"><summary>Answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? hearNote(I, st) : ""}</div></li>`).join("");
   const nx = nextLesson(I, L);
-  return `<article class="lesson"><div class="eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}${L.minutes} min</div><h2>${esc(L.title)}</h2><p class="goal">${esc(L.goal)}</p>
+  return `<article class="lesson stack"><header><div class="eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}${L.minutes} min</div><h2>${esc(L.title)}</h2><p class="goal">${esc(L.goal)}</p></header>
     <p class="t-note listen"><span class="t-label">Listen first</span>${linkSongs(esc(L.listen))}</p>
-    ${L.concepts.map((c) => `<section class="concept"><h3>${esc(c.h)}</h3>${c.p.map((p) => `<p>${keyify(I, p, "")}</p>`).join("")}</section>`).join("")}
+    ${L.concepts.map((c) => `<section class="card concept"><h3 class="t-title t-card">${esc(c.h)}</h3>${c.p.map((p) => `<p class="t-body">${keyify(I, p, "")}</p>`).join("")}</section>`).join("")}
     <ol class="steps">${steps}</ol>
-    <section class="challenge"><h3>This lesson's challenge</h3><p>${keyify(I, L.challenge, "")}</p></section>
+    <section class="card challenge"><div class="t-eyebrow">This lesson's challenge</div><p class="t-body">${keyify(I, L.challenge, "")}</p></section>
     <div class="notes"><label for="notes-${L.id}">Your notes for ${wkLabel(L).toLowerCase()}</label><textarea id="notes-${L.id}" data-notes="${L.id}" placeholder="Presets you liked, what was hard, ideas for next time"></textarea></div>
     <div class="finish"><button class="btn primary" data-finish="${L.id}" data-label="${L.song ? "Mark study complete" : "Mark lesson complete"}">${L.song ? "Mark study complete" : "Mark lesson complete"}</button><span class="stamp" hidden></span>${nx && !L.song ? `<a class="btn" href="${nx.path}" data-lesson="${nx.id}" data-path="${nx.path}">Next lesson →</a>` : ""}</div>
   </article>`;
@@ -81,12 +81,12 @@ export function lessonText(I, L, act) {
 export function panelGuide(I, sel) {
   const c = I.controls[sel];
   return `<p class="lede t-body">Every key and knob on the ${I.name}, with what it does. Click any control on the panel. ${keyify(I, I.panelIntro || "", "")}</p>
-  <div class="refgrid"><div class="dockcard" data-panel-guide="/${I.slug}/panel">${withHl(I.draw(), "", sel)}</div><div class="card info" id="info"><div class="tag">${esc(c.kind)}</div><h3>${esc(c.name)}</h3><p>${keyify(I, c.desc, "")}</p>${c.sub ? `<p class="sec">Second label on the panel: <b>${esc(c.sub)}</b></p>` : ""}</div></div>`;
+  <div class="refgrid"><div class="dockcard" data-panel-guide="/${I.slug}/panel">${withHl(I.draw(), "", sel)}</div><div class="card info" id="info"><div class="t-eyebrow">${esc(c.kind)}</div><h3 class="t-title t-card">${esc(c.name)}</h3><p class="t-body">${keyify(I, c.desc, "")}</p>${c.sub ? `<p class="t-body"><span class="t-label">Second label on the panel</span><b>${esc(c.sub)}</b></p>` : ""}</div></div>`;
 }
 export function machines(I) {
   return `<p class="lede t-body">The six machines and what their four machine knobs do, from the machine table and tips in Elektron’s Model:Cycles manual (OS 1.13).</p>
-  <div class="ref">${I.machines.map((m) => `<div class="card"><div class="tag">${esc(m.tag)}</div><h3>${m.n}</h3><p>${esc(m.p)}</p><dl>${Object.entries(m.m).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl></div>`).join("")}</div>
-  <div class="card" style="margin-top:12px"><h3>Every machine also has</h3><dl><dt>PITCH</dt><dd>-24 to +24 semitones</dd><dt>DECAY</dt><dd>0–127, length of the sound</dd><dt>VOL+DIST</dt><dd>60 is clean; above adds level and distortion</dd><dt>PUNCH</dt><dd>compression-like accent</dd><dt>GATE</dt><dd>hold notes for their LEN</dd><dt>LFO</dt><dd>one per track, 7 waves: triangle, sine, square, saw, envelope, ramp, random</dd></dl></div>`;
+  <div class="ref">${I.machines.map((m) => `<div class="card"><div class="t-eyebrow">${esc(m.tag)}</div><h3 class="t-title t-card">${m.n}</h3><p class="t-body">${esc(m.p)}</p><dl>${Object.entries(m.m).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl></div>`).join("")}
+  <div class="card wide"><h3 class="t-title t-card">Every machine also has</h3><dl><dt>PITCH</dt><dd>-24 to +24 semitones</dd><dt>DECAY</dt><dd>0–127, length of the sound</dd><dt>VOL+DIST</dt><dd>60 is clean; above adds level and distortion</dd><dt>PUNCH</dt><dd>compression-like accent</dd><dt>GATE</dt><dd>hold notes for their LEN</dd><dt>LFO</dt><dd>one per track, 7 waves: triangle, sine, square, saw, envelope, ramp, random</dd></dl></div></div>`;
 }
 export function shortcuts(I) {
   return `<p class="lede t-body">The combinations you'll use most, from the manual's key-shortcut list.</p><div class="card tblwrap"><table class="sc"><tbody>${I.shortcuts.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${keyify(I, b, "")}</td></tr>`).join("")}</tbody></table></div>`;
@@ -96,5 +96,5 @@ export function shortcuts(I) {
 export function courseMap(I) {
   const groups = [];
   I.lessons.forEach((l) => { const u = l.song ? "Song studies" : l.unit || ""; let g = groups.find((g) => g.u === u); if (!g) groups.push((g = { u, ls: [] })); g.ls.push(l); });
-  return groups.map((g) => `<section class="ucard"><h3>${esc(g.u)}</h3>${g.ls.map((l) => lessonLink(l, "wk", null, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</section>`).join("");
+  return groups.map((g) => `<section class="card ucard"><h3 class="t-eyebrow">${esc(g.u)}</h3>${g.ls.map((l) => lessonLink(l, "wk", null, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</section>`).join("");
 }
