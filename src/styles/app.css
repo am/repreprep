@@ -396,6 +396,10 @@ section.box h3{margin-bottom:6px}
 .top.bare+#view{margin-top:0}
 .scene{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12vh 0;position:relative}
 .scene:first-child{padding-top:0}
+/* each scene snaps into place; the footer gets its own snap point so it stays reachable */
+html:has(.home){scroll-snap-type:y mandatory}
+.scene{scroll-snap-align:start;scroll-snap-stop:always}
+.wrap:has(.home) .foot{scroll-snap-align:end}
 .scene .mark{font-size:clamp(6rem,30vw,26rem);line-height:.82;margin:0}
 .scene h2{font-size:clamp(2.2rem,6.4vw,5.6rem);line-height:1.02;letter-spacing:-.025em;max-width:13ch}
 .scene p{margin:.9em 0 0;font-size:clamp(1.1rem,1.8vw,1.45rem);color:var(--muted);max-width:30ch}
