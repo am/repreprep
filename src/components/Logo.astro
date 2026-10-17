@@ -207,19 +207,32 @@ const layers = [
     }
         // a short, soft fade toward the page background (a tint, not transparency, so it never blends with the
     // layers underneath); depth is how much color stays at the bottom of the dip
-    function pulse(s, depth) {
+    function pulse(s, depth, ms) {
       var c = getComputedStyle(s).color, bg = getComputedStyle(document.body).backgroundColor;
       var dip = "color-mix(in oklab, " + c + " " + Math.round((depth || 0.5) * 100) + "%, " + bg + ")";
-      s.animate([{ color: c }, { color: dip, offset: 0.3 }, { color: c }], { duration: 220, easing: "ease-out" });
+      s.animate([{ color: c }, { color: dip, offset: 0.3 }, { color: c }], { duration: ms || 220, easing: "ease-out" });
       if (s.parentNode.dataset.noise === "fizz") { s.classList.add("fizz"); later(240, function () { s.classList.remove("fizz"); }); }
     }
     // tear noise: the layer that moves is torn sideways for a moment, with fresh noise each time
-    function tear(s) {
-      var t = document.querySelector("#rrr-tear feTurbulence");
+    function tear(s, scale, ms) {
+      var t = document.querySelector("#rrr-tear feTurbulence"), d = document.querySelector("#rrr-tear feDisplacementMap");
       if (!t) return;
       t.setAttribute("seed", Math.floor(Math.random() * 999));
+      d.setAttribute("scale", scale || 34);
       s.style.filter = "url(#rrr-tear)";
-      later(110, function () { s.style.filter = ""; });
+      later(ms || 110, function () { s.style.filter = ""; });
+    }
+    // a tiny accent on the off-beats, picked at random so the pattern never shows: a quick blink, a flash of
+    // another layer's color, a small tear, or (now and then) nothing
+    function accent(el) {
+      var s = el.children[Math.floor(Math.random() * 3)], r = Math.random();
+      if (r < 0.3) pulse(s, 0.25, 90);
+      else if (r < 0.55) {
+        var o = el.children[(Array.prototype.indexOf.call(el.children, s) + 1 + Math.floor(Math.random() * 2)) % 3];
+        var c = getComputedStyle(o).color;
+        s.animate([{ color: c }, { color: c }], { duration: 70 });
+      }
+      else if (r < 0.85) tear(s, 9 + Math.random() * 8, 70);
     }
     // a layer moves to a new spot (glide speed set in CSS per dance); on the bar another layer jolts and the colors swap
     function drift(el, down, s) {
@@ -242,7 +255,8 @@ const layers = [
       split: function (el, down) {
         var p = pick(el), m = drift(el, down, pick(el, p));
         pulse(p);
-        if (el.dataset.noise === "tear") tear(m);
+        // with tear noise, the full tear lands on the bar and the other beats get a small random accent
+        if (el.dataset.noise === "tear") { if (down) tear(m); else later(Math.random() * 40, function () { accent(el); }); }
       },
       // the ExtraLight layer (on top) pulses on every beat like a kick; the other two take turns moving
       kick: function (el, down) {
