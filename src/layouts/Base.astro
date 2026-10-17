@@ -89,8 +89,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
               ? <a href={`/${x.slug}`} aria-current={x === inst ? "page" : undefined}>{x.name}</a>
               : <span class="off">{x.name}<small>next</small></span>)}
           </nav>
+          <hr class="hsep" />
           {/* the step meter doubles as the way to the progress page (back up, load, reset) */}
-          {inst?.ready && <a class="meter" href="/account" title="Your progress: back up, load or reset"><span id="meterTxt">0 / 0 steps</span><span class="bar"><i id="meterBar"></i></span></a>}
+          {inst?.ready && <a class="meter" href="/account" title="Your progress: back up, load or reset" id="meterTxt">0 of 0 reps</a>}
+          <hr class="hsep" />
           <ThemeSwitch />
           {(SIGN_IN || !inst?.ready) && <a class="acct" href="/account" id="acct">{SIGN_IN ? "Sign in" : "Progress"}</a>}
         </div>

@@ -74,16 +74,14 @@ h3{font-weight:var(--fw-bold)}
 .logo span:nth-child(1){z-index:1}.logo span:nth-child(2){z-index:2}.logo span:nth-child(3){z-index:3}
 .logo.glitch span{transition:none}
 @media (prefers-reduced-motion:reduce){.logo span{transition:none}}
-.instr{display:flex;gap:var(--s2);flex-wrap:wrap}
-.instr a,.instr .off{text-decoration:none;color:inherit;display:inline-block;border:1px solid var(--line);background:transparent;border-radius:var(--r-pill);padding:var(--s1) var(--s4);font-family:var(--display);font-weight:var(--fw-semibold);font-size:var(--fs-sm);cursor:pointer}
-.instr a[aria-current="page"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.instr{display:flex;gap:var(--s5);flex-wrap:wrap;align-items:baseline}
+.instr a,.instr .off{text-decoration:none;color:var(--muted);font-family:var(--display);font-weight:var(--fw-semibold);font-size:var(--fs-sm)}
+.instr a:hover{color:var(--fg)}
+.instr a[aria-current="page"]{color:var(--fg)}
 .instr .off{opacity:.55;cursor:default}
 .instr small{font-family:var(--body);font-weight:var(--fw-regular);opacity:.8;margin-left:var(--s1)}
-.meter{margin-left:auto;display:flex;align-items:center;gap:var(--s3);font-family:var(--mono);font-size:var(--fs-s);color:var(--muted);text-decoration:none;border-radius:var(--r-s)}
-.meter:hover{color:var(--fg)}
-.meter .bar{width:140px;height:6px;border-radius:var(--r-xs);background:var(--surface-2);overflow:hidden}
-.meter .bar i{display:block;height:100%;background:var(--done);width:0;transition:width .4s}
-
+.meter{margin-left:auto;font-family:var(--mono);font-size:var(--fs-s);color:var(--muted);text-decoration:none;white-space:nowrap;border:1px solid var(--line);border-radius:var(--r-m);padding:var(--s1) var(--s3)}
+.meter:hover{color:var(--fg);border-color:var(--fg)}
 .tabs{display:flex;gap:var(--s1);margin:var(--s4) 0 var(--s6);flex-wrap:wrap}
 .tabs a{text-decoration:none;display:inline-block;background:none;border:none;border-bottom:2px solid transparent;padding:var(--s2) var(--s3);font-family:var(--display);font-weight:var(--fw-semibold);letter-spacing:var(--ls-key);text-transform:uppercase;font-size:var(--fs-s);color:var(--muted);cursor:pointer}
 .tabs a[aria-current="page"]{color:var(--fg);border-color:var(--led)}
@@ -94,18 +92,19 @@ h3{font-weight:var(--fw-bold)}
 .kn-mark{stroke:var(--bg);stroke-width:2.8;stroke-linecap:butt}
 .top.open .knob svg{transform:rotate(135deg)}
 .hmenu{display:contents}
+.hsep{display:none}
 /* phones: logo and the knob; turning the knob opens every header option in a panel under it */
 /* phones and tablets: logo + nav + meter + theme don't fit in one row, so they fold into the knob menu */
-@media (max-width:1024px){
+@media (max-width:860px){
   .top{position:relative;flex-wrap:nowrap;padding-bottom:var(--s3)}
   .knob{display:block}
   .hmenu{display:none;position:absolute;z-index:40;top:calc(100% + var(--s2));left:auto;right:0;width:min(360px,100%);flex-direction:column;align-items:stretch;gap:var(--s5);padding:var(--s5);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);box-shadow:0 16px 40px var(--shadow)}
   .top.open .hmenu{display:flex}
-  .hmenu .instr{flex-direction:column;gap:var(--s2)}
-  .hmenu .instr a,.hmenu .instr .off{padding:var(--s2) var(--s4);font-size:var(--fs-md)}
+  .hmenu .instr{flex-direction:column;gap:var(--s3)}
+  .hmenu .instr a,.hmenu .instr .off{font-size:var(--fs-md)}
   .top .hmenu .meter,.top .hmenu .theme{margin:0}
-  .hmenu .meter .bar{flex:1;width:auto}
-  .hmenu .theme{align-self:flex-start}
+  .hmenu .meter,.hmenu .theme{align-self:flex-start}
+  .hsep{display:block;width:100%;margin:0;border:0;border-top:1px solid var(--line)}
   .hmenu .acct{align-self:flex-start;font-size:var(--fs-s);padding:var(--s2) var(--s4)}
 }
 @media (max-width:760px){

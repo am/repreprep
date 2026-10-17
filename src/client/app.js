@@ -94,8 +94,7 @@ function hydrate() {
     const s = ist(k), sz = sizes();
     let t = 0, d = 0;
     Object.entries(sz).forEach(([id, n]) => { t += n; for (let i = 0; i < n; i++) if (s.steps[id + ":" + i]) d++; });
-    const mt = $("#meterTxt"); if (mt) mt.textContent = `${d} / ${t} steps`;
-    const mb = $("#meterBar"); if (mb) mb.style.width = (t ? (100 * d) / t : 0) + "%";
+    const mt = $("#meterTxt"); if (mt) mt.textContent = `${d} of ${t} reps`;
     /* progress dots next to lessons, and lesson links that reopen the step you were on */
     $$("[data-prog]").forEach((el) => { const id = el.dataset.prog; const p = lessonPct(s, id, sz[id] || 0); el.className = "s " + (s.done[id] || p === 1 ? "full" : p > 0 ? "part" : ""); el.style.setProperty("--p", Math.round(p * 100) + "%"); });
     $$("a[data-lesson][data-path]").forEach((a) => { a.href = stepHref(a.dataset.path, s.active[a.dataset.lesson] || 0); });
