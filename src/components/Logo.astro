@@ -1,7 +1,7 @@
 ---
 // The Rep Rep Rep mark: three REPs (Manrope ExtraBold, Regular, ExtraLight) stacked on top of each other.
-// Every page view and every click picks a new set of three electric colors (far from the last set, each clearly
-// apart from the others and from the page background) and new offsets. Every 10 to 40 seconds it glitches: a short
+// Every page view and every click picks a new hand-picked set of three electric colors (far from the colors
+// showing before, each clearly apart from the others and from the page background) and new offsets. Every 10 to 40 seconds it glitches: a short
 // burst of blinks, slices and jumps that lands on a new remix. ExtraLight is always on top, Regular in the middle.
 // With `dance` set (the home page), it moves on a 90 BPM grid instead: one layer at a time does something small
 // on each beat, and the first beat of each bar brings a color change. The variants are compared on /lab/logo.
@@ -25,44 +25,50 @@ const layers = [
       for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; }
       return a;
     }
-    // fully saturated HSL -> [r, g, b] in 0..1
-    function rgb(h, l) {
-      var a = Math.min(l, 1 - l);
-      return [0, 8, 4].map(function (n) {
-        var k = (n + h / 30) % 12;
-        return l - a * Math.max(-1, Math.min(k - 3, 9 - k, 1));
-      });
-    }
+    // hand-picked sets of three colors, each set clearly apart within itself (checked in OKLab) and readable
+    // on the page background; light mode gets its own deeper sets
+    var PALETTES = {
+      dark: [["#2f5bff","#ffe14d","#ff3b6b"],["#00e0b8","#8a3cff","#ff8a00"],["#ff2bd6","#00c2ff","#c6ff00"],["#ff4f1f","#4d7cff","#7dffb0"],
+        ["#8b5cff","#ffb000","#00d68f"],["#ff006e","#3a86ff","#ffbe0b"],["#00f5d4","#f15bb5","#6a4dff"],["#fb5607","#9b5cff","#06d6a0"],
+        ["#c1ff00","#ff00a0","#1f6bff"],["#ff7a00","#00b3ff","#d000ff"],["#1aff6e","#ff2e2e","#7b61ff"],["#fff03a","#ff3df0","#00a3ff"]],
+      light: [["#1434f5","#ff7a00","#00a37a"],["#008f7a","#7a2cff","#ff4f1f"],["#d4009b","#0072e0","#3fae00"],["#e01e00","#2f2fd0","#00a37a"],
+        ["#6d28d9","#e07b00","#009e60"],["#e0005a","#1c5fe0","#c79400"],["#0096a8","#c2007a","#4b2bff"],["#e04800","#7b2fe0","#00956b"],
+        ["#5aa800","#d6008a","#0047d6"],["#d96600","#0089d6","#a600d6"],["#00a344","#d61f1f","#5a3dff"],["#b8a000","#d600c2","#0070d6"]],
+    };
+    function lin(x) { return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }
     function lum(c) {
-      var v = c.map(function (x) { return x <= 0.03928 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); });
+      var v = c.map(lin);
       return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
     }
-    function contrast(a, b) { return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05); }
-    function hueGap(a, b) { var d = Math.abs(a - b) % 360; return Math.min(d, 360 - d); }
+    function oklab(h) {
+      var c = [1, 3, 5].map(function (i) { return lin(parseInt(h.slice(i, i + 2), 16) / 255); });
+      var l = Math.cbrt(0.4122214708 * c[0] + 0.5363325363 * c[1] + 0.0514459929 * c[2]);
+      var m = Math.cbrt(0.2119034982 * c[0] + 0.6806995451 * c[1] + 0.1073969566 * c[2]);
+      var s = Math.cbrt(0.0883024619 * c[0] + 0.2817188376 * c[1] + 0.6299787005 * c[2]);
+      return [0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s, 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s, 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s];
+    }
+    function dist(a, b) { var A = oklab(a), B = oklab(b); return Math.hypot(A[0] - B[0], A[1] - B[1], A[2] - B[2]); }
     function bgLum() {
       var m = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g);
       return m ? lum(m.slice(0, 3).map(function (x) { return x / 255; })) : 0;
     }
-    function lastHue() { try { return +sessionStorage.getItem("rrr-logo-hue"); } catch (e) { return NaN; } }
-    // three hues roughly a third of the wheel apart, all at full saturation, each readable on the
-    // background and clearly apart from the other two in brightness, so all three layers always show
-    function palette() {
-      var bg = bgLum(), prev = lastHue(), best = null;
-      for (var t = 0; t < 300; t++) {
-        var h = Math.random() * 360;
-        if (!isNaN(prev) && hueGap(h, prev) < 80 && t < 200) continue;
-        var hs = [h, h + 110 + Math.random() * 30, h + 230 + Math.random() * 30].map(function (x) { return x % 360; });
-        var ls = hs.map(function () { return 0.42 + Math.random() * 0.3; });
-        var L = hs.map(function (x, i) { return lum(rgb(x, ls[i])); });
-        var score = Math.min(contrast(L[0], bg), contrast(L[1], bg), contrast(L[2], bg));
-        var pair = Math.min(contrast(L[0], L[1]), contrast(L[1], L[2]), contrast(L[0], L[2]));
-        var ok = score >= 2.2 && pair >= 1.35;
-        var rank = Math.min(score / 2.2, pair / 1.35);
-        if (!best || rank > best.rank) best = { rank: rank, hs: hs, ls: ls, h: h };
-        if (ok) break;
-      }
-      try { sessionStorage.setItem("rrr-logo-hue", Math.round(best.h)); } catch (e) {}
-      return best.hs.map(function (x, i) { return "hsl(" + Math.round(x) + " 100% " + Math.round(best.ls[i] * 100) + "%)"; });
+    // the next set of colors: one whose every color is as far as possible from every color showing now,
+    // so a swap reads as a new palette, not the same three colors trading places
+    function palette(el) {
+      var list = PALETTES[bgLum() > 0.4 ? "light" : "dark"], cur = [];
+      if (el) cur = [0, 1, 2].map(function (i) { return el.children[i].style.getPropertyValue("--c"); }).filter(function (c) { return c.charAt(0) === "#"; });
+      if (!cur.length) try { cur = (sessionStorage.getItem("rrr-logo-pal") || "").split(",").filter(Boolean); } catch (e) {}
+      var recent = [];
+      try { recent = JSON.parse(sessionStorage.getItem("rrr-logo-recent") || "[]"); } catch (e) {}
+      var ranked = list.filter(function (p) { return recent.indexOf(p.join()) < 0; }).map(function (p) {
+        var gap = Infinity;
+        p.forEach(function (a) { cur.forEach(function (b) { gap = Math.min(gap, dist(a, b)); }); });
+        return { p: p, gap: cur.length ? gap : Math.random() };
+      }).sort(function (a, b) { return b.gap - a.gap; });
+      var p = ranked[0].p; // the farthest from what's showing
+      recent = [p.join()].concat(recent).slice(0, 5); // the last five sets sit out, so it doesn't bounce between two
+      try { sessionStorage.setItem("rrr-logo-pal", p.join(",")); sessionStorage.setItem("rrr-logo-recent", JSON.stringify(recent)); } catch (e) {}
+      return p.slice();
     }
     // each layer gets its own offset slot (plus a little jitter) so all three always show,
     // and the slots stay within a small box so the word still reads as one REP
@@ -70,7 +76,7 @@ const layers = [
       return shuffle([0, 0.045, 0.09]).map(function (v) { return (v + Math.random() * 0.02).toFixed(3) + "em"; });
     }
     function remix(el) {
-      var c = shuffle(palette()), x = slots(), y = slots();
+      var c = shuffle(palette(el)), x = slots(), y = slots();
       Array.prototype.forEach.call(el.children, function (s, i) {
         s.style.setProperty("--c", c[i]);
         s.style.setProperty("--x", x[i]);
@@ -80,7 +86,7 @@ const layers = [
     function rand(a, b) { return a + Math.random() * (b - a); }
     // one glitch: a few fast frames of hidden layers, cut slices and jumps, then a fresh remix
     function glitch(el) {
-      var frames = 3 + Math.floor(Math.random() * 4), c = palette();
+      var frames = 3 + Math.floor(Math.random() * 4), c = palette(el);
       el.classList.add("glitch");
       (function frame(n) {
         if (!n) {
@@ -113,10 +119,10 @@ const layers = [
     }
     function later(ms, f) { setTimeout(f, ms); }
     function slot() { return rand(0, 0.11).toFixed(3) + "em"; }
-    // three layers swap colors with each other: the same colors, moved one layer along
-    function rotate(el) {
-      var s = el.children, c = [0, 1, 2].map(function (i) { return s[i].style.getPropertyValue("--c"); });
-      [0, 1, 2].forEach(function (i) { s[i].style.setProperty("--c", c[(i + 2) % 3]); });
+    // a whole new set of colors at once (offsets stay)
+    function recolor(el) {
+      var c = shuffle(palette(el));
+      [0, 1, 2].forEach(function (i) { el.children[i].style.setProperty("--c", c[i]); });
     }
     // one layer per beat, never the same one twice in a row (and never `not`, when given)
     function pick(el, not) {
@@ -139,7 +145,7 @@ const layers = [
         o.style.transition = "none";
         o.style.setProperty("--x", (parseFloat(x) + 0.08).toFixed(3) + "em");
         later(60, function () { o.style.setProperty("--x", x); o.style.transition = ""; });
-        rotate(el);
+        recolor(el);
       }
       return s;
     }
@@ -157,7 +163,7 @@ const layers = [
         var top = el.children[2], s = el.children[el._mover = el._mover === 0 ? 1 : 0];
         drift(el, false, s);
         pulse(top, down ? 0.3 : 0.55);
-        if (down) rotate(el);
+        if (down) recolor(el);
       },
     };
     var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
