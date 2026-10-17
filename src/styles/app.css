@@ -171,7 +171,7 @@ body.resizing{cursor:col-resize;user-select:none}
 .pstage{min-height:0;display:flex;align-items:center;justify-content:center}
 .pstage > svg{width:100%;height:100%;display:block}
 .pstep{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--s3);padding:var(--s4) var(--s4);border-radius:12px;background:var(--surface-2)}
-.pstep .h{font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
+.pstep .h{margin-bottom:var(--s3);font-family:var(--mono);font-size:.74rem;letter-spacing:.1em;color:var(--faint);text-transform:uppercase}
 .pstep .ptxt{font-size:clamp(1.05rem,1.35vw,1.3rem);line-height:1.5;margin:0}
 .ptxt p,.txt p{margin:0 0 .6em}.ptxt p:last-child,.txt p:last-child{margin-bottom:0}
 .plead{font-weight:600}
