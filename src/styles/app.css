@@ -7,8 +7,10 @@
   --turn:#58b8d6; --turn-soft:rgba(88,184,214,.2);
   --done:#7fbf8e; --done-soft:rgba(127,191,142,.15);
   --dev-body:#a7a6a1; --dev-well:#a3a29d; --dev-edge:#8d8c87; --dev-knob:#6c6d70; --dev-knob-edge:#55565a; --dev-blue:#3f87a8; --dev-white:#f2f2ef; --dev-rose:#bfb3b0; --dev-key:#5d5e62; --dev-pad:#6e7074; --dev-key-edge:#3c3d40; --dev-keyprint:#e9e9e6; --dev-print:#2b2b2b; --dev-print-soft:#5f5f5b; --dev-led-off:#2f2f30; --dev-lit:#f0766a; --hl-press:#e5281a; --hl-hold:#f0a400; --hl-turn:#1d7fe0;
-  --display:"Archivo","Helvetica Neue",Arial,sans-serif;
-  --body:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --display:"Bitter",Rockwell,Georgia,serif;
+  --body:"Newsreader",Georgia,serif;
+  /* the drawn device keeps a plain sans, like the prints on the real panel */
+  --panel:"Helvetica Neue",Arial,sans-serif;
   --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
   color-scheme:dark;
 }
@@ -32,12 +34,12 @@
 }
 *{box-sizing:border-box}
 html,body{background:var(--bg)}
-body{color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.55}
+body{color:var(--fg);font-family:var(--body);font-size:17px;line-height:1.55}
 .wrap{max-width:1380px;margin:0 auto;padding-inline:20px;padding-block:18px 60px}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--turn);outline-offset:2px}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
-h1,h2{font-weight:800;font-stretch:112%;letter-spacing:-.005em}
+h1,h2{font-weight:800;letter-spacing:-.005em}
 h3{font-weight:700}
 
 /* header */
@@ -215,8 +217,8 @@ html.focus body .pbody{grid-template-columns:minmax(0,1fr) 14px var(--sw,clamp(3
 /* svg panel: device colours are physical, so they stay the same in both themes */
 .pnl-body{fill:var(--dev-body);stroke:var(--dev-edge);stroke-width:1.5}
 .pnl-well{fill:var(--dev-well);stroke:var(--dev-edge);stroke-width:.8}
-.brand-t{fill:var(--dev-print-soft);font-family:var(--display);font-style:italic;font-weight:700;font-size:17px;letter-spacing:.02em}
-.model-t{fill:var(--dev-print);font-family:var(--body);font-weight:700;font-size:10.5px}
+.brand-t{fill:var(--dev-print-soft);font-family:var(--panel);font-style:italic;font-weight:700;font-size:17px;letter-spacing:.02em}
+.model-t{fill:var(--dev-print);font-family:var(--panel);font-weight:700;font-size:10.5px}
 .c{cursor:pointer}
 .knobcap{fill:var(--dev-knob);stroke:var(--dev-knob-edge);stroke-width:1}
 .knobblue{fill:var(--dev-blue);stroke:var(--dev-knob-edge);stroke-width:1}
@@ -228,14 +230,14 @@ html.focus body .pbody{grid-template-columns:minmax(0,1fr) 14px var(--sw,clamp(3
 .c .padcap{fill:var(--dev-pad);stroke:var(--dev-key-edge);stroke-width:1.2}
 .c .trig{fill:var(--dev-key);stroke:var(--dev-key-edge);stroke-width:1.2}
 .keyico{fill:none;stroke:var(--dev-keyprint);stroke-width:1.5;stroke-linejoin:round;stroke-linecap:round}
-.keytxt{fill:var(--dev-keyprint);font-family:var(--display);font-weight:700;font-size:9.5px;letter-spacing:.03em}
-.padtxt{fill:var(--dev-keyprint);font-family:var(--display);font-weight:700;font-size:13px}
-.trigtxt{fill:var(--dev-keyprint);font-family:var(--display);font-weight:700;font-size:10.5px}
+.keytxt{fill:var(--dev-keyprint);font-family:var(--panel);font-weight:700;font-size:9.5px;letter-spacing:.03em}
+.padtxt{fill:var(--dev-keyprint);font-family:var(--panel);font-weight:700;font-size:13px}
+.trigtxt{fill:var(--dev-keyprint);font-family:var(--panel);font-weight:700;font-size:10.5px}
 .trigtxt.u{text-decoration:underline}
-.c .lbl{fill:var(--dev-print);font-family:var(--display);font-size:8.6px;font-weight:700;letter-spacing:.02em}
+.c .lbl{fill:var(--dev-print);font-family:var(--panel);font-size:8.6px;font-weight:700;letter-spacing:.02em}
 .c .lbl .grey{fill:var(--dev-print-soft);font-weight:600}
-.c .sub{fill:var(--dev-print-soft);font-family:var(--display);font-size:7.2px;font-weight:600;text-decoration:underline;letter-spacing:.02em}
-.tiny{fill:var(--dev-print-soft);font-family:var(--display);font-size:6px;font-weight:600}
+.c .sub{fill:var(--dev-print-soft);font-family:var(--panel);font-size:7.2px;font-weight:600;text-decoration:underline;letter-spacing:.02em}
+.tiny{fill:var(--dev-print-soft);font-family:var(--panel);font-size:6px;font-weight:600}
 .pageled{fill:var(--dev-led-off)}.pageled.on{fill:#f3d36b}
 .pwr{fill:none;stroke:var(--dev-print-soft);stroke-width:1.1;stroke-linecap:round}
 .lcd-frame{fill:#1b1c1d}.lcd{fill:#d9dcd6}.lcd-inv{fill:#3a3d44}
@@ -397,7 +399,7 @@ section.box h3{margin-bottom:6px}
 .hero p{margin:.7em 0 0;font-size:clamp(1.05rem,1.6vw,1.3rem);color:var(--muted);max-width:42ch}
 .gear{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(28px,5vh,52px)}
 .gear a,.gear span{display:flex;flex-direction:column;gap:2px;padding:14px 22px;border:1px solid var(--line);border-radius:14px;text-decoration:none;color:inherit}
-.gear b{font-family:var(--display);font-weight:700;font-stretch:112%;font-size:1.15rem}
+.gear b{font-family:var(--display);font-weight:700;font-size:1.15rem}
 .gear small{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:var(--muted)}
 .gear a{background:var(--fg);color:var(--bg);border-color:var(--fg);transition:transform .15s ease}
 .gear a small{color:inherit;opacity:.7}
