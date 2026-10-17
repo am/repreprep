@@ -1,17 +1,18 @@
 ---
 // The Rep Rep Rep mark: three REPs (Manrope ExtraBold, Regular, ExtraLight) stacked on top of each other.
 // Every page view and every click picks a new set of three electric colors (far from the last set, each clearly
-// apart from the others and from the page background), plus a new stacking order and offsets.
+// apart from the others and from the page background) and new offsets. Every few seconds it glitches: a short
+// burst of blinks, slices and jumps that lands on a new remix. ExtraLight is always on top, Regular in the middle.
 const layers = [
   // starting look, from the original sketch (used until the script runs, and without JS)
-  { w: 800, c: "ink", x: 0.045, y: 0.03, z: 1 },
-  { w: 400, c: "blue", x: 0.09, y: 0.09, z: 2 },
-  { w: 200, c: "yellow", x: 0, y: 0, z: 3 },
+  { w: 800, c: "ink", x: 0.045, y: 0.03 },
+  { w: 400, c: "blue", x: 0.09, y: 0.09 },
+  { w: 200, c: "yellow", x: 0, y: 0 },
 ];
 ---
 <a href="/" class="logo" id="logo" aria-label="Rep Rep Rep, home">
   {layers.map((l) => (
-    <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em;z-index:${l.z}`}>REP</span>
+    <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>REP</span>
   ))}
 </a>
 <script is:inline data-astro-rerun>
@@ -66,18 +67,47 @@ const layers = [
     }
     function remix(el) {
       var c = shuffle(palette()), x = slots(), y = slots();
-      // ExtraBold stays at the back so it never hides the thinner weights
-      var z = [1].concat(shuffle([2, 3]));
       Array.prototype.forEach.call(el.children, function (s, i) {
         s.style.setProperty("--c", c[i]);
         s.style.setProperty("--x", x[i]);
         s.style.setProperty("--y", y[i]);
-        s.style.zIndex = z[i];
       });
+    }
+    function rand(a, b) { return a + Math.random() * (b - a); }
+    // one glitch: a few fast frames of hidden layers, cut slices and jumps, then a fresh remix
+    function glitch(el) {
+      var frames = 3 + Math.floor(Math.random() * 4), c = palette();
+      el.classList.add("glitch");
+      (function frame(n) {
+        if (!n) {
+          Array.prototype.forEach.call(el.children, function (s) { s.style.opacity = ""; s.style.clipPath = ""; });
+          remix(el);
+          el.classList.remove("glitch");
+          return;
+        }
+        Array.prototype.forEach.call(el.children, function (s, i) {
+          s.style.opacity = Math.random() < 0.25 ? "0" : "";
+          var top = rand(0, 70);
+          s.style.clipPath = Math.random() < 0.5 ? "inset(" + top.toFixed(0) + "% 0 " + (100 - top - rand(15, 40)).toFixed(0) + "% 0)" : "";
+          s.style.setProperty("--x", rand(-0.12, 0.2).toFixed(3) + "em");
+          s.style.setProperty("--y", rand(-0.06, 0.12).toFixed(3) + "em");
+          if (Math.random() < 0.5) s.style.setProperty("--c", c[(i + n) % 3]);
+        });
+        setTimeout(function () { frame(n - 1); }, rand(40, 110));
+      })(frames);
     }
     var el = document.getElementById("logo");
     if (!el) return;
     remix(el);
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      (function next() {
+        setTimeout(function () {
+          if (!el.isConnected) return; // page swapped; the new page starts its own loop
+          if (!document.hidden) glitch(el);
+          next();
+        }, rand(2500, 7000));
+      })();
+    }
     el.addEventListener("click", function (e) {
       remix(el);
       if (location.pathname === "/") e.preventDefault();
