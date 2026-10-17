@@ -140,7 +140,7 @@ function hydrateOverview(s) {
    ACCOUNT
    ============================================================ */
 function renderAcct() {
-  const a = $("#acct"); if (!a) return;
+  const a = $("#acct"); if (!a || !SIGN_IN) return;
   a.textContent = me ? me.name || me.email || "Your account" : "Sign in";
 }
 const PROVIDER_ICON = {
