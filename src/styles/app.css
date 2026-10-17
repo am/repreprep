@@ -86,6 +86,23 @@ h3{font-weight:var(--fw-bold)}
 .tabs{display:flex;gap:var(--s1);margin:var(--s4) 0 var(--s6);flex-wrap:wrap}
 .tabs a{text-decoration:none;display:inline-block;background:none;border:none;border-bottom:2px solid transparent;padding:var(--s2) var(--s3);font-family:var(--display);font-weight:var(--fw-semibold);letter-spacing:var(--ls-key);text-transform:uppercase;font-size:var(--fs-s);color:var(--muted);cursor:pointer}
 .tabs a[aria-current="page"]{color:var(--fg);border-color:var(--led)}
+/* phones: logo with the theme and progress controls on one line, then the instruments, then the progress meter.
+   Instruments and section tabs stay on one line each and scroll sideways instead of wrapping. */
+@media (max-width:760px){
+  .top{display:grid;grid-template-columns:auto 1fr auto auto;grid-template-areas:"brand . theme acct" "instr instr instr instr" "meter meter meter meter";gap:var(--s3) var(--s2);padding-bottom:var(--s3)}
+  .brand{grid-area:brand}
+  .brand h1{font-size:2.3rem}
+  .top .theme{grid-area:theme;margin:0}
+  .top .acct{grid-area:acct}
+  .instr,.tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:calc(-1 * var(--s5));padding-inline:var(--s5)}
+  .instr::-webkit-scrollbar,.tabs::-webkit-scrollbar{display:none}
+  .instr{grid-area:instr}
+  .instr a,.instr .off{white-space:nowrap;padding:var(--s1) var(--s3)}
+  .top .meter{grid-area:meter;margin:0}
+  .meter .bar{flex:1;width:auto}
+  .tabs{margin-block:var(--s3) var(--s5)}
+  .tabs a{white-space:nowrap;padding-inline:var(--s2)}
+}
 
 /* lesson page: full-height step player on top, lesson index and text below */
 .below{display:grid;grid-template-columns:240px minmax(0,1fr);gap:var(--s6);align-items:start;margin-top:var(--s6)}
