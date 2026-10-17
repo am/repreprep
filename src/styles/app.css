@@ -95,11 +95,11 @@ h3{font-weight:var(--fw-bold)}
 .top.open .knob svg{transform:rotate(135deg)}
 .hmenu{display:contents}
 /* phones: logo and the knob; turning the knob opens every header option in a panel under it */
-@media (max-width:760px){
+/* phones and tablets: logo + nav + meter + theme don't fit in one row, so they fold into the knob menu */
+@media (max-width:1024px){
   .top{position:relative;flex-wrap:nowrap;padding-bottom:var(--s3)}
-  .brand h1{font-size:2.3rem}
   .knob{display:block}
-  .hmenu{display:none;position:absolute;z-index:40;top:calc(100% + var(--s2));left:0;right:0;flex-direction:column;align-items:stretch;gap:var(--s5);padding:var(--s5);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);box-shadow:0 16px 40px var(--shadow)}
+  .hmenu{display:none;position:absolute;z-index:40;top:calc(100% + var(--s2));left:auto;right:0;width:min(360px,100%);flex-direction:column;align-items:stretch;gap:var(--s5);padding:var(--s5);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);box-shadow:0 16px 40px var(--shadow)}
   .top.open .hmenu{display:flex}
   .hmenu .instr{flex-direction:column;gap:var(--s2)}
   .hmenu .instr a,.hmenu .instr .off{padding:var(--s2) var(--s4);font-size:var(--fs-md)}
@@ -107,6 +107,10 @@ h3{font-weight:var(--fw-bold)}
   .hmenu .meter .bar{flex:1;width:auto}
   .hmenu .theme{align-self:flex-start}
   .hmenu .acct{align-self:flex-start;font-size:var(--fs-s);padding:var(--s2) var(--s4)}
+}
+@media (max-width:760px){
+  .brand h1{font-size:2.3rem}
+  .hmenu{left:0;width:auto}
   .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:var(--s3) calc(-1 * var(--s5)) var(--s5);padding-inline:var(--s5)}
   .tabs::-webkit-scrollbar{display:none}
   .tabs a{white-space:nowrap;padding-inline:var(--s2)}
