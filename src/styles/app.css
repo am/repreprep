@@ -3,6 +3,7 @@
   --bg:#141517; --surface:#1d1f22; --surface-2:#25282c; --line:#34383d;
   --fg:#e9e7e2; --muted:#9a9ea3; --faint:#6d7277;
   --led:#ff9d73; --led-soft:rgba(255,157,115,.18);
+  --danger:#ff4f3a;
   --hold:#f2b33d; --hold-soft:rgba(242,179,61,.2);
   --turn:#58b8d6; --turn-soft:rgba(88,184,214,.2);
   --done:#7fbf8e; --done-soft:rgba(127,191,142,.15);
@@ -36,6 +37,7 @@
   --bg:#efede8; --surface:#f8f7f4; --surface-2:#e6e3dd; --line:#d2cec6;
   --fg:#1d1e20; --muted:#5b5f63; --faint:#878b8f;
   --led:#c25a28; --led-soft:rgba(194,90,40,.12);
+  --danger:#d8321f;
   --hold:#b97900; --hold-soft:rgba(185,121,0,.16);
   --turn:#1f7f9e; --turn-soft:rgba(31,127,158,.15);
   --done:#2f8048; --done-soft:rgba(47,128,72,.12);
@@ -45,6 +47,7 @@
   --bg:#efede8; --surface:#f8f7f4; --surface-2:#e6e3dd; --line:#d2cec6;
   --fg:#1d1e20; --muted:#5b5f63; --faint:#878b8f;
   --led:#c25a28; --led-soft:rgba(194,90,40,.12);
+  --danger:#d8321f;
   --hold:#b97900; --hold-soft:rgba(185,121,0,.16);
   --turn:#1f7f9e; --turn-soft:rgba(31,127,158,.15);
   --done:#2f8048; --done-soft:rgba(47,128,72,.12);
@@ -163,6 +166,9 @@ a.song svg{width:.95em;height:.95em;margin-left:var(--s1);vertical-align:-.12em;
 .btn{border:1px solid var(--line);background:var(--surface);padding:var(--s2) var(--s4);border-radius:var(--r-m);cursor:pointer;font-family:var(--display);font-weight:var(--fw-semibold);letter-spacing:var(--ls-wide)}
 .btn.primary{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .btn:disabled{opacity:.45;cursor:default}
+/* destructive actions stay red whatever the accent color is */
+.btn.danger{color:var(--danger);border-color:var(--danger)}
+.btn.danger:hover{background:var(--danger);color:var(--bg)}
 .finish .stamp{font-family:var(--mono);font-size:var(--fs-s);color:var(--done)}
 
 /* step player */

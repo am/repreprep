@@ -1,5 +1,6 @@
 import { GitHub, Google, generateState, generateCodeVerifier, decodeIdToken } from "arctic";
 import { db, env } from "./db.js";
+import { SIGN_IN } from "./features.js";
 
 /* Sign-in: Google or GitHub (OAuth, no passwords stored here). A random session token lives in an
    HttpOnly cookie; the database keeps only its SHA-256 hash. Sessions last 30 days and renew when used. */
@@ -19,6 +20,7 @@ const cookieOpts = (url, maxAgeDays) => ({
 /* ---------- providers ---------- */
 export function providers(url) {
   const list = [];
+  if (!SIGN_IN) return list;
   if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) list.push({ id: "google", name: "Google" });
   if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET) list.push({ id: "github", name: "GitHub" });
   if (testSignIn(url)) list.push({ id: "dev", name: "a local test account" });
@@ -26,8 +28,9 @@ export function providers(url) {
 }
 /* a test account for running on your own computer only: never on a real domain */
 export const testSignIn = (url) =>
-  ["localhost", "127.0.0.1"].includes(url.hostname) && (import.meta.env.DEV || env.ALLOW_TEST_SIGNIN === "1");
+  SIGN_IN && ["localhost", "127.0.0.1"].includes(url.hostname) && (import.meta.env.DEV || env.ALLOW_TEST_SIGNIN === "1");
 function client(id, url) {
+  if (!SIGN_IN) return null;
   const redirect = `${url.origin}/auth/${id}/callback`;
   if (id === "github") return new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET, redirect);
   if (id === "google") return new Google(env.GOOGLE_CLIENT_ID, env.GOOGLE_CLIENT_SECRET, redirect);
@@ -97,6 +100,7 @@ export async function createSession(userId, url, cookies) {
 }
 /* the signed-in user, or null */
 export async function currentUser(url, cookies) {
+  if (!SIGN_IN) return null;
   const token = cookies.get(SESSION_COOKIE)?.value;
   if (!token) return null;
   const d = await db();
