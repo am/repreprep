@@ -81,20 +81,20 @@ export function lessonText(I, L, act) {
 export function panelGuide(I, sel) {
   const c = I.controls[sel];
   return `<p class="lede t-body">Every key and knob on the ${I.name}, with what it does. Click any control on the panel. ${keyify(I, I.panelIntro || "", "")}</p>
-  <div class="refgrid"><div class="dockcard" data-panel-guide="/${I.slug}/panel">${withHl(I.draw(), "", sel)}</div><div class="card info" id="info"><div class="t-eyebrow">${esc(c.kind)}</div><h3 class="t-title t-card">${esc(c.name)}</h3><p class="t-body">${keyify(I, c.desc, "")}</p>${c.sub ? `<p class="t-body"><span class="t-label">Second label on the panel</span><b>${esc(c.sub)}</b></p>` : ""}</div></div>`;
+  <div class="refgrid"><div class="dockpanel" data-panel-guide="/${I.slug}/panel">${withHl(I.draw(), "", sel)}</div><div class="info" id="info"><div class="t-eyebrow">${esc(c.kind)}</div><h3 class="t-title t-card">${esc(c.name)}</h3><p class="t-body">${keyify(I, c.desc, "")}</p>${c.sub ? `<p class="t-body"><span class="t-label">Second label on the panel</span><b>${esc(c.sub)}</b></p>` : ""}</div></div>`;
 }
 export function machines(I) {
   return `<p class="lede t-body">The six machines and what their four machine knobs do, from the machine table and tips in Elektron’s Model:Cycles manual (OS 1.13).</p>
-  <div class="ref">${I.machines.map((m) => `<div class="card"><div class="t-eyebrow">${esc(m.tag)}</div><h3 class="t-title t-card">${m.n}</h3><p class="t-body">${esc(m.p)}</p><dl>${Object.entries(m.m).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl></div>`).join("")}
-  <div class="card wide"><h3 class="t-title t-card">Every machine also has</h3><dl><dt>PITCH</dt><dd>-24 to +24 semitones</dd><dt>DECAY</dt><dd>0–127, length of the sound</dd><dt>VOL+DIST</dt><dd>60 is clean; above adds level and distortion</dd><dt>PUNCH</dt><dd>compression-like accent</dd><dt>GATE</dt><dd>hold notes for their LEN</dd><dt>LFO</dt><dd>one per track, 7 waves: triangle, sine, square, saw, envelope, ramp, random</dd></dl></div></div>`;
+  <div class="bands">${I.machines.map((m) => `<section class="band"><div class="band-h"><div class="t-eyebrow">${esc(m.tag)}</div><h3 class="t-title t-card">${m.n}</h3></div><div class="band-b"><p class="t-body">${esc(m.p)}</p><dl class="spec">${Object.entries(m.m).map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl></div></section>`).join("")}
+  <section class="band"><div class="band-h"><div class="t-eyebrow">All machines</div><h3 class="t-title t-card">Every machine also has</h3></div><div class="band-b"><dl class="spec"><dt>PITCH</dt><dd>-24 to +24 semitones</dd><dt>DECAY</dt><dd>0–127, length of the sound</dd><dt>VOL+DIST</dt><dd>60 is clean; above adds level and distortion</dd><dt>PUNCH</dt><dd>compression-like accent</dd><dt>GATE</dt><dd>hold notes for their LEN</dd><dt>LFO</dt><dd>one per track, 7 waves: triangle, sine, square, saw, envelope, ramp, random</dd></dl></div></section></div>`;
 }
 export function shortcuts(I) {
-  return `<p class="lede t-body">The combinations you'll use most, from the manual's key-shortcut list.</p><div class="card tblwrap"><table class="sc"><tbody>${I.shortcuts.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${keyify(I, b, "")}</td></tr>`).join("")}</tbody></table></div>`;
+  return `<p class="lede t-body">The combinations you'll use most, from the manual's key-shortcut list.</p><div class="tblwrap"><table class="sc"><tbody>${I.shortcuts.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${keyify(I, b, "")}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
 /* instrument home: the whole course as unit cards */
 export function courseMap(I) {
   const groups = [];
   I.lessons.forEach((l) => { const u = l.song ? "Song studies" : l.unit || ""; let g = groups.find((g) => g.u === u); if (!g) groups.push((g = { u, ls: [] })); g.ls.push(l); });
-  return groups.map((g) => `<section class="unit"><h3 class="t-eyebrow">${esc(g.u)}<small class="t-label">${g.ls.length} ${g.ls[0].song ? "studies" : "lessons"}</small></h3><div class="ls">${g.ls.map((l) => lessonLink(l, "wk", null, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</div></section>`).join("");
+  return groups.map((g) => `<section class="band unit"><h3 class="band-h t-eyebrow">${esc(g.u)}<small class="t-label">${g.ls.length} ${g.ls[0].song ? "studies" : "lessons"}</small></h3><div class="ls">${g.ls.map((l) => lessonLink(l, "wk", null, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</div></section>`).join("");
 }
