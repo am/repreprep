@@ -50,8 +50,19 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       apply();
       document.addEventListener("DOMContentLoaded", apply);
       document.addEventListener("astro:after-swap", apply);
+      document.addEventListener("keydown", function (e) {
+        var top = document.querySelector(".top.open");
+        if (e.key === "Escape" && top) { top.classList.remove("open"); var k = top.querySelector("[data-menu]"); k.setAttribute("aria-expanded", "false"); k.focus(); }
+      });
       matchMedia("(prefers-color-scheme: light)").addEventListener("change", function () { if (get() === "auto") window.dispatchEvent(new Event("rrr-theme")); });
       document.addEventListener("click", function (e) {
+        /* the knob menu on phones: the knob toggles it, a click outside or on a link closes it */
+        var top = document.querySelector(".top:not(.bare)"), knob = e.target.closest && e.target.closest("[data-menu]");
+        if (top && (knob || (top.classList.contains("open") && (!e.target.closest(".hmenu") || e.target.closest(".hmenu a"))))) {
+          var open = knob ? !top.classList.contains("open") : false;
+          top.classList.toggle("open", open);
+          top.querySelector("[data-menu]").setAttribute("aria-expanded", String(open));
+        }
         var b = e.target.closest && e.target.closest("[data-theme-set]");
         if (!b) return;
         try { localStorage.setItem("rrr-theme", b.getAttribute("data-theme-set")); } catch (e) {}
@@ -70,14 +81,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     ) : (
       <header class="top">
         <div class="brand"><h1><Logo /></h1></div>
-        <nav class="instr" aria-label="Instrument">
-          {INSTRUMENTS.map((x) => x.ready
-            ? <a href={`/${x.slug}`} aria-current={x === inst ? "page" : undefined}>{x.name}</a>
-            : <span class="off">{x.name}<small>next</small></span>)}
-        </nav>
-        {inst?.ready && <div class="meter"><span id="meterTxt">0 / 0 steps</span><span class="bar"><i id="meterBar"></i></span></div>}
-        <ThemeSwitch />
-        <a class="acct" href="/account" id="acct">{SIGN_IN ? "Sign in" : "Progress"}</a>
+        {/* on phones every option below folds into a menu opened by a knob; on wider screens the menu is just the rest of the header */}
+        <button class="knob" type="button" aria-expanded="false" aria-controls="hmenu" aria-label="Menu" data-menu><svg viewBox="0 0 44 44" aria-hidden="true"><circle class="kn-ring" cx="22" cy="22" r="20"/><circle class="kn-cap" cx="22" cy="22" r="14.5"/><line class="kn-mark" x1="22" y1="22" x2="22" y2="10"/></svg></button>
+        <div class="hmenu" id="hmenu">
+          <nav class="instr" aria-label="Instrument">
+            {INSTRUMENTS.map((x) => x.ready
+              ? <a href={`/${x.slug}`} aria-current={x === inst ? "page" : undefined}>{x.name}</a>
+              : <span class="off">{x.name}<small>next</small></span>)}
+          </nav>
+          {inst?.ready && <div class="meter"><span id="meterTxt">0 / 0 steps</span><span class="bar"><i id="meterBar"></i></span></div>}
+          <ThemeSwitch />
+          <a class="acct" href="/account" id="acct">{SIGN_IN ? "Sign in" : "Progress"}</a>
+        </div>
       </header>
     )}
     {tabs.length > 0 && (
