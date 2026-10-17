@@ -422,10 +422,14 @@ a.icard:hover{border-color:var(--faint)}
 .contact .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 .top .theme{margin-left:auto}
 .top .meter+.theme{margin-left:0}
-.umap{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:var(--s5);margin-top:var(--s7);align-items:start}
-.ucard{padding-inline:var(--s3);gap:var(--s2)}
-.ucard .t-eyebrow{padding-inline:var(--s2);margin-bottom:var(--s1)}
-.ucard .wk:hover{background:var(--surface-2)}
+/* course map: no boxes, each part is a band between hairlines, its name on the left and its lessons on the right */
+.umap{margin-top:var(--s7);border-bottom:1px solid var(--line)}
+.unit{display:grid;grid-template-columns:minmax(180px,1fr) minmax(0,3fr);gap:var(--s3) var(--s5);padding-block:var(--s5);border-top:1px solid var(--line)}
+.unit h3{display:flex;flex-direction:column;gap:var(--s1);padding-top:var(--s2)}
+.unit h3 .t-label{margin:0;letter-spacing:var(--ls-key)}
+.unit .ls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s1) var(--s5);align-content:start}
+.unit .wk .t{font-size:var(--fs-md)}
+@media (max-width:760px){.unit{grid-template-columns:minmax(0,1fr)}.unit h3{padding-top:0}.unit .ls{grid-template-columns:minmax(0,1fr)}.unit .wk{width:100%;min-width:0;grid-template-columns:34px 1fr auto;border-color:transparent}}
 .top+#view{margin-top:var(--s5)}
 
 /* home: one idea per screen, each centered in the viewport, revealed as you scroll.

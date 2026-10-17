@@ -96,5 +96,5 @@ export function shortcuts(I) {
 export function courseMap(I) {
   const groups = [];
   I.lessons.forEach((l) => { const u = l.song ? "Song studies" : l.unit || ""; let g = groups.find((g) => g.u === u); if (!g) groups.push((g = { u, ls: [] })); g.ls.push(l); });
-  return groups.map((g) => `<section class="card ucard"><h3 class="t-eyebrow">${esc(g.u)}</h3>${g.ls.map((l) => lessonLink(l, "wk", null, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</section>`).join("");
+  return groups.map((g) => `<section class="unit"><h3 class="t-eyebrow">${esc(g.u)}<small class="t-label">${g.ls.length} ${g.ls[0].song ? "studies" : "lessons"}</small></h3><div class="ls">${g.ls.map((l) => lessonLink(l, "wk", null, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</div></section>`).join("");
 }
