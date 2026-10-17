@@ -1,17 +1,21 @@
 ---
 import Base from "../layouts/Base.astro";
+import Logo from "../components/Logo.astro";
 import { INSTRUMENTS } from "../course/index.js";
+const count = (I: any) => {
+  const songs = I.lessons.filter((l: any) => l.song).length;
+  return `${I.lessons.length - songs} lessons · ${songs} song studies`;
+};
 ---
-<Base>
-  <div class="page">
-    <div class="eyebrow">Practice, repeat, make music</div>
-    <h2>Learn music production on the gear you own</h2>
-    <p class="goal">Short lessons that teach one idea at a time (rhythm, sound, notes and harmony, space and arrangement), explained with drawings and playable examples, then practised on your instrument step by step.</p>
-  </div>
-  <div class="cards">
-    {INSTRUMENTS.map((I) => I.ready
-      ? <a class="icard" href={`/${I.slug}`}><h3>{I.name}</h3><p>{I.lessons.filter((l: any) => !l.song).length} lessons and {I.lessons.filter((l: any) => l.song).length} song studies</p></a>
-      : <div class="icard off"><h3>{I.name}</h3><p>Coming next</p></div>)}
-  </div>
-  <p class="msg">Your progress is saved in this browser. <a href="/account">Sign in</a> to keep it on every device.</p>
+<Base home>
+  <section class="hero">
+    <h1 class="mark"><Logo /></h1>
+    <h2>Learn music by playing it.</h2>
+    <p>Short lessons on the gear you own. One idea at a time, rep after rep.</p>
+    <nav class="gear" aria-label="Pick your instrument">
+      {INSTRUMENTS.map((I) => I.ready
+        ? <a class="go" href={`/${I.slug}`}><b>{I.name}</b><small>{count(I)}</small></a>
+        : <span class="soon"><b>{I.name}</b><small>coming next</small></span>)}
+    </nav>
+  </section>
 </Base>

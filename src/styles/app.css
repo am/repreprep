@@ -387,3 +387,21 @@ section.box h3{margin-bottom:6px}
 .ucard h3{font-size:.95rem;margin:4px 8px 8px}
 .ucard .wk:hover{background:var(--surface-2)}
 .top+#view{margin-top:24px}
+
+/* home: one screen, the logo as the hero, then the instrument picker (the page's only links into the course) */
+.top.bare{border-bottom:0;justify-content:flex-end;padding-bottom:0}
+.top.bare+#view{margin-top:0}
+.hero{min-height:calc(100svh - 150px);display:flex;flex-direction:column;justify-content:center;padding-block:4vh 2vh}
+.hero .mark{font-size:clamp(5.5rem,28vw,23rem);line-height:.82;margin:0 0 .12em -.04em}
+.hero h2{font-size:clamp(1.9rem,5.4vw,4.4rem);line-height:1.02;letter-spacing:-.02em;max-width:14ch}
+.hero p{margin:.7em 0 0;font-size:clamp(1.05rem,1.6vw,1.3rem);color:var(--muted);max-width:42ch}
+.gear{display:flex;flex-wrap:wrap;gap:10px;margin-top:clamp(28px,5vh,52px)}
+.gear a,.gear span{display:flex;flex-direction:column;gap:2px;padding:14px 22px;border:1px solid var(--line);border-radius:14px;text-decoration:none;color:inherit}
+.gear b{font-family:var(--display);font-weight:700;font-stretch:112%;font-size:1.15rem}
+.gear small{font-family:var(--mono);font-size:.72rem;letter-spacing:.04em;color:var(--muted)}
+.gear a{background:var(--fg);color:var(--bg);border-color:var(--fg);transition:transform .15s ease}
+.gear a small{color:inherit;opacity:.7}
+.gear a:hover{transform:translateY(-2px)}
+.gear .soon{opacity:.5}
+@media (max-width:560px){.hero .mark{font-size:38vw}.gear a{flex:1 1 100%}.gear span{flex:1 1 40%}}
+@media (prefers-reduced-motion:reduce){.gear a{transition:none}}

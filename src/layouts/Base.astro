@@ -4,8 +4,8 @@ import { ClientRouter } from "astro:transitions";
 import { INSTRUMENTS } from "../course/index.js";
 import Logo from "../components/Logo.astro";
 
-interface Props { title?: string; description?: string; inst?: any; tab?: string }
-const { title, description = "Hands-on lessons that teach music production on your own instruments, one short practice at a time.", inst, tab } = Astro.props;
+interface Props { title?: string; description?: string; inst?: any; tab?: string; home?: boolean }
+const { title, description = "Hands-on lessons that teach music production on your own instruments, one short practice at a time.", inst, tab, home } = Astro.props;
 const full = title ? `${title} · Rep Rep Rep` : "Rep Rep Rep";
 const tabs = inst?.ready ? [["lessons", "Lessons", ""], ["panel", "Panel guide", "/panel"], ["machines", "Machines", "/machines"], ["shortcuts", "Shortcuts", "/shortcuts"]] : [];
 // steps per lesson, so the browser can count progress without loading the whole course
@@ -43,16 +43,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 </head>
 <body data-inst={inst?.key} data-sizes={sizes}>
   <div class="wrap">
-    <header class="top">
-      <div class="brand"><h1><Logo /></h1></div>
-      <nav class="instr" aria-label="Instrument">
-        {INSTRUMENTS.map((x) => x.ready
-          ? <a href={`/${x.slug}`} aria-current={x === inst ? "page" : undefined}>{x.name}</a>
-          : <span class="off">{x.name}<small>next</small></span>)}
-      </nav>
-      {inst?.ready && <div class="meter"><span id="meterTxt">0 / 0 steps</span><span class="bar"><i id="meterBar"></i></span></div>}
-      <a class="acct" href="/account" id="acct">Sign in</a>
-    </header>
+    {home ? (
+      /* the home page is the logo and the instrument picker, so its header keeps only the account link */
+      <header class="top bare"><a class="acct" href="/account" id="acct">Sign in</a></header>
+    ) : (
+      <header class="top">
+        <div class="brand"><h1><Logo /></h1></div>
+        <nav class="instr" aria-label="Instrument">
+          {INSTRUMENTS.map((x) => x.ready
+            ? <a href={`/${x.slug}`} aria-current={x === inst ? "page" : undefined}>{x.name}</a>
+            : <span class="off">{x.name}<small>next</small></span>)}
+        </nav>
+        {inst?.ready && <div class="meter"><span id="meterTxt">0 / 0 steps</span><span class="bar"><i id="meterBar"></i></span></div>}
+        <a class="acct" href="/account" id="acct">Sign in</a>
+      </header>
+    )}
     {tabs.length > 0 && (
       <nav class="tabs" aria-label="Sections">
         {tabs.map(([k, label, sub]) => <a href={`/${inst.slug}${sub}`} aria-current={tab === k ? "page" : undefined}>{label}</a>)}
