@@ -30,6 +30,11 @@ import { SIGN_IN } from "../lib/features.js";
         <span class="msg" data-import-msg></span>
       </div>
     </section>
+    <section class="box">
+      <h3>Delete your progress</h3>
+      <p class="msg">Removes your ticks, finished lessons and notes{SIGN_IN ? " from this browser and, if you're signed in, from your account" : " from this browser"}. This can't be undone, so download a copy first if you might want it back.</p>
+      <div class="row"><button class="btn" data-clear>Delete my progress</button><span class="msg" data-clear-msg></span></div>
+    </section>
     {SIGN_IN && (
       <section class="box" data-signed-in hidden>
         <h3>Delete your account</h3>

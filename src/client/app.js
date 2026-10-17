@@ -191,6 +191,13 @@ function exportProgress() {
   const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: "repreprep-progress.json" });
   a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 }
+/* clears ticks, finished lessons and notes; layout choices stay */
+function clearProgress() {
+  if (!confirm("Delete your progress? Your ticks, finished lessons and notes will be removed. Download a copy first if you might want them back.")) return;
+  state.inst = {};
+  persist(); hydrate();
+  const msg = $("[data-clear-msg]"); if (msg) msg.textContent = "Progress deleted.";
+}
 async function importProgress(file) {
   const msg = $("[data-import-msg]");
   try {
@@ -257,6 +264,7 @@ document.addEventListener("click", (e) => {
   if (e.target.closest("[data-signout]")) { signOut(); return; }
   if (e.target.closest("[data-delete]")) { deleteAccount(); return; }
   if (e.target.closest("[data-export]")) { exportProgress(); return; }
+  if (e.target.closest("[data-clear]")) { clearProgress(); return; }
   const ctl = e.target.closest("svg .c");
   if (ctl) {
     const guide = ctl.closest("[data-panel-guide]");
