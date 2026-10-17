@@ -1,0 +1,23 @@
+---
+// Side-by-side test of the home logo's beat animations, to pick one. Not linked from the site.
+import Base from "../../layouts/Base.astro";
+import Logo from "../../components/Logo.astro";
+const variants = [
+  ["shift", "A · Shift", "Each beat one layer snaps to a new spot. On the bar it also takes a new color."],
+  ["blink", "B · Blink", "Each beat one layer blinks off for a moment. On the bar it blinks twice and the colors swap between layers."],
+  ["slice", "C · Slice", "Each beat a thin band of one layer slides sideways and snaps back. On the bar the colors swap between layers."],
+  ["drift", "D · Drift", "Each beat one layer glides to a new spot. On the bar another layer jolts and the colors swap between layers."],
+] as const;
+---
+<Base title="Logo beats" noindex>
+  <div class="page"><h2>Logo beats</h2><p class="goal">Four ways for the home logo to move at 90 BPM. Click a logo to remix its colors.</p></div>
+  <div class="lab">
+    {variants.map(([d, name, text]) => (
+      <section>
+        <div class="mark"><Logo dance={d} /></div>
+        <h3>{name}</h3>
+        <p>{text}</p>
+      </section>
+    ))}
+  </div>
+</Base>

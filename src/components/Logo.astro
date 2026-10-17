@@ -3,10 +3,10 @@
 // Every page view and every click picks a new set of three electric colors (far from the last set, each clearly
 // apart from the others and from the page background) and new offsets. Every 10 to 40 seconds it glitches: a short
 // burst of blinks, slices and jumps that lands on a new remix. ExtraLight is always on top, Regular in the middle.
-// With `bpm` set (the home page), it dances instead of glitching: a pulse on every beat, and on the first beat
-// of each bar a bigger pulse that swaps to a new remix.
-interface Props { bpm?: number }
-const { bpm } = Astro.props;
+// With `dance` set (the home page), it moves on a 90 BPM grid instead: one layer at a time does something small
+// on each beat, and the first beat of each bar brings a color change. The variants are compared on /lab/logo.
+interface Props { dance?: "shift" | "blink" | "slice" | "drift"; bpm?: number }
+const { dance, bpm = 90 } = Astro.props;
 const layers = [
   // starting look, from the original sketch (used until the script runs, and without JS)
   { w: 800, c: "ink", x: 0.045, y: 0.03 },
@@ -14,7 +14,7 @@ const layers = [
   { w: 200, c: "yellow", x: 0, y: 0 },
 ];
 ---
-<a href="/" class="logo" id="logo" aria-label="Rep Rep Rep, home" data-bpm={bpm}>
+<a href="/" class="logo" aria-label="Rep Rep Rep, home" data-dance={dance} data-bpm={dance ? bpm : undefined}>
   {layers.map((l) => (
     <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>REP</span>
   ))}
@@ -100,42 +100,90 @@ const layers = [
         setTimeout(function () { frame(n - 1); }, rand(40, 110));
       })(frames);
     }
-    var el = document.getElementById("logo");
-    if (!el) return;
-    remix(el);
-    // a steady 4/4 pulse: every beat a small bump, the first beat of each bar a bigger one plus a remix.
-    // Beats are scheduled from a fixed start time so they never drift.
-    function dance(el, bpm) {
+    // beats are scheduled from a fixed start time so they never drift
+    function beats(el, bpm, onBeat) {
       var ms = 60000 / bpm, t0 = performance.now(), n = 0;
       (function tick() {
-        if (!el.isConnected) return;
-        if (!document.hidden) {
-          var down = n % 4 === 0;
-          if (down) remix(el);
-          el.animate(down
-            ? [{ transform: "scale(1)", filter: "brightness(1)" }, { transform: "scale(1.09)", filter: "brightness(1.35)", offset: 0.12 }, { transform: "scale(1)", filter: "brightness(1)" }]
-            : [{ transform: "scale(1)", opacity: 1 }, { transform: "scale(1.03)", opacity: 0.8, offset: 0.15 }, { transform: "scale(1)", opacity: 1 }],
-            { duration: ms * (down ? 0.9 : 0.6), easing: "cubic-bezier(.2,.7,.3,1)" });
-        }
+        if (!el.isConnected) return; // page swapped; the new page starts its own loop
+        if (!document.hidden) onBeat(n % 4 === 0, ms);
         n++;
-        if (performance.now() - (t0 + n * ms) > ms) t0 = performance.now() - n * ms; // came back from a background tab
+        if (performance.now() - (t0 + n * ms) > ms) t0 = performance.now() - n * ms; // back from a background tab
         setTimeout(tick, Math.max(0, t0 + n * ms - performance.now()));
       })();
     }
-    var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (el.dataset.bpm && !reduce) dance(el, +el.dataset.bpm);
-    else if (!reduce) {
-      (function next() {
-        setTimeout(function () {
-          if (!el.isConnected) return; // page swapped; the new page starts its own loop
-          if (!document.hidden) glitch(el);
-          next();
-        }, rand(10000, 40000));
-      })();
+    function later(ms, f) { setTimeout(f, ms); }
+    function slot() { return rand(0, 0.11).toFixed(3) + "em"; }
+    // three layers swap colors with each other: the same colors, moved one layer along
+    function rotate(el) {
+      var s = el.children, c = [0, 1, 2].map(function (i) { return s[i].style.getPropertyValue("--c"); });
+      [0, 1, 2].forEach(function (i) { s[i].style.setProperty("--c", c[(i + 2) % 3]); });
     }
-    el.addEventListener("click", function (e) {
+    // one layer per beat, never the same one twice in a row
+    function pick(el) {
+      var i;
+      do { i = Math.floor(Math.random() * 3); } while (i === el._last);
+      el._last = i;
+      return el.children[i];
+    }
+    var DANCES = {
+      // a layer snaps to a new offset; on the bar it also takes a fresh color
+      shift: function (el, down) {
+        var s = pick(el), i = Array.prototype.indexOf.call(el.children, s);
+        s.style.setProperty("--x", slot());
+        s.style.setProperty("--y", slot());
+        if (down) s.style.setProperty("--c", palette()[i]);
+      },
+      // a layer blinks off for a moment; on the bar it blinks twice and the colors swap between layers
+      blink: function (el, down) {
+        var s = pick(el);
+        s.style.opacity = "0";
+        later(70, function () { s.style.opacity = ""; });
+        if (down) {
+          later(140, function () { s.style.opacity = "0"; rotate(el); });
+          later(210, function () { s.style.opacity = ""; });
+        }
+      },
+      // a thin band of one layer slides sideways and snaps back; on the bar the colors swap between layers
+      slice: function (el, down) {
+        var s = pick(el), x = s.style.getPropertyValue("--x"), top = rand(5, 75);
+        s.style.clipPath = "inset(" + top.toFixed(0) + "% 0 " + (100 - top - rand(10, 25)).toFixed(0) + "% 0)";
+        s.style.setProperty("--x", (parseFloat(x) + (Math.random() < 0.5 ? -1 : 1) * rand(0.04, 0.1)).toFixed(3) + "em");
+        later(down ? 140 : 80, function () { s.style.clipPath = ""; s.style.setProperty("--x", x); });
+        if (down) rotate(el);
+      },
+      // a layer glides to a new spot; on the bar another layer jolts for one frame and the colors swap
+      drift: function (el, down) {
+        var s = pick(el);
+        s.style.setProperty("--x", slot());
+        s.style.setProperty("--y", slot());
+        if (down) {
+          var o = pick(el), x = o.style.getPropertyValue("--x");
+          o.style.transition = "none";
+          o.style.setProperty("--x", (parseFloat(x) + 0.08).toFixed(3) + "em");
+          later(60, function () { o.style.setProperty("--x", x); o.style.transition = ""; });
+          rotate(el);
+        }
+      },
+    };
+    var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    Array.prototype.forEach.call(document.querySelectorAll(".logo:not([data-on])"), function (el) {
+      el.dataset.on = "1";
       remix(el);
-      if (location.pathname === "/") e.preventDefault();
+      var d = DANCES[el.dataset.dance];
+      if (d && !reduce) beats(el, +el.dataset.bpm, function (down) { d(el, down); });
+      else if (!reduce) {
+        (function next() {
+          setTimeout(function () {
+            if (!el.isConnected) return;
+            if (!document.hidden) glitch(el);
+            next();
+          }, rand(10000, 40000));
+        })();
+      }
+      el.addEventListener("click", function (e) {
+        remix(el);
+        if (location.pathname === "/" || d) e.preventDefault();
+      });
     });
   })();
 </script>
