@@ -65,7 +65,7 @@ export function player(I, L, act) {
    The steps and the challenge live in the player, so they aren't repeated here. */
 export function lessonText(I, L) {
   return `<section class="wrapup stack" aria-label="After the lesson">
-    <section class="card notebox" data-notebox="${L.id}" aria-labelledby="nb-${L.id}">
+    <section class="notebox" data-notebox="${L.id}" aria-labelledby="nb-${L.id}">
       <div class="nb-h"><h2 class="t-title t-card" id="nb-${L.id}">Notes</h2><button type="button" class="btn" data-note-edit>Add a note</button></div>
       <div class="nb-view"><p class="t-body nb-text" hidden></p><p class="t-note nb-empty">Nothing yet. Presets you liked, what was hard, ideas for next time.</p></div>
       <div class="nb-edit" hidden><textarea aria-label="Notes for ${wkLabel(L).toLowerCase()}" placeholder="Presets you liked, what was hard, ideas for next time"></textarea><div class="row"><button type="button" class="btn primary" data-note-save>Save</button><button type="button" class="btn" data-note-cancel>Cancel</button></div></div>
