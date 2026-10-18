@@ -217,6 +217,14 @@ function fitPlayer() {
   el.style.setProperty("--ph", `calc(100dvh - ${Math.round(top) + 20}px)`);
 }
 window.addEventListener("resize", fitPlayer);
+/* "stuck" while Back/Next are pinned to the bottom of the window with step text running on underneath (phones) */
+let footIO = null;
+function watchFoot() {
+  if (footIO) footIO.disconnect();
+  const f = $(".pfoot"); if (!f || !window.IntersectionObserver) return;
+  footIO = new IntersectionObserver(([e]) => f.classList.toggle("stuck", e.intersectionRatio < 1 && e.boundingClientRect.bottom > e.rootBounds.bottom), { threshold: [...Array(21).keys()].map((i) => i / 20) });
+  footIO.observe(f);
+}
 const curLesson = () => { const p = P(); return p && { k: p.dataset.inst, id: p.dataset.lesson, act: +p.dataset.step, n: +p.dataset.steps, next: p.dataset.next, nextPath: p.dataset.nextPath }; };
 function markAllDone(s, c) { if (!s.done[c.id] && [...Array(c.n).keys()].every((i) => s.steps[c.id + ":" + i])) s.done[c.id] = Date.now(); }
 /* finishing a lesson opens the next one where you left it (or its intro); the last lesson stays put */
@@ -328,5 +336,5 @@ document.addEventListener("keydown", (e) => {
 
 /* every page view (first load and each in-site navigation) */
 document.addEventListener("astro:before-swap", gridStop);
-document.addEventListener("astro:page-load", () => { mountGrids(); hydrate(); });
+document.addEventListener("astro:page-load", () => { mountGrids(); hydrate(); watchFoot(); });
 loadAccount();
