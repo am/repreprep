@@ -9,18 +9,6 @@ const prog = (l) => `<span class="s" data-prog="${l.id}"></span>`;
 const lessonLink = (l, cls, cur, inner) =>
   `<a class="${cls}" href="${l.path}" data-lesson="${l.id}" data-path="${l.path}" aria-current="${l === cur}">${inner}</a>`;
 
-/* lesson list: units, then song studies */
-export function rail(I, cur) {
-  let lastUnit = "";
-  const unitHd = (u) => (u === lastUnit ? "" : ((lastUnit = u), `<div class="unit">${esc(u)}</div>`));
-  const main = I.lessons.filter((l) => !l.song);
-  const songs = I.lessons.filter((l) => l.song);
-  return `<div class="lbl">${main.length + (I.soon || []).length} lessons</div>`
-    + main.map((l) => unitHd(l.unit || "") + lessonLink(l, "wk", cur, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}</span>${prog(l)}`)).join("")
-    + (I.soon || []).map(([w, u, t]) => unitHd(u) + `<div class="wk soon"><span class="n">L${String(w).padStart(2, "0")}</span><span class="t">${esc(t)}</span><small>soon</small></div>`).join("")
-    + (songs.length ? `<div class="unit">Song studies</div>` + songs.map((l) => lessonLink(l, "wk", cur, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}<small class="by">${esc(l.song.split(" – ")[0])}</small></span>${prog(l)}`)).join("") : "");
-}
-
 /* lesson picker in the player header: every lesson grouped by unit, one click to jump */
 function lessonMenu(I, L) {
   const groups = [];
@@ -92,9 +80,9 @@ export function shortcuts(I) {
   return `<p class="lede t-body">The combinations you'll use most, from the manual's key-shortcut list.</p><div class="tblwrap"><table class="sc"><tbody>${I.shortcuts.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${keyify(I, b, "")}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
-/* instrument home: the whole course as unit cards */
-export function courseMap(I) {
+/* the whole course as open bands, one per unit: on the instrument home and under each lesson (cur marks the open lesson) */
+export function courseMap(I, cur = null) {
   const groups = [];
   I.lessons.forEach((l) => { const u = l.song ? "Song studies" : l.unit || ""; let g = groups.find((g) => g.u === u); if (!g) groups.push((g = { u, ls: [] })); g.ls.push(l); });
-  return groups.map((g) => `<section class="band unit"><h3 class="band-h t-eyebrow">${esc(g.u)}<small class="t-label">${g.ls.length} ${g.ls[0].song ? "studies" : "lessons"}</small></h3><div class="ls">${g.ls.map((l) => lessonLink(l, "wk", null, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</div></section>`).join("");
+  return groups.map((g) => `<section class="band unit"><h3 class="band-h t-eyebrow">${esc(g.u)}<small class="t-label">${g.ls.length} ${g.ls[0].song ? "studies" : "lessons"}</small></h3><div class="ls">${g.ls.map((l) => lessonLink(l, "wk", cur, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</div></section>`).join("");
 }

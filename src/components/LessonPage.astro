@@ -1,12 +1,13 @@
 ---
 import Base from "../layouts/Base.astro";
 import { wkLabel } from "../course/index.js";
-import { player, rail, lessonText } from "../course/views.js";
+import { player, courseMap, lessonText } from "../course/views.js";
 const { I, L, act } = Astro.props;
 const st = L.steps[act];
 const title = `${wkLabel(L)}: ${L.title}` + (act ? ` (${act + 1}/${L.steps.length})` : "");
 ---
 <Base title={title} description={L.goal} inst={I} tab="lessons">
   <Fragment set:html={player(I, L, act)} />
-  <div class="below"><nav class="rail" aria-label="Lessons" set:html={rail(I, L)} /><Fragment set:html={lessonText(I, L, act)} /></div>
+  <div class="below"><Fragment set:html={lessonText(I, L, act)} /></div>
+  <nav class="umap bands" aria-label="All lessons"><h2 class="umap-h t-title">All lessons</h2><Fragment set:html={courseMap(I, L)} /></nav>
 </Base>

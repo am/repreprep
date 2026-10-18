@@ -1,4 +1,4 @@
-/* Layout: lesson rail on the left, lesson in the middle, the instrument panel docked beside it so every step lights the controls it uses. Dark-first like a studio at night. */
+/* Layout: step player on top, lesson text and the course index below, the instrument panel docked beside it so every step lights the controls it uses. Dark-first like a studio at night. */
 :root{
   --bg:#141517; --surface:#1d1f22; --surface-2:#25282c; --line:#34383d;
   --fg:#e9e7e2; --muted:#9a9ea3; --faint:#6d7277;
@@ -116,21 +116,17 @@ h3{font-weight:var(--fw-bold)}
   .tabs a{white-space:nowrap;padding-inline:var(--s2)}
 }
 
-/* lesson page: full-height step player on top, lesson index and text below */
-.below{display:grid;grid-template-columns:240px minmax(0,1fr);gap:var(--s6);align-items:start;margin-top:var(--s6)}
-@media (max-width:760px){.below{grid-template-columns:minmax(0,1fr)}}
+/* lesson page: full-height step player on top, then the lesson text, then the whole course as bands */
+.below{margin-top:var(--s6)}
 
-.rail{order:0;display:flex;flex-direction:column;gap:2px;min-width:0}
-.rail .lbl{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:var(--ls-caps);color:var(--faint);text-transform:uppercase;margin:var(--s1) 0 var(--s2)}
 .wk{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:var(--s2);padding:var(--s2) var(--s2);border-radius:var(--r-m);border:1px solid transparent;background:none;text-align:left;cursor:pointer;width:100%}
 .wk:hover{background:var(--surface)}
-.wk[aria-current="true"]{background:var(--surface);border-color:var(--line)}
+.wk[aria-current="true"]{background:var(--led-soft)}
 .wk .n{font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted)}
 .wk .t{font-size:var(--fs-sm);line-height:var(--lh-snug)}
 .wk .s{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--faint)}
 .wk .s.part{border-color:var(--hold);background:conic-gradient(var(--hold) var(--p,0%),transparent 0)}
 .wk .s.full{border-color:var(--done);background:var(--done)}
-@media (max-width:760px){.rail{flex-direction:row;overflow-x:auto;gap:var(--s2);padding-bottom:var(--s2)}.rail .lbl{display:none}.wk{width:auto;min-width:150px;grid-template-columns:28px 1fr auto;border-color:var(--line)}.rail .unit{align-self:center;white-space:nowrap;margin:0 var(--s1)}}
 
 /* lesson */
 .lesson{min-width:0}
@@ -166,10 +162,11 @@ h3{font-weight:var(--fw-bold)}
 .meta{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);margin:var(--s3) 0 var(--s4);font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted)}
 .listen{max-width:72ch}
 .concept{max-width:72ch}
-.steps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:var(--s2);counter-reset:st}
-.step{display:grid;grid-template-columns:30px minmax(0,1fr);gap:var(--s3);padding:var(--s3) var(--s4);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);cursor:pointer;transition:border-color .15s,background .15s}
-.step:hover{border-color:var(--faint)}
-.step.active{border-color:var(--led);background:linear-gradient(0deg,var(--led-soft),var(--led-soft)),var(--surface)}
+.steps{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;counter-reset:st;border-bottom:1px solid var(--line)}
+/* open rows split by hairlines, like the course bands; the open step gets the accent wash */
+.step{display:grid;grid-template-columns:30px minmax(0,1fr);gap:var(--s3);padding:var(--s4) var(--s3);border-top:1px solid var(--line);cursor:pointer;transition:background .15s}
+.step:hover{background:var(--surface)}
+.step.active{background:var(--led-soft)}
 .step.done .txt{color:var(--muted)}
 .step .ck{width:24px;height:24px;border-radius:var(--r-s);border:1.5px solid var(--faint);background:none;cursor:pointer;display:grid;place-items:center;margin-top:1px;padding:0}
 .step.done .ck{background:var(--done);border-color:var(--done)}
@@ -413,7 +410,6 @@ svg.fig{width:100%;height:100%;max-height:100%;display:block}
 .ans{border:1px solid var(--line);border-radius:var(--r-l);padding:var(--s2) var(--s3);background:var(--surface)}
 .ans summary{cursor:pointer;font-weight:var(--fw-semibold);color:var(--done)}
 .ans p{margin:var(--s2) 0 0}
-.rail .unit{font-family:var(--display);font-weight:var(--fw-bold);font-size:var(--fs-s);margin:var(--s4) 0 var(--s1);color:var(--fg)}
 .wk.soon{cursor:default;opacity:.5}
 .wk .t small.by{display:block;font-size:var(--fs-xs);color:var(--muted)}
 .wk.soon small{font-family:var(--mono);font-size:var(--fs-2xs);color:var(--faint)}
@@ -465,6 +461,7 @@ a.icard:hover{border-color:var(--faint)}
 .contact .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 /* course map: no boxes, each part is a band between hairlines, its name on the left and its lessons on the right */
 .umap{margin-top:var(--s7)}
+.umap-h{margin:0 0 var(--s4)}
 .unit .band-h{padding-top:var(--s2)}
 .unit .band-h .t-label{margin:0;letter-spacing:var(--ls-key)}
 .unit .ls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s1) var(--s5);align-content:start}
