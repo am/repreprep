@@ -266,9 +266,10 @@ body.resizing{cursor:col-resize;user-select:none}
   .pbody{grid-template-columns:minmax(0,1fr);flex:1}
   .pstage{padding-block:var(--s6) var(--s7)}
   .pstage > svg{height:auto}
-  /* the step scrolls inside its card, at most one screen tall, so its text is clipped by the card and never shows under the buttons
-     (page-level sticky can't be covered reliably: iPhone Safari draws the page on under its floating toolbar) */
-  .pstep{max-height:calc(100svh - var(--s5))}
+  /* the step grows with its text and scrolls with the page: no inner scroll (it fought page scrolling on touch),
+     and Back/Next sit at the end of the card instead of pinned to the screen, so no text can show below them */
+  .pstep{overflow:visible}
+  .pfoot{position:static;margin:0;padding:0;background:none}
 }
 /* maximized: the player takes the whole window */
 html.focus body{overflow:hidden}
