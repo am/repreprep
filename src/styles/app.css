@@ -55,8 +55,9 @@
 }
 *{box-sizing:border-box}
 html,body{background:var(--bg)}
-body{color:var(--fg);font-family:var(--body);font-size:var(--fs-root);line-height:var(--lh-body)}
-.wrap{max-width:1380px;margin:0 auto;padding-inline:var(--s5);padding-block:var(--s4) 0}
+/* page column: the content grows so the footer sits at the bottom of the window even on short pages */
+body{color:var(--fg);font-family:var(--body);font-size:var(--fs-root);line-height:var(--lh-body);min-height:100dvh;display:flex;flex-direction:column}
+.wrap{flex:1 0 auto;width:100%;max-width:1380px;margin:0 auto;padding-inline:var(--s5);padding-block:var(--s4) 0}
 button{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--turn);outline-offset:2px}
 h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
