@@ -3,7 +3,7 @@
    part of your progress with onProgress, which runs on every page view and again whenever progress changes.
    Same shape as the single-file app, so old progress files load as they are:
    {inst:{cycles:{lesson, steps:{"w05:3":true}, done:{w05:ts}, notes:{w05:"…"}, active:{w05:3}}}, focus, stepW, updatedAt} */
-import { SIGN_IN } from "../lib/features.js";
+import { SIGN_IN } from "astro:env/client";
 
 export const LS_KEY = "repreprep-progress-v1";
 const fresh = () => ({ updatedAt: 0, inst: {}, introSteps: 1 });

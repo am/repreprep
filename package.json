@@ -11,7 +11,7 @@
     "deploy": "astro build && wrangler deploy",
     "check": "node scripts/check-course.mjs && node scripts/check-css.mjs",
     "messages": "wrangler d1 execute repreprep --remote --command \"SELECT id, datetime(created_at/1000,'unixepoch') AS sent, reply_to, body FROM messages ORDER BY created_at DESC LIMIT 50\"",
-    "test": "npm run check && node --test 'tests/unit/*.test.mjs' && astro build && node --test 'tests/site/*.test.mjs' && playwright test",
+    "test": "npm run check && node --test 'tests/unit/*.test.mjs' && astro build && node --test 'tests/site/*.test.mjs' 'tests/server/*.test.mjs' && playwright test",
     "test:unit": "node --test 'tests/unit/*.test.mjs'",
     "compare": "node scripts/compare.mjs"
   },

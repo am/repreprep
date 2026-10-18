@@ -42,7 +42,7 @@ After editing lessons, run `npm run check`: it renders every step and stops at t
 
 ## Tests
 
-- `npm test` runs everything that also runs on every pull request: `npm run check`, the unit tests (`tests/unit`: step text, grids, song links), a build with checks on the built pages (`tests/site`: every step page exists, no broken links, the player and other components as built), and the browser tests (`tests/e2e`: moving through a lesson, ticks, notes, quizzes, progress files, theme, the phone menu). The browser tests need Chromium once: `npx playwright install chromium`.
+- `npm test` runs everything that also runs on every pull request: `npm run check`, the unit tests (`tests/unit`: step text, grids, song links), a build with checks on the built pages (`tests/site`: every step page exists, no broken links, the player and other components as built), the server routes run in Cloudflare's local runtime with an empty local database (`tests/server`: the contact form, refusing writes from other sites, and, in a second build with `SIGN_IN=true`, signing in with the local test account, saving progress, the account download and deleting the account), and the browser tests (`tests/e2e`: moving through a lesson, ticks, notes, quizzes, progress files, theme, the phone menu). The browser tests need Chromium once: `npx playwright install chromium`.
 - `npm run test:unit` runs only the unit tests, in a second.
 - `npm run compare` is for changes that should not change the site, like a cleanup. It builds `main` next to your checkout, compares the HTML of every page (ignoring whitespace layout and other differences a visitor can't see), and compares screenshots of the main pages (desktop and phone, dark and light). Any difference is listed, and the screenshots that differ are saved in `.compare/shots` with the changed pixels in red. `npm run compare <branch or commit>` compares with something other than `main`, and `--no-scripts` or `--no-styles` leave script tags, or styles, out of the HTML comparison (for changes that only move browser code or CSS; the screenshots still compare the result). Besides whole pages, the screenshots cover states reached by clicking: an open lesson picker, an answered quiz, the full-window player, a control's info box, an edited grid, notes being edited, saved progress, the phone menu and the contact form's messages.
 
@@ -53,6 +53,7 @@ Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. 
 - Signed out, progress (ticked steps, finished lessons, notes, layout) is kept in the browser.
 - Signed in, it's also saved to the account and loads on any device. When you sign in, the newer of the browser's and the account's progress wins.
 - Sign-in is with Google or GitHub, so the site never stores passwords. Sessions are a random token in an HttpOnly cookie; the database stores only its hash.
+- Sign-in is switched off for now, and `/account` is a "Your progress" page. The switch is `SIGN_IN` in `astro.config.mjs` (an `astro:env` setting, read by the pages, the server and the browser code): change its default to `true`, or build with `SIGN_IN=true`, to bring sign-in back.
 - `/account` can download progress as a file and load one, including `progress.json` from the old local version of the course.
 
 ## Publish on Cloudflare

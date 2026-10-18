@@ -1,7 +1,7 @@
 /* The parts of every page: the header's step count, account link and knob menu, the theme switch, and the
    footer's note on where your progress is saved. Loaded by Base.astro at the end of the page. */
 import { onProgress, here, sizes, account, setSync, syncMsg } from "./progress.js";
-import { SIGN_IN } from "../lib/features.js";
+import { SIGN_IN } from "astro:env/client";
 
 onProgress(() => {
   setSync(account.loaded ? syncMsg() : "");
