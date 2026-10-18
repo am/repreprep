@@ -61,6 +61,7 @@ export function lessonText(I, L) {
     <section class="card challenge"><div class="t-eyebrow">This lesson's challenge</div><p class="t-body">${keyify(I, L.challenge, "")}</p></section>
     <div class="notes"><label for="notes-${L.id}">Your notes for ${wkLabel(L).toLowerCase()}</label><textarea id="notes-${L.id}" data-notes="${L.id}" placeholder="Presets you liked, what was hard, ideas for next time"></textarea></div>
     <div class="finish"><button class="btn primary" data-finish="${L.id}" data-label="${L.song ? "Mark study complete" : "Mark lesson complete"}">${L.song ? "Mark study complete" : "Mark lesson complete"}</button><span class="stamp" hidden></span>${nx && !L.song ? `<a class="btn" href="${nx.path}" data-lesson="${nx.id}" data-path="${nx.path}">Next lesson →</a>` : ""}</div>
+    <a class="back-all" href="/${I.slug}">← All lessons and your progress</a>
   </section>`;
 }
 
@@ -78,9 +79,9 @@ export function shortcuts(I) {
   return `<p class="lede t-body">The combinations you'll use most, from the manual's key-shortcut list.</p><div class="tblwrap"><table class="sc"><tbody>${I.shortcuts.map(([a, b]) => `<tr><td>${esc(a)}</td><td>${keyify(I, b, "")}</td></tr>`).join("")}</tbody></table></div>`;
 }
 
-/* the whole course as open bands, one per unit: on the instrument home and under each lesson (cur marks the open lesson) */
-export function courseMap(I, cur = null) {
+/* instrument home: the whole course as open bands, one per unit */
+export function courseMap(I) {
   const groups = [];
   I.lessons.forEach((l) => { const u = l.song ? "Song studies" : l.unit || ""; let g = groups.find((g) => g.u === u); if (!g) groups.push((g = { u, ls: [] })); g.ls.push(l); });
-  return groups.map((g) => `<section class="band unit"><h3 class="band-h t-eyebrow">${esc(g.u)}<small class="t-label">${g.ls.length} ${g.ls[0].song ? "studies" : "lessons"}</small></h3><div class="ls">${g.ls.map((l) => lessonLink(l, "wk", cur, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</div></section>`).join("");
+  return groups.map((g) => `<section class="band unit"><h3 class="band-h t-eyebrow">${esc(g.u)}<small class="t-label">${g.ls.length} ${g.ls[0].song ? "studies" : "lessons"}</small></h3><div class="ls">${g.ls.map((l) => lessonLink(l, "wk", null, `<span class="n">${l.short}</span><span class="t">${esc(l.title)}${l.song ? `<small class="by">${esc(l.song.split(" – ")[0])}</small>` : ""}</span>${prog(l)}`)).join("")}</div></section>`).join("");
 }

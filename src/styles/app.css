@@ -121,7 +121,6 @@ h3{font-weight:var(--fw-bold)}
 
 .wk{display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:var(--s2);padding:var(--s2) var(--s2);border-radius:var(--r-m);border:1px solid transparent;background:none;text-align:left;cursor:pointer;width:100%}
 .wk:hover{background:var(--surface)}
-.wk[aria-current="true"]{background:var(--led-soft)}
 .wk .n{font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted)}
 .wk .t{font-size:var(--fs-sm);line-height:var(--lh-snug)}
 .wk .s{width:12px;height:12px;border-radius:50%;border:1.5px solid var(--faint)}
@@ -441,7 +440,8 @@ a.icard:hover{border-color:var(--faint)}
 .contact .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 /* course map: no boxes, each part is a band between hairlines, its name on the left and its lessons on the right */
 .umap{margin-top:var(--s7)}
-.umap-h{margin:0 0 var(--s4)}
+.back-all{align-self:flex-start;font-family:var(--display);font-weight:var(--fw-semibold);font-size:var(--fs-sm);color:var(--muted);text-decoration:none}
+.back-all:hover{color:var(--fg)}
 .unit .band-h{padding-top:var(--s2)}
 .unit .band-h .t-label{margin:0;letter-spacing:var(--ls-key)}
 .unit .ls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s1) var(--s5);align-content:start}
