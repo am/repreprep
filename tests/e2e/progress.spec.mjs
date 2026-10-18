@@ -1,8 +1,8 @@
 // Progress across the site: the course map, Continue, old progress files, and the progress page.
 import { test, expect, progress, setProgress, LS_KEY } from "./fixtures.mjs";
-import { INSTRUMENTS } from "../../src/course/index.js";
+import { COURSES } from "../../src/course/files.js";
 
-const I = INSTRUMENTS.find((i) => i.ready);
+const [I] = COURSES;
 const [L1, L2] = I.lessons;
 const ticks = (L, n) => Object.fromEntries([...Array(n).keys()].map((i) => [`${L.id}:${i}`, true]));
 const state = (cycles, extra = {}) => ({ updatedAt: 1, introSteps: 1, inst: { cycles: { lesson: null, steps: {}, done: {}, notes: {}, active: {}, ...cycles } }, ...extra });

@@ -33,7 +33,9 @@ sh("npx astro build");
 
 /* ---------- HTML of every page ---------- */
 /* bundle hashes, comments in inline scripts, whitespace layout, self-closing tags, Astro's style-scope attributes and how a quote is written
-   don't change what a visitor gets (the screenshots below catch any whitespace that shows) */
+   don't change what a visitor gets (the screenshots below catch any whitespace that shows); nor does the key order of a grid's JSON */
+const unesc = (s) => s.replace(/&quot;/g, '"').replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&#39;/g, "'").replace(/&amp;/g, "&");
+const sortKeys = (v) => (Array.isArray(v) ? v.map(sortKeys) : v && typeof v === "object" ? Object.fromEntries(Object.keys(v).sort().map((k) => [k, sortKeys(v[k])])) : v);
 const normalize = (html) => [[noScripts, /<script\b[\s\S]*?<\/script>/g], [noStyles, /<style\b[\s\S]*?<\/style>|<link rel="stylesheet"[^>]*>/g]]
   .reduce((h, [on, re]) => (on ? h.replace(re, "") : h), html)
   .replace(/\/_astro\/([\w.-]+?)\.[\w-]{8}\.(css|js)/g, "/_astro/$1.$2")
@@ -41,6 +43,7 @@ const normalize = (html) => [[noScripts, /<script\b[\s\S]*?<\/script>/g], [noSty
   .replace(/<(area|br|hr|img|input|link|meta)\b([^>]*?)\s*\/>/g, "<$1$2>")
   .replace(/<([\w-]+)\b([^>]*?)\s*\/>/g, "<$1$2></$1>")
   .replace(/ data-astro-cid-\w+(="[^"]*")?/g, "")
+  .replace(/ data-spec="([^"]*)"/g, (m, j) => ` data-spec="${JSON.stringify(sortKeys(JSON.parse(unesc(j)))).replace(/&/g, "&amp;").replace(/"/g, "&quot;")}"`)
   .replace(/&#39;/g, "'")
   .replace(/\s+/g, " ")
   .replace(/> </g, "><");

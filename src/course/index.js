@@ -1,6 +1,7 @@
 /* ============================================================
    COURSE DATA. Add an instrument by adding an entry to INSTRUMENTS
-   with: key (progress key), slug (URL), name, controls, icon, draw, figs, lessons, machines, shortcuts.
+   with: key (progress key), slug (URL), name, controls, icon, draw, figs, machines, shortcuts,
+   and its lessons as YAML files in src/content/lessons/<slug>/.
    ============================================================ */
 import { MODEL_CYCLES } from "./model-cycles/index.js";
 import { esc } from "./shared/html.js";
@@ -11,9 +12,6 @@ export const INSTRUMENTS=[
   {key:"microfreak", slug:"microfreak", name:"MicroFreak", ready:false},
   {key:"live", slug:"live", name:"Ableton Live", ready:false},
 ];
-export const instrumentBySlug=slug=>INSTRUMENTS.find(i=>i.slug===slug);
-/* the instruments that have a course; every course page is built for each of them */
-export const READY=INSTRUMENTS.filter(I=>I.ready);
 
 export const lessonLabel=L=>L.song?"Song study":"Lesson "+L.number;
 export const pad2=n=>String(n).padStart(2,"0");
@@ -27,14 +25,21 @@ export function byUnit(lessons){
 }
 const slugify=s=>s.normalize("NFKD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
 
-/* every lesson opens with an intro step: what you will learn, how long, what to listen to.
-   Step ids stay the old ones (lesson id + ":" + index, intro = 0), so saved progress keeps working. */
-READY.forEach(I=>I.lessons.forEach((L,i)=>{
-  L.steps.unshift({intro:true,k:"intro",hl:"",t:`${lessonLabel(L)}: ${L.title}. In this lesson you will ${goalPhrase(L)}`});
-  L.slug=L.song?slugify(L.title):pad2(L.number);
-  L.path=`/${I.slug}/${L.song?"songs":"lessons"}/${L.slug}`;
-  L.short=L.song?"S"+pad2(I.lessons.filter(l=>l.song).indexOf(L)+1):"L"+pad2(L.number);
-}));
+/* An instrument with its lessons, ready for the pages: lessons in course order (song studies last), each
+   opening with an intro step (what you will learn, what to listen to) and with its address and short name.
+   Step ids stay the old ones (lesson id + ":" + index, intro = 0), so saved progress keeps working.
+   The lesson data comes from src/content/lessons: content.js reads it for the pages, files.js for scripts and tests. */
+export function withLessons(I,data){
+  const lessons=structuredClone(data).sort((a,b)=>(!!a.song-!!b.song)||(a.song?a.id.localeCompare(b.id):a.number-b.number));
+  const songs=lessons.filter(l=>l.song);
+  lessons.forEach(L=>{
+    L.steps.unshift({intro:true,k:"intro",hl:"",t:`${lessonLabel(L)}: ${L.title}. In this lesson you will ${goalPhrase(L)}`});
+    L.slug=L.song?slugify(L.title):pad2(L.number);
+    L.path=`/${I.slug}/${L.song?"songs":"lessons"}/${L.slug}`;
+    L.short=L.song?"S"+pad2(songs.indexOf(L)+1):"L"+pad2(L.number);
+  });
+  return {...I,lessons};
+}
 export const stepPath=(L,i)=>i?`${L.path}/${i}`:L.path;
 export const nextLesson=(I,L)=>I.lessons[I.lessons.indexOf(L)+1];
 

@@ -1,0 +1,111 @@
+id: w02
+number: 2
+unit: Rhythm and time
+title: What each drum does
+goal: Learn the job of each drum, build the beat of your track, and try five classic patterns that styles are built on.
+listen: Bob Marley & The Wailers, "One Drop", then Burial, "Archangel". Same idea, a kick and a snare, placed in very different spots.
+concepts:
+  - h: The spine of a beat
+    p:
+      - The kick is the anchor and goes on strong beats. The snare, clap or rim marks the backbeat on beats 2 and 4. Hats keep time in between, and percussion adds colour on the weak steps.
+      - "Rule of thumb: heavy, low sounds on strong beats; light, high sounds on weak ones. Put a big kick on a weak sixteenth and the whole beat feels like it tripped."
+  - h: Five patterns to know
+    p:
+      - 'Four on the floor (house): kick on every beat. Backbeat: kick on 1 and 3, snare on 2 and 4. Half-time: snare only on beat 3, so the tempo feels halved. One drop (reggae): beat 1 is empty, kick and snare land together on beat 3. Steppers (dub): four on the floor with the snare or rim on beat 3. 2-step (UK garage, Burial): kick on 1 and the "&" of 3, swung hats.'
+steps:
+  - k: learn
+    fig: roles
+    t: Every drum in a beat has a job. The kick is the anchor, the snare marks the backbeat, hats are the clock, and percussion adds colour. They also sit at different heights, from the low kick you feel to the high hats you hear as sparkle.
+  - k: learn
+    fig:
+      grid:
+        title: The spine
+        bpm: 90
+        rows:
+          - { n: Kick, s: kick, hits: "1,9,11" }
+          - { n: Snare, s: snare, hits: "5,13" }
+          - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.6 }
+    t: "Here's the spine of most downtempo and hip hop: kick on the 1 and around beat 3, snare on 2 and 4, hats on the \"&\"s. Play it, then click squares to move the second kick and hear how the feel changes."
+    hear: Moving one kick by a single step changes the whole bounce.
+  - k: learn
+    fig:
+      grid:
+        title: Five classic patterns
+        presets:
+          - name: Four on the floor
+            bpm: 122
+            note: "House: a kick on every beat, clap on 2 and 4, open hat on the &s."
+            rows:
+              - { n: Kick, s: kick, hits: "1,5,9,13" }
+              - { n: Clap, s: clap, hits: "5,13" }
+              - { n: Open hat, s: ohat, hits: "3,7,11,15", vel: 0.5 }
+          - name: Half-time
+            bpm: 140
+            note: 140 BPM, but the snare only on beat 3 makes it feel like 70.
+            rows:
+              - { n: Kick, s: kick, hits: "1,11" }
+              - { n: Snare, s: snare, hits: "9" }
+              - { n: Hat, s: hat, hits: "1,3,5,7,9,11,13,15", vel: 0.45 }
+          - name: One drop
+            bpm: 75
+            note: "Reggae: beat 1 is left empty, kick and rim land together on beat 3."
+            rows:
+              - { n: Kick, s: kick, hits: "9" }
+              - { n: Rim, s: rim, hits: "9" }
+              - { n: Hat, s: hat, hits: "1,3,5,7,9,11,13,15", vel: 0.45 }
+          - name: Steppers
+            bpm: 75
+            note: "Dub: four on the floor with the rim on beat 3. Driving, but still heavy."
+            rows:
+              - { n: Kick, s: kick, hits: "1,5,9,13" }
+              - { n: Rim, s: rim, hits: "9" }
+              - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.5 }
+          - name: 2-step
+            bpm: 132
+            swing: 62
+            note: "UK garage and Burial: kick on 1 and the & of 3, swung hats that stumble."
+            rows:
+              - { n: Kick, s: kick, hits: "1,11" }
+              - { n: Snare, s: snare, hits: "5,13" }
+              - { n: Hat, s: hat, hits: "3,4:0.35,7,8:0.35,11,15,16:0.35", vel: 0.55 }
+              - { n: Shaker, s: shaker, hits: "6,14", vel: 0.4 }
+    t: "Five patterns a lot of music grows from. Switch between them and play each one. Look at where the kick sits compared with the snare: that relationship is most of a style's identity."
+    hear: The one drop floats because beat 1 is empty. Steppers pushes because the kick never stops.
+  - k: play
+    t: Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). Press [RECORD], select [T1] and remove the kicks on [TRIG 5] and [TRIG 13] by pressing them. Add one on [TRIG 11]. Press [PLAY].
+    hl: h:pattern p:record h:track p:t1 p:s5 p:s13 p:s11 p:play
+    hear: "Your kick now sits on 1, 9 and 11: a relaxed, rolling bounce."
+  - k: play
+    t: Select [T2] and place the snare on [TRIG 5] and [TRIG 13], beats 2 and 4.
+    hl: h:track p:t2 p:s5 p:s13
+    hear: Now it has a backbeat.
+  - k: play
+    t: 'Select [T3] and place hats on the "&"s: [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15].'
+    hl: h:track p:t3 p:s3 p:s7 p:s11 p:s15
+    hear: This is the spine from the drawing, on your own machine.
+  - k: play
+    t: Hear each job by taking it away. Press [RECORD] to leave grid recording, then mute and unmute tracks with [FUNC] + [T1], [T2] and [T3] while it plays.
+    hl: p:record h:func p:t1 p:t2 p:t3
+    hear: "No kick: it floats. No snare: no backbeat, it feels lost. No hats: it stops moving forward."
+  - k: play
+    t: "Save B01 (hold [FUNC], long-press [SETTINGS]). Then copy it to B02: hold [PATTERN] + [TRIG 1] and press [RECORD], then hold [PATTERN] + [TRIG 2] and press and hold [STOP] until the countdown finishes. Go to B02 (hold [PATTERN], press [TRIG 2])."
+    hl: h:func p:settings h:pattern p:s1 p:record p:s2 h:stop
+    hear: B02 is a copy to experiment on. B01 stays safe.
+  - k: play
+    t: "On B02, build a one drop: press [RECORD], select [T1], clear every kick and place one on [TRIG 9] only. Select [T2], remove [TRIG 5] and [TRIG 13], place the snare on [TRIG 9]. Press [PLAY]."
+    hl: p:record h:track p:t1 p:s9 p:t2 p:play
+    hear: Everything hits together on beat 3. The empty downbeat makes it float.
+  - k: play
+    t: "Still on B02, turn the one drop into steppers: on T1, add kicks on [TRIG 1], [TRIG 5] and [TRIG 13]. Then go back to B01 and listen to your own beat again."
+    hl: h:track p:t1 p:s1 p:s5 p:s13 h:pattern p:s1
+    hear: Same tempo, three different worlds. Your B01 beat sits between them.
+  - k: check
+    t: In a one drop, where does the kick land?
+    q:
+      - On every beat ([TRIG 1], [TRIG 5], [TRIG 9], [TRIG 13])
+      - On beats 1 and 3 ([TRIG 1] and [TRIG 9])
+      - "!Only on beat 3 ([TRIG 9]), with the snare"
+      - Only on beat 1 ([TRIG 1])
+    a: Only on beat 3 ([TRIG 9]), together with the snare. Beat 1, normally the strongest, is left empty, so the music hangs in the air until beat 3 lands.
+    hear: Where you put the kick against the snare decides the style before any sound is chosen.
+challenge: On B03, recreate the 2-step pattern from the drawing at 90 BPM. Does it still feel like garage when it's slow? Keep B01 as your track.

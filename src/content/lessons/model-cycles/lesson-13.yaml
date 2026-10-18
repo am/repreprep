@@ -1,0 +1,64 @@
+id: w13
+number: 13
+unit: Space, arrangement and finishing
+title: Space and dub
+goal: Place sounds near and far with reverb and delay sends, and play dub throws by hand.
+listen: Augustus Pablo, "King Tubby Meets Rockers Uptown", then Burial, "Archangel". Listen for echoes that appear on a single hit and fade away, and for what stays dry and close.
+concepts:
+  - h: Near and far
+    p:
+      - A dry sound feels right next to you. A little reverb moves it back into a room; a lot puts it far away in a hall. Giving each part a different amount creates depth, front to back.
+  - h: Sends and returns
+    p:
+      - The Model:Cycles has one reverb and one delay shared by all six tracks. Each track's send knob sets how much of it goes in; the effect knobs set the space for everyone. One shared room makes the parts sound like they play together.
+  - h: Dub throws
+    p:
+      - Dub engineers played the mixer like an instrument. They kept kick and bass dry, opened the echo send for one snare or one word, then closed it again, and rode the feedback so the echoes swelled and died away.
+steps:
+  - k: learn
+    fig: u4depth
+    t: Reverb is the sound of a space. Dry, a sound sits right next to you. Add a room and it steps back; add a hall and it floats far away. Mixing different amounts is how a track gets depth.
+  - k: learn
+    fig: u4send
+    t: "Each track has a [REVERB SEND] and a [DELAY SEND]: how much of it goes into the shared effects. [REVERB SIZE] and [DELAY TIME] shape those effects for all tracks at once, so the whole song sits in one space."
+  - k: learn
+    fig: u4dub
+    t: "A throw sends one hit into the delay and lets its echoes carry on alone. DEL FEEDBACK sends the echoes back in again: low gives a few fading repeats, high makes them swell. Ride it up for a moment, then pull it back."
+  - k: play
+    t: "Play B01 with [MAIN VOLUME] low. Set the shared room: turn [REVERB SIZE] to about 90. Then hold [FUNC] and turn [REVERB SIZE] to set REV TONE to about +20, which trims the lows from the reverb so it doesn't cloud the kick."
+    hl: p:play t:mainvol t:revsize h:func
+    hear: Any track that already sends to the reverb grows a longer tail.
+  - k: play
+    t: "Set the echo: turn [DELAY TIME] to 24, a dotted eighth. Then hold [FUNC] and turn [DELAY TIME] to set DEL FEEDBACK to about 40."
+    hl: t:deltime h:func
+    hear: "At 90 BPM a dotted eighth is half a second: echoes that land between the beats."
+  - k: play
+    t: Place parts near and far. Select [T1] and turn [REVERB SEND] and [DELAY SEND] fully left to OFF. Do the same on T2 and T5. Then set [REVERB SEND] to about 30 on T3 and about 70 on T6.
+    hl: h:track p:t1 t:reverb t:delay p:t2 p:t5 p:t3 p:t6
+    hear: Kick, snare and bass up front and solid, hats a step back, chords floating behind.
+  - k: play
+    t: "A throw: press [RECORD], press [PAGE] until the fourth light is on, and select [T2]. Hold [TRIG 13] and turn [DELAY SEND] to about 100."
+    hl: p:record p:page h:track p:t2 h:s13 t:delay
+    hear: "Once every four bars the last snare echoes away on its own. Its key flashes: it holds a lock."
+  - k: play
+    t: "A room shot: press [PAGE] until the second light is on, hold [TRIG 5] and turn [REVERB SEND] to about 110. Press [RECORD] to leave grid recording."
+    hl: p:page h:s5 t:reverb p:record
+    hear: One snare in bar 2 blooms into a big room, then the dry beat is straight back.
+  - k: play
+    t: "Ride the feedback: just after the throw in bar 4, hold [FUNC] and slowly turn [DELAY TIME] to raise DEL FEEDBACK towards 120. Bring it back to 40 within a bar or two. High feedback gets very loud, so keep [MAIN VOLUME] low."
+    hl: h:func t:deltime t:mainvol
+    hear: The echoes stop fading and start to swell, like a stalling engine. Pull back before they run away.
+  - k: play
+    t: "Try [DELAY TIME] at 32 (a quarter note) and at 16 (an eighth), and keep the one that sits best. Then save: hold [FUNC] and long-press [SETTINGS]."
+    hl: t:deltime h:func p:settings
+    hear: Longer echoes feel slower and wider. Shorter ones feel busier.
+  - k: check
+    t: In a dub mix, which parts usually stay dry?
+    q:
+      - "!Kick and bass"
+      - Chords and pads
+      - The snare
+      - "None: everything goes into the echo"
+    a: Kick and bass. They are the anchor, so they stay dry and solid. Echo and reverb go on snares, hats, chords and single throws, so the space moves around a steady centre.
+    hear: Keep the low end dry. Throw single hits into space, then close the send.
+challenge: Lock a [DELAY SEND] throw on one hat in bar 3 and a [REVERB SEND] room shot on one chord in bar 4. Keep only the throws that make you lean in.

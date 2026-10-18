@@ -19,7 +19,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     <div class="hmenu" id="hmenu">
       <nav class="instr" aria-label="Instrument">
         {INSTRUMENTS.map((x) => x.ready
-          ? <a href={`/${x.slug}`} aria-current={x === inst ? "page" : undefined}>{x.name}</a>
+          ? <a href={`/${x.slug}`} aria-current={x.key === inst?.key ? "page" : undefined}>{x.name}</a>
           : <span class="off">{x.name}<small>next</small></span>)}
       </nav>
       <hr class="hsep" />

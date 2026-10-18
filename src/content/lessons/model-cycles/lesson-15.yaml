@@ -1,0 +1,130 @@
+id: w15
+number: 15
+unit: Space, arrangement and finishing
+title: From loop to song
+goal: Turn your loop into a song of five sections, built by taking things away, and chain them in order.
+listen: 'Bonobo, "Kiara". Draw its energy as a line while you listen: where parts arrive, where it drops back, and how it ends.'
+concepts:
+  - h: The energy curve
+    p:
+      - "A song is a journey in energy: start low, climb, peak, drop back for a break, rise again and fade out. Sketch the curve before you arrange; it tells you what each section has to do."
+  - h: About three changes make a step
+    p:
+      - One change on its own slips by. Around three at once (a part arrives, another leaves, a sound opens up) and the ear hears a new section.
+  - h: Build by subtraction
+    p:
+      - "Copy the full loop into every section, then take things away: removing is easier than inventing. Change something, keep something: every section keeps one thread, here the chords, so it stays one song."
+  - h: Transitions
+    p:
+      - "Signal a change before it happens: take something out in the last bar, add a fill, or throw one hit into the delay. A part that keeps playing across the change carries the listener with you."
+steps:
+  - k: learn
+    fig: u4energy
+    t: "An energy curve for your song: intro, A, B, A again, B again, a break, a last B and an outro. Each step up is about three changes. The break drops low so the last B feels big again."
+  - k: learn
+    fig:
+      grid:
+        title: Five sections, one loop
+        presets:
+          - name: Intro
+            bpm: 90
+            note: Hats and chords only.
+            rows:
+              - { n: Kick, s: kick, hits: "" }
+              - { n: Snare, s: snare, hits: "" }
+              - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.5 }
+              - { n: Perc, s: perc, len: 12, hits: "" }
+              - { n: Bass, s: bass, p: [ 45, 0, 0, 0, 0, 0, 0, 43, 45, 0, 48, 0, 0, 0, 0, 0 ], hits: "" }
+              - { n: Chord, s: keys, note: 57, hits: "1,9", vel: 0.7 }
+              - { n: Chord, s: keys, note: 60, hits: "1,9", vel: 0.6 }
+          - name: A
+            bpm: 90
+            note: The beat and bass arrive. Fewer hats, no perc.
+            rows:
+              - { n: Kick, s: kick, hits: "1,9,11" }
+              - { n: Snare, s: snare, hits: "5,13" }
+              - { n: Hat, s: hat, hits: "3,11,15", vel: 0.5 }
+              - { n: Perc, s: perc, len: 12, hits: "" }
+              - { n: Bass, s: bass, p: [ 45, 0, 0, 0, 0, 0, 0, 43, 45, 0, 48, 0, 0, 0, 0, 0 ], hits: "1,8,9,11" }
+              - { n: Chord, s: keys, note: 57, hits: "1,9", vel: 0.7 }
+              - { n: Chord, s: keys, note: 60, hits: "1,9", vel: 0.6 }
+          - name: B
+            bpm: 90
+            note: "The full loop: the peak."
+            rows:
+              - { n: Kick, s: kick, hits: "1,9,11" }
+              - { n: Snare, s: snare, hits: "5,13" }
+              - { n: Hat, s: hat, hits: "2,3:0.55,4,6,7:0.55,8,10,11:0.55,12,14,15:0.55,16", vel: 0.25 }
+              - { n: Perc, s: perc, len: 12, hits: "1,4,7,10", vel: 0.5 }
+              - { n: Bass, s: bass, p: [ 45, 0, 0, 0, 0, 0, 0, 43, 45, 0, 48, 0, 0, 0, 0, 0 ], hits: "1,8,9,11" }
+              - { n: Chord, s: keys, note: 57, hits: "1,9", vel: 0.7 }
+              - { n: Chord, s: keys, note: 60, hits: "1,9", vel: 0.6 }
+          - name: Break
+            bpm: 90
+            note: "No kick, hats or perc: snare, bass and chords in space."
+            rows:
+              - { n: Kick, s: kick, hits: "" }
+              - { n: Snare, s: snare, hits: "5,13", vel: 0.6 }
+              - { n: Hat, s: hat, hits: "" }
+              - { n: Perc, s: perc, len: 12, hits: "" }
+              - { n: Bass, s: bass, p: [ 45, 0, 0, 0, 0, 0, 0, 43, 45, 0, 48, 0, 0, 0, 0, 0 ], hits: "1,8,9,11" }
+              - { n: Chord, s: keys, note: 57, hits: "1,9", vel: 0.7 }
+              - { n: Chord, s: keys, note: 60, hits: "1,9", vel: 0.6 }
+          - name: Outro
+            bpm: 90
+            note: Kick and bass have left. The rest drifts on.
+            rows:
+              - { n: Kick, s: kick, hits: "" }
+              - { n: Snare, s: snare, hits: "5,13", vel: 0.5 }
+              - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.45 }
+              - { n: Perc, s: perc, len: 12, hits: "1,4,7,10", vel: 0.4 }
+              - { n: Bass, s: bass, p: [ 45, 0, 0, 0, 0, 0, 0, 43, 45, 0, 48, 0, 0, 0, 0, 0 ], hits: "" }
+              - { n: Chord, s: keys, note: 57, hits: "1,9", vel: 0.7 }
+              - { n: Chord, s: keys, note: 60, hits: "1,9", vel: 0.6 }
+    t: Your five sections as a sketch. Switch through them while it plays. All five come from the same loop; each one leaves different things out.
+    hear: The intro and the break still sound like the same song as the B, with space in them.
+  - k: learn
+    fig: u4map
+    t: "This lesson's plan: copy B01 into B05 to B09, then clear tracks in each copy. B07 stays whole as the peak. The chords play in every section: that's the thread that keeps it one song."
+  - k: play
+    t: "Get B01 ready to hand over: go to B01, open the SCALE menu ([FUNC] + [PAGE]), set CHG to 64 and press [BACK]. In TRACK mode a pattern otherwise never ends, so the next one would never start. Save: hold [FUNC], long-press [SETTINGS]."
+    hl: h:pattern p:s1 h:func p:page t:level p:back p:settings
+    hear: No change in sound. B01 can now hand over to another pattern every 4 bars.
+  - k: play
+    t: "Copy B01 into five slots: hold [PATTERN] + [TRIG 1] and press [RECORD]. Then hold [PATTERN] + [TRIG 5] and press and hold [STOP] until the countdown finishes. Repeat for [TRIG 6], [TRIG 7], [TRIG 8] and [TRIG 9]."
+    hl: h:pattern h:s1 p:record h:s5 h:stop h:s6 h:s7 h:s8 h:s9
+    hear: "Press [PATTERN]: keys 5 to 9 now light up, because those slots hold data."
+  - k: play
+    t: "Intro: press [STOP], go to B05 (hold [PATTERN], press [TRIG 5]) and press [RECORD]. Select [T1] and press [FUNC] + [PLAY] to clear its trigs. Do the same on T2, T4 and T5. Press [RECORD] to leave, play it, and save."
+    hl: p:stop h:pattern p:s5 p:record h:track p:t1 h:func p:play p:t2 p:t4 p:t5 p:settings
+    hear: "Only hats and chords: the idea of the song, waiting for the beat."
+  - k: play
+    t: "A: go to B06, press [RECORD] and clear T4. Press [RECORD] to leave. Select [T3] and turn [CHANCE] to about 60%, then select [T6] and turn its [REVERB SEND] down a little. Save. Leave B07 as it is: it's your peak."
+    hl: h:pattern p:s6 p:record h:track p:t4 h:func p:play p:t3 t:chance p:t6 t:reverb p:settings
+    hear: "Three small changes: one step below the full loop."
+  - k: play
+    t: "Break: go to B08 and clear T1, T3 and T4 the same way. Then turn [REVERB SIZE] up to about 115. Each pattern keeps its own effect settings, so only the break gets the big room. Save."
+    hl: h:pattern p:s8 p:record h:track p:t1 p:t3 p:t4 h:func p:play t:revsize p:settings
+    hear: "Snare, bass and chords in a huge space: the floor drops out."
+  - k: play
+    t: "Outro: go to B09 and clear T1 and T5. On T6, turn [DECAY] up so the last chords ring longer. Save."
+    hl: h:pattern p:s9 p:record h:track p:t1 p:t5 h:func p:play p:t6 t:decay p:settings
+    hear: Kick and bass leave first. The song drifts out on the sounds it started with.
+  - k: play
+    t: "Chain it: with the sequencer stopped, hold [PATTERN], then press and hold [TRIG 5]. Keep it held and press [TRIG 6], [TRIG 7], [TRIG 6], [TRIG 7], [TRIG 8], [TRIG 7] and [TRIG 9] in that order. Let go and press [PLAY]."
+    hl: h:pattern h:s5 p:s6 p:s7 p:s8 p:s9 p:play
+    hear: "Intro, A, B, A, B, break, B, outro: about 85 seconds, then it loops."
+  - k: play
+    t: Listen to every change. Where one feels too sudden, go to the pattern before it, press [RECORD], press [PAGE] until the fourth light is on, and remove a few hats on T3 so the last bar thins out. Save. Picking a pattern loses the chain, so build it again to listen.
+    hl: p:record p:page h:track p:t3 h:func p:settings
+    hear: A small gap before a change makes the next section land harder.
+  - k: check
+    t: About how many changes at once make the ear hear a new section?
+    q:
+      - One
+      - "!About three"
+      - Exactly eight
+      - As many as possible
+    a: About three. One change slips by; around three at once (a part in, a part out, a sound opening up) feels like a new section. Change much more and it sounds like a different song.
+    hear: Copy the full loop, take things away, and change about three things per step.
+challenge: Draw the energy curve of your chain on paper, then the one you drew for Bonobo's "Kiara". Change one of your sections so your curve looks more like the one you love.

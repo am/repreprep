@@ -1,11 +1,11 @@
 ---
 import Base from "../../../layouts/Base.astro";
 import PanelGuide from "../../../components/course/PanelGuide.astro";
-import { READY } from "../../../course/index.js";
+import { courses } from "../../../course/content.js";
 
 /* /model-cycles/panel shows LEVEL/DATA; /model-cycles/panel/<control> shows that control */
-export function getStaticPaths() {
-  return READY.flatMap((I) =>
+export async function getStaticPaths() {
+  return (await courses()).flatMap((I) =>
     [undefined, ...Object.keys(I.controls)].map((control) => ({ params: { inst: I.slug, control }, props: { I, sel: control || Object.keys(I.controls)[0] } })));
 }
 const { I, sel } = Astro.props;

@@ -1,0 +1,90 @@
+id: w14
+number: 14
+unit: Space, arrangement and finishing
+title: Listen like a producer
+goal: Listen to a track in layers, write down its sonic DNA, and balance your own track's levels and pans.
+listen: 'A track you love, your choice (Bonobo, "Kiara", works well). Play it three times: once just to enjoy it, once following only the bass, once following only the drums.'
+concepts:
+  - h: The sonic DNA audit
+    p:
+      - "Producers listen with questions. Four do most of the work: rhythm (tempo, groove, what drives it), texture (which sounds, near or far), harmony (minor or major, how many chords) and arrangement (what comes and goes, and when). Write the answers on one page."
+  - h: Follow one part at a time
+    p:
+      - "A track is many parts at once. Follow one from start to end, then the next: the bass first, then the drums. After a few passes you stop hearing a blur and start hearing parts."
+  - h: The rule of three
+    p:
+      - "Only about three things hold your attention at once. If everything is loud, nothing stands out. Level moves a part front or back, pan moves it left or right: keep kick, snare, bass and the lead in the centre, and spread the rest in pairs."
+steps:
+  - k: learn
+    fig: u4dna
+    t: "Use this sheet whenever you study a track. Listen once for pleasure, then again with the sheet, writing one or two words per line. There's no right answer: write what you hear."
+  - k: learn
+    fig:
+      grid:
+        title: Rule of three
+        presets:
+          - name: Everything busy
+            bpm: 90
+            note: Seven parts, all busy, all at full strength.
+            rows:
+              - { n: Kick, s: kick, hits: "1,4,7,9,11,14" }
+              - { n: Snare, s: snare, hits: "5,8,13,16" }
+              - { n: Hat, s: hat, hits: "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16", vel: 0.7 }
+              - { n: Perc, s: perc, hits: "2,3,6,10,12,15", vel: 0.7 }
+              - { n: Shaker, s: shaker, hits: "1,3,5,7,9,11,13,15", vel: 0.7 }
+              - { n: Bass, s: bass, p: [ 45, 0, 45, 48, 0, 45, 0, 52, 45, 0, 50, 48, 0, 45, 43, 0 ], hits: "1,3,4,6,8,9,11,12,14,15" }
+              - { n: Chord, s: keys, p: [ 57, 0, 60, 0, 57, 0, 64, 0, 57, 0, 60, 0, 62, 0, 64, 0 ], hits: "1,3,5,7,9,11,13,15" }
+          - name: Three in focus
+            bpm: 90
+            note: Kick, bass and chords lead. Everything else whispers.
+            rows:
+              - { n: Kick, s: kick, hits: "1,9,11", vel: 0.9 }
+              - { n: Snare, s: snare, hits: "5,13", vel: 0.55 }
+              - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.3 }
+              - { n: Perc, s: perc, hits: "" }
+              - { n: Shaker, s: shaker, hits: "6,14", vel: 0.2 }
+              - { n: Bass, s: bass, p: [ 45, 0, 0, 0, 0, 0, 0, 0, 45, 0, 48, 0, 0, 0, 0, 0 ], hits: "1,9,11" }
+              - { n: Chord, s: keys, note: 57, hits: "1,9" }
+    t: Two versions of one groove. In the first, every part plays a lot at full strength. In the second, kick, bass and chords lead and the rest is quiet. Switch while it plays.
+    hear: Busy sounds smaller, not bigger. With three in focus, each part has room.
+  - k: learn
+    fig: u4field
+    t: Picture the mix as a stage. Louder parts stand at the front, quieter ones at the back, and pan moves a part left or right. Low, important parts go in the centre; supporting parts go in pairs, one each side.
+  - k: play
+    t: "Copy B01 into B10 as a sketchpad: hold [PATTERN] + [TRIG 1] and press [RECORD]. Then hold [PATTERN] + [TRIG 10] and press and hold [STOP] until the countdown finishes."
+    hl: h:pattern h:s1 p:record h:s4 h:stop
+    hear: B10 now has your sounds. B01 is unchanged.
+  - k: play
+    t: "Go to B10 (hold [PATTERN], press [TRIG 10]) and press [FUNC] + [PLAY]: this clears the trigs and keeps the sounds. Open the SCALE menu ([FUNC] + [PAGE]), set MOD to PATTERN and LEN to 16, then press [BACK]."
+    hl: h:pattern p:s10 h:func p:play p:page t:level p:back
+    hear: An empty one-bar pattern with your six sounds.
+  - k: play
+    t: "Play your chosen track and tap its tempo: hold [FUNC] and tap [TEMPO] on the beat. Tempo is stored per pattern, so B01 keeps 90. Press [RECORD] and place kicks (T1), snares (T2) and hats (T3) where you hear them."
+    hl: h:func p:tempo p:record h:track p:t1 p:t2 p:t3
+    hear: "It won't sound like the record, and that's fine: you're copying where the hits sit, not the sounds."
+  - k: play
+    t: "Add the bass rhythm on T5 with a single note. Press [RECORD] to leave, then play your skeleton and the song one after the other, and write on your sheet what's missing: a sound, the groove, or a part. Save B10."
+    hl: h:track p:t5 p:record h:func p:settings
+    hear: Four parts are usually enough to recognise a track. That's its skeleton.
+  - k: play
+    t: "Go to B01 (hold [PATTERN], press [TRIG 1]) and play it. Mute every track ([FUNC] + [T1] to [T6]), then unmute them one at a time: kick, bass, chords, then the rest. After each, ask: which three do I hear first?"
+    hl: h:pattern p:s1 p:play h:func p:t1 p:t2 p:t3 p:t4 p:t5 p:t6
+    hear: If a fourth part keeps grabbing you, it's too loud or too busy.
+  - k: play
+    t: "Balance: select each track and turn its [LEVEL/DATA] down low. Bring T1 up until the kick feels solid: that's your anchor. Then bring up bass, snare, chords, hats and perc one at a time, each until it's clear but doesn't shout."
+    hl: h:track p:t1 t:level p:t5 p:t2 p:t6 p:t3 p:t4
+    hear: Building up from quiet gives a better balance than turning things down from loud.
+  - k: play
+    t: "Pan in pairs: select [T3] (hats), hold [FUNC] and turn [LEVEL/DATA] a little to the left. Select [T4] (perc) and pan it a little to the right. Leave kick, snare, bass and chords centred. Save: hold [FUNC] and long-press [SETTINGS]."
+    hl: h:track p:t3 h:func t:level p:t4 p:settings
+    hear: The beat gets wider while its centre stays solid.
+  - k: check
+    t: Four parts all grab your attention at once. What's the best first fix?
+    q:
+      - Add a fifth part to glue them together
+      - "!Turn one or two down so about three lead"
+      - Add more reverb to everything
+      - Pan all four hard left and right
+    a: Turn one or two down, or make them simpler, so about three things lead. The ear follows around three at once; the other parts should support them.
+    hear: Three in focus. Everything else supports.
+challenge: Fill in a sonic DNA sheet for a track in a style you don't usually listen to. Write one thing it does that your track doesn't, and try it on B01.

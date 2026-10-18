@@ -1,9 +1,9 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Keys from "../../components/course/Keys.astro";
-import { READY } from "../../course/index.js";
-export function getStaticPaths() {
-  return READY.filter((I) => I.shortcuts).map((I) => ({ params: { inst: I.slug }, props: { I } }));
+import { courses } from "../../course/content.js";
+export async function getStaticPaths() {
+  return (await courses()).filter((I) => I.shortcuts).map((I) => ({ params: { inst: I.slug }, props: { I } }));
 }
 const { I } = Astro.props;
 ---

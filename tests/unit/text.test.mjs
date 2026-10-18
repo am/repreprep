@@ -1,10 +1,10 @@
 // Step text: key caps, song links, sentence splitting and how step text is laid out (src/course/shared/text.js).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { INSTRUMENTS } from "../../src/course/index.js";
+import { COURSES } from "../../src/course/files.js";
 import { parseHl, keyify, keyCap, splitSent, stepParts, withHl, KIND } from "../../src/course/shared/text.js";
 
-const I = INSTRUMENTS.find((i) => i.ready);
+const [I] = COURSES;
 /* the key caps in some HTML, as [label, action] pairs */
 const caps = (html) => [...html.matchAll(/<span class="k ?([a-z]*) ?"[^>]*>(?:<svg[\s\S]*?<\/svg>)?([^<]*)<\/span>/g)].map((m) => [m[2], m[1]]);
 

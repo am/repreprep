@@ -1,0 +1,101 @@
+id: w07
+number: 7
+unit: Sound
+title: Building a sound palette
+goal: Build a sound from layers that each do one job, add a found sound, and save your night-time kit.
+listen: Burial, "Near Dark". Listen past the drums to the crackle and small odd sounds around them. The texture is part of the music.
+concepts:
+  - h: Body, top and tail
+    p:
+      - A big drum is often several sounds played at once. The body gives weight and pitch, the top gives the bright attack, and the tail sets how long it lingers. Describe the drum you want, then give each job to one layer.
+  - h: Layers that don't fight
+    p:
+      - Layers work when each owns a different height (low, middle, high) and a different moment (the start or the tail). Two layers doing the same job just get louder and muddier.
+  - h: Found sounds and texture
+    p:
+      - Burial built percussion from sounds like video game effects and laid crackle under his tracks. Kiasmos used a lighter's wheel as a hat. Small, odd sounds give a track its own world.
+  - h: A kit is a palette
+    p:
+      - Your six track sounds together are a kit. The Model:Cycles can save the whole kit, and a preset lock lets a single step borrow a different sound.
+steps:
+  - k: learn
+    fig: u2layers
+    t: "Three layers, one hit: a short, bright top for the attack, a body for weight and pitch, and a tail for length. Played together, the ear hears one drum."
+  - k: learn
+    fig:
+      grid:
+        title: One snare, three layers
+        presets:
+          - name: Body
+            bpm: 90
+            note: "A soft, low hit on 2 and 4: weight, but no edge."
+            rows:
+              - { n: Kick, s: kick, hits: "1,9,11" }
+              - { n: Body, s: perc, hits: "5,13" }
+              - { n: Top, s: rim, hits: "" }
+              - { n: Tail, s: ohat, hits: "" }
+              - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.4 }
+          - name: Body + top
+            bpm: 90
+            note: A quiet click on the same steps gives it an edge.
+            rows:
+              - { n: Kick, s: kick, hits: "1,9,11" }
+              - { n: Body, s: perc, hits: "5,13" }
+              - { n: Top, s: rim, hits: "5,13", vel: 0.4 }
+              - { n: Tail, s: ohat, hits: "" }
+              - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.4 }
+          - name: Body + top + tail
+            bpm: 90
+            note: A soft noise that rings on lets the hit linger.
+            rows:
+              - { n: Kick, s: kick, hits: "1,9,11" }
+              - { n: Body, s: perc, hits: "5,13" }
+              - { n: Top, s: rim, hits: "5,13", vel: 0.4 }
+              - { n: Tail, s: ohat, hits: "5,13", vel: 0.3 }
+              - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.4 }
+    t: Switch through the three versions while it plays. Each row is one layer on the same two steps. An example of the idea, built from this page's simple sounds.
+    hear: With all three, it stops sounding like three sounds and becomes one fuller snare.
+  - k: learn
+    fig: u2palette
+    t: "Think of your kit as a palette: each sound owns its own spot, low or high, short or long. A new sound fits best in an empty spot. Leave room for the bass and chords you'll add later."
+  - k: play
+    t: "Play B01. Your soft snare from lesson 5 is the body. Give it a tail: select [T2] and turn [DECAY] up a little, until each backbeat lingers."
+    hl: p:play h:track p:t2 t:decay
+    hear: A longer, softer hit.
+  - k: play
+    t: "Add a top layer on T3: press [RECORD], select [T3], make sure the first page light is on, and press [TRIG 5] and [TRIG 13] so a hat plays with each snare."
+    hl: p:record h:track p:t3 p:s5 p:s13
+    hear: The snare gets an edge, but your dark hat is the wrong colour for it. Shape it next.
+  - k: play
+    t: "Shape the top: hold [TRIG 5] and turn [DECAY] right down, then [PITCH] and [SHAPE] up. Do the same on [TRIG 13]. Hold both, press [LEVEL/DATA] until VEL shows, and set about 50."
+    hl: h:s5 t:decay t:pitch t:shape h:s13 p:level t:level
+    hear: "A tiny bright tick that only adds edge. Listen to the snare: it should sound like one drum."
+  - k: play
+    t: "Copy the layer to every bar: hold [TRIG 5] and [TRIG 13] and press [RECORD]. Press [PAGE] for page 2, hold [TRIG 5] and press [STOP] to paste. Repeat on pages 3 and 4."
+    hl: h:s5 h:s13 p:record p:page p:stop
+    hear: Every backbeat has its top now, locks included.
+  - k: play
+    t: "Make a found sound on T4: select [T4], hold [FUNC] and turn [PITCH] up an octave, turn [DECAY] short and [COLOR] up until it sounds like a lighter's wheel or a click, not a drum."
+    hl: h:track p:t4 h:func t:pitch t:decay t:color
+    hear: A small, odd tick drifting on its 12-step loop and coming and going with its chance.
+  - k: play
+    t: "Borrow a sound with a preset lock: still on T4, hold [TRIG 10] and press [MACHINES] to open the PRESET menu. Browse with [LEVEL/DATA], press [T4] to hear each one, and press [LEVEL/DATA] to lock a small, strange sound to that step."
+    hl: h:s10 p:machines t:level p:t4 p:level
+    hear: Once round each 12-step loop, T4 plays a different sound. [MACHINES] lights when you hold that trig.
+  - k: play
+    t: "Save the kit: press [RECORD] to leave grid recording. Press [FUNC] + [MACHINES], then [FUNC] to open the save menu. Choose SAVE KIT and press [LEVEL/DATA]. Name it (hold [FUNC] and turn [LEVEL/DATA] to change a letter), press [LEVEL/DATA] and choose YES."
+    hl: p:record h:func p:machines t:level p:level
+    hear: Your six sounds are now a kit you can load in other projects.
+  - k: play
+    t: "Save the pattern too: hold [FUNC] and long-press [SETTINGS]."
+    hl: h:func p:settings
+  - k: check
+    t: In your layered snare, what job does the short T3 hit do?
+    q:
+      - Adds weight and low end
+      - "!Adds a short, bright attack"
+      - Makes the snare ring longer
+      - Moves the snare later in time
+    a: "It's the top layer: a short, bright attack that gives the soft snare an edge. The snare itself is the body, and its longer DECAY is the tail."
+    hear: Describe the drum first (body, top, tail), then give each job to one layer.
+challenge: Listen to Burial's "Near Dark" again and list three sounds that are neither drums nor melody. Try to make one of them on T4 and preset lock it to another T4 step.

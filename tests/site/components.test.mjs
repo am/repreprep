@@ -2,11 +2,12 @@
 // notes, the course map, the panel guide and the reference pages.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { READY, stepPath, nextLesson } from "../../src/course/index.js";
+import { stepPath, nextLesson } from "../../src/course/index.js";
+import { COURSES } from "../../src/course/files.js";
 import { esc } from "../../src/course/shared/html.js";
 import { page } from "./built.mjs";
 
-const [I] = READY;
+const [I] = COURSES;
 const count = (html, re) => (html.match(re) || []).length;
 /* just the player, or just the part under it, of a lesson page */
 const player = (L, i) => page(stepPath(L, i)).match(/<section class="player"[\s\S]*?<\/section>/)[0];
