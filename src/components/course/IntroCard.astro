@@ -12,3 +12,8 @@ const ideas = L.concepts || [];
   <p class="ptxt t-body"><b>You will learn to</b> {goalPhrase(L)}</p>
   {ideas.length > 0 && <div class="ideas t-body"><div class="t-label">Ideas in this lesson</div><ul>{ideas.map((c: any) => <li>{c.h}</li>)}</ul></div>}
   {L.listen && <p class="t-note"><span class="t-label">Listen first</span><Fragment set:html={linkSongs(esc(L.listen))} /></p>}</div>
+
+<style>
+  .introcard{display:flex;flex-direction:column;gap:var(--s4);color:var(--muted)}
+  .introcard .ideas ul{margin:0;padding-left:1.1em;line-height:var(--lh-loose)}
+</style>

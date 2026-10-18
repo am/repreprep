@@ -19,3 +19,8 @@ const title = `${lessonLabel(L)}: ${L.title}` + (act === L.steps.length ? " (cha
   <Player I={I} L={L} act={act} />
   <div class="below"><LessonWrapup I={I} L={L} /></div>
 </Base>
+
+<style>
+  /* lesson page: full-height step player on top, then the lesson text, then the whole course as bands */
+  .below{margin-top:var(--s6)}
+</style>

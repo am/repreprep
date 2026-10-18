@@ -15,3 +15,9 @@ const COMMON = [["PITCH", "-24 to +24 semitones"], ["DECAY", "0–127, length of
     <Band eyebrow="All machines" title="Every machine also has"><dl class="spec">{COMMON.map(([k, v]) => <Fragment><dt>{k}</dt><dd>{v}</dd></Fragment>)}</dl></Band>
   </div>
 </Base>
+
+<style>
+  .spec{margin:0;display:grid;grid-template-columns:auto 1fr;gap:var(--s2) var(--s5);font-size:var(--fs-sm);color:var(--muted)}
+  .spec dt{font-family:var(--mono);font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--fg);padding-top:2px}
+  .spec dd{margin:0}
+</style>

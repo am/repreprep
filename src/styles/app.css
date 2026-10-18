@@ -1,4 +1,7 @@
-/* Layout: step player on top, lesson text and the course index below, the instrument panel docked beside it so every step lights the controls it uses. Dark-first like a studio at night. */
+/* Site-wide styles: design tokens, base elements, the shared text roles and blocks (band, stack, buttons,
+   messages), and everything drawn from HTML strings rather than by a component (key caps, song links, the
+   panel drawing, figures, playable grids). Each component's own styles live in its <style>. Dark-first like a
+   studio at night. */
 :root{
   /* colors: light-dark(light theme, dark theme) */
   --bg:light-dark(#efede8,#141517); --surface:light-dark(#f8f7f4,#1d1f22); --surface-2:light-dark(#e6e3dd,#25282c); --line:light-dark(#d2cec6,#34383d);
@@ -52,71 +55,6 @@ h1,h2,h3{font-family:var(--display);text-wrap:balance;margin:0;line-height:1.15}
 h1,h2{font-weight:var(--fw-black);letter-spacing:var(--ls-tight)}
 h3{font-weight:var(--fw-bold)}
 
-/* header */
-.top{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s4) var(--s5);padding-bottom:var(--s4);border-bottom:1px solid var(--line)}
-.brand{display:flex;align-items:baseline;gap:var(--s3)}
-.brand h1{font-size:var(--fs-logo);line-height:.9}
-/* logo: three REPs in one grid cell, colors and offsets set per layer by Logo.astro */
-:root{--logo-blue:#1434f5;--logo-yellow:#fce64e;--logo-ink:var(--fg)} /* first paint only */
-.logo{display:inline-grid;padding:0 .1em .1em 0;font-family:"Manrope",var(--display);text-decoration:none;letter-spacing:var(--ls-tight);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
-.logo span{grid-area:1/1;font-weight:var(--w);color:var(--c);transform:translate(var(--x),var(--y));transition:transform .25s ease,color .25s ease}
-.logo span:nth-child(1){z-index:1}.logo span:nth-child(2){z-index:2}.logo span:nth-child(3){z-index:3}
-.logo.glitch span{transition:none}
-@media (prefers-reduced-motion:reduce){.logo span{transition:none}}
-.instr{display:flex;gap:var(--s5);flex-wrap:wrap;align-items:baseline}
-.instr a,.instr .off{text-decoration:none;color:var(--muted);font-family:var(--display);font-weight:var(--fw-semibold);font-size:var(--fs-sm)}
-.instr a:hover{color:var(--fg)}
-.instr a[aria-current="page"]{color:var(--fg)}
-.instr .off{opacity:.55;cursor:default}
-.instr small{font-family:var(--body);font-weight:var(--fw-regular);opacity:.8;margin-left:var(--s1)}
-.ctrls{margin-left:auto;display:inline-flex;align-items:center;gap:var(--s2);border:1px solid var(--line);border-radius:var(--r-pill)}
-/* the theme pill shares the outer pill's height and right edge: their borders overlap */
-.ctrls .theme{margin:-1px -1px -1px 0}
-.meter{font-family:var(--mono);font-size:var(--fs-s);color:var(--muted);text-decoration:none;white-space:nowrap;padding:0 var(--s1) 0 var(--s3)}
-.meter:hover{color:var(--fg)}
-.tabs{display:flex;gap:var(--s1);margin:var(--s4) 0 var(--s6);flex-wrap:wrap}
-.tabs a{text-decoration:none;display:inline-block;background:none;border:none;border-bottom:2px solid transparent;padding:var(--s2) var(--s3);font-family:var(--display);font-weight:var(--fw-semibold);letter-spacing:var(--ls-key);text-transform:uppercase;font-size:var(--fs-s);color:var(--muted);cursor:pointer}
-.tabs a[aria-current="page"]{color:var(--fg);border-color:var(--led)}
-/* header menu: on wide screens the menu is simply the rest of the header row */
-.knob{display:none;flex:none;width:2.75rem;height:2.75rem;margin-left:auto;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.knob svg{width:100%;height:100%;display:block;transition:transform .25s cubic-bezier(.2,.9,.3,1.2)}
-.kn-cap{fill:var(--led)}
-.kn-mark{stroke:var(--bg);stroke-width:2.8;stroke-linecap:butt}
-.top.open .knob svg{transform:rotate(135deg)}
-.hmenu{display:contents}
-.hsep{display:none}
-/* phones: logo and the knob; turning the knob opens every header option in a panel under it */
-/* phones and tablets: logo + nav + meter + theme don't fit in one row, so they fold into the knob menu */
-@media (max-width:946px){
-  .top{position:relative;flex-wrap:nowrap;padding-bottom:var(--s3)}
-  .knob{display:block}
-  .hmenu{display:none;position:absolute;z-index:40;top:calc(100% + var(--s2));left:auto;right:0;width:max-content;max-width:100%;flex-direction:column;align-items:stretch;gap:var(--s5);padding:var(--s5);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);box-shadow:0 1rem 2.5rem var(--shadow)}
-  .top.open .hmenu{display:flex}
-  .hmenu .instr{flex-direction:column;gap:var(--s3)}
-  .hmenu .instr a,.hmenu .instr .off{font-size:var(--fs-md)}
-  .hmenu .ctrls{margin:0;align-self:flex-start}
-  .hsep{display:block;width:100%;margin:0;border:0;border-top:1px solid var(--line)}
-  .hmenu .acct{align-self:flex-start;font-size:var(--fs-s);padding:var(--s2) var(--s4)}
-}
-@media (max-width:836px){
-  .brand h1{font-size:2.3rem}
-  .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:var(--s3) calc(-1 * var(--s5)) var(--s5);padding-inline:var(--s5)}
-  .tabs::-webkit-scrollbar{display:none}
-  .tabs a{white-space:nowrap;padding-inline:var(--s2)}
-}
-
-/* lesson page: full-height step player on top, then the lesson text, then the whole course as bands */
-.below{margin-top:var(--s6)}
-
-.wk{display:grid;grid-template-columns:2.125rem 1fr auto;align-items:center;gap:var(--s2);padding:var(--s2) var(--s2);border-radius:var(--r-m);border:1px solid transparent;background:none;text-align:left;cursor:pointer;width:100%}
-.wk:hover{background:var(--surface)}
-.wk .n{font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted)}
-.wk .t{font-size:var(--fs-sm);line-height:var(--lh-snug)}
-.wk .s{width:.75rem;height:.75rem;border-radius:50%;border:1.5px solid var(--faint)}
-.wk .s.part{border-color:var(--hold);background:conic-gradient(var(--hold) var(--p,0%),transparent 0)}
-.wk .s.full{border-color:var(--done);background:var(--done)}
-
-/* lesson */
 /* text roles: one set of styles shared by the intro card, the steps and the pages.
    eyebrow (accent mono) > title (display) > lead (strong body) > body (muted) > label (faint mono) > note (side rule) */
 .t-eyebrow{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--led)}
@@ -128,10 +66,6 @@ h3{font-weight:var(--fw-bold)}
 .t-label{display:block;margin-bottom:var(--s1);font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--faint)}
 .t-note{margin:0;padding-left:var(--s3);border-left:.1875rem solid var(--turn);font-size:.95em;color:var(--muted)}
 .t-note.done{border-color:var(--done)}
-/* card: the one information block. Same padding everywhere, and its children are spaced by one gap, never by their own margins.
-   Inside: .t-eyebrow > .t-title.t-card > .t-body, with .t-label for small print. */
-.card{display:flex;flex-direction:column;gap:var(--s3);padding:var(--s5);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);min-width:0}
-.card > *{margin:0}
 /* band: the open alternative to a card. Rows between hairlines, a heading column on the left and the content on the right.
    Used by the course map and the reference pages. */
 .bands{border-bottom:1px solid var(--line)}
@@ -143,7 +77,6 @@ h3{font-weight:var(--fw-bold)}
 .t-title.t-card{font-weight:var(--fw-bold);font-size:var(--fs-h3);line-height:var(--lh-snug)}
 /* blocks stacked in a column sit one block-gap apart */
 .stack{display:flex;flex-direction:column;gap:var(--s5)}
-.goal{margin:0;font-size:var(--fs-lg);color:var(--fg);max-width:65ch}
 /* key cap (keyCap in shared/text.js): inline-block with its own line-height so it is the same size in running text and in flex rows like the legend */
 .k{display:inline-block;font-family:var(--mono);font-weight:var(--fw-bold);font-size:.74em;line-height:1.3;letter-spacing:var(--ls-key);padding:2px var(--s2) 1px;border-radius:var(--r-xs);background:var(--surface-2);border:1px solid var(--line);border-bottom-width:2px;white-space:nowrap;margin:0 1px}
 .k .ico{width:1.05em;height:1.05em;vertical-align:-.16em}
@@ -153,118 +86,15 @@ h3{font-weight:var(--fw-bold)}
 a.song{color:inherit;text-decoration:underline;text-decoration-color:var(--done);text-decoration-thickness:2px;text-underline-offset:.1875rem;white-space:nowrap}
 a.song:hover{color:var(--done)}
 a.song svg{width:.95em;height:.95em;margin-left:var(--s1);vertical-align:-.12em;color:var(--done)}
-.notebox{display:flex;flex-direction:column;gap:var(--s3);padding-top:var(--s5);border-top:1px solid var(--line)}
-.nb-h{display:flex;align-items:center;justify-content:space-between;gap:var(--s3)}
-.nb-text{max-width:72ch;white-space:pre-wrap;overflow-wrap:anywhere}
-.nb-edit{display:flex;flex-direction:column;gap:var(--s3)}
-.nb-edit textarea{width:100%;min-height:7.5rem;padding:var(--s3);border-radius:var(--r-m);border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font:inherit;font-size:var(--fs-sm);resize:vertical}
-.nb-edit textarea:focus{outline:2px solid var(--led);outline-offset:1px}
-.nb-stamp{color:var(--done)}
-.finish{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
 .btn{border:1px solid var(--line);background:var(--surface);padding:var(--s2) var(--s4);border-radius:var(--r-m);cursor:pointer;font-family:var(--display);font-weight:var(--fw-semibold);letter-spacing:var(--ls-wide)}
 .btn.primary{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 .btn:disabled{opacity:.45;cursor:default}
 /* destructive actions stay red whatever the accent color is */
 .btn.danger{color:var(--danger);border-color:var(--danger)}
 .btn.danger:hover{background:var(--danger);color:var(--bg)}
-.finish .stamp{font-family:var(--mono);font-size:var(--fs-s);color:var(--done)}
 
-/* step player */
-/* open on the page, no box: the drawing and the step sit straight on the background */
-.player{--ph:calc(100dvh - 2rem);height:max(32.5rem,var(--ph));display:flex;flex-direction:column;gap:var(--s3);scroll-margin-top:var(--s3)}
-.phead{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2) var(--s4)}
-.phead .ttl{font-family:var(--display);font-weight:var(--fw-semibold);font-size:var(--fs-lg);min-width:0}
-.phead .ttl span{color:var(--muted);font-weight:var(--fw-medium)}
-.picker{position:relative;min-width:0}
-.picker summary{list-style:none;cursor:pointer;display:inline-flex;align-items:center;gap:var(--s2);padding:var(--s1) var(--s3) var(--s1) 0;border-radius:var(--r-m)}
-.picker summary::-webkit-details-marker{display:none}
-.picker summary:hover{color:var(--led)}
-.picker .caret{width:.4375rem;height:.4375rem;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg) translateY(-2px);opacity:.6}
-.picker[open] .caret{transform:rotate(-135deg) translateY(-2px)}
-.pmenu{position:absolute;z-index:30;top:calc(100% + .375rem);left:0;width:min(32.5rem,calc(100vw - 2rem));max-height:min(70vh,35rem);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);box-shadow:0 .75rem 2rem var(--shadow);padding:var(--s2);display:grid;grid-template-columns:1fr 1fr;gap:var(--s1) var(--s3);font-family:var(--body,inherit);font-weight:var(--fw-regular);font-size:var(--fs-sm)}
-@media (max-width:660px){.pmenu{grid-template-columns:1fr;position:fixed;top:auto;left:1rem;right:1rem;width:auto;max-height:65vh}}
-.pm-g{min-width:0}
-.pm-h{font-family:var(--display);font-weight:var(--fw-bold);font-size:var(--fs-s);margin:var(--s2) var(--s2) var(--s1);color:var(--fg)}
-.pm-i{display:grid;grid-template-columns:1.875rem 1fr auto;align-items:center;gap:var(--s2);width:100%;padding:var(--s2) var(--s2);border:0;border-radius:var(--r-s);background:none;text-align:left;color:var(--fg);font:inherit;cursor:pointer}
-.pm-i:hover{background:var(--surface-2)}
-.pm-i[aria-current="true"]{background:var(--led-soft)}
-.pm-i .n{font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted)}
-.pm-i .t{line-height:var(--lh-snug)}
-.pm-i .s{width:.625rem;height:.625rem;border-radius:50%;border:1.5px solid var(--faint)}
-.pm-i .s.part{border-color:var(--hold);background:conic-gradient(var(--hold) var(--p,0%),transparent 0)}
-.pm-i .s.full{border-color:var(--done);background:var(--done)}
-.dots{flex:1 1 13.75rem;min-width:10rem;max-width:32.5rem;margin-left:auto;display:flex;justify-content:space-between;align-items:center;position:relative;height:1.5rem}
-.dots::before{content:"";position:absolute;left:.6875rem;right:.6875rem;top:50%;height:2px;margin-top:-1px;background:var(--line);border-radius:var(--r-xs)}
-.dots::after{content:"";position:absolute;left:.6875rem;top:50%;height:2px;margin-top:-1px;width:calc((100% - 1.375rem) * var(--p,0));background:var(--done);border-radius:var(--r-xs)}
-.dots a{position:relative;z-index:1;width:1.375rem;height:1.375rem;padding:0;border:0;background:none;cursor:pointer;display:grid;place-items:center}
-.dots a::before{content:"";width:.625rem;height:.625rem;border-radius:50%;background:var(--surface-2);border:2px solid var(--line);box-sizing:border-box;transition:transform .12s}
-.dots a:hover::before{transform:scale(1.3)}
-.dots a.done::before{background:var(--done);border-color:var(--done)}
-.dots a.opt::before{border-style:dashed;border-color:var(--hold)}
-.dots a[aria-current="true"]::before{width:.875rem;height:.875rem;background:var(--surface);border:.1875rem solid var(--led)}
-/* icon only: expand arrows, or collapse arrows while the player fills the window */
-.maxbtn{display:grid;place-items:center;width:2rem;height:2rem;padding:0;border:1px solid var(--line);background:none;border-radius:var(--r-m);cursor:pointer;color:var(--muted)}
-/* on phones: lesson title and maximize share the first row, the step timeline gets its own full-width row below */
-@media (max-width:836px){.phead .picker{flex:1}.phead .maxbtn{order:1}.phead .dots{order:2;flex-basis:100%;max-width:none;margin-left:0}}
-.maxbtn svg{width:1rem;height:1rem;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-.maxbtn .mx-out,html.focus .maxbtn .mx-in{display:none}
-html.focus .maxbtn .mx-out{display:block}
-.maxbtn:hover{color:var(--fg);border-color:var(--faint)}
-.pbody{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) .875rem var(--sw,clamp(18.75rem,30%,28.75rem));gap:var(--s1)}
-.gutter{cursor:col-resize;display:flex;align-items:center;justify-content:center;border-radius:var(--r-s);touch-action:none}
-.gutter::before{content:"";width:.25rem;height:2.75rem;border-radius:var(--r-xs);background:var(--line);transition:background .15s,height .15s}
-.gutter:hover::before,.gutter:focus-visible::before,.gutter.drag::before{background:var(--led);height:4.5rem}
 body.resizing{cursor:col-resize;user-select:none}
-.pstage{min-height:0;display:flex;align-items:center;justify-content:center}
-.pstage > svg{width:100%;height:100%;display:block}
-/* the step keeps its card: it separates the text from the drawing */
-.pstep{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--s6);padding:var(--s5) var(--s5);border-radius:var(--r-l);border:1px solid var(--line);background:var(--bg)}
-.pstep .h{margin:0;font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:var(--ls-caps);color:var(--faint);text-transform:uppercase}
-/* on phones the step drops its card outline and padding, so the text runs the full width of the page */
-@media (max-width:836px){.pstep{border:0;border-radius:0;padding-inline:0}}
-.pstep .ptxt{font-size:var(--fs-step);line-height:var(--lh-loose);margin:0}
-.ptxt p{margin:0 0 .6em}.ptxt p:last-child{margin-bottom:0}
-.pacts{list-style:none;margin:0;padding:0;display:grid;gap:.9em}
-.pacts li{position:relative;padding-left:1.15em}
-.pacts li::before{content:"";position:absolute;left:.1em;top:calc(.5lh - .16em);width:.42em;height:.42em;border-radius:50%;background:var(--led)}
-.introcard{display:flex;flex-direction:column;gap:var(--s4);color:var(--muted)}
-.introcard .ideas ul{margin:0;padding-left:1.1em;line-height:var(--lh-loose)}
-.pstep .grow{flex:1}
-/* legend and Back/Next stay in view at the bottom of the card when a long step scrolls */
-/* the top of the bar fades in, so text scrolling underneath stays visible and hints there is more */
-.pfoot{position:sticky;bottom:calc(-1 * var(--s5));margin:calc(-1 * var(--s6)) calc(-1 * var(--s5)) calc(-1 * var(--s5));padding:var(--s9) var(--s5) var(--s5);display:flex;flex-direction:column;gap:var(--s4);background:linear-gradient(to bottom,transparent,var(--bg) calc(var(--s9) - var(--s3)));pointer-events:none}
-.pfoot > *{pointer-events:auto}
-.ctl{padding:var(--s3) var(--s3);border-radius:var(--r-l);border:1px solid var(--line);background:var(--surface);font-size:var(--fs-sm)}
-.ctl .h{display:flex;justify-content:space-between;align-items:center}
-.ctl .x{border:0;background:none;color:var(--muted);font-size:var(--fs-lg);cursor:pointer;padding:0 var(--s1)}
-.ctl .sec{color:var(--muted)}
-.legend{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2) var(--s3);font-size:var(--fs-step)}
-/* the "i" hint: a small round button whose tip shows on hover or keyboard focus */
-.hint{position:relative;margin-left:auto;display:grid;place-items:center;width:1.375rem;height:1.375rem;padding:0;border:1px solid var(--line);border-radius:50%;background:none;color:var(--muted);font:italic var(--fw-bold) .8125rem/1 var(--body);cursor:help}
-.hint:hover,.hint:focus-visible{color:var(--fg);border-color:var(--faint)}
-.hint .tip{position:absolute;z-index:20;right:0;bottom:calc(100% + var(--s2));width:max-content;max-width:16.25rem;padding:var(--s2) var(--s3);border:1px solid var(--line);border-radius:var(--r-m);background:var(--surface);box-shadow:0 .5rem 1.5rem var(--shadow);font:var(--fw-regular) var(--fs-sm)/var(--lh-snug) var(--body);font-style:normal;color:var(--fg);text-align:left;opacity:0;visibility:hidden;transform:translateY(.25rem);transition:opacity .15s,transform .15s,visibility .15s}
-.hint:hover .tip,.hint:focus-visible .tip{opacity:1;visibility:visible;transform:none}
-.navrow{display:flex;gap:var(--s2)}
-.navrow .btn{flex:1;padding:var(--s3) var(--s3);font-size:var(--fs-sm)}
-.navrow .btn:first-child{flex:0 0 auto;padding-inline:var(--s4)}
-/* narrow windows: stack, and let the player grow with its text instead of scrolling inside */
-@media (max-width:990px){
-  .player{height:auto;min-height:max(30rem,var(--ph))}
-  .pbody{grid-template-columns:minmax(0,1fr);flex:1}
-  .pstage{padding-block:var(--s6) var(--s7)}
-  .pstage > svg{height:auto}
-  /* the step grows with its text and scrolls with the page: no inner scroll (it fought page scrolling on touch),
-     and Back/Next sit at the end of the card instead of pinned to the screen, so no text can show below them */
-  .pstep{overflow:visible}
-  .pfoot{position:static;margin:0;padding:0;background:none}
-}
-/* maximized: the player takes the whole window */
 html.focus body{overflow:hidden}
-html.focus body .player{position:fixed;inset:0;z-index:50;height:auto;min-height:0;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + var(--s4)) var(--s5) calc(env(safe-area-inset-bottom,0px) + var(--s4));overflow:auto}
-html.focus body .pbody{grid-template-columns:minmax(0,1fr) .875rem var(--sw,clamp(20rem,30%,32.5rem))}
-@media (max-width:990px){html.focus body .pbody{grid-template-columns:minmax(0,1fr)}}
-@media (max-width:990px){.gutter{display:none}}
-.dockpanel > svg{width:100%;height:auto;display:block}
 
 /* svg panel: device colours are physical, so they stay the same in both themes */
 .pnl-body{fill:var(--dev-body);stroke:var(--dev-edge);stroke-width:1.5}
@@ -309,31 +139,8 @@ html.focus body .pbody{grid-template-columns:minmax(0,1fr) .875rem var(--sw,clam
 @media (prefers-reduced-motion:reduce){.c.hl-press .ring,.c.hl-turn .ring{animation:none}}
 .ico{width:1.15em;height:1.15em;vertical-align:-.22em;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linejoin:round;stroke-linecap:round;margin-right:.1875rem}
 
-/* reference tabs */
-.spec{margin:0;display:grid;grid-template-columns:auto 1fr;gap:var(--s2) var(--s5);font-size:var(--fs-sm);color:var(--muted)}
-.spec dt{font-family:var(--mono);font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--fg);padding-top:2px}
-.spec dd{margin:0}
-.sc{width:100%;border-collapse:collapse;border-top:1px solid var(--line);font-size:var(--fs-sm)}
-.sc td{padding:var(--s3) var(--s3) var(--s3) 0;border-bottom:1px solid var(--line);vertical-align:top}
-.sc td:first-child{white-space:nowrap}
-.tblwrap{overflow-x:auto}
-.refgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:var(--s5) var(--s7);align-items:start}
-/* panel guide: the selected control's details, open text under a hairline like the bands */
-.info{display:flex;flex-direction:column;gap:var(--s3);padding-top:var(--s5);border-top:1px solid var(--line)}
-.info > *{margin:0}
-@media (max-width:1078px){.refgrid{grid-template-columns:minmax(0,1fr)}}
 /* the short intro paragraph at the top of a reference page */
 .lede{max-width:70ch;margin:0 0 var(--s5)}
-/* footer: its own band at the bottom, one column per topic */
-.foot{margin-top:var(--s8);border-top:1px solid var(--line);background:var(--surface);font-size:var(--fs-sm);color:var(--muted)}
-.foot-in{max-width:86.25rem;margin:0 auto;padding:var(--s7) var(--s5) var(--s8);display:flex;flex-wrap:wrap;justify-content:flex-start;gap:var(--s6) var(--s9);align-items:start}
-.foot-in section:first-child{max-width:36ch}
-.foot .foot-note{margin-top:var(--s3);font-size:var(--fs-s);color:var(--faint)}
-.foot p{margin:0}
-.foot ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s1)}
-.foot a{color:var(--fg);text-decoration-color:var(--faint);text-underline-offset:.1875rem}
-.foot a:hover{text-decoration-color:currentColor}
-.foot-brand{margin-bottom:var(--s2);font-family:var(--display);font-weight:var(--fw-black);font-size:var(--fs-lg);color:var(--fg)}
 
 /* Learn steps: our own drawings and playable grids, shown in place of the panel */
 .figwrap{width:100%;height:100%;display:flex;align-items:center;justify-content:center;overflow:auto;container-type:size}
@@ -380,119 +187,24 @@ svg.fig{width:100%;height:100%;max-height:100%;display:block}
 .gsw b{font-family:var(--mono);font-weight:var(--fw-semibold);min-width:3.2em}
 .gnote{font-size:.92em;color:var(--muted);flex-basis:100%}
 .ghint{margin:0;font-size:.82em;color:var(--faint)}
-.pstep .h .kind{display:inline-block;padding:1px var(--s2);border-radius:var(--r-pill);margin-right:var(--s2);font-weight:var(--fw-semibold);letter-spacing:var(--ls-caps)}
-.kind.k-intro{background:var(--surface);color:var(--fg)}
-.kind.k-learn{background:var(--turn-soft);color:var(--turn)}
-.kind.k-play{background:var(--led-soft);color:var(--led)}
-.kind.k-check{background:var(--done-soft);color:var(--done)}
-.kind.k-challenge{background:var(--hold-soft);color:var(--hold)}
-.quiz{margin:var(--s4) 0}.qhint{margin:0 0 var(--s2);font-size:.75rem;font-weight:var(--fw-semibold);letter-spacing:var(--ls-key);text-transform:uppercase;color:var(--muted)}
-.opts{display:grid;gap:var(--s2)}
-.opt{font:inherit;text-align:left;padding:var(--s3) var(--s4);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);color:inherit;cursor:pointer}
-.opt:hover:not(:disabled){border-color:var(--done)}
-.opt.right{border-color:var(--done);box-shadow:inset 0 0 0 1px var(--done);font-weight:var(--fw-semibold)}
-.opt.wrong{opacity:.5;text-decoration:line-through}
-.opt:disabled{cursor:default}
-.qmsg{margin:var(--s3) 0 0;font-weight:var(--fw-semibold)}.qmsg.ok{color:var(--done)}
-.qexp{margin:var(--s2) 0 0}
-.wk .t small.by{display:block;font-size:var(--fs-xs);color:var(--muted)}
 @media (max-width:990px){.figwrap{height:auto;container-type:inline-size}svg.fig{height:auto}}
 @media (max-width:660px){.gg{gap:2px;grid-template-columns:2.875rem repeat(var(--n),minmax(0,1fr))}.cell{min-height:1.375rem;border-radius:var(--r-xs)}.cell i{left:1px;right:1px;bottom:1px}.gg .hd small{display:none}.gg .hd{font-size:var(--fs-2xs)}.gg .rl{font-size:var(--fs-xs)}}
 
-/* ---- links styled as buttons, account bits, pages ---- */
+/* ---- links styled as buttons, simple pages (progress, privacy, not found) ---- */
 img{max-width:100%}
 [hidden]{display:none!important}
-a.wk,a.pm-i{color:inherit;text-decoration:none}
 a.btn{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:inherit}
 a.btn.primary{color:var(--bg)}
-.acct{font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:var(--r-pill);padding:var(--s1) var(--s3);white-space:nowrap}
-.acct:hover{color:var(--fg);border-color:var(--faint)}
-/* theme switch: auto / light / dark */
-.theme{display:inline-flex;gap:2px;padding:2px;border:1px solid var(--line);border-radius:var(--r-pill)}
-.theme button{display:grid;place-items:center;width:1.625rem;height:1.375rem;padding:0;border:0;border-radius:var(--r-pill);background:none;color:var(--faint);cursor:pointer}
-.theme button:hover{color:var(--fg)}
-.theme button[aria-checked="true"]{background:var(--surface-2);color:var(--fg)}
-.theme svg{width:.875rem;height:.875rem;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
-.theme span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
-.brand a{color:inherit;text-decoration:none}
 .page{max-width:72ch}
 .page h2{font-size:var(--fs-h2);margin:var(--s2) 0 var(--s4)}
 .page p:not(.card p){margin:0 0 var(--s3)}
 .page .card{margin-block:var(--s5)}
 .page .row:not(.card .row){margin:var(--s5) 0 0}
-.signin{display:flex;flex-direction:column;gap:var(--s2);max-width:20rem;margin:var(--s4) 0}
-.signin .btn{justify-content:flex-start;gap:var(--s3)}
-.signin svg{width:1.125rem;height:1.125rem}
 .row{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
 .msg{font-size:var(--fs-sm);color:var(--muted)}
 .msg.bad{color:var(--led)}
-.contact{display:flex;flex-direction:column;gap:var(--s4)}
-.contact label{display:block;font-size:var(--fs-sm);color:var(--muted)}
-.contact textarea,.contact input{display:block;width:100%;margin-top:var(--s2);padding:var(--s3) var(--s3);border-radius:var(--r-m);border:1px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;font-size:var(--fs-sm)}
-.contact textarea{min-height:7.5rem;resize:vertical}
-.contact .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
-/* course map: no boxes, each part is a band between hairlines, its name on the left and its lessons on the right */
-.umap{margin-top:var(--s7)}
-.unit .band-h{padding-top:var(--s2)}
-.unit .band-h .t-label{margin:0;letter-spacing:var(--ls-key)}
-/* two columns read top to bottom (1 3 / 2 4): --rows is half the unit's lessons, rounded up */
-.unit .ls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(var(--rows,1),auto);grid-auto-flow:column;gap:var(--s1) var(--s5);align-content:start}
-.unit .wk .t{font-size:var(--fs-md)}
-@media (max-width:836px){.unit .band-h{padding-top:0}.unit .ls{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-auto-flow:row}.unit .wk{width:100%;min-width:0;grid-template-columns:2.125rem 1fr auto;border-color:transparent}}
+/* the page starts a step below the header; the home page's header floats over it */
 .top+#view{margin-top:var(--s5)}
-
-/* home: one idea per screen, each centered in the viewport, revealed as you scroll.
-   The instrument picker at the end is the page's only set of links into the course. */
-.top.bare{position:absolute;z-index:10;top:var(--s4);right:var(--s5);border:0;padding:0}
 .top.bare+#view{margin-top:0}
-.scene{min-height:100svh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:12vh 0;position:relative;scroll-snap-align:start;scroll-snap-stop:always}
-.scene:first-child{padding-top:0}
-/* each scene snaps into place; the footer gets its own snap point so it stays reachable */
-html:has(.home){scroll-snap-type:y mandatory}
-body:has(.home) .foot{scroll-snap-align:end}
-.scene .mark .logo{transform-origin:50% 55%}
-/* dancing logos: quick snaps */
-.logo[data-dance] span{transition:transform .14s cubic-bezier(.2,.9,.3,1);animation:float var(--fd) ease-in-out var(--fdl) infinite}
-/* a slow float on top of the beat moves (it uses `translate`, the beat uses `transform`), each layer on its own clock */
-.logo[data-dance] span:nth-child(1){--fd:9.3s;--fdl:-2s}
-.logo[data-dance] span:nth-child(2){--fd:11.7s;--fdl:-7s}
-.logo[data-dance] span:nth-child(3){--fd:7.9s;--fdl:-4s}
-@keyframes float{0%,100%{translate:0 0}25%{translate:.018em -.014em}50%{translate:-.012em .02em}75%{translate:-.02em -.008em}}
-@media (prefers-reduced-motion:reduce){.logo[data-dance] span{animation:none}}
-/* the tap-tempo key next to a dancing logo: shown on hover/focus (always on touch screens), its light flashes
-   on every beat and brighter on the bar; while tapping it reads out the tempo */
-.logo-wrap{position:relative;display:inline-block}
-.tap{position:absolute;right:-.1em;bottom:-.2em;display:flex;align-items:center;gap:var(--s2);padding:var(--s2) var(--s3) var(--s2) var(--s2);border:1px solid var(--line);border-bottom-width:2px;border-radius:var(--r-s);background:var(--surface);font:600 .75rem/1 var(--mono);letter-spacing:var(--ls-caps);color:var(--fg);opacity:0;transform:translateY(.25rem);transition:opacity .25s ease,transform .25s ease;pointer-events:none;white-space:nowrap}
-.tap i{width:.4375rem;height:.4375rem;border-radius:50%;background:var(--dev-led-off);transition:background .12s ease,box-shadow .12s ease}
-.tap.lit i{background:var(--led);box-shadow:0 0 .5rem var(--led)}
-.tap.lit:not(.down) i{opacity:.6}
-.logo-wrap:hover .tap,.logo-wrap:focus-within .tap,.tap.on{opacity:1;transform:none}
-.logo-wrap:hover .logo{cursor:pointer}
-@media (hover:none){.tap{opacity:.85;transform:none}}
-@media (prefers-reduced-motion:reduce){.tap{display:none}}
-.logo-wrap .defs{position:absolute;width:0;height:0}
-.scene .mark{font-size:var(--fs-mark);line-height:.82;margin:0}
-.scene h2{font-size:var(--fs-hero);line-height:1.02;letter-spacing:-.025em;max-width:13ch}
-.scene p{margin:.9em 0 0;font-size:var(--fs-lede);color:var(--muted);max-width:30ch}
-/* scroll hint: a thin line with a dot sliding down it */
-.cue{position:absolute;bottom:5vh;left:50%;width:1px;height:3.5rem;margin-left:-.5px;background:var(--line);overflow:hidden;transition:opacity .4s ease}
-.cue::after{content:"";position:absolute;left:-2px;top:-6px;width:.3125rem;height:.3125rem;border-radius:50%;background:var(--fg);animation:cue 2.2s cubic-bezier(.6,0,.4,1) infinite}
-@keyframes cue{0%{transform:translateY(0);opacity:0}15%{opacity:1}85%{opacity:1}100%{transform:translateY(3.875rem);opacity:0}}
-.scrolled .cue{opacity:0}
-/* reveal: only once the script has run, so the page reads fine without it */
-.home.anim .scene>*:not(.cue){opacity:0;transform:translateY(1.75rem);transition:opacity .9s ease,transform .9s cubic-bezier(.2,.7,.2,1)}
-.home.anim .scene>*:nth-child(2){transition-delay:.12s}
-.home.anim .scene>*:nth-child(3){transition-delay:.24s}
-.home.anim .scene.in>*:not(.cue){opacity:1;transform:none}
-.gear{display:flex;flex-wrap:wrap;justify-content:center;gap:var(--s3);margin-top:clamp(var(--s6),6vh,var(--s8))}
-.gear a,.gear span{display:flex;flex-direction:column;gap:2px;padding:var(--s4) var(--s5);border:1px solid var(--line);border-radius:var(--r-xl);text-decoration:none;color:inherit}
-.gear b{font-family:var(--display);font-weight:var(--fw-bold);font-size:var(--fs-xl)}
-.gear small{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:var(--ls-key);color:var(--muted)}
-.gear a{background:var(--fg);color:var(--bg);border-color:var(--fg);transition:transform .15s ease}
-.gear a small{color:inherit;opacity:.7}
-.gear a:hover{transform:translateY(-2px)}
-.gear .soon{opacity:.5}
-@media (max-width:616px){.scene .mark{font-size:40vw}.gear{width:100%}.gear a{flex:1 1 100%}.gear span{flex:1 1 40%}}
-@media (prefers-reduced-motion:reduce){.gear a{transition:none}.cue::after{animation:none;top:1.5rem;opacity:1}.home.anim .scene>*:not(.cue){opacity:1;transform:none;transition:none}}
 /* everything drawn on the left (panel, figures, playable grids) uses the hardware's plain sans; only the device's LCD keeps its screen font */
 .pstage *:not(.lcd-big):not(.lcd-small){font-family:var(--panel)}

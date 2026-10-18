@@ -66,3 +66,15 @@ const { I, L } = Astro.props;
     else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); box.querySelector("[data-note-save]").click(); }
   });
 </script>
+
+<style>
+  .notebox{display:flex;flex-direction:column;gap:var(--s3);padding-top:var(--s5);border-top:1px solid var(--line)}
+  .nb-h{display:flex;align-items:center;justify-content:space-between;gap:var(--s3)}
+  .nb-text{max-width:72ch;white-space:pre-wrap;overflow-wrap:anywhere}
+  .nb-edit{display:flex;flex-direction:column;gap:var(--s3)}
+  .nb-edit textarea{width:100%;min-height:7.5rem;padding:var(--s3);border-radius:var(--r-m);border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font:inherit;font-size:var(--fs-sm);resize:vertical}
+  .nb-edit textarea:focus{outline:2px solid var(--led);outline-offset:1px}
+  .nb-stamp{color:var(--done)}
+  .finish{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
+  .finish .stamp{font-family:var(--mono);font-size:var(--fs-s);color:var(--done)}
+</style>

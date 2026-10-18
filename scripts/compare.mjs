@@ -1,6 +1,6 @@
 // Refactor safety net: builds another version of the site (main by default) next to this one and
-// compares them. Every built page's HTML is compared, then a set of pages is screenshotted in both
-// (desktop and phone, dark and light) and compared pixel by pixel. Run with `npm run compare [git ref] [--no-scripts]`.
+// compares them. Every built page's HTML is compared, then a set of pages, some after a click or with saved progress, is screenshotted
+// in both (desktop and phone, dark and light) and compared pixel by pixel. Run with `npm run compare [git ref] [--no-scripts] [--no-styles]`.
 // A refactor that keeps the site the same reports no differences. Differing screenshots are saved in
 // .compare/shots (before, after and a diff image with the changed pixels in red).
 import { execSync, spawn } from "node:child_process";
@@ -8,8 +8,9 @@ import { existsSync, lstatSync, unlinkSync, mkdirSync, readFileSync, readdirSync
 import { join, relative } from "node:path";
 import { chromium } from "@playwright/test";
 
-/* --no-scripts leaves script tags out of the HTML comparison, for changes that only move the browser code */
-const args = process.argv.slice(2), noScripts = args.includes("--no-scripts");
+/* --no-scripts and --no-styles leave script tags, or style tags and stylesheet links, out of the HTML
+   comparison, for changes that only move browser code or CSS (the screenshots still compare the result) */
+const args = process.argv.slice(2), noScripts = args.includes("--no-scripts"), noStyles = args.includes("--no-styles");
 const ref = args.find((a) => !a.startsWith("--")) || "origin/main";
 const ROOT = new URL("..", import.meta.url).pathname;
 const WORK = join(ROOT, ".compare"), BASE = join(WORK, "base"), SHOTS = join(WORK, "shots");
@@ -31,13 +32,15 @@ sh("npx astro build", BASE);
 sh("npx astro build");
 
 /* ---------- HTML of every page ---------- */
-/* bundle hashes, comments in inline scripts, whitespace layout, self-closing tags and how a quote is written
+/* bundle hashes, comments in inline scripts, whitespace layout, self-closing tags, Astro's style-scope attributes and how a quote is written
    don't change what a visitor gets (the screenshots below catch any whitespace that shows) */
-const normalize = (html) => (noScripts ? html.replace(/<script\b[\s\S]*?<\/script>/g, "") : html)
+const normalize = (html) => [[noScripts, /<script\b[\s\S]*?<\/script>/g], [noStyles, /<style\b[\s\S]*?<\/style>|<link rel="stylesheet"[^>]*>/g]]
+  .reduce((h, [on, re]) => (on ? h.replace(re, "") : h), html)
   .replace(/\/_astro\/([\w.-]+?)\.[\w-]{8}\.(css|js)/g, "/_astro/$1.$2")
   .replace(/(<script\b[^>]*>)([\s\S]*?)(<\/script>)/g, (m, a, js, b) => a + js.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\n\s*\n/g, "\n") + b)
   .replace(/<(area|br|hr|img|input|link|meta)\b([^>]*?)\s*\/>/g, "<$1$2>")
   .replace(/<([\w-]+)\b([^>]*?)\s*\/>/g, "<$1$2></$1>")
+  .replace(/ data-astro-cid-\w+(="[^"]*")?/g, "")
   .replace(/&#39;/g, "'")
   .replace(/\s+/g, " ")
   .replace(/> </g, "><");
@@ -69,19 +72,37 @@ if (changed.length > 15) console.log(`  … and ${changed.length - 15} more`);
 const PAGES = ["/", "/model-cycles", "/model-cycles/lessons/01", "/model-cycles/lessons/01/1", "/model-cycles/lessons/01/2", "/model-cycles/lessons/01/5",
   "/model-cycles/lessons/01/13", "/model-cycles/lessons/01/14", "/model-cycles/songs/looped/3", "/model-cycles/panel", "/model-cycles/panel/tempo",
   "/model-cycles/machines", "/model-cycles/shortcuts", "/account", "/privacy", "/model-cycles/nope"];
+/* pages in a state a visitor gets to by clicking: open menus, answered questions, saved progress */
+const L1 = "/model-cycles/lessons/01";
+const SEEDED = { updatedAt: 1, introSteps: 1, inst: { cycles: { lesson: "w02", steps: Object.fromEntries([...Array(20).keys()].map((i) => [`w01:${i}`, true]).concat([["w02:0", true], ["w02:1", true]])), done: { w01: 1700000000000 }, notes: { w01: "A note" }, active: { w02: 2 } } } };
+const STATES = [
+  { name: "picker-open", path: `${L1}/3`, run: (p) => p.click("summary.ttl") },
+  { name: "quiz-answered", path: `${L1}/13`, run: async (p) => { await p.click('.opt[data-opt="0"]'); await p.click('.opt[data-opt="1"]'); } },
+  { name: "full-window", path: `${L1}/4`, run: (p) => p.click("[data-max]") },
+  { name: "control-info", path: `${L1}/4`, run: (p) => p.click('#player svg .c[data-id="play"]') },
+  { name: "grid-edited", path: `${L1}/2`, run: (p) => p.click('.gp .cell[data-r="0"][data-i="2"]') },
+  { name: "note-editing", path: `${L1}/1`, run: (p) => p.click("[data-note-edit]") },
+  { name: "with-progress-map", path: "/model-cycles", seed: SEEDED },
+  { name: "with-progress-lesson", path: `${L1}/3`, seed: SEEDED },
+  { name: "phone-menu-open", path: "/model-cycles", phone: true, run: (p) => p.click("[data-menu]") },
+  { name: "contact-sent", path: "/privacy?sent=1#contact" },
+  { name: "contact-error", path: "/privacy?error=long#contact" },
+];
 const VIEWS = { desktop: { viewport: { width: 1440, height: 900 } }, phone: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true } };
 const serve = (port, dir) => spawn(process.execPath, [join(ROOT, "tests/serve.mjs"), port, dir], { stdio: "ignore" });
 const servers = [serve(4401, join(BASE, "dist/client")), serve(4402, join(ROOT, "dist/client"))];
 await new Promise((r) => setTimeout(r, 500));
 
 const browser = await chromium.launch();
-async function shoot(port, view, theme, path) {
+async function shoot(port, view, theme, path, state = {}) {
   const ctx = await browser.newContext({ ...VIEWS[view], colorScheme: theme, reducedMotion: "reduce" });
+  if (state.seed) await ctx.addInitScript((s) => localStorage.setItem("repreprep-progress-v1", JSON.stringify(s)), state.seed);
   /* the same "random" logo every time, and no fonts or other requests from outside */
   await ctx.addInitScript(() => { let s = 1; Math.random = () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646; });
   await ctx.route(/^https?:\/\//, (r) => (new URL(r.request().url()).hostname === "localhost" ? r.continue() : r.abort()));
   const page = await ctx.newPage();
   await page.goto(`http://localhost:${port}${path}`, { waitUntil: "networkidle" });
+  if (state.run) { await state.run(page); await page.waitForTimeout(150); }
   const png = await page.screenshot({ fullPage: true, animations: "disabled" });
   await ctx.close();
   return png;
@@ -111,19 +132,22 @@ async function pixelDiff(a, b) {
 }
 
 let diffs = 0, shots = 0;
-for (const view of Object.keys(VIEWS)) for (const theme of ["dark", "light"]) for (const path of PAGES) {
-  const [a, b] = await Promise.all([shoot(4401, view, theme, path), shoot(4402, view, theme, path)]);
+const JOBS = PAGES.map((path) => ({ path, name: path })).concat(STATES.map((st) => ({ ...st, name: `${st.path.split(/[?#]/)[0]} (${st.name})` })));
+for (const view of Object.keys(VIEWS)) for (const theme of ["dark", "light"]) for (const job of JOBS) {
+  if (job.phone && view !== "phone") continue;
+  const { path } = job;
+  const [a, b] = await Promise.all([shoot(4401, view, theme, path, job), shoot(4402, view, theme, path, job)]);
   shots++;
   if (a.equals(b)) continue;
   const d = await pixelDiff(a, b);
   if (!d.n && a.length && d.size.split(" → ")[0] === d.size.split(" → ")[1]) continue;
   diffs++;
-  const name = `${view}-${theme}${path.replace(/\//g, "_") || "_home"}`;
+  const name = `${view}-${theme}${job.name.replace(/[^\w-]+/g, "_")}`;
   mkdirSync(SHOTS, { recursive: true });
   writeFileSync(join(SHOTS, `${name}-before.png`), a);
   writeFileSync(join(SHOTS, `${name}-after.png`), b);
   writeFileSync(join(SHOTS, `${name}-diff.png`), Buffer.from(d.png, "base64"));
-  console.log(`  ~ ${view} ${theme} ${path}: ${d.n} pixels differ (${d.size})`);
+  console.log(`  ~ ${view} ${theme} ${job.name}: ${d.n} pixels differ (${d.size})`);
 }
 await browser.close();
 servers.forEach((s) => s.kill());

@@ -7,3 +7,14 @@ const TABS = [["lessons", "Lessons", ""], ["panel", "Panel guide", "/panel"], ["
 <nav class="tabs" aria-label="Sections">
   {TABS.map(([k, label, sub]) => <a href={`/${inst.slug}${sub}`} aria-current={tab === k ? "page" : undefined}>{label}</a>)}
 </nav>
+
+<style>
+  .tabs{display:flex;gap:var(--s1);margin:var(--s4) 0 var(--s6);flex-wrap:wrap}
+  .tabs a{text-decoration:none;display:inline-block;background:none;border:none;border-bottom:2px solid transparent;padding:var(--s2) var(--s3);font-family:var(--display);font-weight:var(--fw-semibold);letter-spacing:var(--ls-key);text-transform:uppercase;font-size:var(--fs-s);color:var(--muted);cursor:pointer}
+  .tabs a[aria-current="page"]{color:var(--fg);border-color:var(--led)}
+  @media (max-width:836px){
+    .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:var(--s3) calc(-1 * var(--s5)) var(--s5);padding-inline:var(--s5)}
+    .tabs::-webkit-scrollbar{display:none}
+    .tabs a{white-space:nowrap;padding-inline:var(--s2)}
+  }
+</style>

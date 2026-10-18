@@ -16,3 +16,22 @@ const { l, class: cls, current = false } = Astro.props;
     document.querySelectorAll("a[data-lesson][data-path]").forEach((a) => { a.href = stepHref(a.dataset.path, s.active[a.dataset.lesson] || 0); });
   });
 </script>
+
+<style>
+  a.wk,a.pm-i{color:inherit;text-decoration:none}
+  .wk{display:grid;grid-template-columns:2.125rem 1fr auto;align-items:center;gap:var(--s2);padding:var(--s2) var(--s2);border-radius:var(--r-m);border:1px solid transparent;background:none;text-align:left;cursor:pointer;width:100%}
+  .wk:hover{background:var(--surface)}
+  .wk .n{font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted)}
+  .wk :global(.t){font-size:var(--fs-sm);line-height:var(--lh-snug)}
+  .wk .s{width:.75rem;height:.75rem;border-radius:50%;border:1.5px solid var(--faint)}
+  .wk .s.part{border-color:var(--hold);background:conic-gradient(var(--hold) var(--p,0%),transparent 0)}
+  .wk .s.full{border-color:var(--done);background:var(--done)}
+  .pm-i{display:grid;grid-template-columns:1.875rem 1fr auto;align-items:center;gap:var(--s2);width:100%;padding:var(--s2) var(--s2);border:0;border-radius:var(--r-s);background:none;text-align:left;color:var(--fg);font:inherit;cursor:pointer}
+  .pm-i:hover{background:var(--surface-2)}
+  .pm-i[aria-current="true"]{background:var(--led-soft)}
+  .pm-i .n{font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted)}
+  .pm-i :global(.t){line-height:var(--lh-snug)}
+  .pm-i .s{width:.625rem;height:.625rem;border-radius:50%;border:1.5px solid var(--faint)}
+  .pm-i .s.part{border-color:var(--hold);background:conic-gradient(var(--hold) var(--p,0%),transparent 0)}
+  .pm-i .s.full{border-color:var(--done);background:var(--done)}
+</style>

@@ -111,3 +111,9 @@ import { SIGN_IN } from "../lib/features.js";
   });
   document.addEventListener("change", (e) => { const f = e.target.closest("[data-import]"); if (f && f.files[0]) { importProgress(f.files[0]); f.value = ""; } });
 </script>
+
+<style>
+  .signin{display:flex;flex-direction:column;gap:var(--s2);max-width:20rem;margin:var(--s4) 0}
+  .signin :global(.btn){justify-content:flex-start;gap:var(--s3)}
+  .signin :global(svg){width:1.125rem;height:1.125rem}
+</style>
