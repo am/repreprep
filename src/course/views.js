@@ -29,21 +29,28 @@ function introCard(I, L) {
 }
 
 /* the step player: drawing or panel on the left, the step on the right */
+/* the challenge is an optional extra step after the last one: same player, its own kind, and Finish moves there */
+export const hasChallenge = (L) => !!L.challenge;
 export function player(I, L, act) {
-  const st = L.steps[act];
+  const n = L.steps.length, total = n + (hasChallenge(L) ? 1 : 0);
+  const ch = act === n;
+  const st = ch ? { k: "challenge" } : L.steps[act];
   const k = st.k || "play";
-  const last = act === L.steps.length - 1;
+  const end = act === total - 1;
   const nx = nextLesson(I, L);
-  const dots = L.steps.map((s, i) => { const lab = s.intro || s.k === "intro" ? "Intro" : KIND[s.k || "play"]; return `<a href="${stepPath(L, i)}" data-step="${i}" aria-current="${i === act}" aria-label="${lab}, step ${i + 1}" title="${lab}"></a>`; }).join("");
+  const dots = L.steps.map((s, i) => { const lab = s.intro || s.k === "intro" ? "Intro" : KIND[s.k || "play"]; return `<a href="${stepPath(L, i)}" data-step="${i}" aria-current="${i === act}" aria-label="${lab}, step ${i + 1}" title="${lab}"></a>`; }).join("")
+    + (hasChallenge(L) ? `<a class="opt" href="${stepPath(L, n)}" data-step="${n}" aria-current="${ch}" aria-label="Challenge (optional)" title="Challenge (optional)"></a>` : "");
   const stage = st.fig ? `<div class="figwrap">${renderFig(I, st.fig, L.id + ":" + act)}</div>` : withHl(I.draw(), st.hl);
   const back = act === 0 ? `<button class="btn" disabled aria-label="Previous step">Back</button>` : `<a class="btn" href="${stepPath(L, act - 1)}" data-nav="-1" aria-label="Previous step">Back</a>`;
-  const nextHref = last ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
-  const next = `<a class="btn primary" href="${nextHref}" data-nav="1">${last ? "Finish" : act === 0 ? "Start" : "Next"}</a>`;
-  return `<section class="player" id="player" aria-label="Step player" data-inst="${I.key}" data-lesson="${L.id}" data-step="${act}" data-steps="${L.steps.length}"${nx ? ` data-next="${nx.id}" data-next-path="${nx.path}"` : ""}>
-    <div class="phead"><details class="picker"><summary class="ttl" title="Jump to another lesson">${wkLabel(L)} · ${esc(L.title)}<span class="caret" aria-hidden="true"></span></summary>${lessonMenu(I, L)}</details><div class="dots" style="--p:${L.steps.length > 1 ? act / (L.steps.length - 1) : 0}">${dots}</div><button class="maxbtn" type="button" data-max aria-label="Maximize" title="Maximize"><svg class="mx-in" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg><svg class="mx-out" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4"/></svg></button></div>
+  const nextHref = end ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
+  const next = `<a class="btn primary" href="${nextHref}" data-nav="1"${end ? " data-end" : ""}>${end ? "Finish" : act === 0 ? "Start" : "Next"}</a>`;
+  const body = ch ? `<div class="ptxt"><p>${keyify(I, L.challenge, "")}</p></div><p class="t-note">Optional. Try it now, or come back to it any time.</p>`
+    : `${st.intro ? introCard(I, L) : `<div class="ptxt">${fmtStep(I, st)}</div>`}${st.q ? quiz(I, st) : st.a ? `<details class="ans"><summary>Show the answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? hearNote(I, st) : ""}`;
+  return `<section class="player" id="player" aria-label="Step player" data-inst="${I.key}" data-lesson="${L.id}" data-step="${act}" data-steps="${n}"${nx ? ` data-next="${nx.id}" data-next-path="${nx.path}"` : ""}>
+    <div class="phead"><details class="picker"><summary class="ttl" title="Jump to another lesson">${wkLabel(L)} · ${esc(L.title)}<span class="caret" aria-hidden="true"></span></summary>${lessonMenu(I, L)}</details><div class="dots" style="--p:${total > 1 ? act / (total - 1) : 0}">${dots}</div><button class="maxbtn" type="button" data-max aria-label="Maximize" title="Maximize"><svg class="mx-in" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg><svg class="mx-out" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4"/></svg></button></div>
     <div class="pbody" id="pbody"><div class="pstage">${stage}</div><div class="gutter" id="gutter" role="separator" aria-orientation="vertical" aria-label="Resize the step panel" tabindex="0" title="Drag to resize · double-click to reset"></div>
-      <div class="pstep" id="now"><div class="h"><span class="kind k-${k}">${KIND[k]}</span><span data-donemark hidden> · done</span></div>
-        ${st.intro ? introCard(I, L) : `<div class="ptxt">${fmtStep(I, st)}</div>`}${st.q ? quiz(I, st) : st.a ? `<details class="ans"><summary>Show the answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? hearNote(I, st) : ""}
+      <div class="pstep" id="now"><div class="h"><span class="kind k-${k}">${KIND[k]}</span>${ch ? " · optional" : ""}<span data-donemark hidden> · done</span></div>
+        ${body}
         <div class="ctl" id="ctlinfo" hidden></div>
         <div class="grow"></div>
         <div class="pfoot">
@@ -54,13 +61,16 @@ export function player(I, L, act) {
   </section>`;
 }
 
-/* the lesson text below the player: ideas, every step as a list, challenge, notes */
-/* under the player: only what the steps don't already hold (the challenge, your notes, finishing).
-   The ideas and steps themselves live in the player, so they aren't repeated here. */
+/* under the player: your notes (read, then Edit to write) and finishing the lesson.
+   The steps and the challenge live in the player, so they aren't repeated here. */
 export function lessonText(I, L) {
   return `<section class="wrapup stack" aria-label="After the lesson">
-    <section class="card challenge"><div class="t-eyebrow">Challenge</div><p class="t-body">${keyify(I, L.challenge, "")}</p></section>
-    <div class="notes"><label for="notes-${L.id}">Notes</label><textarea id="notes-${L.id}" data-notes="${L.id}" placeholder="Presets you liked, what was hard, ideas for next time"></textarea></div>
+    <section class="card notebox" data-notebox="${L.id}" aria-labelledby="nb-${L.id}">
+      <div class="nb-h"><h2 class="t-title t-card" id="nb-${L.id}">Notes</h2><button type="button" class="btn" data-note-edit>Add a note</button></div>
+      <div class="nb-view"><p class="t-body nb-text" hidden></p><p class="t-note nb-empty">Nothing yet. Presets you liked, what was hard, ideas for next time.</p></div>
+      <div class="nb-edit" hidden><textarea aria-label="Notes for ${wkLabel(L).toLowerCase()}" placeholder="Presets you liked, what was hard, ideas for next time"></textarea><div class="row"><button type="button" class="btn primary" data-note-save>Save</button><button type="button" class="btn" data-note-cancel>Cancel</button></div></div>
+      <p class="t-note nb-stamp" hidden>Saved in this browser.</p>
+    </section>
     <div class="finish"><button class="btn primary" data-finish="${L.id}" data-label="Complete" title="Mark this ${L.song ? "study" : "lesson"} done and open the next one">Complete</button><a class="btn" href="/${I.slug}">All lessons</a><span class="stamp" hidden></span></div>
   </section>`;
 }

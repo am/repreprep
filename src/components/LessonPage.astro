@@ -3,8 +3,7 @@ import Base from "../layouts/Base.astro";
 import { wkLabel } from "../course/index.js";
 import { player, lessonText } from "../course/views.js";
 const { I, L, act } = Astro.props;
-const st = L.steps[act];
-const title = `${wkLabel(L)}: ${L.title}` + (act ? ` (${act + 1}/${L.steps.length})` : "");
+const title = `${wkLabel(L)}: ${L.title}` + (act === L.steps.length ? " (challenge)" : act ? ` (${act + 1}/${L.steps.length})` : "");
 ---
 <Base title={title} description={L.goal} inst={I} tab="lessons">
   <Fragment set:html={player(I, L, act)} />

@@ -3,7 +3,7 @@ import { songLink } from "./songs.js";
 
 /* Step text: [KEY] becomes a keycap (coloured by the step's hl), quoted song titles become Spotify links,
    and Play steps are split into one bullet per sentence. */
-export const KIND={intro:"Intro",learn:"Learn",play:"Play",check:"Check"};
+export const KIND={intro:"Intro",learn:"Learn",play:"Play",check:"Check",challenge:"Challenge"};
 export function parseHl(s){const r={press:[],hold:[],turn:[]};(s||"").split(/\s+/).filter(Boolean).forEach(tok=>{const [k,id]=tok.split(":");({p:r.press,h:r.hold,t:r.turn})[k]?.push(id);});return r;}
 
 const byNameCache=new WeakMap();

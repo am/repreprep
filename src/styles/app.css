@@ -166,11 +166,13 @@ h3{font-weight:var(--fw-bold)}
 a.song{color:inherit;text-decoration:underline;text-decoration-color:var(--done);text-decoration-thickness:2px;text-underline-offset:3px;white-space:nowrap}
 a.song:hover{color:var(--done)}
 a.song svg{width:.95em;height:.95em;margin-left:var(--s1);vertical-align:-.12em;color:var(--done)}
-.challenge{max-width:72ch;border-style:dashed;border-color:var(--hold)}
-.challenge .t-eyebrow{color:var(--hold)}
-.notes{max-width:72ch}
-.notes label{font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:var(--ls-caps);text-transform:uppercase;color:var(--muted)}
-.notes textarea{width:100%;min-height:90px;margin-top:var(--s2);padding:var(--s3) var(--s3);border-radius:var(--r-m);border:1px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;font-size:var(--fs-sm);resize:vertical}
+.notebox{max-width:72ch}
+.nb-h{display:flex;align-items:center;justify-content:space-between;gap:var(--s3)}
+.nb-text{white-space:pre-wrap;overflow-wrap:anywhere}
+.nb-edit{display:flex;flex-direction:column;gap:var(--s3)}
+.nb-edit textarea{width:100%;min-height:120px;padding:var(--s3);border-radius:var(--r-m);border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font:inherit;font-size:var(--fs-sm);resize:vertical}
+.nb-edit textarea:focus{outline:2px solid var(--led);outline-offset:1px}
+.nb-stamp{color:var(--done)}
 .finish{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
 .btn{border:1px solid var(--line);background:var(--surface);padding:var(--s2) var(--s4);border-radius:var(--r-m);cursor:pointer;font-family:var(--display);font-weight:var(--fw-semibold);letter-spacing:var(--ls-wide)}
 .btn.primary{background:var(--fg);color:var(--bg);border-color:var(--fg)}
@@ -213,6 +215,7 @@ a.song svg{width:.95em;height:.95em;margin-left:var(--s1);vertical-align:-.12em;
 .dots a::before{content:"";width:10px;height:10px;border-radius:50%;background:var(--surface-2);border:2px solid var(--line);box-sizing:border-box;transition:transform .12s}
 .dots a:hover::before{transform:scale(1.3)}
 .dots a.done::before{background:var(--done);border-color:var(--done)}
+.dots a.opt::before{border-style:dashed;border-color:var(--hold)}
 .dots a[aria-current="true"]::before{width:14px;height:14px;background:var(--surface);border:3px solid var(--led)}
 /* icon only: expand arrows, or collapse arrows while the player fills the window */
 .maxbtn{display:grid;place-items:center;width:32px;height:32px;padding:0;border:1px solid var(--line);background:none;border-radius:var(--r-m);cursor:pointer;color:var(--muted)}
@@ -391,6 +394,7 @@ svg.fig{width:100%;height:100%;max-height:100%;display:block}
 .kind.k-learn{background:var(--turn-soft);color:var(--turn)}
 .kind.k-play{background:var(--led-soft);color:var(--led)}
 .kind.k-check{background:var(--done-soft);color:var(--done)}
+.kind.k-challenge{background:var(--hold-soft);color:var(--hold)}
 .quiz{margin:var(--s4) 0}.qhint{margin:0 0 var(--s2);font-size:12px;font-weight:var(--fw-semibold);letter-spacing:var(--ls-key);text-transform:uppercase;color:var(--muted)}
 .opts{display:grid;gap:var(--s2)}
 .opt{font:inherit;text-align:left;padding:var(--s3) var(--s4);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);color:inherit;cursor:pointer}
