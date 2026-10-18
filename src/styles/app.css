@@ -80,7 +80,9 @@ h3{font-weight:var(--fw-bold)}
 .instr a[aria-current="page"]{color:var(--fg)}
 .instr .off{opacity:.55;cursor:default}
 .instr small{font-family:var(--body);font-weight:var(--fw-regular);opacity:.8;margin-left:var(--s1)}
-.ctrls{margin-left:auto;display:inline-flex;align-items:center;gap:var(--s2);padding:2px;border:1px solid var(--line);border-radius:var(--r-pill)}
+.ctrls{margin-left:auto;display:inline-flex;align-items:center;gap:var(--s2);border:1px solid var(--line);border-radius:var(--r-pill)}
+/* the theme pill shares the outer pill's height and right edge: their borders overlap */
+.ctrls .theme{margin:-1px -1px -1px 0}
 .meter{font-family:var(--mono);font-size:var(--fs-s);color:var(--muted);text-decoration:none;white-space:nowrap;padding:0 var(--s1) 0 var(--s3)}
 .meter:hover{color:var(--fg)}
 .tabs{display:flex;gap:var(--s1);margin:var(--s4) 0 var(--s6);flex-wrap:wrap}
