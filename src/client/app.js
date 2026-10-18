@@ -217,14 +217,18 @@ function fitPlayer() {
   el.style.setProperty("--ph", `calc(100dvh - ${Math.round(top) + 20}px)`);
 }
 window.addEventListener("resize", fitPlayer);
-/* "stuck" while Back/Next are pinned to the bottom of the window with step text running on underneath (phones) */
-let footIO = null;
-function watchFoot() {
-  if (footIO) footIO.disconnect();
-  const f = $(".pfoot"); if (!f || !window.IntersectionObserver) return;
-  footIO = new IntersectionObserver(([e]) => f.classList.toggle("stuck", e.intersectionRatio < 1 && e.boundingClientRect.bottom > e.rootBounds.bottom), { threshold: [...Array(21).keys()].map((i) => i / 20) });
-  footIO.observe(f);
+/* "stuck" while Back/Next are pinned to the bottom of the window with step text running on underneath (phones).
+   Measured on scroll: when pinned, the buttons end above the step card's own bottom. (IntersectionObserver misreads
+   this in iPhone Safari, whose page runs on under its floating toolbar.) */
+let footRaf = 0;
+function checkFoot() {
+  footRaf = 0;
+  const f = $(".pfoot"), st = f && f.closest(".pstep"); if (!st) return;
+  f.classList.toggle("stuck", st.getBoundingClientRect().bottom - f.getBoundingClientRect().bottom > 2);
 }
+const watchFoot = () => { if (!footRaf) footRaf = requestAnimationFrame(checkFoot); };
+window.addEventListener("scroll", watchFoot, { passive: true });
+window.addEventListener("resize", watchFoot);
 const curLesson = () => { const p = P(); return p && { k: p.dataset.inst, id: p.dataset.lesson, act: +p.dataset.step, n: +p.dataset.steps, next: p.dataset.next, nextPath: p.dataset.nextPath }; };
 function markAllDone(s, c) { if (!s.done[c.id] && [...Array(c.n).keys()].every((i) => s.steps[c.id + ":" + i])) s.done[c.id] = Date.now(); }
 /* finishing a lesson opens the next one where you left it (or its intro); the last lesson stays put */
