@@ -6,20 +6,39 @@ then the changes, comma-separated. No ticket numbers, prefixes or file names.
 
 Keep the title and this description current: after every push, update both so they
 cover everything in the PR as it stands now. Drop anything that was undone.
+Sections marked (optional) can be deleted when they don't apply.
 -->
 
-Before: <!-- what a visitor saw or could do before this PR, in one or two sentences -->
+## Before
 
-After: <!-- what they see or can do now, in one or two sentences -->
+<!-- What a visitor saw or could do before this PR, in one or two sentences. -->
 
-<!--
-For a PR with several parts, add one short section or bullet per part.
-Write what the reader would see, not the code. Delete this block if one paragraph is enough.
--->
+## After
 
-**Part**
-- One short line per change.
+<!-- What they see or can do now, in one or two sentences.
+For a PR with several parts, add a ### heading per part with one short bullet per change.
+Write what the reader would see, not the code. -->
 
-How: <!-- two or three sentences on how it works: the main files or functions, any switch or setting to know about -->
+## Screenshots (optional)
 
-Checked: <!-- what was run or looked at, e.g. `npm run build`, `npm run check`, screens tested, preview link -->
+<!-- Delete this section if nothing visible changed. Drag images in to upload them. -->
+
+| Before | After |
+| --- | --- |
+|  |  |
+
+## How
+
+<!-- Two or three sentences on how it works: the main files or functions,
+any switch or setting to know about. -->
+
+## How to test (optional)
+
+<!-- Steps to see the change, e.g. on the PR preview link:
+1. Open a lesson and go to its last step.
+2. Check that ...
+Delete this section if there is nothing to try. -->
+
+## Checked
+
+<!-- What was run or looked at, e.g. `npm run build`, `npm run check`, screen sizes tested. -->
