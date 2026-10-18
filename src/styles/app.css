@@ -222,7 +222,8 @@ a.song svg{width:.95em;height:.95em;margin-left:var(--s1);vertical-align:-.12em;
 body.resizing{cursor:col-resize;user-select:none}
 .pstage{min-height:0;display:flex;align-items:center;justify-content:center}
 .pstage > svg{width:100%;height:100%;display:block}
-.pstep{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--s3);padding:var(--s2) 0 0 var(--s4)}
+/* the step keeps its card: it separates the text from the drawing */
+.pstep{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--s3);padding:var(--s4) var(--s4);border-radius:var(--r-l);background:var(--surface-2)}
 .pstep .h{margin-bottom:var(--s3);font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:var(--ls-caps);color:var(--faint);text-transform:uppercase}
 .pstep .ptxt{font-size:var(--fs-step);line-height:var(--lh-loose);margin:0}
 .ptxt p,.txt p{margin:0 0 .6em}.ptxt p:last-child,.txt p:last-child{margin-bottom:0}
@@ -252,7 +253,7 @@ body.resizing{cursor:col-resize;user-select:none}
   .player{height:auto;min-height:max(480px,var(--ph))}
   .pbody{grid-template-columns:minmax(0,1fr);flex:1}
   .pstage > svg{height:auto}
-  .pstep{overflow:visible;padding:var(--s4) 0 0}
+  .pstep{overflow:visible}
 }
 /* maximized: the player takes the whole window */
 html.focus body{overflow:hidden}
