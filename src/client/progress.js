@@ -4,6 +4,8 @@
    Same shape as the single-file app, so old progress files load as they are:
    {inst:{cycles:{lesson, steps:{"w05:3":true}, done:{w05:ts}, notes:{w05:"…"}, active:{w05:3}}}, focus, stepW, updatedAt} */
 import { SIGN_IN } from "astro:env/client";
+/* the account calls (src/actions), loaded only when sign-in is on */
+const server = () => import("astro:actions");
 
 export const LS_KEY = "repreprep-progress-v1";
 const fresh = () => ({ updatedAt: 0, inst: {}, introSteps: 1 });
@@ -53,9 +55,15 @@ export async function flush(keepalive = false) {
   if (!account.me || saving || !dirty) return;
   saving = true; dirty = false;
   try {
-    const r = await fetch("/api/progress", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ data: state }), keepalive });
-    if (r.status === 401) { account.me = null; refresh(); }
-    else if (!r.ok) throw new Error("save failed");
+    const { actions, getActionPath } = await server();
+    const save = { data: state };
+    /* a save as the page is hidden has to outlive the page, which only fetch's keepalive does */
+    const { error } = keepalive
+      ? await fetch(getActionPath(actions.progress.save), { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(save), keepalive })
+        .then((r) => ({ error: r.ok ? null : { code: r.status === 401 ? "UNAUTHORIZED" : "FAILED" } }))
+      : await actions.progress.save(save);
+    if (error?.code === "UNAUTHORIZED") { account.me = null; refresh(); }
+    else if (error) throw error;
     setSync(syncMsg());
   } catch (e) { dirty = true; setSync("Saved in this browser. Will retry saving to your account."); }
   saving = false; if (dirty && account.me) { clearTimeout(saveTimer); saveTimer = setTimeout(flush, 5000); }
@@ -68,15 +76,16 @@ export function update() { persist(); refresh(); }
 async function loadAccount() {
   if (SIGN_IN) {
     try {
-      const r = await fetch("/api/me", { cache: "no-store" });
-      if (r.ok) { const j = await r.json(); account.me = j.user; account.providers = j.providers || []; }
+      const { actions } = await server();
+      const { data } = await actions.account.me();
+      if (data) { account.me = data.user; account.providers = data.providers || []; }
     } catch (e) {}
   }
   account.loaded = true;
   if (account.me) {
     try {
-      const r = await fetch("/api/progress", { cache: "no-store" });
-      const j = r.ok ? await r.json() : null;
+      const { actions } = await server();
+      const { data: j } = await actions.progress.load();
       const remote = j && j.data;
       if (remote && remote.inst && (remote.updatedAt || 0) > (state.updatedAt || 0)) {
         adopt(remote);

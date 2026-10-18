@@ -1,10 +1,9 @@
-import { currentUser, json } from "../../lib/auth.js";
+import { json } from "../../lib/auth.js";
 import { db } from "../../lib/db.js";
 export const prerender = false;
 
 /* everything this site keeps about you, as one JSON file */
-export async function GET({ url, cookies }) {
-  const user = await currentUser(url, cookies);
+export async function GET({ locals: { user } }) {
   if (!user) return json({ error: "Not signed in" }, 401);
   const d = await db();
   const [u, accounts, sessions, progress, messages] = await d.batch([

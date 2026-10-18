@@ -15,25 +15,23 @@ test("pages are served, unknown addresses get the not-found page", async () => {
 });
 
 test("nobody is signed in and there are no sign-in options", async () => {
-  const r = await c.req("/api/me");
-  assert.equal(r.headers.get("cache-control"), "no-store");
-  assert.deepEqual(await r.json(), { user: null, providers: [] });
+  assert.deepEqual((await c.action("account.me")).data, { user: null, providers: [] });
   for (const p of ["/auth/dev", "/auth/google", "/auth/github"]) assert.equal((await c.req(p)).status, 404, p);
   const cb = await c.req("/auth/github/callback?code=x&state=y");
   assert.equal(cb.status, 302);
   assert.equal(cb.headers.get("location"), "/account?error=signin");
 });
 
-test("account routes need a signed-in person", async () => {
-  assert.equal((await c.req("/api/progress")).status, 401);
-  assert.equal((await c.req("/api/progress", { method: "PUT", json: { data: { inst: {} } } })).status, 401);
+test("account actions need a signed-in person", async () => {
+  assert.equal((await c.action("progress.load")).status, 401);
+  assert.equal((await c.action("progress.save", { data: { inst: {} } })).status, 401);
   assert.equal((await c.req("/api/export")).status, 401);
-  assert.equal((await c.req("/api/me", { method: "DELETE" })).status, 401);
-  assert.deepEqual(await (await c.req("/auth/logout", { method: "POST" })).json(), { ok: true });
+  assert.equal((await c.action("account.delete")).status, 401);
+  assert.equal((await c.action("account.signOut")).status, 204);
 });
 
 test("writes from another site are refused", async () => {
-  for (const [path, method] of [["/api/progress", "PUT"], ["/api/me", "DELETE"], ["/auth/logout", "POST"], ["/api/contact", "POST"]]) {
+  for (const [path, method] of [["/_actions/progress.save", "POST"], ["/_actions/account.delete", "POST"], ["/_actions/account.signOut", "POST"], ["/api/contact", "POST"]]) {
     for (const origin of [null, "https://evil.example"]) {
       /* a small JSON body for every route: the local runtime can drop the connection when a refused form isn't read */
       const r = await c.req(path, { method, origin, json: {} });

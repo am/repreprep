@@ -70,15 +70,17 @@ import { SIGN_IN } from "astro:env/client";
 
   async function signOut() {
     await flush();
-    await fetch("/auth/logout", { method: "POST", headers: { "Content-Type": "application/json" }, body: "{}" }).catch(() => {});
+    const { actions } = await import("astro:actions");
+    await actions.account.signOut().catch(() => {});
     /* a shared computer shouldn't keep your progress after you sign out */
     try { localStorage.removeItem(LS_KEY); } catch (e) {}
     location.href = "/account";
   }
   async function deleteAccount() {
     if (!confirm("Delete your account and the progress saved with it? This can't be undone.")) return;
-    const r = await fetch("/api/me", { method: "DELETE", headers: { "Content-Type": "application/json" } }).catch(() => null);
-    if (r && r.ok) { account.me = null; location.href = "/account"; } else alert("Couldn't delete the account. Please try again.");
+    const { actions } = await import("astro:actions");
+    const { error } = await actions.account.delete().catch((e) => ({ error: e }));
+    if (!error) { account.me = null; location.href = "/account"; } else alert("Couldn't delete the account. Please try again.");
   }
   function exportProgress() {
     const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });

@@ -1,6 +1,7 @@
 import { GitHub, Google, generateState, generateCodeVerifier, decodeIdToken } from "arctic";
-import { db, env } from "./db.js";
+import { db } from "./db.js";
 import { SIGN_IN } from "astro:env/client";
+import { GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, ALLOW_TEST_SIGNIN } from "astro:env/server";
 
 /* Sign-in: Google or GitHub (OAuth, no passwords stored here). A random session token lives in an
    HttpOnly cookie; the database keeps only its SHA-256 hash. Sessions last 30 days and renew when used. */
@@ -21,19 +22,19 @@ const cookieOpts = (url, maxAgeDays) => ({
 export function providers(url) {
   const list = [];
   if (!SIGN_IN) return list;
-  if (env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) list.push({ id: "google", name: "Google" });
-  if (env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET) list.push({ id: "github", name: "GitHub" });
+  if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET) list.push({ id: "google", name: "Google" });
+  if (GITHUB_CLIENT_ID && GITHUB_CLIENT_SECRET) list.push({ id: "github", name: "GitHub" });
   if (testSignIn(url)) list.push({ id: "dev", name: "a local test account" });
   return list;
 }
 /* a test account for running on your own computer only: never on a real domain */
 export const testSignIn = (url) =>
-  SIGN_IN && ["localhost", "127.0.0.1"].includes(url.hostname) && (import.meta.env.DEV || env.ALLOW_TEST_SIGNIN === "1");
+  SIGN_IN && ["localhost", "127.0.0.1"].includes(url.hostname) && (import.meta.env.DEV || ALLOW_TEST_SIGNIN === "1");
 function client(id, url) {
   if (!SIGN_IN) return null;
   const redirect = `${url.origin}/auth/${id}/callback`;
-  if (id === "github" && env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET) return new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET, redirect);
-  if (id === "google" && env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) return new Google(env.GOOGLE_CLIENT_ID, env.GOOGLE_CLIENT_SECRET, redirect);
+  if (id === "github" && GITHUB_CLIENT_ID && GITHUB_CLIENT_SECRET) return new GitHub(GITHUB_CLIENT_ID, GITHUB_CLIENT_SECRET, redirect);
+  if (id === "google" && GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET) return new Google(GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, redirect);
   return null;
 }
 /* where to land after signing in: only paths on this site */
@@ -125,5 +126,3 @@ export async function endSession(cookies) {
 
 /* ---------- small response helpers ---------- */
 export const json = (body, status = 200) => new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json", "Cache-Control": "no-store" } });
-/* writes must come from this site (the browser sends Origin on fetch PUT/POST/DELETE) */
-export const sameOrigin = (request, url) => request.headers.get("Origin") === url.origin;

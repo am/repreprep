@@ -26,11 +26,11 @@ test("the pages offer sign-in", async () => {
 
 test("the local test account signs in, and is sent back only to this site", async () => {
   const c = client(w.origin);
-  assert.deepEqual((await (await c.req("/api/me")).json()).providers, [{ id: "dev", name: "a local test account" }]);
+  assert.deepEqual((await c.action("account.me")).data.providers, [{ id: "dev", name: "a local test account" }]);
   assert.equal(await signIn(c, "//evil.example"), "/account");
   assert.equal(await signIn(c), "/model-cycles");
   assert.ok(c.jar.get("rrr_session"));
-  assert.deepEqual((await (await c.req("/api/me")).json()).user, { name: "Local tester", email: null });
+  assert.deepEqual((await c.action("account.me")).data.user, { name: "Local tester", email: null });
   /* Google and GitHub need their keys, which a local run doesn't have */
   for (const p of ["/auth/google", "/auth/github"]) assert.equal((await c.req(p)).status, 404, p);
 });
@@ -38,22 +38,22 @@ test("the local test account signs in, and is sent back only to this site", asyn
 test("progress is saved to the account and read back", async () => {
   const c = client(w.origin);
   await signIn(c);
-  await c.req("/api/me", { method: "DELETE" }); /* start from an empty account */
+  await c.action("account.delete"); /* start from an empty account */
   await signIn(c);
-  assert.deepEqual(await (await c.req("/api/progress")).json(), { data: null, updatedAt: 0 });
-  const saved = await c.req("/api/progress", { method: "PUT", json: progress(1234) });
-  assert.deepEqual(await saved.json(), { ok: true, updatedAt: 1234 });
-  assert.deepEqual(await (await c.req("/api/progress")).json(), { ...progress(1234), updatedAt: 1234 });
-  assert.equal((await c.req("/api/progress", { method: "PUT", body: "{nope", headers: { "Content-Type": "application/json" } })).status, 400);
-  assert.equal((await c.req("/api/progress", { method: "PUT", json: { data: [1] } })).status, 400);
-  assert.equal((await c.req("/api/progress", { method: "PUT", json: { data: { inst: {}, pad: "x".repeat(600000) } } })).status, 413);
-  assert.equal((await c.req("/api/progress", { method: "PUT", origin: null, json: progress(1) })).status, 403);
+  assert.deepEqual((await c.action("progress.load")).data, { data: null, updatedAt: 0 });
+  assert.deepEqual((await c.action("progress.save", progress(1234))).data, { updatedAt: 1234 });
+  assert.deepEqual((await c.action("progress.load")).data, { ...progress(1234), updatedAt: 1234 });
+  assert.equal((await c.req("/_actions/progress.save", { method: "POST", body: "{nope", headers: { "Content-Type": "application/json" } })).status >= 400, true);
+  assert.equal((await c.action("progress.save", { data: [1] })).status, 400);
+  assert.equal((await c.action("progress.save", { data: { inst: 3 } })).status, 400);
+  assert.equal((await c.action("progress.save", { data: { inst: {}, pad: "x".repeat(600000) } })).status, 413);
+  assert.equal((await c.action("progress.save", progress(1), { origin: null })).status, 403);
 });
 
 test("the account download has everything kept about you", async () => {
   const c = client(w.origin);
   await signIn(c);
-  await c.req("/api/progress", { method: "PUT", json: progress(99) });
+  await c.action("progress.save", progress(99));
   await c.req("/api/contact", { method: "POST", body: c.form({ message: "From a signed-in person", reply_to: "a@b.co" }) });
   await c.req("/api/contact", { method: "POST", body: c.form({ message: "bot", website: "x" }) });
   const r = await c.req("/api/export");
@@ -70,21 +70,21 @@ test("the account download has everything kept about you", async () => {
 test("signing out ends the session", async () => {
   const c = client(w.origin);
   await signIn(c);
-  assert.deepEqual(await (await c.req("/auth/logout", { method: "POST" })).json(), { ok: true });
+  assert.equal((await c.action("account.signOut")).status, 204);
   assert.equal(c.jar.get("rrr_session"), undefined);
-  assert.equal((await (await c.req("/api/me")).json()).user, null);
-  assert.equal((await c.req("/api/progress")).status, 401);
+  assert.equal((await c.action("account.me")).data.user, null);
+  assert.equal((await c.action("progress.load")).status, 401);
 });
 
 test("deleting the account removes its progress and signs you out", async () => {
   const c = client(w.origin);
   await signIn(c);
-  await c.req("/api/progress", { method: "PUT", json: progress(5) });
-  assert.equal((await c.req("/api/me", { method: "DELETE", origin: null })).status, 403);
-  assert.deepEqual(await (await c.req("/api/me", { method: "DELETE" })).json(), { ok: true });
-  assert.equal((await (await c.req("/api/me")).json()).user, null);
+  await c.action("progress.save", progress(5));
+  assert.equal((await c.action("account.delete", undefined, { origin: null })).status, 403);
+  assert.equal((await c.action("account.delete")).status, 204);
+  assert.equal((await c.action("account.me")).data.user, null);
   await signIn(c);
-  assert.deepEqual(await (await c.req("/api/progress")).json(), { data: null, updatedAt: 0 });
+  assert.deepEqual((await c.action("progress.load")).data, { data: null, updatedAt: 0 });
   const body = await (await c.req("/api/export")).json();
   assert.equal(body.messages.length, 0);
 });

@@ -1,5 +1,6 @@
 import { EmailMessage } from "cloudflare:email";
-import { env } from "./db.js";
+import { env } from "cloudflare:workers";
+import { CONTACT_TO } from "astro:env/server";
 
 /* Contact-form messages go to the site owner through Cloudflare Email Routing.
    CONTACT_TO (a secret) must be a verified destination address on the repreprep.studio zone. */
@@ -9,7 +10,7 @@ const header = (s) => `=?UTF-8?B?${b64(s)}?=`;
 const oneLine = (s) => String(s).replace(/[\r\n]+/g, " ").trim();
 const looksLikeEmail = (s) => /^[^\s@<>",]+@[^\s@<>",]+\.[^\s@<>",]+$/.test(s || "");
 
-export const mailReady = () => !!(env.MAIL && env.CONTACT_TO);
+export const mailReady = () => !!(env.MAIL && CONTACT_TO);
 
 /* returns true when sent; never throws, the message is already saved in D1 */
 export async function sendContactMail({ body, replyTo, signedIn, origin }) {
@@ -25,7 +26,7 @@ export async function sendContactMail({ body, replyTo, signedIn, origin }) {
   ].join("\r\n");
   const lines = [
     `From: ${header("Rep Rep Rep")} <${FROM}>`,
-    `To: <${env.CONTACT_TO}>`,
+    `To: <${CONTACT_TO}>`,
     looksLikeEmail(replyTo) ? `Reply-To: <${oneLine(replyTo)}>` : null,
     `Subject: ${header(`Rep Rep Rep message: ${preview}`)}`,
     `Date: ${new Date().toUTCString()}`,
@@ -37,7 +38,7 @@ export async function sendContactMail({ body, replyTo, signedIn, origin }) {
     b64(text).replace(/.{76}/g, "$&\r\n"),
   ].filter((l) => l !== null);
   try {
-    await env.MAIL.send(new EmailMessage(FROM, env.CONTACT_TO, lines.join("\r\n")));
+    await env.MAIL.send(new EmailMessage(FROM, CONTACT_TO, lines.join("\r\n")));
     return true;
   } catch (e) {
     console.error("contact mail failed", e);
