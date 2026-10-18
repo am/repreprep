@@ -1,10 +1,3 @@
-/* weeks still being written: shown in the course map so the whole path is visible */
-export const CYCLES_SOON = [
-  [5,"Sound","What makes a sound"],[6,"Sound","Bright and dark"],[7,"Sound","Building a sound palette"],[8,"Sound","Movement"],
-  [9,"Notes and harmony","Notes, octaves and scales"],[10,"Notes and harmony","Basslines"],[11,"Notes and harmony","Chords that feel like night"],[12,"Notes and harmony","Melody, question and answer"],
-  [13,"Space, arrangement and finishing","Space and dub"],[14,"Space, arrangement and finishing","Listen like a producer"],[15,"Space, arrangement and finishing","From loop to song"],[16,"Space, arrangement and finishing","Perform, record and finish"]
-];
-
 /* ---------- Reference: machines ---------- */
 export const CYCLES_MACHINES = [
   {n:"KICK",tag:"kick drums, 808 bass",p:"A solid all-round kick, inspired by classics. Elektron's tip: combine a high SHAPE with lots of CONTOUR for a noisy, punchy kick. Long DECAY or GATE turns it into an 808-style bass.",m:{COLOR:"Soft square-like modulation",SHAPE:"Triangle-like modulation and feedback",SWEEP:"Pitch sweep depth and time",CONTOUR:"Modulation envelope depth"}},

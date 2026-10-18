@@ -2,7 +2,7 @@ import { hits } from "../../shared/html.js";
 import { TRACK_MAP, songHome, songMachines, noteLock } from "./helpers.js";
 
 export const UNIT_4_LESSONS = [
-{ id:"w13", week:13, unit:"Space, arrangement and finishing", title:"Space and dub", minutes:40,
+{ id:"w13", week:13, unit:"Space, arrangement and finishing", title:"Space and dub",
   goal:"Place sounds near and far with reverb and delay sends, and play dub throws by hand.",
   listen:"Augustus Pablo, \"King Tubby Meets Rockers Uptown\", then Burial, \"Archangel\". Listen for echoes that appear on a single hit and fade away, and for what stays dry and close.",
   concepts:[
@@ -25,7 +25,7 @@ export const UNIT_4_LESSONS = [
   ],
   challenge:"Lock a [DELAY SEND] throw on one hat in bar 3 and a [REVERB SEND] room shot on one chord in bar 4. Keep only the throws that make you lean in."
 },
-{ id:"w14", week:14, unit:"Space, arrangement and finishing", title:"Listen like a producer", minutes:40,
+{ id:"w14", week:14, unit:"Space, arrangement and finishing", title:"Listen like a producer",
   goal:"Listen to a track in layers, write down its sonic DNA, and balance your own track's levels and pans.",
   listen:"A track you love, your choice (Bonobo, \"Kiara\", works well). Play it three times: once just to enjoy it, once following only the bass, once following only the drums.",
   concepts:[
@@ -51,7 +51,7 @@ export const UNIT_4_LESSONS = [
   ],
   challenge:"Fill in a sonic DNA sheet for a track in a style you don't usually listen to. Write one thing it does that your track doesn't, and try it on B01."
 },
-{ id:"w15", week:15, unit:"Space, arrangement and finishing", title:"From loop to song", minutes:45,
+{ id:"w15", week:15, unit:"Space, arrangement and finishing", title:"From loop to song",
   goal:"Turn your loop into a song of five sections, built by taking things away, and chain them in order.",
   listen:"Bonobo, \"Kiara\". Draw its energy as a line while you listen: where parts arrive, where it drops back, and how it ends.",
   concepts:[
@@ -82,7 +82,7 @@ export const UNIT_4_LESSONS = [
   ],
   challenge:"Draw the energy curve of your chain on paper, then the one you drew for Bonobo's \"Kiara\". Change one of your sections so your curve looks more like the one you love."
 },
-{ id:"w16", week:16, unit:"Space, arrangement and finishing", title:"Perform, record and finish", minutes:45,
+{ id:"w16", week:16, unit:"Space, arrangement and finishing", title:"Perform, record and finish",
   goal:"Perform your song live with mutes, fills, chance and Control All, record a 3–5 minute take into Live, and start the finishing loop.",
   listen:"Your own take, once you've recorded it. Listen once all the way through without stopping, then once more away from where you made it.",
   concepts:[
