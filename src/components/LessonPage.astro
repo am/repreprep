@@ -8,6 +8,6 @@ const title = `${wkLabel(L)}: ${L.title}` + (act ? ` (${act + 1}/${L.steps.lengt
 ---
 <Base title={title} description={L.goal} inst={I} tab="lessons">
   <Fragment set:html={player(I, L, act)} />
-  <div class="below"><Fragment set:html={lessonText(I, L, act)} /></div>
+  <div class="below"><Fragment set:html={lessonText(I, L)} /></div>
   <nav class="umap bands" aria-label="All lessons"><h2 class="umap-h t-title">All lessons</h2><Fragment set:html={courseMap(I, L)} /></nav>
 </Base>

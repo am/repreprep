@@ -53,17 +53,15 @@ export function player(I, L, act) {
 }
 
 /* the lesson text below the player: ideas, every step as a list, challenge, notes */
-export function lessonText(I, L, act) {
-  const steps = L.steps.map((st, i) => `<li class="step ${i === act ? "active" : ""}" data-step="${i}" data-href="${stepPath(L, i)}"><button class="ck" data-check="${i}" aria-label="Mark step ${i + 1} done" aria-pressed="false"></button><div><div class="num"><a href="${stepPath(L, i)}">${KIND[st.k || "play"]}</a></div><div class="txt">${fmtStep(I, st)}</div>${st.a ? `<details class="ans"><summary>Answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? hearNote(I, st) : ""}</div></li>`).join("");
+/* under the player: only what the steps don't already hold (the challenge, your notes, finishing).
+   The ideas and steps themselves live in the player, so they aren't repeated here. */
+export function lessonText(I, L) {
   const nx = nextLesson(I, L);
-  return `<article class="lesson stack"><header><div class="eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}${L.minutes} min</div><h2>${esc(L.title)}</h2><p class="goal">${esc(L.goal)}</p></header>
-    <p class="t-note listen"><span class="t-label">Listen first</span>${linkSongs(esc(L.listen))}</p>
-    ${L.concepts.map((c) => `<section class="card concept"><h3 class="t-title t-card">${esc(c.h)}</h3>${c.p.map((p) => `<p class="t-body">${keyify(I, p, "")}</p>`).join("")}</section>`).join("")}
-    <ol class="steps">${steps}</ol>
+  return `<section class="wrapup stack" aria-label="After the lesson">
     <section class="card challenge"><div class="t-eyebrow">This lesson's challenge</div><p class="t-body">${keyify(I, L.challenge, "")}</p></section>
     <div class="notes"><label for="notes-${L.id}">Your notes for ${wkLabel(L).toLowerCase()}</label><textarea id="notes-${L.id}" data-notes="${L.id}" placeholder="Presets you liked, what was hard, ideas for next time"></textarea></div>
     <div class="finish"><button class="btn primary" data-finish="${L.id}" data-label="${L.song ? "Mark study complete" : "Mark lesson complete"}">${L.song ? "Mark study complete" : "Mark lesson complete"}</button><span class="stamp" hidden></span>${nx && !L.song ? `<a class="btn" href="${nx.path}" data-lesson="${nx.id}" data-path="${nx.path}">Next lesson →</a>` : ""}</div>
-  </article>`;
+  </section>`;
 }
 
 export function panelGuide(I, sel) {
