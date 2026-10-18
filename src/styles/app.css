@@ -231,7 +231,7 @@ body.resizing{cursor:col-resize;user-select:none}
 .pstage{min-height:0;display:flex;align-items:center;justify-content:center}
 .pstage > svg{width:100%;height:100%;display:block}
 /* the step keeps its card: it separates the text from the drawing */
-.pstep{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--s6);padding:var(--s5) var(--s5);border-radius:var(--r-l);background:var(--surface-2)}
+.pstep{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--s6);padding:var(--s5) var(--s5);border-radius:var(--r-l);border:1px solid var(--line);background:var(--bg)}
 .pstep .h{margin:0;font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:var(--ls-caps);color:var(--faint);text-transform:uppercase}
 .pstep .ptxt{font-size:var(--fs-step);line-height:var(--lh-loose);margin:0}
 .ptxt p,.txt p{margin:0 0 .6em}.ptxt p:last-child,.txt p:last-child{margin-bottom:0}
@@ -244,7 +244,7 @@ body.resizing{cursor:col-resize;user-select:none}
 .pstep .grow{flex:1}
 /* legend and Back/Next stay in view at the bottom of the card when a long step scrolls */
 /* the top of the bar fades in, so text scrolling underneath stays visible and hints there is more */
-.pfoot{position:sticky;bottom:calc(-1 * var(--s5));margin:calc(-1 * var(--s6)) calc(-1 * var(--s5)) calc(-1 * var(--s5));padding:var(--s9) var(--s5) var(--s5);display:flex;flex-direction:column;gap:var(--s4);background:linear-gradient(to bottom,transparent,var(--surface-2) calc(var(--s9) - var(--s3)));pointer-events:none}
+.pfoot{position:sticky;bottom:calc(-1 * var(--s5));margin:calc(-1 * var(--s6)) calc(-1 * var(--s5)) calc(-1 * var(--s5));padding:var(--s9) var(--s5) var(--s5);display:flex;flex-direction:column;gap:var(--s4);background:linear-gradient(to bottom,transparent,var(--bg) calc(var(--s9) - var(--s3)));pointer-events:none}
 .pfoot > *{pointer-events:auto}
 .ctl{padding:var(--s3) var(--s3);border-radius:var(--r-l);border:1px solid var(--line);background:var(--surface);font-size:var(--fs-sm)}
 .ctl .h{display:flex;justify-content:space-between;align-items:center}
