@@ -1,43 +1,78 @@
 ---
-// A lesson's first step: what it is, what you will learn, its ideas and a track to listen to.
+// A lesson's first step, in two parts. "hero" fills the left of the player in big type: which lesson it is, its
+// title and what you will learn, so a new lesson clearly starts here. "details" goes in the step card on the
+// right: the lesson's ideas and a track to listen to.
 import { lessonLabel, goalPhrase } from "../../course/index.js";
 import { esc } from "../../course/shared/html.js";
 import { linkSongs } from "../../course/shared/songs.js";
 interface Props {
   L: any;
+  part: "hero" | "details";
 }
-const { L } = Astro.props;
+const { L, part } = Astro.props;
 const ideas = L.concepts || [];
 ---
 
-<div class="introcard">
-  <div class="t-eyebrow">
-    {lessonLabel(L)}
-    {L.unit && ` · ${L.unit}`}
-  </div>
-  <h3 class="t-title">{L.title}</h3>
-  <p class="ptxt t-body">
-    <b>You will learn to</b> {goalPhrase(L)}
-  </p>
-  {ideas.length > 0 && (
-    <div class="ideas t-body">
-      <div class="t-label">Ideas in this lesson</div>
-      <ul>
-        {ideas.map((c: any) => (
-          <li>{c.h}</li>
-        ))}
-      </ul>
+{part === "hero" ? (
+  <div class="introhero">
+    <div class="t-eyebrow">
+      {lessonLabel(L)}
+      {L.unit && ` · ${L.unit}`}
     </div>
-  )}
-  {L.listen && (
-    <p class="t-note">
-      <span class="t-label">Listen first</span>
-      <Fragment set:html={linkSongs(esc(L.listen))} />
+    <h2 class="t-title">{L.title}</h2>
+    <p class="lede">
+      <b>You will learn to</b> {goalPhrase(L)}
     </p>
-  )}
-</div>
+  </div>
+) : (
+  <div class="introcard">
+    {ideas.length > 0 && (
+      <div class="ideas t-body">
+        <div class="t-label">Ideas in this lesson</div>
+        <ul>
+          {ideas.map((c: any) => (
+            <li>{c.h}</li>
+          ))}
+        </ul>
+      </div>
+    )}
+    {L.listen && (
+      <p class="t-note">
+        <span class="t-label">Listen first</span>
+        <Fragment set:html={linkSongs(esc(L.listen))} />
+      </p>
+    )}
+  </div>
+)}
 
 <style>
+  .introhero {
+    width: 100%;
+    max-width: 52rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s5);
+    padding: var(--s6) var(--s5);
+  }
+  .introhero .t-eyebrow {
+    font-size: var(--fs-sm);
+  }
+  .introhero .t-title {
+    font-size: var(--fs-intro);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .introhero .lede {
+    margin: 0;
+    max-width: 32ch;
+    font-size: var(--fs-intro-lede);
+    line-height: var(--lh-snug);
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .introhero .lede b {
+    color: var(--fg);
+  }
   .introcard {
     display: flex;
     flex-direction: column;
@@ -48,5 +83,10 @@ const ideas = L.concepts || [];
     margin: 0;
     padding-left: 1.1em;
     line-height: var(--lh-loose);
+  }
+  @media (max-width: 990px) {
+    .introhero {
+      padding: 0;
+    }
   }
 </style>

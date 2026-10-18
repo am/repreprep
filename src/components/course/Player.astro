@@ -1,5 +1,5 @@
 ---
-// The step player: the drawing or the panel on the left, the step on the right. The optional challenge is
+// The step player: the drawing or the panel on the left (on the intro, the lesson's title in big type), the step on the right. The optional challenge is
 // one more step after the last one: same player, its own kind, and Finish moves there.
 import LessonMenu from "./LessonMenu.astro";
 import IntroCard from "./IntroCard.astro";
@@ -81,8 +81,10 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     </button>
   </div>
   <div class="pbody" id="pbody">
-    <div class="pstage">
-      {st.fig ? (
+    <div class={st.intro ? "pstage intro" : "pstage"}>
+      {st.intro ? (
+        <IntroCard L={L} part="hero" />
+      ) : st.fig ? (
         <div class="figwrap">
           <Figure I={I} fig={st.fig} id={`${L.id}:${act}`} />
         </div>
@@ -116,7 +118,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       ) : (
         <Fragment>
           {st.intro ? (
-            <IntroCard L={L} />
+            <IntroCard L={L} part="details" />
           ) : (
             <div class="ptxt">
               <StepText I={I} st={st} />
@@ -557,6 +559,9 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     width: 100%;
     height: 100%;
     display: block;
+  }
+  .pstage.intro {
+    justify-content: flex-start;
   }
   /* the step keeps its card: it separates the text from the drawing */
   .pstep {
