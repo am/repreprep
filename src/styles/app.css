@@ -450,8 +450,6 @@ a.icard:hover{border-color:var(--faint)}
 .contact .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
 /* course map: no boxes, each part is a band between hairlines, its name on the left and its lessons on the right */
 .umap{margin-top:var(--s7)}
-.back-all{align-self:flex-start;font-family:var(--display);font-weight:var(--fw-semibold);font-size:var(--fs-sm);color:var(--muted);text-decoration:none}
-.back-all:hover{color:var(--fg)}
 .unit .band-h{padding-top:var(--s2)}
 .unit .band-h .t-label{margin:0;letter-spacing:var(--ls-key)}
 /* two columns read top to bottom (1 3 / 2 4): --rows is half the unit's lessons, rounded up */

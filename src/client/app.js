@@ -114,7 +114,7 @@ function hydrateLesson(k, s) {
   const intro = act === 0;
   const dm = $("[data-donemark]"); if (dm) dm.hidden = !(s.steps[id + ":" + act] && !intro);
   const fb = $("[data-finish]"), stamp = $(".finish .stamp");
-  if (fb) { fb.textContent = s.done[id] ? "Completed" : fb.dataset.label; }
+  if (fb) { fb.textContent = s.done[id] ? "Completed" : fb.dataset.label; fb.classList.toggle("primary", !s.done[id]); }
   if (stamp) { stamp.hidden = !s.done[id]; if (s.done[id]) stamp.textContent = "Done on " + new Date(s.done[id]).toLocaleDateString(); }
   const ta = $("[data-notes]"); if (ta && document.activeElement !== ta) ta.value = s.notes[id] || "";
   const mx = $("[data-max]"); if (mx) { const l = state.focus ? "Exit full window (Esc)" : "Maximize"; mx.setAttribute("aria-label", l); mx.title = l; }

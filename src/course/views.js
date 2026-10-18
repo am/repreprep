@@ -58,12 +58,10 @@ export function player(I, L, act) {
 /* under the player: only what the steps don't already hold (the challenge, your notes, finishing).
    The ideas and steps themselves live in the player, so they aren't repeated here. */
 export function lessonText(I, L) {
-  const nx = nextLesson(I, L);
   return `<section class="wrapup stack" aria-label="After the lesson">
-    <section class="card challenge"><div class="t-eyebrow">This lesson's challenge</div><p class="t-body">${keyify(I, L.challenge, "")}</p></section>
-    <div class="notes"><label for="notes-${L.id}">Your notes for ${wkLabel(L).toLowerCase()}</label><textarea id="notes-${L.id}" data-notes="${L.id}" placeholder="Presets you liked, what was hard, ideas for next time"></textarea></div>
-    <div class="finish"><button class="btn primary" data-finish="${L.id}" data-label="${L.song ? "Mark study complete" : "Mark lesson complete"}">${L.song ? "Mark study complete" : "Mark lesson complete"}</button><span class="stamp" hidden></span>${nx && !L.song ? `<a class="btn" href="${nx.path}" data-lesson="${nx.id}" data-path="${nx.path}">Next lesson →</a>` : ""}</div>
-    <a class="back-all" href="/${I.slug}">← All lessons and your progress</a>
+    <section class="card challenge"><div class="t-eyebrow">Challenge</div><p class="t-body">${keyify(I, L.challenge, "")}</p></section>
+    <div class="notes"><label for="notes-${L.id}">Notes</label><textarea id="notes-${L.id}" data-notes="${L.id}" placeholder="Presets you liked, what was hard, ideas for next time"></textarea></div>
+    <div class="finish"><button class="btn primary" data-finish="${L.id}" data-label="Complete" title="Mark this ${L.song ? "study" : "lesson"} done and open the next one">Complete</button><a class="btn" href="/${I.slug}">All lessons</a><span class="stamp" hidden></span></div>
   </section>`;
 }
 
