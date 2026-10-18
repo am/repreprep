@@ -29,13 +29,17 @@ sh("npx astro build", BASE);
 sh("npx astro build");
 
 /* ---------- HTML of every page ---------- */
+/* bundle hashes and comments in inline scripts don't change what a visitor gets */
+const normalize = (html) => html
+  .replace(/\/_astro\/([\w-]+?)\.[\w-]{8}\.(css|js)/g, "/_astro/$1.$2")
+  .replace(/(<script\b[^>]*>)([\s\S]*?)(<\/script>)/g, (m, a, js, b) => a + js.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\n\s*\n/g, "\n") + b);
 const pagesIn = (dir) => {
   const out = new Map();
   (function walk(d) {
     for (const e of readdirSync(d, { withFileTypes: true })) {
       const p = join(d, e.name);
       if (e.isDirectory()) walk(p);
-      else if (e.name.endsWith(".html")) out.set(relative(dir, p), readFileSync(p, "utf8").replace(/\/_astro\/([\w-]+?)\.[\w-]{8}\.(css|js)/g, "/_astro/$1.$2"));
+      else if (e.name.endsWith(".html")) out.set(relative(dir, p), normalize(readFileSync(p, "utf8")));
     }
   })(dir);
   return out;
