@@ -1,0 +1,8 @@
+---
+// The lesson picker in the player header: every lesson grouped by unit, one click to jump.
+import LessonLink from "./LessonLink.astro";
+import { byUnit } from "../../course/index.js";
+interface Props { I: any; L: any }
+const { I, L } = Astro.props;
+---
+<div class="pmenu">{byUnit(I.lessons).map((g) => <div class="pm-g"><div class="pm-h">{g.u}</div>{g.ls.map((l: any) => <LessonLink l={l} class="pm-i" current={l === L}><span class="t">{l.title}</span></LessonLink>)}</div>)}</div>

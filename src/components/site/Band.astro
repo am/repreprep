@@ -1,0 +1,6 @@
+---
+// An open row: a small label and title on the left, the content on the right, a hairline between rows.
+interface Props { eyebrow: string; title: string }
+const { eyebrow, title } = Astro.props;
+---
+<section class="band"><div class="band-h"><div class="t-eyebrow">{eyebrow}</div><h3 class="t-title t-card">{title}</h3></div><div class="band-b"><slot /></div></section>

@@ -1,0 +1,9 @@
+---
+// An instrument's sections, under the header.
+interface Props { inst: any; tab?: string }
+const { inst, tab } = Astro.props;
+const TABS = [["lessons", "Lessons", ""], ["panel", "Panel guide", "/panel"], ["machines", "Machines", "/machines"], ["shortcuts", "Shortcuts", "/shortcuts"]];
+---
+<nav class="tabs" aria-label="Sections">
+  {TABS.map(([k, label, sub]) => <a href={`/${inst.slug}${sub}`} aria-current={tab === k ? "page" : undefined}>{label}</a>)}
+</nav>

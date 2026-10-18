@@ -1,0 +1,10 @@
+---
+// The panel guide: the whole panel with one control selected, and what that control does.
+import Keys from "./Keys.astro";
+import PanelDrawing from "./PanelDrawing.astro";
+interface Props { I: any; sel: string }
+const { I, sel } = Astro.props;
+const c = I.controls[sel];
+---
+<p class="lede t-body">Every key and knob on the {I.name}, with what it does. Click any control on the panel. <Keys I={I} text={I.panelIntro || ""} /></p>
+<div class="refgrid"><div class="dockpanel" data-panel-guide={`/${I.slug}/panel`}><PanelDrawing I={I} sel={sel} /></div><div class="info" id="info"><div class="t-eyebrow">{c.kind}</div><h3 class="t-title t-card">{c.name}</h3><p class="t-body"><Keys I={I} text={c.desc} /></p>{c.sub && <p class="t-body"><span class="t-label">Second label on the panel</span><b>{c.sub}</b></p>}</div></div>

@@ -12,6 +12,8 @@ export const INSTRUMENTS=[
   {key:"live", slug:"live", name:"Ableton Live", ready:false},
 ];
 export const instrumentBySlug=slug=>INSTRUMENTS.find(i=>i.slug===slug);
+/* the instruments that have a course; every course page is built for each of them */
+export const READY=INSTRUMENTS.filter(I=>I.ready);
 
 export const lessonLabel=L=>L.song?"Song study":"Lesson "+L.number;
 export const pad2=n=>String(n).padStart(2,"0");
@@ -27,7 +29,7 @@ const slugify=s=>s.normalize("NFKD").replace(/[̀-ͯ]/g,"").toLowerCase().replac
 
 /* every lesson opens with an intro step: what you will learn, how long, what to listen to.
    Step ids stay the old ones (lesson id + ":" + index, intro = 0), so saved progress keeps working. */
-INSTRUMENTS.filter(I=>I.ready).forEach(I=>I.lessons.forEach((L,i)=>{
+READY.forEach(I=>I.lessons.forEach((L,i)=>{
   L.steps.unshift({intro:true,k:"intro",hl:"",t:`${lessonLabel(L)}: ${L.title}. In this lesson you will ${goalPhrase(L)}`});
   L.slug=L.song?slugify(L.title):pad2(L.number);
   L.path=`/${I.slug}/${L.song?"songs":"lessons"}/${L.slug}`;

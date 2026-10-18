@@ -1,10 +1,11 @@
 ---
 import Base from "../../../../layouts/Base.astro";
-import { INSTRUMENTS, lessonLabel } from "../../../../course/index.js";
-import { player, lessonText } from "../../../../course/views.js";
+import Player from "../../../../components/course/Player.astro";
+import LessonWrapup from "../../../../components/course/LessonWrapup.astro";
+import { READY, lessonLabel } from "../../../../course/index.js";
 /* /model-cycles/lessons/<lesson> (or /songs/<study>) is the intro; .../<n> is step n; one past the last step is the optional challenge */
 export function getStaticPaths() {
-  return INSTRUMENTS.filter((I) => I.ready).flatMap((I) =>
+  return READY.flatMap((I) =>
     I.lessons.flatMap((L) =>
       [...L.steps.keys(), ...(L.challenge ? [L.steps.length] : [])].map((i) => ({
         params: { inst: I.slug, section: L.song ? "songs" : "lessons", lesson: L.slug, step: i ? String(i) : undefined },
@@ -15,6 +16,6 @@ const { I, L, act } = Astro.props;
 const title = `${lessonLabel(L)}: ${L.title}` + (act === L.steps.length ? " (challenge)" : act ? ` (${act + 1}/${L.steps.length})` : "");
 ---
 <Base title={title} description={L.goal} inst={I} tab="lessons">
-  <Fragment set:html={player(I, L, act)} />
-  <div class="below"><Fragment set:html={lessonText(I, L)} /></div>
+  <Player I={I} L={L} act={act} />
+  <div class="below"><LessonWrapup I={I} L={L} /></div>
 </Base>

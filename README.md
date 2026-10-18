@@ -31,7 +31,8 @@ Open http://localhost:4321. On your own computer the account page offers a **loc
 ## Where things are
 
 - `src/course/`: the course itself. `model-cycles/lessons/` (one file per unit plus `songs.js`), `model-cycles/figures/` (the drawings), `model-cycles/controls.js` (panel drawing and the description of every key and knob), `reference.js` (machines and shortcuts). `shared/` holds the step formatting, the playable grid and the Spotify links.
-- `src/course/views.js`: the page markup (player, lesson text, lesson list).
+- `src/components/`: the page pieces as Astro components. `course/` has the lesson player and its parts, the notes, the course map and the panel guide; `site/` has the header, footer, logo, theme switch and shared blocks (`Band`, `Card`).
+- `src/layouts/Base.astro`: the page shell every page uses.
 - `src/pages/`: one file per kind of address. `api/` and `auth/` are the only parts that run on the server.
 - `src/client/`: the browser script (progress, saving, the quiz, the drum grids).
 - `src/lib/`: sign-in and the database.
@@ -40,9 +41,9 @@ After editing lessons, run `npm run check`: it renders every step and stops at t
 
 ## Tests
 
-- `npm test` runs everything that also runs on every pull request: `npm run check`, the unit tests (`tests/unit`: step text, grids, song links, page markup), a build with checks on the built pages (`tests/site`: every step page exists, no broken links), and the browser tests (`tests/e2e`: moving through a lesson, ticks, notes, quizzes, progress files, theme, the phone menu). The browser tests need Chromium once: `npx playwright install chromium`.
+- `npm test` runs everything that also runs on every pull request: `npm run check`, the unit tests (`tests/unit`: step text, grids, song links), a build with checks on the built pages (`tests/site`: every step page exists, no broken links, the player and other components as built), and the browser tests (`tests/e2e`: moving through a lesson, ticks, notes, quizzes, progress files, theme, the phone menu). The browser tests need Chromium once: `npx playwright install chromium`.
 - `npm run test:unit` runs only the unit tests, in a second.
-- `npm run compare` is for changes that should not change the site, like a cleanup. It builds `main` next to your checkout, compares the HTML of every page, and compares screenshots of the main pages (desktop and phone, dark and light). Any difference is listed, and the screenshots that differ are saved in `.compare/shots` with the changed pixels in red. `npm run compare <branch or commit>` compares with something other than `main`.
+- `npm run compare` is for changes that should not change the site, like a cleanup. It builds `main` next to your checkout, compares the HTML of every page (ignoring whitespace layout and other differences a visitor can't see), and compares screenshots of the main pages (desktop and phone, dark and light). Any difference is listed, and the screenshots that differ are saved in `.compare/shots` with the changed pixels in red. `npm run compare <branch or commit>` compares with something other than `main`.
 
 Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. Changing a lesson's id, or inserting a step in the middle of a lesson, moves people's ticks.
 

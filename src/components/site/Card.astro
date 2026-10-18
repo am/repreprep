@@ -1,0 +1,6 @@
+---
+// A boxed section with a title: the progress page's actions, the contact form. Extra attributes go on the box.
+interface Props { title: string; [attr: string]: any }
+const { title, ...attrs } = Astro.props;
+---
+<section class="card" {...attrs}><h3 class="t-title t-card">{title}</h3><slot /></section>

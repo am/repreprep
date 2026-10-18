@@ -1,8 +1,8 @@
-// Step text: key caps, song links, sentence splitting and step layout (src/course/shared/text.js).
+// Step text: key caps, song links, sentence splitting and how step text is laid out (src/course/shared/text.js).
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { INSTRUMENTS } from "../../src/course/index.js";
-import { parseHl, keyify, keyCap, splitSent, fmtStep, hearNote, quiz, withHl, KIND } from "../../src/course/shared/text.js";
+import { parseHl, keyify, keyCap, splitSent, stepParts, withHl, KIND } from "../../src/course/shared/text.js";
 
 const I = INSTRUMENTS.find((i) => i.ready);
 /* the key caps in some HTML, as [label, action] pairs */
@@ -52,39 +52,26 @@ test("splitSent splits on sentences but not inside brackets or after e.g.", () =
   assert.deepEqual(splitSent('Listen. "Looped" starts.'), ["Listen.", '"Looped" starts.']);
 });
 
-test("fmtStep: a Play step becomes a title and one bullet per action", () => {
-  const html = fmtStep(I, { k: "play", t: "Set the tempo: press [TEMPO]. Turn [LEVEL/DATA].", hl: "p:tempo t:level" });
-  assert.match(html, /^<h3 class="t-title t-step">Set the tempo<\/h3><ul class="pacts"><li>Press .*TEMPO<\/span>\.<\/li><li>Turn .*LEVEL\/DATA<\/span>\.<\/li><\/ul>$/);
+test("stepParts: a Play step becomes a title and one bullet per action", () => {
+  assert.deepEqual(stepParts({ k: "play", t: "Set the tempo: press [TEMPO]. Turn [LEVEL/DATA]." }), { lead: "Set the tempo", items: ["Press [TEMPO].", "Turn [LEVEL/DATA]."] });
 });
 
-test("fmtStep: a one-sentence Play step is a paragraph", () => {
-  assert.equal(fmtStep(I, { t: "Just listen." }), "<p>Just listen.</p>");
+test("stepParts: a one-sentence Play step is a paragraph", () => {
+  assert.deepEqual(stepParts({ t: "Just listen." }), { lead: "", para: "Just listen." });
 });
 
-test("fmtStep: Learn and Check steps get a lead sentence and the rest as body", () => {
-  assert.equal(fmtStep(I, { k: "learn", t: "One idea. Two more words. Three." }), '<p class="t-lead">One idea.</p><p class="t-body">Two more words. Three.</p>');
-  assert.equal(fmtStep(I, { k: "learn", t: "Only one." }), '<p class="t-lead">Only one.</p>');
+test("stepParts: Learn and Check steps get a lead sentence and the rest as body", () => {
+  assert.deepEqual(stepParts({ k: "learn", t: "One idea. Two more words. Three." }), { lead: "", first: "One idea.", rest: "Two more words. Three." });
+  assert.deepEqual(stepParts({ k: "learn", t: "Only one." }), { lead: "", first: "Only one.", rest: "" });
 });
 
-test("fmtStep: a Check step never turns its question into a title", () => {
-  assert.equal(fmtStep(I, { k: "check", t: "Quiz: what is it?" }), '<p class="t-lead">Quiz: what is it?</p>');
+test("stepParts: a Check step never turns its question into a title", () => {
+  assert.deepEqual(stepParts({ k: "check", t: "Quiz: what is it?" }), { lead: "", first: "Quiz: what is it?", rest: "" });
 });
 
-test("fmtStep: a long or punctuated prefix is not a title", () => {
-  assert.doesNotMatch(fmtStep(I, { k: "play", t: "This prefix is far too long to be a title: it stays." }), /<h3/);
-  assert.doesNotMatch(fmtStep(I, { k: "play", t: "Press [PLAY]: it starts." }), /<h3/);
-});
-
-test("hearNote: Listen for, or Remember on Check steps", () => {
-  assert.match(hearNote(I, { k: "play", hear: "the kick" }), /^<p class="t-note hear"><span class="t-label">Listen for<\/span>the kick<\/p>$/);
-  assert.match(hearNote(I, { k: "check", hear: "it" }), /class="t-note hear done"><span class="t-label">Remember</);
-});
-
-test("quiz marks only the right answer", () => {
-  const html = quiz(I, { q: ["Wrong", "!Right [PLAY]", "Also wrong"], a: "Because." });
-  assert.deepEqual([...html.matchAll(/data-opt="(\d)">(.*?)<\/button>/g)].map((m) => [m[1], m[2].replace(/<[^>]+>/g, "")]),
-    [["0", "Wrong"], ["1", "Right PLAY"], ["0", "Also wrong"]]);
-  assert.match(html, /<p class="qexp" hidden>Because\.<\/p>/);
+test("stepParts: a long or punctuated prefix is not a title", () => {
+  assert.equal(stepParts({ k: "play", t: "This prefix is far too long to be a title: it stays." }).lead, "");
+  assert.equal(stepParts({ k: "play", t: "Press [PLAY]: it starts." }).lead, "");
 });
 
 test("withHl lights the step's controls and marks the selected one", () => {

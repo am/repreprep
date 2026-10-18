@@ -1,15 +1,13 @@
 ---
 import "../styles/app.css";
 import { ClientRouter } from "astro:transitions";
-import { INSTRUMENTS } from "../course/index.js";
-import Logo from "../components/Logo.astro";
-import ThemeSwitch from "../components/ThemeSwitch.astro";
-import { SIGN_IN } from "../lib/features.js";
+import SiteHeader from "../components/site/SiteHeader.astro";
+import SectionTabs from "../components/site/SectionTabs.astro";
+import SiteFooter from "../components/site/SiteFooter.astro";
 
 interface Props { title?: string; description?: string; inst?: any; tab?: string; home?: boolean }
 const { title, description = "Hands-on lessons that teach music production on your own instruments, one short practice at a time.", inst, tab, home } = Astro.props;
 const full = title ? `${title} · Rep Rep Rep` : "Rep Rep Rep";
-const tabs = inst?.ready ? [["lessons", "Lessons", ""], ["panel", "Panel guide", "/panel"], ["machines", "Machines", "/machines"], ["shortcuts", "Shortcuts", "/shortcuts"]] : [];
 // steps per lesson, so the browser can count progress without loading the whole course
 const sizes = inst?.ready ? JSON.stringify(Object.fromEntries(inst.lessons.map((l: any) => [l.id, l.steps.length]))) : undefined;
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -75,55 +73,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 </head>
 <body data-inst={inst?.key} data-sizes={sizes}>
   <div class="wrap">
-    {home ? (
-      /* the home page is the logo and the instrument picker, so its header keeps only the theme switch and the account (or progress) link */
-      <header class="top bare"><ThemeSwitch /><a class="acct" href="/account" id="acct">{SIGN_IN ? "Sign in" : "Progress"}</a></header>
-    ) : (
-      <header class="top">
-        <div class="brand"><h1><Logo /></h1></div>
-        {/* on phones every option below folds into a menu opened by a knob; on wider screens the menu is just the rest of the header */}
-        <button class="knob" type="button" aria-expanded="false" aria-controls="hmenu" aria-label="Menu" data-menu><svg viewBox="0 0 44 44" aria-hidden="true"><g transform="rotate(45 22 22)"><circle class="kn-cap" cx="22" cy="22" r="13.6"/><line class="kn-mark" x1="22" y1="22" x2="22" y2="8.4"/></g></svg></button>
-        <div class="hmenu" id="hmenu">
-          <nav class="instr" aria-label="Instrument">
-            {INSTRUMENTS.map((x) => x.ready
-              ? <a href={`/${x.slug}`} aria-current={x === inst ? "page" : undefined}>{x.name}</a>
-              : <span class="off">{x.name}<small>next</small></span>)}
-          </nav>
-          <hr class="hsep" />
-          {/* one pill: the step count (a link to the progress page: back up, load, reset) with the theme switch nested in it */}
-          <div class="ctrls">
-            {inst?.ready && <a class="meter" href="/account" title="Your progress: back up, load or reset" id="meterTxt">0 of 0 reps</a>}
-            <ThemeSwitch />
-          </div>
-          {(SIGN_IN || !inst?.ready) && <a class="acct" href="/account" id="acct">{SIGN_IN ? "Sign in" : "Progress"}</a>}
-        </div>
-      </header>
-    )}
-    {tabs.length > 0 && (
-      <nav class="tabs" aria-label="Sections">
-        {tabs.map(([k, label, sub]) => <a href={`/${inst.slug}${sub}`} aria-current={tab === k ? "page" : undefined}>{label}</a>)}
-      </nav>
-    )}
+    <SiteHeader inst={inst} home={home} />
+    {inst?.ready && <SectionTabs inst={inst} tab={tab} />}
     <main id="view"><slot /></main>
   </div>
-  <footer class="foot">
-    <div class="foot-in">
-      <section>
-        <div class="foot-brand">Rep Rep Rep</div>
-        <p>Learn music by playing it, one idea at a time, on the gear you own.</p>
-        <p class="foot-note"><span id="sync">Progress saved in this browser.</span></p>
-      </section>
-      <section>
-        <h2 class="t-label">About</h2>
-        <ul>
-          <li><a href="/privacy">Privacy</a></li>
-          <li><a href="https://github.com/am/repreprep">Source code on GitHub</a></li>
-          <li><a href="https://github.com/am/repreprep/blob/main/CONTRIBUTING.md">Contribute a lesson or fix</a></li>
-          <li>Code MIT, lessons CC BY-NC-SA 4.0</li>
-        </ul>
-      </section>
-    </div>
-  </footer>
+  <SiteFooter />
   <script is:inline>window.__rrrLayout();</script>
   <script>import "../client/app.js";</script>
 </body>

@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import Card from "../components/site/Card.astro";
 import { SIGN_IN } from "../lib/features.js";
 ---
 <Base title={SIGN_IN ? "Your account" : "Your progress"} description={SIGN_IN ? "Sign in to keep your progress on every device." : "Back up your progress or load a saved copy."}>
@@ -21,26 +22,23 @@ import { SIGN_IN } from "../lib/features.js";
     ) : (
       <p>Your ticks, finished lessons and notes are saved in this browser. <a href="/privacy">What the site keeps</a>.</p>
     )}
-    <section class="card">
-      <h3 class="t-title t-card">Back up or move your progress</h3>
+    <Card title="Back up or move your progress">
       <p class="t-body">Download a copy of your progress, or load one. A <code>progress.json</code> from the old local version of the course works too.</p>
       <div class="row">
         <button class="btn" data-export>Download progress</button>
         <label class="btn">Load a progress file<input type="file" accept="application/json,.json" data-import hidden></label>
         <span class="msg" data-import-msg></span>
       </div>
-    </section>
-    <section class="card">
-      <h3 class="t-title t-card">Delete your progress</h3>
+    </Card>
+    <Card title="Delete your progress">
       <p class="t-body">Removes your ticks, finished lessons and notes{SIGN_IN ? " from this browser and, if you're signed in, from your account" : " from this browser"}. This can't be undone, so download a copy first if you might want it back.</p>
       <div class="row"><button class="btn danger" data-clear>Delete my progress</button><span class="msg" data-clear-msg></span></div>
-    </section>
+    </Card>
     {SIGN_IN && (
-      <section class="card" data-signed-in hidden>
-        <h3 class="t-title t-card">Delete your account</h3>
+      <Card title="Delete your account" data-signed-in hidden>
         <p class="t-body">Removes your account and everything saved with it from this site. Your progress stays in this browser. See <a href="/privacy">Privacy</a> for what the site keeps.</p>
         <div class="row"><button class="btn danger" data-delete>Delete my account</button></div>
-      </section>
+      </Card>
     )}
   </div>
 </Base>
