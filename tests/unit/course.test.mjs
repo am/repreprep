@@ -1,11 +1,11 @@
 // The course data and the page markup built from it (src/course/index.js, views.js, shared/*).
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { INSTRUMENTS, instrumentBySlug, wkLabel, pad2, stepPath, nextLesson, renderFig } from "../../src/course/index.js";
-import { player, lessonText, panelGuide, machines, shortcuts, courseMap, hasChallenge } from "../../src/course/views.js";
+import { INSTRUMENTS, instrumentBySlug, lessonLabel, pad2, stepPath, nextLesson, renderFig } from "../../src/course/index.js";
+import { player, lessonText, panelGuide, machines, shortcuts, courseMap } from "../../src/course/views.js";
 import { esc, hits, svgFig, T } from "../../src/course/shared/html.js";
 import { renderGrid, gridPreset } from "../../src/course/shared/grid.js";
-import { SONGS, SPOTIFY, linkSongs } from "../../src/course/shared/songs.js";
+import { SONGS, linkSongs } from "../../src/course/shared/songs.js";
 
 const I = instrumentBySlug("model-cycles");
 const count = (html, re) => (html.match(re) || []).length;
@@ -37,9 +37,9 @@ test("lessons: ids, addresses and short names are unique and stable", () => {
   const ids = I.lessons.map((l) => l.id), paths = I.lessons.map((l) => l.path), shorts = I.lessons.map((l) => l.short);
   for (const list of [ids, paths, shorts]) assert.equal(new Set(list).size, list.length);
   const w05 = I.lessons.find((l) => l.id === "w05");
-  assert.deepEqual([w05.slug, w05.path, w05.short, wkLabel(w05)], ["05", "/model-cycles/lessons/05", "L05", "Lesson 5"]);
+  assert.deepEqual([w05.slug, w05.path, w05.short, lessonLabel(w05)], ["05", "/model-cycles/lessons/05", "L05", "Lesson 5"]);
   const s01 = I.lessons.find((l) => l.id === "s01");
-  assert.deepEqual([s01.slug, s01.path, s01.short, wkLabel(s01)], ["looped", "/model-cycles/songs/looped", "S01", "Song study"]);
+  assert.deepEqual([s01.slug, s01.path, s01.short, lessonLabel(s01)], ["looped", "/model-cycles/songs/looped", "S01", "Song study"]);
   /* song studies come after every lesson */
   const firstSong = I.lessons.findIndex((l) => l.song);
   assert.ok(I.lessons.slice(firstSong).every((l) => l.song));
@@ -48,7 +48,7 @@ test("lessons: ids, addresses and short names are unique and stable", () => {
 test("every lesson opens with an intro step that states its goal", () => {
   for (const L of I.lessons) {
     assert.ok(L.steps[0].intro, L.id);
-    assert.match(L.steps[0].t, new RegExp(`^${wkLabel(L)}: .+\\. In this lesson you will [a-z]`), L.id);
+    assert.match(L.steps[0].t, new RegExp(`^${lessonLabel(L)}: .+\\. In this lesson you will [a-z]`), L.id);
     assert.equal(L.steps.filter((s) => s.intro).length, 1, L.id);
   }
 });
@@ -96,7 +96,7 @@ test("renderGrid: presets get tabs and the current one is shown", () => {
 });
 
 test("songs: every song has a Spotify track and is linked from quotes", () => {
-  for (const t of Object.keys(SONGS)) assert.match(SPOTIFY[t] || "", /^[A-Za-z0-9]{22}$/, t);
+  for (const [t, [artist, id]] of Object.entries(SONGS)) { assert.ok(artist, t); assert.match(id, /^[A-Za-z0-9]{22}$/, t); }
   const html = linkSongs("Hear &quot;Looped&quot; and &quot;La Femme d&#39;Argent&quot; and &quot;Nope&quot;");
   assert.equal(count(html, /class="song"/g), 2);
   assert.match(html, /title="Open Air, La Femme d'Argent in the Spotify app"/);
@@ -104,7 +104,7 @@ test("songs: every song has a Spotify track and is linked from quotes", () => {
 
 test("player: dots, Back and Next on every step of every lesson", () => {
   for (const L of I.lessons) {
-    const n = L.steps.length, total = n + (hasChallenge(L) ? 1 : 0);
+    const n = L.steps.length, total = n + (L.challenge ? 1 : 0);
     for (let act = 0; act < total; act++) {
       const html = player(I, L, act), where = `${L.id} step ${act}`;
       assert.equal(count(html, /<a [^>]*data-step="\d+"/g), total, where);

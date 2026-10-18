@@ -2,7 +2,7 @@ import { hits } from "../../shared/html.js";
 import { TRACK_MAP, songHome, songMachines, noteLock } from "./helpers.js";
 
 export const UNIT_3_LESSONS = [
-{ id:"w09", week:9, unit:"Notes and harmony", title:"Notes, octaves and scales",
+{ id:"w09", number:9, unit:"Notes and harmony", title:"Notes, octaves and scales",
   goal:"Find the 12 notes and the octave on the trig keys, hear major against minor, and play a riff that stays inside the minor pentatonic.",
   listen:"Air, \"La Femme d'Argent\". Notice how few notes the bass and keys use, and how long they repeat over the slow groove without getting boring.",
   concepts:[
@@ -31,7 +31,7 @@ export const UNIT_3_LESSONS = [
   ],
   challenge:"With the beat running, find a different four-note riff on the pentatonic keys and write its TRIG numbers in your notes. End it once on [TRIG 9] and once on [TRIG 14]: which one sounds finished?"
 },
-{ id:"w10", week:10, unit:"Notes and harmony", title:"Basslines",
+{ id:"w10", number:10, unit:"Notes and harmony", title:"Basslines",
   goal:"Write a slow bassline that hits with the kick, plays the roots of your chord changes, and adds an octave jump and an approach note.",
   listen:"Air, \"La Femme d'Argent\", then Augustus Pablo, \"King Tubby Meets Rockers Uptown\". Follow only the bass: when it plays, when it rests, and how often it comes back to the same note.",
   concepts:[
@@ -62,7 +62,7 @@ export const UNIT_3_LESSONS = [
   ],
   challenge:"Make bar 4's approach note come and go: on page 4, hold [TRIG 16] in grid recording and turn [CHANCE] to 1:2. Listen to eight bars. Does the loop feel longer?"
 },
-{ id:"w11", week:11, unit:"Notes and harmony", title:"Chords that feel like night",
+{ id:"w11", number:11, unit:"Notes and harmony", title:"Chords that feel like night",
   goal:"Build minor, major and seventh chords from semitone formulas, and play a slow four-chord progression on the CHORD machine over your bass.",
   listen:"Bonobo, \"Black Sands\". Listen past the beat to the harmony underneath: a few soft chords, repeated, set the whole mood.",
   concepts:[
@@ -97,7 +97,7 @@ export const UNIT_3_LESSONS = [
   ],
   challenge:"Lock a different SHAPE onto one chord at a time (sus2, sus4, madd9, m9no5) and hear how each one colours your progression. Keep your favourite and write the others in your notes."
 },
-{ id:"w12", week:12, unit:"Notes and harmony", title:"Melody, question and answer",
+{ id:"w12", number:12, unit:"Notes and harmony", title:"Melody, question and answer",
   goal:"Write a short melody that asks a question and answers it, using steps and the root, and let it vary with trig conditions.",
   listen:"Air, \"Playground Love\". Notice how short the melody's phrases are, and how each one seems to reply to the one before.",
   concepts:[
