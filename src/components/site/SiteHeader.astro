@@ -5,7 +5,7 @@
 import Logo from "./Logo.astro";
 import ThemeSwitch from "./ThemeSwitch.astro";
 import { INSTRUMENTS } from "../../course/index.js";
-import { SIGN_IN } from "../../lib/features.js";
+import { SIGN_IN } from "astro:env/client";
 interface Props { inst?: any; home?: boolean }
 const { inst, home } = Astro.props;
 const acct = SIGN_IN ? "Sign in" : "Progress";

@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import Card from "../components/site/Card.astro";
-import { SIGN_IN } from "../lib/features.js";
+import { SIGN_IN } from "astro:env/client";
 ---
 <Base title="Privacy" description="What Rep Rep Rep keeps about you, and how to see or delete it.">
   <div class="page" id="privacy">

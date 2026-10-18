@@ -1,6 +1,6 @@
 import { GitHub, Google, generateState, generateCodeVerifier, decodeIdToken } from "arctic";
 import { db, env } from "./db.js";
-import { SIGN_IN } from "./features.js";
+import { SIGN_IN } from "astro:env/client";
 
 /* Sign-in: Google or GitHub (OAuth, no passwords stored here). A random session token lives in an
    HttpOnly cookie; the database keeps only its SHA-256 hash. Sessions last 30 days and renew when used. */
@@ -32,8 +32,8 @@ export const testSignIn = (url) =>
 function client(id, url) {
   if (!SIGN_IN) return null;
   const redirect = `${url.origin}/auth/${id}/callback`;
-  if (id === "github") return new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET, redirect);
-  if (id === "google") return new Google(env.GOOGLE_CLIENT_ID, env.GOOGLE_CLIENT_SECRET, redirect);
+  if (id === "github" && env.GITHUB_CLIENT_ID && env.GITHUB_CLIENT_SECRET) return new GitHub(env.GITHUB_CLIENT_ID, env.GITHUB_CLIENT_SECRET, redirect);
+  if (id === "google" && env.GOOGLE_CLIENT_ID && env.GOOGLE_CLIENT_SECRET) return new Google(env.GOOGLE_CLIENT_ID, env.GOOGLE_CLIENT_SECRET, redirect);
   return null;
 }
 /* where to land after signing in: only paths on this site */
