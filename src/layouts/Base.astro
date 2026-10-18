@@ -90,10 +90,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
               : <span class="off">{x.name}<small>next</small></span>)}
           </nav>
           <hr class="hsep" />
-          {/* the step meter doubles as the way to the progress page (back up, load, reset) */}
-          {inst?.ready && <a class="meter" href="/account" title="Your progress: back up, load or reset" id="meterTxt">0 of 0 reps</a>}
-          <hr class="hsep" />
-          <ThemeSwitch />
+          {/* one pill: the step count (a link to the progress page: back up, load, reset) with the theme switch nested in it */}
+          <div class="ctrls">
+            {inst?.ready && <a class="meter" href="/account" title="Your progress: back up, load or reset" id="meterTxt">0 of 0 reps</a>}
+            <ThemeSwitch />
+          </div>
           {(SIGN_IN || !inst?.ready) && <a class="acct" href="/account" id="acct">{SIGN_IN ? "Sign in" : "Progress"}</a>}
         </div>
       </header>
