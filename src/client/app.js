@@ -111,8 +111,6 @@ function hydrateLesson(k, s) {
   const id = p.dataset.lesson, act = +p.dataset.step;
   if (s.lesson !== id || (s.active[id] ?? 0) !== act) { s.lesson = id; s.active[id] = act; persist(); }
   $$(".dots [data-step]").forEach((a) => a.classList.toggle("done", !!s.steps[id + ":" + a.dataset.step]));
-  const intro = act === 0;
-  const dm = $("[data-donemark]"); if (dm) dm.hidden = !(s.steps[id + ":" + act] && !intro);
   const fb = $("[data-finish]"), stamp = $(".finish .stamp");
   if (fb) { fb.textContent = s.done[id] ? "Completed" : fb.dataset.label; fb.classList.toggle("primary", !s.done[id]); }
   if (stamp) { stamp.hidden = !s.done[id]; if (s.done[id]) stamp.textContent = "Done on " + new Date(s.done[id]).toLocaleDateString(); }
