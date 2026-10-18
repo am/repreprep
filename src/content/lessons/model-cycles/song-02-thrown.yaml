@@ -39,7 +39,7 @@ steps:
               - { n: Pluck +3, s: pluck, note: 56, hits: "1,3,4,7,9,11,12,15", vel: 0.65 }
               - { n: Pluck +7, s: pluck, note: 60, hits: "1,3,4,7,9,11,12,15", vel: 0.65 }
               - { n: Kick, s: kick, hits: "1,5,9,13" }
-    t: The same rhythm, first as single notes, then stacked three high. Nothing new was written, only copied at other pitches.
+    t: The same rhythm, first as single notes, then stacked three high. Nothing new was written, only copied at other pitches. An example of the idea, not the song's own rhythm.
     hear: Stacked, the line turns into harmony.
   - k: play
     t: "Go to this study's own pattern: hold [PATTERN], press [T3] (bank C), then press [TRIG 2]. If anything plays there, clear it with [FUNC] + [PLAY]. Press [TEMPO], set 120 BPM with [LEVEL/DATA], and press [BACK]."

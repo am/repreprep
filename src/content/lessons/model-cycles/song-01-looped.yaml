@@ -53,7 +53,7 @@ steps:
               - { n: Kick, s: kick, hits: "1,5,9,13" }
               - { n: Hat, s: ohat, hits: "3,7,11,15", vel: 0.6 }
               - { n: Clap, s: clap, hits: "5,13", vel: 0.7 }
-    t: Switch through the three versions while it plays. The chord part never changes. Only what surrounds it does.
+    t: Switch through the three versions while it plays. The chord part never changes. Only what surrounds it does. An example of the idea, not the song's own parts.
     hear: With the beat under it, the same chords feel faster and more urgent.
   - k: learn
     fig:

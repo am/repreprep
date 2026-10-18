@@ -11,7 +11,7 @@ concepts:
       - "Rule of thumb: heavy, low sounds on strong beats; light, high sounds on weak ones. Put a big kick on a weak sixteenth and the whole beat feels like it tripped."
   - h: Five patterns to know
     p:
-      - 'Four on the floor (house): kick on every beat. Backbeat: kick on 1 and 3, snare on 2 and 4. Half-time: snare only on beat 3, so the tempo feels halved. One drop (reggae): beat 1 is empty, kick and snare land together on beat 3. Steppers (dub): four on the floor with the snare or rim on beat 3. 2-step (UK garage, Burial): kick on 1 and the "&" of 3, swung hats.'
+      - 'Four on the floor (house): kick on every beat. Backbeat: kick on 1 and 3, snare on 2 and 4. Half-time: snare only on beat 3, so the tempo feels halved. One drop (reggae): beat 1 is empty, kick and snare land together on beat 3. Steppers (roots reggae and dub): the one drop with a kick on every beat, the rim still on beat 3. 2-step (UK garage, Burial): kick on 1 and the "&" of 3, swung hats.'
 steps:
   - k: learn
     fig: roles
@@ -55,11 +55,11 @@ steps:
               - { n: Hat, s: hat, hits: "1,3,5,7,9,11,13,15", vel: 0.45 }
           - name: Steppers
             bpm: 75
-            note: "Dub: four on the floor with the rim on beat 3. Driving, but still heavy."
+            note: "Roots reggae and dub: the one drop with a kick on every beat. Rim and hats stay where they were."
             rows:
               - { n: Kick, s: kick, hits: "1,5,9,13" }
               - { n: Rim, s: rim, hits: "9" }
-              - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.5 }
+              - { n: Hat, s: hat, hits: "1,3,5,7,9,11,13,15", vel: 0.45 }
           - name: 2-step
             bpm: 132
             swing: 62
