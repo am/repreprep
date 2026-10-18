@@ -166,9 +166,9 @@ h3{font-weight:var(--fw-bold)}
 a.song{color:inherit;text-decoration:underline;text-decoration-color:var(--done);text-decoration-thickness:2px;text-underline-offset:3px;white-space:nowrap}
 a.song:hover{color:var(--done)}
 a.song svg{width:.95em;height:.95em;margin-left:var(--s1);vertical-align:-.12em;color:var(--done)}
-.notebox{display:flex;flex-direction:column;gap:var(--s3);max-width:72ch;padding-top:var(--s5);border-top:1px solid var(--line)}
+.notebox{display:flex;flex-direction:column;gap:var(--s3);padding-top:var(--s5);border-top:1px solid var(--line)}
 .nb-h{display:flex;align-items:center;justify-content:space-between;gap:var(--s3)}
-.nb-text{white-space:pre-wrap;overflow-wrap:anywhere}
+.nb-text{max-width:72ch;white-space:pre-wrap;overflow-wrap:anywhere}
 .nb-edit{display:flex;flex-direction:column;gap:var(--s3)}
 .nb-edit textarea{width:100%;min-height:120px;padding:var(--s3);border-radius:var(--r-m);border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font:inherit;font-size:var(--fs-sm);resize:vertical}
 .nb-edit textarea:focus{outline:2px solid var(--led);outline-offset:1px}
