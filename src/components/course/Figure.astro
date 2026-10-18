@@ -5,3 +5,10 @@ interface Props { I: any; fig: any; id: string }
 const { I, fig, id } = Astro.props;
 ---
 <Fragment set:html={renderFig(I, fig, id)} />
+
+<script>
+  /* playable grids: pick up their specs on each page, stop playing when you leave it */
+  import { gridStop, mountGrids } from "../../client/audio.js";
+  document.addEventListener("astro:before-swap", gridStop);
+  document.addEventListener("astro:page-load", mountGrids);
+</script>

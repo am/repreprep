@@ -5,3 +5,13 @@ interface Props { I: any; st: any }
 const { I, st } = Astro.props;
 ---
 <div class="quiz"><p class="qhint">Pick an answer</p><div class="opts">{st.q.map((o: string) => <button class="opt" data-opt={o[0] === "!" ? 1 : 0}><Keys I={I} text={o.replace(/^!/, "")} /></button>)}</div><p class="qmsg" hidden></p><p class="qexp" hidden><Keys I={I} text={st.a} /></p></div>
+
+<script>
+  /* a wrong pick is crossed out; the right one shows "Right." and the explanation */
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-opt]"); if (!b) return;
+    e.stopPropagation(); const q = b.closest(".quiz"); if (q.classList.contains("solved")) return; const m = q.querySelector(".qmsg"); m.hidden = false;
+    if (b.dataset.opt === "1") { b.classList.add("right"); q.classList.add("solved"); m.textContent = "Right."; m.className = "qmsg ok"; q.querySelector(".qexp").hidden = false; q.querySelectorAll(".opt").forEach((x) => (x.disabled = true)); }
+    else { b.classList.add("wrong"); b.disabled = true; m.textContent = "Not quite. Try another one."; m.className = "qmsg no"; }
+  }, true);
+</script>

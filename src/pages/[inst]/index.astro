@@ -22,3 +22,17 @@ const songs = I.lessons.filter((l) => l.song).length;
   </div>
   <nav class="umap bands" aria-label="Lessons"><CourseMap I={I} /></nav>
 </Base>
+
+<script>
+  /* Continue opens the lesson you were on, at the step you were on */
+  import { onProgress, here, stepHref } from "../../client/progress.js";
+  onProgress(() => {
+    const c = document.querySelector("[data-continue]"), s = here(); if (!c || !s) return;
+    const cur = [...document.querySelectorAll(".umap a[data-lesson]")].find((a) => a.dataset.lesson === s.lesson);
+    if (cur && Object.keys(s.steps).length) {
+      c.href = stepHref(cur.dataset.path, s.active[s.lesson] || 0);
+      c.textContent = c.dataset.labelContinue;
+      const w = document.querySelector("[data-continue-what]"); if (w) w.textContent = cur.querySelector(".n").textContent + " · " + cur.querySelector(".t").childNodes[0].textContent;
+    }
+  });
+</script>

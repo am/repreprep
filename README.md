@@ -34,7 +34,7 @@ Open http://localhost:4321. On your own computer the account page offers a **loc
 - `src/components/`: the page pieces as Astro components. `course/` has the lesson player and its parts, the notes, the course map and the panel guide; `site/` has the header, footer, logo, theme switch and shared blocks (`Band`, `Card`).
 - `src/layouts/Base.astro`: the page shell every page uses.
 - `src/pages/`: one file per kind of address. `api/` and `auth/` are the only parts that run on the server.
-- `src/client/`: the browser script (progress, saving, the quiz, the drum grids).
+- Browser code: each component carries its own `<script>` (the player, notes, quiz, panel guide, grids). They share `src/client/progress.js` (your progress, saved in the browser and to your account) and `src/client/lesson.js`; `src/client/site.js` runs the header, footer and theme switch on every page, and `audio.js` plays the grids. The theme, saved layout, logo and home page fade stay as small inline scripts because they must run before the page first paints.
 - `src/lib/`: sign-in and the database.
 
 After editing lessons, run `npm run check`: it renders every step and stops at the first broken one.
@@ -43,7 +43,7 @@ After editing lessons, run `npm run check`: it renders every step and stops at t
 
 - `npm test` runs everything that also runs on every pull request: `npm run check`, the unit tests (`tests/unit`: step text, grids, song links), a build with checks on the built pages (`tests/site`: every step page exists, no broken links, the player and other components as built), and the browser tests (`tests/e2e`: moving through a lesson, ticks, notes, quizzes, progress files, theme, the phone menu). The browser tests need Chromium once: `npx playwright install chromium`.
 - `npm run test:unit` runs only the unit tests, in a second.
-- `npm run compare` is for changes that should not change the site, like a cleanup. It builds `main` next to your checkout, compares the HTML of every page (ignoring whitespace layout and other differences a visitor can't see), and compares screenshots of the main pages (desktop and phone, dark and light). Any difference is listed, and the screenshots that differ are saved in `.compare/shots` with the changed pixels in red. `npm run compare <branch or commit>` compares with something other than `main`.
+- `npm run compare` is for changes that should not change the site, like a cleanup. It builds `main` next to your checkout, compares the HTML of every page (ignoring whitespace layout and other differences a visitor can't see), and compares screenshots of the main pages (desktop and phone, dark and light). Any difference is listed, and the screenshots that differ are saved in `.compare/shots` with the changed pixels in red. `npm run compare <branch or commit>` compares with something other than `main`, and `--no-scripts` leaves script tags out of the HTML comparison (for changes that only move browser code).
 
 Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. Changing a lesson's id, or inserting a step in the middle of a lesson, moves people's ticks.
 

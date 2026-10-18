@@ -105,3 +105,26 @@ test("phone: no page scrolls sideways @phone", async ({ page }) => {
     expect(await page.evaluate(() => document.documentElement.scrollWidth), path).toBeLessThanOrEqual(page.viewportSize().width);
   }
 });
+
+test("moving around without reloading: each page's parts work after the site's own navigation", async ({ page }) => {
+  await page.goto("/privacy");
+  await page.evaluate(() => (window.__noReload = true));
+  /* course home, then a lesson: the player's script arrives with the page */
+  await page.locator(`.instr a[href="/${I.slug}"]`).click();
+  await expect(page).toHaveURL(`/${I.slug}`);
+  await expect(page.locator("#meterTxt")).toHaveText(/^0 of \d+ reps$/);
+  await page.locator(`.umap a[data-lesson="${I.lessons[0].id}"]`).click();
+  await expect(page).toHaveURL(I.lessons[0].path);
+  await page.locator(".navrow .btn.primary").click();
+  await expect(page).toHaveURL(`${I.lessons[0].path}/1`);
+  await expect(page.locator('.dots [data-step="0"]')).toHaveClass(/done/);
+  await expect(page.locator("#meterTxt")).toHaveText(/^1 of \d+ reps$/);
+  /* the panel guide's clicks, then back to the course map with its dots filled in */
+  await page.locator('.tabs a[href$="/panel"]').click();
+  await page.locator('[data-panel-guide] svg .c[data-id="tempo"]').click();
+  await expect(page).toHaveURL(`/${I.slug}/panel/tempo`);
+  await page.locator('.tabs a[href="/' + I.slug + '"]').click();
+  await expect(page.locator(`.umap [data-prog="${I.lessons[0].id}"]`)).toHaveClass("s part");
+  await expect(page.locator("[data-continue]")).toHaveText("Continue");
+  expect(await page.evaluate(() => window.__noReload)).toBe(true);
+});

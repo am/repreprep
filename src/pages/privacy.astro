@@ -61,3 +61,20 @@ import { SIGN_IN } from "../lib/features.js";
     </Card>
   </div>
 </Base>
+
+<script>
+  /* after sending, /api/contact comes back here with ?sent=1 or ?error=… */
+  const CONTACT_MSG = {
+    sent: ["Thanks, your message was sent.", ""],
+    empty: ["Please write a message first.", "bad"],
+    long: ["That message is too long. Please keep it under 4000 characters.", "bad"],
+    busy: ["The form is getting a lot of messages right now. Please try again tomorrow.", "bad"],
+  };
+  document.addEventListener("astro:page-load", () => {
+    const el = document.querySelector("[data-contact-msg]"); if (!el) return;
+    const q = new URLSearchParams(location.search);
+    const m = CONTACT_MSG[q.get("sent") ? "sent" : q.get("error")];
+    el.hidden = !m;
+    if (m) { el.textContent = m[0]; el.className = "msg " + m[1]; }
+  });
+</script>

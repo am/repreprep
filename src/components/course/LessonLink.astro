@@ -5,3 +5,14 @@ interface Props { l: any; class: string; current?: boolean }
 const { l, class: cls, current = false } = Astro.props;
 ---
 <a class={cls} href={l.path} data-lesson={l.id} data-path={l.path} aria-current={String(current)}><span class="n">{l.short}</span><slot /><span class="s" data-prog={l.id}></span></a>
+
+<script>
+  /* each lesson's progress dot, and its link pointing at the step you were on */
+  import { onProgress, here, sizes, lessonPct, stepHref } from "../../client/progress.js";
+  onProgress(() => {
+    const s = here(); if (!s) return;
+    const sz = sizes();
+    document.querySelectorAll("[data-prog]").forEach((el) => { const id = el.dataset.prog; const p = lessonPct(s, id, sz[id] || 0); el.className = "s " + (s.done[id] || p === 1 ? "full" : p > 0 ? "part" : ""); el.style.setProperty("--p", Math.round(p * 100) + "%"); });
+    document.querySelectorAll("a[data-lesson][data-path]").forEach((a) => { a.href = stepHref(a.dataset.path, s.active[a.dataset.lesson] || 0); });
+  });
+</script>

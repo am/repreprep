@@ -5,3 +5,10 @@ interface Props { I: any; hl?: string; sel?: string }
 const { I, hl = "", sel } = Astro.props;
 ---
 <Fragment set:html={withHl(I.draw(), hl, sel)} />
+
+<script>
+  /* the panel's controls are buttons for the keyboard too: Enter or Space clicks them */
+  document.addEventListener("keydown", (e) => {
+    if ((e.key === "Enter" || e.key === " ") && e.target.classList && e.target.classList.contains("c")) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
+  });
+</script>
