@@ -6,7 +6,7 @@ import { SIGN_IN } from "astro:env/client";
 <Base title="Privacy" description="What Rep Rep Rep keeps about you, and how to see or delete it.">
   <div class="page" id="privacy">
     <h2>Privacy</h2>
-    <p class="msg">Last updated {SIGN_IN ? "16" : "17"} October 2026.</p>
+    <p class="msg">Last updated 18 October 2026.</p>
     <p>Rep Rep Rep is a free, non-commercial course run by one person. There are no ads, no analytics and no tracking. This page says what the site keeps and how you can see or delete it.</p>
 
     <h3>{SIGN_IN ? "If you don't sign in" : "Your progress"}</h3>
@@ -38,7 +38,6 @@ import { SIGN_IN } from "astro:env/client";
     <ul>
       <li><b>Cloudflare</b> hosts the site and the database (D1). Like any web host, it handles your IP address to serve pages and keeps short-lived request logs for running and debugging the site.</li>
       {SIGN_IN && <li><b>Google</b> or <b>GitHub</b>, only when you choose to sign in with them. Their own privacy policies apply on their sign-in pages.</li>}
-      <li><b>Google Fonts</b> serves the fonts this site uses, so your browser asks Google for them when a page loads.</li>
     </ul>
 
     <h3>See, download or delete your data</h3>

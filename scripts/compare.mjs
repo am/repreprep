@@ -1,6 +1,6 @@
 // Refactor safety net: builds another version of the site (main by default) next to this one and
 // compares them. Every built page's HTML is compared, then a set of pages, some after a click or with saved progress, is screenshotted
-// in both (desktop and phone, dark and light) and compared pixel by pixel. Run with `npm run compare [git ref] [--no-scripts] [--no-styles]`.
+// in both (desktop and phone, dark and light) and compared pixel by pixel. Run with `npm run compare [git ref] [--no-scripts] [--no-styles] [--fonts]`.
 // A refactor that keeps the site the same reports no differences. Differing screenshots are saved in
 // .compare/shots (before, after and a diff image with the changed pixels in red).
 import { execSync, spawn } from "node:child_process";
@@ -9,8 +9,10 @@ import { join, relative } from "node:path";
 import { chromium } from "@playwright/test";
 
 /* --no-scripts and --no-styles leave script tags, or style tags and stylesheet links, out of the HTML
-   comparison, for changes that only move browser code or CSS (the screenshots still compare the result) */
-const args = process.argv.slice(2), noScripts = args.includes("--no-scripts"), noStyles = args.includes("--no-styles");
+   comparison, for changes that only move browser code or CSS (the screenshots still compare the result).
+   --fonts lets the pages load fonts from Google Fonts, and waits for every font, for changes to how fonts are served */
+const args = process.argv.slice(2), noScripts = args.includes("--no-scripts"), noStyles = args.includes("--no-styles"), fonts = args.includes("--fonts");
+const FONT_HOSTS = ["fonts.googleapis.com", "fonts.gstatic.com"];
 const ref = args.find((a) => !a.startsWith("--")) || "origin/main";
 const ROOT = new URL("..", import.meta.url).pathname;
 const WORK = join(ROOT, ".compare"), BASE = join(WORK, "base"), SHOTS = join(WORK, "shots");
@@ -100,11 +102,12 @@ const browser = await chromium.launch();
 async function shoot(port, view, theme, path, state = {}) {
   const ctx = await browser.newContext({ ...VIEWS[view], colorScheme: theme, reducedMotion: "reduce" });
   if (state.seed) await ctx.addInitScript((s) => localStorage.setItem("repreprep-progress-v1", JSON.stringify(s)), state.seed);
-  /* the same "random" logo every time, and no fonts or other requests from outside */
+  /* the same "random" logo every time, and no requests from outside (but Google's fonts with --fonts) */
   await ctx.addInitScript(() => { let s = 1; Math.random = () => ((s = (s * 16807) % 2147483647) - 1) / 2147483646; });
-  await ctx.route(/^https?:\/\//, (r) => (new URL(r.request().url()).hostname === "localhost" ? r.continue() : r.abort()));
+  await ctx.route(/^https?:\/\//, (r) => { const h = new URL(r.request().url()).hostname; return h === "localhost" || (fonts && FONT_HOSTS.includes(h)) ? r.continue() : r.abort(); });
   const page = await ctx.newPage();
   await page.goto(`http://localhost:${port}${path}`, { waitUntil: "networkidle" });
+  if (fonts) await page.evaluate(async () => { await Promise.all([...document.fonts].map((f) => f.load().catch(() => {}))); await document.fonts.ready; });
   if (state.run) { await state.run(page); await page.waitForTimeout(150); }
   const png = await page.screenshot({ fullPage: true, animations: "disabled" });
   await ctx.close();

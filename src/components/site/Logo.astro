@@ -286,7 +286,7 @@ const layers = [
 <style>
   /* logo: three REPs in one grid cell, colors and offsets set per layer by Logo.astro */
   :global(:root){--logo-blue:#1434f5;--logo-yellow:#fce64e;--logo-ink:var(--fg)} /* first paint only */
-  .logo{display:inline-grid;padding:0 .1em .1em 0;font-family:"Manrope",var(--display);text-decoration:none;letter-spacing:var(--ls-tight);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
+  .logo{display:inline-grid;padding:0 .1em .1em 0;font-family:var(--display);text-decoration:none;letter-spacing:var(--ls-tight);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
   .logo span{grid-area:1/1;font-weight:var(--w);color:var(--c);transform:translate(var(--x),var(--y));transition:transform .25s ease,color .25s ease}
   .logo span:nth-child(1){z-index:1}.logo span:nth-child(2){z-index:2}.logo span:nth-child(3){z-index:3}
   .logo.glitch span{transition:none}

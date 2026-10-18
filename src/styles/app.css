@@ -12,11 +12,11 @@
   --turn:light-dark(#1f7f9e,#58b8d6); --turn-soft:light-dark(rgba(31,127,158,.15),rgba(88,184,214,.2));
   --done:light-dark(#2f8048,#7fbf8e); --done-soft:light-dark(rgba(47,128,72,.12),rgba(127,191,142,.15));
   --dev-body:#a7a6a1; --dev-well:#a3a29d; --dev-edge:#8d8c87; --dev-knob:#6c6d70; --dev-knob-edge:#55565a; --dev-blue:#3f87a8; --dev-white:#f2f2ef; --dev-rose:#bfb3b0; --dev-key:#5d5e62; --dev-pad:#6e7074; --dev-key-edge:#3c3d40; --dev-keyprint:#e9e9e6; --dev-print:#2b2b2b; --dev-print-soft:#5f5f5b; --dev-led-off:#2f2f30; --dev-lit:#f0766a;
-  --display:"Manrope","Helvetica Neue",Arial,sans-serif;
-  --body:"Rasa",Georgia,serif;
+  --display:var(--font-manrope);
+  --body:var(--font-rasa);
   /* the drawn device keeps a plain sans, like the prints on the real panel */
   --panel:"Helvetica Neue",Arial,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace;
+  --mono:var(--font-plex-mono);
   /* size: every length below is in rem, so this one value scales the whole site (type, spacing, radii, layout widths) together.
      110% is 17.6px at the browser default. @media breakpoints can't read variables: they're the 16px-base layouts times 1.1, so scale them with it. */
   --fs-base:110%;
