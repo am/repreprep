@@ -1,0 +1,43 @@
+---
+// The step player: the drawing or the panel on the left, the step on the right. The optional challenge is
+// one more step after the last one: same player, its own kind, and Finish moves there.
+import LessonMenu from "./LessonMenu.astro";
+import IntroCard from "./IntroCard.astro";
+import StepText from "./StepText.astro";
+import Quiz from "./Quiz.astro";
+import HearNote from "./HearNote.astro";
+import Keys from "./Keys.astro";
+import Figure from "./Figure.astro";
+import PanelDrawing from "./PanelDrawing.astro";
+import { KIND, keyCap } from "../../course/shared/text.js";
+import { lessonLabel, stepPath, nextLesson } from "../../course/index.js";
+interface Props { I: any; L: any; act: number }
+const { I, L, act } = Astro.props;
+const n = L.steps.length, total = n + (L.challenge ? 1 : 0);
+const ch = act === n;
+const st = ch ? { k: "challenge" } : L.steps[act];
+const k = st.k || "play";
+const end = act === total - 1;
+const nx = nextLesson(I, L);
+const nextHref = end ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
+const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN", "turn");
+---
+<section class="player" id="player" aria-label="Step player" data-inst={I.key} data-lesson={L.id} data-step={act} data-steps={n} data-next={nx?.id} data-next-path={nx?.path}>
+  <div class="phead"><details class="picker"><summary class="ttl" title="Jump to another lesson">{lessonLabel(L)} · {L.title}<span class="caret" aria-hidden="true"></span></summary><LessonMenu I={I} L={L} /></details><div class="dots" style={`--p:${total > 1 ? act / (total - 1) : 0}`}>{L.steps.map((s: any, i: number) => { const lab = KIND[s.k || "play"]; return <a href={stepPath(L, i)} data-step={i} aria-current={String(i === act)} aria-label={`${lab}, step ${i + 1}`} title={lab}></a>; })}{L.challenge && <a class="opt" href={stepPath(L, n)} data-step={n} aria-current={String(ch)} aria-label="Challenge (optional)" title="Challenge (optional)"></a>}</div><button class="maxbtn" type="button" data-max aria-label="Maximize" title="Maximize"><svg class="mx-in" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg><svg class="mx-out" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4"/></svg></button></div>
+  <div class="pbody" id="pbody"><div class="pstage">{st.fig ? <div class="figwrap"><Figure I={I} fig={st.fig} id={`${L.id}:${act}`} /></div> : <PanelDrawing I={I} hl={st.hl} />}</div><div class="gutter" id="gutter" role="separator" aria-orientation="vertical" aria-label="Resize the step panel" tabindex="0" title="Drag to resize · double-click to reset"></div>
+    <div class="pstep" id="now"><div class="h"><span class={`kind k-${k}`}>{KIND[k]}</span>{ch && " · optional"}</div>
+      {ch ? (
+        <Fragment><div class="ptxt"><p><Keys I={I} text={L.challenge} /></p></div><p class="t-note">Optional. Try it now, or come back to it any time.</p></Fragment>
+      ) : (
+        <Fragment>{st.intro ? <IntroCard L={L} /> : <div class="ptxt"><StepText I={I} st={st} /></div>}{st.q && <Quiz I={I} st={st} />}{st.hear && <HearNote I={I} st={st} />}</Fragment>
+      )}
+      <div class="ctl" id="ctlinfo" hidden></div>
+      <div class="grow"></div>
+      <div class="pfoot">
+        <div class="legend" hidden={k !== "play"}><Fragment set:html={legend} /><button type="button" class="hint" aria-label="Tips: click a control to learn it. Left and right arrow keys move between steps.">i<span class="tip" aria-hidden="true">Click a control to learn it. The ← → keys move between steps.</span></button></div>
+        <div class="navrow">{act === 0
+          ? <button class="btn" disabled aria-label="Previous step">Back</button>
+          : <a class="btn" href={stepPath(L, act - 1)} data-nav="-1" aria-label="Previous step">Back</a>}<a class="btn primary" href={nextHref} data-nav="1" data-end={end ? "" : undefined}>{end ? "Finish" : act === 0 ? "Start" : "Next"}</a></div>
+      </div>
+    </div></div>
+</section>

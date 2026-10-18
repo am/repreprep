@@ -1,0 +1,16 @@
+---
+// A step's text: an optional short title, then a lead and body (Learn, Check) or one bullet per action (Play).
+import Keys from "./Keys.astro";
+import { stepParts } from "../../course/shared/text.js";
+interface Props { I: any; st: any }
+const { I, st } = Astro.props;
+const { lead, first, rest, para, items } = stepParts(st);
+---
+{lead && <h3 class="t-title t-step"><Keys I={I} text={lead} hl={st.hl} /></h3>}
+{first !== undefined ? (
+  <Fragment><p class="t-lead"><Keys I={I} text={first} hl={st.hl} /></p>{rest && <p class="t-body"><Keys I={I} text={rest} hl={st.hl} /></p>}</Fragment>
+) : para !== undefined ? (
+  <p><Keys I={I} text={para} hl={st.hl} /></p>
+) : (
+  <ul class="pacts">{items.map((x: string) => <li><Keys I={I} text={x} hl={st.hl} /></li>)}</ul>
+)}

@@ -1,5 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
+import Card from "../components/site/Card.astro";
 import { SIGN_IN } from "../lib/features.js";
 ---
 <Base title="Privacy" description="What Rep Rep Rep keeps about you, and how to see or delete it.">
@@ -48,8 +49,7 @@ import { SIGN_IN } from "../lib/features.js";
     <h3>Messages</h3>
     <p>Messages sent with the form below are emailed to the person who runs the site (through Cloudflare) and a copy is kept for up to a year, then deleted.{SIGN_IN && " If you're signed in, a message is linked to your account and included in your download. When you delete your account, the link is removed but the message itself stays until it's dealt with."}</p>
 
-    <section class="card" id="contact">
-      <h3 class="t-title t-card">Contact</h3>
+    <Card title="Contact" id="contact">
       <p class="t-body">Questions, requests about your data, or anything else. Leave an email address if you'd like an answer.</p>
       <p class="msg" data-contact-msg hidden></p>
       <form method="post" action="/api/contact" class="contact" data-astro-reload>
@@ -58,6 +58,6 @@ import { SIGN_IN } from "../lib/features.js";
         <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
         <div class="row"><button class="btn primary" type="submit">Send</button></div>
       </form>
-    </section>
+    </Card>
   </div>
 </Base>

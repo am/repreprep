@@ -1,0 +1,12 @@
+---
+// The instrument home's course map: one open band per unit, song studies last.
+import LessonLink from "./LessonLink.astro";
+import { byUnit } from "../../course/index.js";
+interface Props { I: any }
+const { I } = Astro.props;
+---
+{byUnit(I.lessons).map((g) => (
+  <section class="band unit"><h3 class="band-h t-eyebrow">{g.u}<small class="t-label">{g.ls.length} {g.ls[0].song ? "studies" : "lessons"}</small></h3><div class="ls" style={`--rows:${Math.ceil(g.ls.length / 2)}`}>{g.ls.map((l: any) => (
+    <LessonLink l={l} class="wk"><span class="t">{l.title}{l.song && <small class="by">{l.song.split(" – ")[0]}</small>}</span></LessonLink>
+  ))}</div></section>
+))}

@@ -1,16 +1,16 @@
 ---
 import Base from "../../../layouts/Base.astro";
-import { INSTRUMENTS } from "../../../course/index.js";
-import { panelGuide } from "../../../course/views.js";
+import PanelGuide from "../../../components/course/PanelGuide.astro";
+import { READY } from "../../../course/index.js";
 
 /* /model-cycles/panel shows LEVEL/DATA; /model-cycles/panel/<control> shows that control */
 export function getStaticPaths() {
-  return INSTRUMENTS.filter((I) => I.ready).flatMap((I) =>
+  return READY.flatMap((I) =>
     [undefined, ...Object.keys(I.controls)].map((control) => ({ params: { inst: I.slug, control }, props: { I, sel: control || Object.keys(I.controls)[0] } })));
 }
 const { I, sel } = Astro.props;
 const c = I.controls[sel];
 ---
 <Base title={`${I.name} panel guide: ${c.name}`} description={`${c.name} on the ${I.name}: ${c.desc.replace(/[\[\]]/g, "")}`} inst={I} tab="panel">
-  <Fragment set:html={panelGuide(I, sel)} />
+  <PanelGuide I={I} sel={sel} />
 </Base>

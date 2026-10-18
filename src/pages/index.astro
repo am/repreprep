@@ -1,6 +1,6 @@
 ---
 import Base from "../layouts/Base.astro";
-import Logo from "../components/Logo.astro";
+import Logo from "../components/site/Logo.astro";
 import { INSTRUMENTS } from "../course/index.js";
 const count = (I: any) => {
   const songs = I.lessons.filter((l: any) => l.song).length;

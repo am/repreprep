@@ -1,0 +1,7 @@
+---
+// A link to a lesson with its short name and a progress dot. The browser script fills in the dot and
+// points the link at the step you were on.
+interface Props { l: any; class: string; current?: boolean }
+const { l, class: cls, current = false } = Astro.props;
+---
+<a class={cls} href={l.path} data-lesson={l.id} data-path={l.path} aria-current={String(current)}><span class="n">{l.short}</span><slot /><span class="s" data-prog={l.id}></span></a>

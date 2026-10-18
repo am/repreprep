@@ -1,0 +1,7 @@
+---
+// The instrument's panel, with the controls a step uses lit (hl) or one control selected (sel).
+import { withHl } from "../../course/shared/text.js";
+interface Props { I: any; hl?: string; sel?: string }
+const { I, hl = "", sel } = Astro.props;
+---
+<Fragment set:html={withHl(I.draw(), hl, sel)} />

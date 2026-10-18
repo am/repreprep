@@ -1,0 +1,7 @@
+---
+// A Check step's multiple choice. The right answer is marked with "!" in the lesson; the browser script marks the picks.
+import Keys from "./Keys.astro";
+interface Props { I: any; st: any }
+const { I, st } = Astro.props;
+---
+<div class="quiz"><p class="qhint">Pick an answer</p><div class="opts">{st.q.map((o: string) => <button class="opt" data-opt={o[0] === "!" ? 1 : 0}><Keys I={I} text={o.replace(/^!/, "")} /></button>)}</div><p class="qmsg" hidden></p><p class="qexp" hidden><Keys I={I} text={st.a} /></p></div>

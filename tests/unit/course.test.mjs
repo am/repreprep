@@ -1,8 +1,7 @@
-// The course data and the page markup built from it (src/course/index.js, views.js, shared/*).
+// The course data and the shared HTML helpers (src/course/index.js, shared/*). The pages built from them are tested in tests/site.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { INSTRUMENTS, instrumentBySlug, lessonLabel, pad2, stepPath, nextLesson, renderFig } from "../../src/course/index.js";
-import { player, lessonText, panelGuide, machines, shortcuts, courseMap } from "../../src/course/views.js";
+import { INSTRUMENTS, READY, instrumentBySlug, lessonLabel, pad2, stepPath, nextLesson, renderFig } from "../../src/course/index.js";
 import { esc, hits, svgFig, T } from "../../src/course/shared/html.js";
 import { renderGrid, gridPreset } from "../../src/course/shared/grid.js";
 import { SONGS, linkSongs } from "../../src/course/shared/songs.js";
@@ -29,6 +28,7 @@ test("svgFig and T build SVG pieces", () => {
 test("instruments: only the ready ones have lessons; slugs find them", () => {
   assert.equal(I.name, "Model:Cycles");
   assert.ok(INSTRUMENTS.filter((x) => !x.ready).every((x) => !x.lessons));
+  assert.deepEqual(READY, [I]);
   assert.equal(instrumentBySlug("nope"), undefined);
   assert.equal(pad2(3), "03");
 });
@@ -100,71 +100,4 @@ test("songs: every song has a Spotify track and is linked from quotes", () => {
   const html = linkSongs("Hear &quot;Looped&quot; and &quot;La Femme d&#39;Argent&quot; and &quot;Nope&quot;");
   assert.equal(count(html, /class="song"/g), 2);
   assert.match(html, /title="Open Air, La Femme d'Argent in the Spotify app"/);
-});
-
-test("player: dots, Back and Next on every step of every lesson", () => {
-  for (const L of I.lessons) {
-    const n = L.steps.length, total = n + (L.challenge ? 1 : 0);
-    for (let act = 0; act < total; act++) {
-      const html = player(I, L, act), where = `${L.id} step ${act}`;
-      assert.equal(count(html, /<a [^>]*data-step="\d+"/g), total, where);
-      assert.equal(count(html, /aria-current="true"[^>]*><\/a>|aria-current="true" aria-label/g), 1, where);
-      assert.match(html, new RegExp(`data-lesson="${L.id}" data-step="${act}" data-steps="${n}"`), where);
-      if (act === 0) assert.match(html, /<button class="btn" disabled aria-label="Previous step">Back<\/button>/, where);
-      else assert.match(html, new RegExp(`href="${stepPath(L, act - 1)}" data-nav="-1"`), where);
-      const end = act === total - 1, nx = nextLesson(I, L);
-      const label = end ? "Finish" : act === 0 ? "Start" : "Next";
-      const href = end ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
-      assert.match(html, new RegExp(`href="${href}" data-nav="1"${end ? " data-end" : ""}>${label}</a>`), where);
-    }
-  }
-});
-
-test("player: the intro card, a quiz, an answer and the challenge", () => {
-  const L = I.lessons.find((l) => l.challenge && l.steps.some((s) => s.q));
-  assert.match(player(I, L, 0), /<div class="introcard">.*You will learn to/s);
-  const qi = L.steps.findIndex((s) => s.q);
-  assert.match(player(I, L, qi), /<div class="quiz">/);
-  const ch = player(I, L, L.steps.length);
-  assert.match(ch, /<span class="kind k-challenge">Challenge<\/span> · optional/);
-  assert.match(ch, /Optional\. Try it now/);
-  assert.match(ch, /<a class="opt" [^>]*aria-current="true"/);
-  /* Learn steps with a drawing show it instead of the panel */
-  const fi = L.steps.findIndex((s) => s.fig);
-  if (fi > 0) assert.match(player(I, L, fi), /<div class="figwrap">/);
-  /* other steps show the panel with the step's controls lit */
-  const pi = L.steps.findIndex((s) => !s.fig && s.hl);
-  assert.match(player(I, L, pi), /class="c hl-(press|hold|turn)/);
-});
-
-test("player: the lesson picker lists every lesson and marks this one", () => {
-  const L = I.lessons[2], html = player(I, L, 0);
-  assert.equal(count(html, /class="pm-i"/g), I.lessons.length);
-  assert.match(html, new RegExp(`href="${L.path}" data-lesson="${L.id}" data-path="${L.path}" aria-current="true"`));
-  assert.match(html, /<div class="pm-h">Song studies<\/div>/);
-});
-
-test("lessonText: notes box and Complete button for the lesson", () => {
-  const L = I.lessons[0], html = lessonText(I, L);
-  assert.match(html, new RegExp(`data-notebox="${L.id}"`));
-  assert.match(html, new RegExp(`data-finish="${L.id}" data-label="Complete"`));
-  assert.match(html, /href="\/model-cycles">All lessons</);
-});
-
-test("courseMap: every lesson once, grouped by unit, song studies last", () => {
-  const html = courseMap(I);
-  for (const L of I.lessons) assert.equal(count(html, new RegExp(`data-lesson="${L.id}"`, "g")), 1, L.id);
-  const units = [...html.matchAll(/<h3 class="band-h t-eyebrow">([^<]*)/g)].map((m) => m[1]);
-  assert.equal(units.at(-1), "Song studies");
-  assert.equal(new Set(units).size, units.length);
-});
-
-test("reference pages: panel guide for every control, machines, shortcuts", () => {
-  for (const id of Object.keys(I.controls)) {
-    const html = panelGuide(I, id);
-    assert.match(html, new RegExp(`class="c[^"]* sel" data-id="${id}"`), id);
-    assert.match(html, new RegExp(`<h3 class="t-title t-card">${esc(I.controls[id].name).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}</h3>`), id);
-  }
-  assert.equal(count(machines(I), /<section class="band">/g), I.machines.length + 1);
-  assert.equal(count(shortcuts(I), /<tr>/g), I.shortcuts.length);
 });

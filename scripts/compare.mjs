@@ -29,10 +29,16 @@ sh("npx astro build", BASE);
 sh("npx astro build");
 
 /* ---------- HTML of every page ---------- */
-/* bundle hashes and comments in inline scripts don't change what a visitor gets */
+/* bundle hashes, comments in inline scripts, whitespace layout, self-closing tags and how a quote is written
+   don't change what a visitor gets (the screenshots below catch any whitespace that shows) */
 const normalize = (html) => html
   .replace(/\/_astro\/([\w.-]+?)\.[\w-]{8}\.(css|js)/g, "/_astro/$1.$2")
-  .replace(/(<script\b[^>]*>)([\s\S]*?)(<\/script>)/g, (m, a, js, b) => a + js.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\n\s*\n/g, "\n") + b);
+  .replace(/(<script\b[^>]*>)([\s\S]*?)(<\/script>)/g, (m, a, js, b) => a + js.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\n\s*\n/g, "\n") + b)
+  .replace(/<(area|br|hr|img|input|link|meta)\b([^>]*?)\s*\/>/g, "<$1$2>")
+  .replace(/<([\w-]+)\b([^>]*?)\s*\/>/g, "<$1$2></$1>")
+  .replace(/&#39;/g, "'")
+  .replace(/\s+/g, " ")
+  .replace(/> </g, "><");
 const pagesIn = (dir) => {
   const out = new Map();
   (function walk(d) {
