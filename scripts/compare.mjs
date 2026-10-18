@@ -31,7 +31,7 @@ sh("npx astro build");
 /* ---------- HTML of every page ---------- */
 /* bundle hashes and comments in inline scripts don't change what a visitor gets */
 const normalize = (html) => html
-  .replace(/\/_astro\/([\w-]+?)\.[\w-]{8}\.(css|js)/g, "/_astro/$1.$2")
+  .replace(/\/_astro\/([\w.-]+?)\.[\w-]{8}\.(css|js)/g, "/_astro/$1.$2")
   .replace(/(<script\b[^>]*>)([\s\S]*?)(<\/script>)/g, (m, a, js, b) => a + js.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\n\s*\n/g, "\n") + b);
 const pagesIn = (dir) => {
   const out = new Map();
