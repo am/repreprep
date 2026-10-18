@@ -37,6 +37,7 @@ Open http://localhost:4321. On your own computer the account page offers a **loc
 - `src/pages/`: one file per kind of address. Only `api/` (the contact form and the account download) and `auth/` (signing in) run on the server; every other page is built ahead of time.
 - Browser code: each component carries its own `<script>` (the player, notes, quiz, panel guide, grids). They share `src/client/progress.js` (your progress, saved in the browser and to your account) and `src/client/lesson.js`; `src/client/site.js` runs the header, footer and theme switch on every page, and `audio.js` plays the grids. The theme, saved layout, logo and home page fade stay as small inline scripts because they must run before the page first paints.
 - Server code: `src/actions/` holds the Astro Actions the browser code calls (who is signed in, loading and saving progress, signing out, deleting the account), with their input checked. `src/middleware.js` runs before every server route and action: it refuses writes from other sites and sets `locals.user`. `src/lib/` has sign-in, the database and the contact email. Settings and secrets are declared with `astro:env` in `astro.config.mjs`.
+- Fonts: the files are in `src/assets/fonts` and served from the site through Astro's fonts setting in `astro.config.mjs`, so no page asks Google Fonts for anything. `npm run compare <ref> --fonts` lets the compared pages load Google's fonts, for checking a change to how fonts are served.
 
 After editing lessons, run `npm run check`: it renders every step and stops at the first broken one.
 
@@ -74,4 +75,4 @@ Pushes to `main` run the tests and then deploy automatically through GitHub Acti
 
 ## License and contributing
 
-The code is MIT ([LICENSE](LICENSE)). The lessons, drawings and explanations are CC BY-NC-SA 4.0 ([LICENSE-CONTENT.md](LICENSE-CONTENT.md)). To help, read [CONTRIBUTING.md](CONTRIBUTING.md).
+The code is MIT ([LICENSE](LICENSE)). The lessons, drawings and explanations are CC BY-NC-SA 4.0 ([LICENSE-CONTENT.md](LICENSE-CONTENT.md)). The fonts in `src/assets/fonts` (Manrope, Rasa, IBM Plex Mono) are under the SIL Open Font License, in `OFL.txt` next to each. To help, read [CONTRIBUTING.md](CONTRIBUTING.md).
