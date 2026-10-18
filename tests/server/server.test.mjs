@@ -4,7 +4,10 @@ import assert from "node:assert/strict";
 import { startWorker, client } from "./worker.mjs";
 
 let w, c;
-before(async () => { w = await startWorker({ port: 8791, vars: { ALLOW_TEST_SIGNIN: "1" } }); c = client(w.origin); });
+before(async () => {
+  w = await startWorker({ port: 8791, vars: { ALLOW_TEST_SIGNIN: "1" } });
+  c = client(w.origin);
+});
 after(() => w?.stop());
 
 test("pages are served, unknown addresses get the not-found page", async () => {
@@ -31,7 +34,12 @@ test("account actions need a signed-in person", async () => {
 });
 
 test("writes from another site are refused", async () => {
-  for (const [path, method] of [["/_actions/progress.save", "POST"], ["/_actions/account.delete", "POST"], ["/_actions/account.signOut", "POST"], ["/api/contact", "POST"]]) {
+  for (const [path, method] of [
+    ["/_actions/progress.save", "POST"],
+    ["/_actions/account.delete", "POST"],
+    ["/_actions/account.signOut", "POST"],
+    ["/api/contact", "POST"],
+  ]) {
     for (const origin of [null, "https://evil.example"]) {
       /* a small JSON body for every route: the local runtime can drop the connection when a refused form isn't read */
       const r = await c.req(path, { method, origin, json: {} });

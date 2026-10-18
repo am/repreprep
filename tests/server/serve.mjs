@@ -5,4 +5,8 @@ import { startWorker } from "./worker.mjs";
 const [dist = "dist-signin", port = "8793"] = process.argv.slice(2);
 const w = await startWorker({ dist, port: +port, vars: { ALLOW_TEST_SIGNIN: "1" }, own: false });
 console.log(`Serving ${dist} on ${w.origin}`);
-for (const sig of ["SIGINT", "SIGTERM"]) process.on(sig, () => { w.stop(); process.exit(0); });
+for (const sig of ["SIGINT", "SIGTERM"])
+  process.on(sig, () => {
+    w.stop();
+    process.exit(0);
+  });

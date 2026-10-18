@@ -16,10 +16,15 @@ export const server = {
   account: {
     /* who is signed in, and which sign-in options this site offers */
     me: defineAction({
-      handler: (_, ctx) => ({ user: ctx.locals.user && { name: ctx.locals.user.name, email: ctx.locals.user.email }, providers: providers(ctx.url) }),
+      handler: (_, ctx) => ({
+        user: ctx.locals.user && { name: ctx.locals.user.name, email: ctx.locals.user.email },
+        providers: providers(ctx.url),
+      }),
     }),
     signOut: defineAction({
-      handler: async (_, { cookies }) => { await endSession(cookies); },
+      handler: async (_, { cookies }) => {
+        await endSession(cookies);
+      },
     }),
     /* delete the account and everything saved with it */
     delete: defineAction({
@@ -28,7 +33,9 @@ export const server = {
         const d = await db();
         await d.batch([
           d.prepare("UPDATE messages SET user_id=NULL WHERE user_id=?").bind(user.id),
-          ...["progress", "sessions", "accounts"].map((t) => d.prepare(`DELETE FROM ${t} WHERE user_id=?`).bind(user.id)),
+          ...["progress", "sessions", "accounts"].map((t) =>
+            d.prepare(`DELETE FROM ${t} WHERE user_id=?`).bind(user.id)
+          ),
           d.prepare("DELETE FROM users WHERE id=?").bind(user.id),
         ]);
         await endSession(ctx.cookies);
@@ -40,7 +47,12 @@ export const server = {
     load: defineAction({
       handler: async (_, ctx) => {
         const user = signedIn(ctx);
-        const row = await (await db()).prepare("SELECT data, updated_at FROM progress WHERE user_id=?").bind(user.id).first();
+        const row = await (
+          await db()
+        )
+          .prepare("SELECT data, updated_at FROM progress WHERE user_id=?")
+          .bind(user.id)
+          .first();
         return { data: row ? JSON.parse(row.data) : null, updatedAt: row?.updated_at ?? 0 };
       },
     }),
@@ -49,10 +61,17 @@ export const server = {
       handler: async ({ data }, ctx) => {
         const user = signedIn(ctx);
         const json = JSON.stringify(data);
-        if (json.length > MAX_BYTES) throw new ActionError({ code: "CONTENT_TOO_LARGE", message: "Progress is too large" });
+        if (json.length > MAX_BYTES)
+          throw new ActionError({ code: "CONTENT_TOO_LARGE", message: "Progress is too large" });
         const updatedAt = Number(data.updatedAt) || Date.now();
-        await (await db()).prepare("INSERT INTO progress (user_id,data,updated_at) VALUES (?,?,?) ON CONFLICT(user_id) DO UPDATE SET data=excluded.data, updated_at=excluded.updated_at")
-          .bind(user.id, json, updatedAt).run();
+        await (
+          await db()
+        )
+          .prepare(
+            "INSERT INTO progress (user_id,data,updated_at) VALUES (?,?,?) ON CONFLICT(user_id) DO UPDATE SET data=excluded.data, updated_at=excluded.updated_at"
+          )
+          .bind(user.id, json, updatedAt)
+          .run();
         return { updatedAt };
       },
     }),

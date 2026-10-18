@@ -45,7 +45,7 @@ steps:
     hl: h:track p:t3 t:chance h:func p:t2 p:t4 p:stop
     hear: The song comes apart gently instead of just stopping. Reverb and delay ring on after [STOP].
   - k: play
-    t: "Connect: with everything switched off, run two 1/4\" jack cables from MAIN OUT L and R to inputs 1 and 2 of your audio interface. Switch on. In Live, create an audio track, set its input to the interface's inputs 1/2, and arm it for recording."
+    t: 'Connect: with everything switched off, run two 1/4" jack cables from MAIN OUT L and R to inputs 1 and 2 of your audio interface. Switch on. In Live, create an audio track, set its input to the interface''s inputs 1/2, and arm it for recording.'
     hl: p:mainvol
     hear: "Play B07: the track's meter in Live moves with the beat."
   - k: play

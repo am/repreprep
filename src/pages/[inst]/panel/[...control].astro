@@ -6,11 +6,21 @@ import { courses } from "../../../course/content.js";
 /* /model-cycles/panel shows LEVEL/DATA; /model-cycles/panel/<control> shows that control */
 export async function getStaticPaths() {
   return (await courses()).flatMap((I) =>
-    [undefined, ...Object.keys(I.controls)].map((control) => ({ params: { inst: I.slug, control }, props: { I, sel: control || Object.keys(I.controls)[0] } })));
+    [undefined, ...Object.keys(I.controls)].map((control) => ({
+      params: { inst: I.slug, control },
+      props: { I, sel: control || Object.keys(I.controls)[0] },
+    }))
+  );
 }
 const { I, sel } = Astro.props;
 const c = I.controls[sel];
 ---
-<Base title={`${I.name} panel guide: ${c.name}`} description={`${c.name} on the ${I.name}: ${c.desc.replace(/[\[\]]/g, "")}`} inst={I} tab="panel">
+
+<Base
+  title={`${I.name} panel guide: ${c.name}`}
+  description={`${c.name} on the ${I.name}: ${c.desc.replace(/[\[\]]/g, "")}`}
+  inst={I}
+  tab="panel"
+>
   <PanelGuide I={I} sel={sel} />
 </Base>

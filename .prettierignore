@@ -1,0 +1,12 @@
+# Built output and caches
+dist/
+dist-signin/
+.astro/
+.wrangler/
+.compare/
+test-results/
+playwright-report/
+package-lock.json
+# Third-party text kept exactly as published
+LICENSE*
+src/assets/fonts/

@@ -2,30 +2,88 @@
 // The panel guide: the whole panel with one control selected, and what that control does.
 import Keys from "./Keys.astro";
 import PanelDrawing from "./PanelDrawing.astro";
-interface Props { I: any; sel: string }
+interface Props {
+  I: any;
+  sel: string;
+}
 const { I, sel } = Astro.props;
 const c = I.controls[sel];
 ---
-<p class="lede t-body">Every key and knob on the {I.name}, with what it does. Click any control on the panel. <Keys I={I} text={I.panelIntro || ""} /></p>
-<div class="refgrid"><div class="dockpanel" data-panel-guide={`/${I.slug}/panel`}><PanelDrawing I={I} sel={sel} /></div><div class="info" id="info"><div class="t-eyebrow">{c.kind}</div><h3 class="t-title t-card">{c.name}</h3><p class="t-body"><Keys I={I} text={c.desc} /></p>{c.sub && <p class="t-body"><span class="t-label">Second label on the panel</span><b>{c.sub}</b></p>}</div></div>
+
+<p class="lede t-body">
+  Every key and knob on the {I.name}, with what it does. Click any control on the panel.{" "}
+  <Keys I={I} text={I.panelIntro || ""} />
+</p>
+<div class="refgrid">
+  <div class="dockpanel" data-panel-guide={`/${I.slug}/panel`}>
+    <PanelDrawing I={I} sel={sel} />
+  </div>
+  <div class="info" id="info">
+    <div class="t-eyebrow">{c.kind}</div>
+    <h3 class="t-title t-card">{c.name}</h3>
+    <p class="t-body">
+      <Keys I={I} text={c.desc} />
+    </p>
+    {c.sub && (
+      <p class="t-body">
+        <span class="t-label">Second label on the panel</span>
+        <b>{c.sub}</b>
+      </p>
+    )}
+  </div>
+</div>
 
 <script>
   /* each control has its own page; clicking one opens it and keeps the scroll position */
   import { navigate } from "astro:transitions/client";
   import { onProgress } from "../../client/progress.js";
   let keepScroll = null;
-  onProgress(() => { if (keepScroll != null) { window.scrollTo(0, keepScroll); keepScroll = null; } });
-  document.addEventListener("click", (e) => {
-    const ctl = e.target.closest("svg .c"), guide = ctl && ctl.closest("[data-panel-guide]");
-    if (guide) { keepScroll = window.scrollY; navigate(`${guide.dataset.panelGuide}/${ctl.dataset.id}`); }
-  }, true);
+  onProgress(() => {
+    if (keepScroll != null) {
+      window.scrollTo(0, keepScroll);
+      keepScroll = null;
+    }
+  });
+  document.addEventListener(
+    "click",
+    (e) => {
+      const ctl = e.target.closest("svg .c"),
+        guide = ctl && ctl.closest("[data-panel-guide]");
+      if (guide) {
+        keepScroll = window.scrollY;
+        navigate(`${guide.dataset.panelGuide}/${ctl.dataset.id}`);
+      }
+    },
+    true
+  );
 </script>
 
 <style>
-  .refgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:var(--s5) var(--s7);align-items:start}
+  .refgrid {
+    display: grid;
+    grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+    gap: var(--s5) var(--s7);
+    align-items: start;
+  }
   /* panel guide: the selected control's details, open text under a hairline like the bands */
-  .info{display:flex;flex-direction:column;gap:var(--s3);padding-top:var(--s5);border-top:1px solid var(--line)}
-  .info > *{margin:0}
-  @media (max-width:1078px){.refgrid{grid-template-columns:minmax(0,1fr)}}
-  .dockpanel > :global(svg){width:100%;height:auto;display:block}
+  .info {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    padding-top: var(--s5);
+    border-top: 1px solid var(--line);
+  }
+  .info > * {
+    margin: 0;
+  }
+  @media (max-width: 1078px) {
+    .refgrid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  .dockpanel > :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
 </style>

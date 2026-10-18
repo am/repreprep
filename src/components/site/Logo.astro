@@ -7,7 +7,10 @@
 // while another pulses toward the background, the off-beats get a tiny random accent, and the first beat of each bar
 // tears a layer and brings a new palette; all three layers also float very slowly.
 // Hovering shows a TAP key; tapping the logo sets the tempo, like TAP TEMPO on the Model:Cycles, with a quiet click.
-interface Props { dance?: boolean; bpm?: number }
+interface Props {
+  dance?: boolean;
+  bpm?: number;
+}
 const { dance, bpm = 90 } = Astro.props;
 const layers = [
   // starting look, from the original sketch (used until the script runs, and without JS)
@@ -16,15 +19,21 @@ const layers = [
   { w: 200, c: "yellow", x: 0, y: 0 },
 ];
 ---
+
 {dance ? (
   /* a dancing logo is also a tap-tempo key: hovering shows the key, tapping sets the beat */
   <span class="logo-wrap">
     <a href="/" class="logo" aria-label="Rep Rep Rep. Tap to set the tempo" data-dance data-bpm={bpm}>
       {layers.map((l) => (
-        <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>REP</span>
+        <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>
+          REP
+        </span>
       ))}
     </a>
-    <span class="tap" aria-hidden="true"><i></i><b>TAP</b></span>
+    <span class="tap" aria-hidden="true">
+      <i></i>
+      <b>TAP</b>
+    </span>
     {/* horizontal bands of noise that push a layer sideways: a digital tear */}
     <svg class="defs" width="0" height="0" aria-hidden="true">
       <filter id="rrr-tear" x="-10%" y="-10%" width="120%" height="120%">
@@ -36,82 +45,166 @@ const layers = [
 ) : (
   <a href="/" class="logo" aria-label="Rep Rep Rep, home">
     {layers.map((l) => (
-      <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>REP</span>
+      <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>
+        REP
+      </span>
     ))}
   </a>
 )}
 <script is:inline data-astro-rerun>
   (function () {
     function shuffle(a) {
-      for (var i = a.length - 1; i > 0; i--) { var j = Math.floor(Math.random() * (i + 1)), t = a[i]; a[i] = a[j]; a[j] = t; }
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1)),
+          t = a[i];
+        a[i] = a[j];
+        a[j] = t;
+      }
       return a;
     }
     // hand-picked sets of three colors, each set clearly apart within itself (checked in OKLab) and readable
     // on the page background; light mode gets its own deeper sets
     var PALETTES = {
-      dark: [["#2f5bff","#ffe14d","#ff3b6b"],["#00e0b8","#8a3cff","#ff8a00"],["#ff2bd6","#00c2ff","#c6ff00"],["#ff4f1f","#4d7cff","#7dffb0"],
-        ["#8b5cff","#ffb000","#00d68f"],["#ff006e","#3a86ff","#ffbe0b"],["#00f5d4","#f15bb5","#6a4dff"],["#fb5607","#9b5cff","#06d6a0"],
-        ["#c1ff00","#ff00a0","#1f6bff"],["#ff7a00","#00b3ff","#d000ff"],["#1aff6e","#ff2e2e","#7b61ff"],["#fff03a","#ff3df0","#00a3ff"]],
-      light: [["#1434f5","#ff7a00","#00a37a"],["#008f7a","#7a2cff","#ff4f1f"],["#d4009b","#0072e0","#3fae00"],["#e01e00","#2f2fd0","#00a37a"],
-        ["#6d28d9","#e07b00","#009e60"],["#e0005a","#1c5fe0","#c79400"],["#0096a8","#c2007a","#4b2bff"],["#e04800","#7b2fe0","#00956b"],
-        ["#5aa800","#d6008a","#0047d6"],["#d96600","#0089d6","#a600d6"],["#00a344","#d61f1f","#5a3dff"],["#b8a000","#d600c2","#0070d6"]],
+      dark: [
+        ["#2f5bff", "#ffe14d", "#ff3b6b"],
+        ["#00e0b8", "#8a3cff", "#ff8a00"],
+        ["#ff2bd6", "#00c2ff", "#c6ff00"],
+        ["#ff4f1f", "#4d7cff", "#7dffb0"],
+        ["#8b5cff", "#ffb000", "#00d68f"],
+        ["#ff006e", "#3a86ff", "#ffbe0b"],
+        ["#00f5d4", "#f15bb5", "#6a4dff"],
+        ["#fb5607", "#9b5cff", "#06d6a0"],
+        ["#c1ff00", "#ff00a0", "#1f6bff"],
+        ["#ff7a00", "#00b3ff", "#d000ff"],
+        ["#1aff6e", "#ff2e2e", "#7b61ff"],
+        ["#fff03a", "#ff3df0", "#00a3ff"],
+      ],
+      light: [
+        ["#1434f5", "#ff7a00", "#00a37a"],
+        ["#008f7a", "#7a2cff", "#ff4f1f"],
+        ["#d4009b", "#0072e0", "#3fae00"],
+        ["#e01e00", "#2f2fd0", "#00a37a"],
+        ["#6d28d9", "#e07b00", "#009e60"],
+        ["#e0005a", "#1c5fe0", "#c79400"],
+        ["#0096a8", "#c2007a", "#4b2bff"],
+        ["#e04800", "#7b2fe0", "#00956b"],
+        ["#5aa800", "#d6008a", "#0047d6"],
+        ["#d96600", "#0089d6", "#a600d6"],
+        ["#00a344", "#d61f1f", "#5a3dff"],
+        ["#b8a000", "#d600c2", "#0070d6"],
+      ],
     };
-    function lin(x) { return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4); }
+    function lin(x) {
+      return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+    }
     function lum(c) {
       var v = c.map(lin);
       return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
     }
     function oklab(h) {
-      var c = [1, 3, 5].map(function (i) { return lin(parseInt(h.slice(i, i + 2), 16) / 255); });
+      var c = [1, 3, 5].map(function (i) {
+        return lin(parseInt(h.slice(i, i + 2), 16) / 255);
+      });
       var l = Math.cbrt(0.4122214708 * c[0] + 0.5363325363 * c[1] + 0.0514459929 * c[2]);
       var m = Math.cbrt(0.2119034982 * c[0] + 0.6806995451 * c[1] + 0.1073969566 * c[2]);
       var s = Math.cbrt(0.0883024619 * c[0] + 0.2817188376 * c[1] + 0.6299787005 * c[2]);
-      return [0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s, 1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s, 0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s];
+      return [
+        0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+        1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+        0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
+      ];
     }
-    function dist(a, b) { var A = oklab(a), B = oklab(b); return Math.hypot(A[0] - B[0], A[1] - B[1], A[2] - B[2]); }
+    function dist(a, b) {
+      var A = oklab(a),
+        B = oklab(b);
+      return Math.hypot(A[0] - B[0], A[1] - B[1], A[2] - B[2]);
+    }
     function bgLum() {
       var m = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g);
-      return m ? lum(m.slice(0, 3).map(function (x) { return x / 255; })) : 0;
+      return m
+        ? lum(
+            m.slice(0, 3).map(function (x) {
+              return x / 255;
+            })
+          )
+        : 0;
     }
     // the next set of colors: one whose every color is as far as possible from every color showing now,
     // so a swap reads as a new palette, not the same three colors trading places
     function palette(el) {
-      var list = PALETTES[bgLum() > 0.4 ? "light" : "dark"], cur = [];
-      if (el) cur = [0, 1, 2].map(function (i) { return el.children[i].style.getPropertyValue("--c"); }).filter(function (c) { return c.charAt(0) === "#"; });
-      if (!cur.length) try { cur = (sessionStorage.getItem("rrr-logo-pal") || "").split(",").filter(Boolean); } catch (e) {}
+      var list = PALETTES[bgLum() > 0.4 ? "light" : "dark"],
+        cur = [];
+      if (el)
+        cur = [0, 1, 2]
+          .map(function (i) {
+            return el.children[i].style.getPropertyValue("--c");
+          })
+          .filter(function (c) {
+            return c.charAt(0) === "#";
+          });
+      if (!cur.length)
+        try {
+          cur = (sessionStorage.getItem("rrr-logo-pal") || "").split(",").filter(Boolean);
+        } catch (e) {}
       var recent = [];
-      try { recent = JSON.parse(sessionStorage.getItem("rrr-logo-recent") || "[]"); } catch (e) {}
-      var ranked = list.filter(function (p) { return recent.indexOf(p.join()) < 0; }).map(function (p) {
-        var gap = Infinity;
-        p.forEach(function (a) { cur.forEach(function (b) { gap = Math.min(gap, dist(a, b)); }); });
-        return { p: p, gap: cur.length ? gap : Math.random() };
-      }).sort(function (a, b) { return b.gap - a.gap; });
+      try {
+        recent = JSON.parse(sessionStorage.getItem("rrr-logo-recent") || "[]");
+      } catch (e) {}
+      var ranked = list
+        .filter(function (p) {
+          return recent.indexOf(p.join()) < 0;
+        })
+        .map(function (p) {
+          var gap = Infinity;
+          p.forEach(function (a) {
+            cur.forEach(function (b) {
+              gap = Math.min(gap, dist(a, b));
+            });
+          });
+          return { p: p, gap: cur.length ? gap : Math.random() };
+        })
+        .sort(function (a, b) {
+          return b.gap - a.gap;
+        });
       var p = ranked[0].p; // the farthest from what's showing
       recent = [p.join()].concat(recent).slice(0, 5); // the last five sets sit out, so it doesn't bounce between two
-      try { sessionStorage.setItem("rrr-logo-pal", p.join(",")); sessionStorage.setItem("rrr-logo-recent", JSON.stringify(recent)); } catch (e) {}
+      try {
+        sessionStorage.setItem("rrr-logo-pal", p.join(","));
+        sessionStorage.setItem("rrr-logo-recent", JSON.stringify(recent));
+      } catch (e) {}
       return p.slice();
     }
     // each layer gets its own offset slot (plus a little jitter) so all three always show,
     // and the slots stay within a small box so the word still reads as one REP
     function slots() {
-      return shuffle([0, 0.045, 0.09]).map(function (v) { return (v + Math.random() * 0.02).toFixed(3) + "em"; });
+      return shuffle([0, 0.045, 0.09]).map(function (v) {
+        return (v + Math.random() * 0.02).toFixed(3) + "em";
+      });
     }
     function remix(el) {
-      var c = shuffle(palette(el)), x = slots(), y = slots();
+      var c = shuffle(palette(el)),
+        x = slots(),
+        y = slots();
       Array.prototype.forEach.call(el.children, function (s, i) {
         s.style.setProperty("--c", c[i]);
         s.style.setProperty("--x", x[i]);
         s.style.setProperty("--y", y[i]);
       });
     }
-    function rand(a, b) { return a + Math.random() * (b - a); }
+    function rand(a, b) {
+      return a + Math.random() * (b - a);
+    }
     // one glitch: a few fast frames of hidden layers, cut slices and jumps, then a fresh remix
     function glitch(el) {
-      var frames = 3 + Math.floor(Math.random() * 4), c = palette(el);
+      var frames = 3 + Math.floor(Math.random() * 4),
+        c = palette(el);
       el.classList.add("glitch");
       (function frame(n) {
         if (!n) {
-          Array.prototype.forEach.call(el.children, function (s) { s.style.opacity = ""; s.style.clipPath = ""; });
+          Array.prototype.forEach.call(el.children, function (s) {
+            s.style.opacity = "";
+            s.style.clipPath = "";
+          });
           remix(el);
           el.classList.remove("glitch");
           return;
@@ -119,25 +212,43 @@ const layers = [
         Array.prototype.forEach.call(el.children, function (s, i) {
           s.style.opacity = Math.random() < 0.25 ? "0" : "";
           var top = rand(0, 70);
-          s.style.clipPath = Math.random() < 0.5 ? "inset(" + top.toFixed(0) + "% 0 " + (100 - top - rand(15, 40)).toFixed(0) + "% 0)" : "";
+          s.style.clipPath =
+            Math.random() < 0.5
+              ? "inset(" + top.toFixed(0) + "% 0 " + (100 - top - rand(15, 40)).toFixed(0) + "% 0)"
+              : "";
           s.style.setProperty("--x", rand(-0.12, 0.2).toFixed(3) + "em");
           s.style.setProperty("--y", rand(-0.06, 0.12).toFixed(3) + "em");
           if (Math.random() < 0.5) s.style.setProperty("--c", c[(i + n) % 3]);
         });
-        setTimeout(function () { frame(n - 1); }, rand(40, 110));
+        setTimeout(
+          function () {
+            frame(n - 1);
+          },
+          rand(40, 110)
+        );
       })(frames);
     }
     // beats are scheduled from a fixed start time so they never drift; tap() can restart them at a new tempo.
     // The tap key's light flashes on every beat, like the TEMPO key on the Model:Cycles.
     function beats(el, bpm, onBeat) {
-      var st = el._beat = { ms: 60000 / bpm, t0: performance.now(), n: 0, timer: 0 }, key = tapKey(el);
+      var st = (el._beat = { ms: 60000 / bpm, t0: performance.now(), n: 0, timer: 0 }),
+        key = tapKey(el);
       st.tick = function tick() {
         clearTimeout(st.timer);
         if (!el.isConnected) return; // page swapped; the new page starts its own loop
         if (!document.hidden) {
           onBeat(st.n % 4 === 0, st.ms);
-          if (st.sound > 0) { click(st.n % 4 === 0); st.sound--; }
-          if (key) { key.classList.toggle("down", st.n % 4 === 0); key.classList.add("lit"); later(90, function () { key.classList.remove("lit"); }); }
+          if (st.sound > 0) {
+            click(st.n % 4 === 0);
+            st.sound--;
+          }
+          if (key) {
+            key.classList.toggle("down", st.n % 4 === 0);
+            key.classList.add("lit");
+            later(90, function () {
+              key.classList.remove("lit");
+            });
+          }
         }
         st.n++;
         if (performance.now() - (st.t0 + st.n * st.ms) > st.ms) st.t0 = performance.now() - st.n * st.ms; // back from a background tab
@@ -151,33 +262,52 @@ const layers = [
     function click(down) {
       try {
         audio = audio || new (window.AudioContext || window.webkitAudioContext)();
-        var t = audio.currentTime, len = down ? 0.03 : 0.018;
-        var buf = audio.createBuffer(1, Math.ceil(audio.sampleRate * len), audio.sampleRate), d = buf.getChannelData(0);
+        var t = audio.currentTime,
+          len = down ? 0.03 : 0.018;
+        var buf = audio.createBuffer(1, Math.ceil(audio.sampleRate * len), audio.sampleRate),
+          d = buf.getChannelData(0);
         for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 4);
-        var src = audio.createBufferSource(), f = audio.createBiquadFilter(), g = audio.createGain();
+        var src = audio.createBufferSource(),
+          f = audio.createBiquadFilter(),
+          g = audio.createGain();
         src.buffer = buf;
-        f.type = "bandpass"; f.frequency.value = down ? 1500 : 3200; f.Q.value = down ? 4 : 6;
+        f.type = "bandpass";
+        f.frequency.value = down ? 1500 : 3200;
+        f.Q.value = down ? 4 : 6;
         g.gain.value = down ? 0.22 : 0.12;
-        src.connect(f); f.connect(g); g.connect(audio.destination);
+        src.connect(f);
+        f.connect(g);
+        g.connect(audio.destination);
         src.start(t);
       } catch (e) {}
     }
-    function tapKey(el) { var w = el.parentNode; return w && w.classList.contains("logo-wrap") ? w.querySelector(".tap") : null; }
+    function tapKey(el) {
+      var w = el.parentNode;
+      return w && w.classList.contains("logo-wrap") ? w.querySelector(".tap") : null;
+    }
     // tap tempo: each tap lands on a beat (the first tap of a run is the downbeat); from the second tap on,
     // the tempo is the average gap of the last few taps, kept within the Model:Cycles range of 30 to 300 BPM.
     // A pause of two seconds starts a new run.
     function tap(el) {
-      var st = el._beat, key = tapKey(el), now = performance.now(), t = el._taps || [];
+      var st = el._beat,
+        key = tapKey(el),
+        now = performance.now(),
+        t = el._taps || [];
       if (!st) return;
-      if (t.length && now - t[t.length - 1] > 2000) { t = []; el._tapN = 0; }
+      if (t.length && now - t[t.length - 1] > 2000) {
+        t = [];
+        el._tapN = 0;
+      }
       t.push(now);
       el._taps = t = t.slice(-5);
       if (t.length > 1) {
         st.ms = Math.min(2000, Math.max(200, (t[t.length - 1] - t[0]) / (t.length - 1)));
-        try { localStorage.setItem("rrr-bpm", Math.round(60000 / st.ms)); } catch (e) {}
+        try {
+          localStorage.setItem("rrr-bpm", Math.round(60000 / st.ms));
+        } catch (e) {}
       }
       st.sound = 16 + 1; // this tap's beat plus four bars
-      st.n = el._tapN = (el._tapN || 0);
+      st.n = el._tapN = el._tapN || 0;
       el._tapN++;
       st.t0 = now - st.n * st.ms;
       st.tick();
@@ -185,50 +315,65 @@ const layers = [
         key.querySelector("b").textContent = t.length > 1 ? Math.round(60000 / st.ms) + " BPM" : "TAP";
         key.classList.add("on");
         clearTimeout(el._tapOff);
-        el._tapOff = setTimeout(function () { key.classList.remove("on"); key.querySelector("b").textContent = "TAP"; }, 2500);
+        el._tapOff = setTimeout(function () {
+          key.classList.remove("on");
+          key.querySelector("b").textContent = "TAP";
+        }, 2500);
       }
     }
-    function later(ms, f) { setTimeout(f, ms); }
-    function slot() { return rand(0, 0.11).toFixed(3) + "em"; }
+    function later(ms, f) {
+      setTimeout(f, ms);
+    }
+    function slot() {
+      return rand(0, 0.11).toFixed(3) + "em";
+    }
     // a whole new set of colors at once (offsets stay)
     function recolor(el) {
       var c = shuffle(palette(el));
-      [0, 1, 2].forEach(function (i) { el.children[i].style.setProperty("--c", c[i]); });
+      [0, 1, 2].forEach(function (i) {
+        el.children[i].style.setProperty("--c", c[i]);
+      });
     }
     // one layer per beat, never the same one twice in a row (and never `not`, when given)
     function pick(el, not) {
       var i;
-      do { i = Math.floor(Math.random() * 3); } while (i === el._last || el.children[i] === not);
+      do {
+        i = Math.floor(Math.random() * 3);
+      } while (i === el._last || el.children[i] === not);
       el._last = i;
       return el.children[i];
     }
     // a short, soft fade toward the page background (a tint, not transparency, so it never blends with the
     // layers underneath); depth is how much color stays at the bottom of the dip
     function pulse(s, depth, ms) {
-      var c = getComputedStyle(s).color, bg = getComputedStyle(document.body).backgroundColor;
+      var c = getComputedStyle(s).color,
+        bg = getComputedStyle(document.body).backgroundColor;
       var dip = "color-mix(in oklab, " + c + " " + Math.round((depth || 0.5) * 100) + "%, " + bg + ")";
       s.animate([{ color: c }, { color: dip, offset: 0.3 }, { color: c }], { duration: ms || 220, easing: "ease-out" });
     }
     // the layer is torn sideways for a moment, with fresh noise each time
     function tear(s, scale, ms) {
-      var t = document.querySelector("#rrr-tear feTurbulence"), d = document.querySelector("#rrr-tear feDisplacementMap");
+      var t = document.querySelector("#rrr-tear feTurbulence"),
+        d = document.querySelector("#rrr-tear feDisplacementMap");
       if (!t) return;
       t.setAttribute("seed", Math.floor(Math.random() * 999));
       d.setAttribute("scale", scale || 34);
       s.style.filter = "url(#rrr-tear)";
-      later(ms || 110, function () { s.style.filter = ""; });
+      later(ms || 110, function () {
+        s.style.filter = "";
+      });
     }
     // a tiny accent on the off-beats, picked at random so the pattern never shows: a quick blink, a flash of
     // another layer's color, a small tear, or (now and then) nothing
     function accent(el) {
-      var s = el.children[Math.floor(Math.random() * 3)], r = Math.random();
+      var s = el.children[Math.floor(Math.random() * 3)],
+        r = Math.random();
       if (r < 0.3) pulse(s, 0.25, 90);
       else if (r < 0.55) {
         var o = el.children[(Array.prototype.indexOf.call(el.children, s) + 1 + Math.floor(Math.random() * 2)) % 3];
         var c = getComputedStyle(o).color;
         s.animate([{ color: c }, { color: c }], { duration: 70 });
-      }
-      else if (r < 0.85) tear(s, 9 + Math.random() * 8, 70);
+      } else if (r < 0.85) tear(s, 9 + Math.random() * 8, 70);
     }
     // a layer snaps to a new spot; on the bar another layer jolts and the colors swap
     function drift(el, down, s) {
@@ -236,10 +381,14 @@ const layers = [
       s.style.setProperty("--x", slot());
       s.style.setProperty("--y", slot());
       if (down) {
-        var o = pick(el), x = o.style.getPropertyValue("--x");
+        var o = pick(el),
+          x = o.style.getPropertyValue("--x");
         o.style.transition = "none";
         o.style.setProperty("--x", (parseFloat(x) + 0.08).toFixed(3) + "em");
-        later(60, function () { o.style.setProperty("--x", x); o.style.transition = ""; });
+        later(60, function () {
+          o.style.setProperty("--x", x);
+          o.style.transition = "";
+        });
         recolor(el);
       }
       return s;
@@ -247,9 +396,14 @@ const layers = [
     // each beat one layer snaps to a new spot while a different layer pulses; the bar gets the full tear,
     // the other beats a small random accent
     function dance(el, down) {
-      var p = pick(el), m = drift(el, down, pick(el, p));
+      var p = pick(el),
+        m = drift(el, down, pick(el, p));
       pulse(p);
-      if (down) tear(m); else later(Math.random() * 40, function () { accent(el); });
+      if (down) tear(m);
+      else
+        later(Math.random() * 40, function () {
+          accent(el);
+        });
     }
     var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
     // a new theme means a new background: switch to a palette made for it
@@ -264,19 +418,28 @@ const layers = [
       remix(el);
       var d = el.hasAttribute("data-dance") && dance;
       var saved = 0;
-      try { saved = +localStorage.getItem("rrr-bpm"); } catch (e) {}
-      if (d && !reduce) beats(el, saved || +el.dataset.bpm, function (down) { d(el, down); });
+      try {
+        saved = +localStorage.getItem("rrr-bpm");
+      } catch (e) {}
+      if (d && !reduce)
+        beats(el, saved || +el.dataset.bpm, function (down) {
+          d(el, down);
+        });
       else if (!reduce) {
         (function next() {
-          setTimeout(function () {
-            if (!el.isConnected) return;
-            if (!document.hidden) glitch(el);
-            next();
-          }, rand(10000, 40000));
+          setTimeout(
+            function () {
+              if (!el.isConnected) return;
+              if (!document.hidden) glitch(el);
+              next();
+            },
+            rand(10000, 40000)
+          );
         })();
       }
       el.addEventListener("click", function (e) {
-        if (d && el._beat) tap(el); else remix(el);
+        if (d && el._beat) tap(el);
+        else remix(el);
         if (location.pathname === "/" || d) e.preventDefault();
       });
     });
@@ -285,30 +448,153 @@ const layers = [
 
 <style>
   /* logo: three REPs in one grid cell, colors and offsets set per layer by Logo.astro */
-  :global(:root){--logo-blue:#1434f5;--logo-yellow:#fce64e;--logo-ink:var(--fg)} /* first paint only */
-  .logo{display:inline-grid;padding:0 .1em .1em 0;font-family:var(--display);text-decoration:none;letter-spacing:var(--ls-tight);cursor:pointer;user-select:none;-webkit-tap-highlight-color:transparent}
-  .logo span{grid-area:1/1;font-weight:var(--w);color:var(--c);transform:translate(var(--x),var(--y));transition:transform .25s ease,color .25s ease}
-  .logo span:nth-child(1){z-index:1}.logo span:nth-child(2){z-index:2}.logo span:nth-child(3){z-index:3}
-  .logo.glitch span{transition:none}
-  @media (prefers-reduced-motion:reduce){.logo span{transition:none}}
+  :global(:root) {
+    --logo-blue: #1434f5;
+    --logo-yellow: #fce64e;
+    --logo-ink: var(--fg);
+  } /* first paint only */
+  .logo {
+    display: inline-grid;
+    padding: 0 0.1em 0.1em 0;
+    font-family: var(--display);
+    text-decoration: none;
+    letter-spacing: var(--ls-tight);
+    cursor: pointer;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .logo span {
+    grid-area: 1/1;
+    font-weight: var(--w);
+    color: var(--c);
+    transform: translate(var(--x), var(--y));
+    transition:
+      transform 0.25s ease,
+      color 0.25s ease;
+  }
+  .logo span:nth-child(1) {
+    z-index: 1;
+  }
+  .logo span:nth-child(2) {
+    z-index: 2;
+  }
+  .logo span:nth-child(3) {
+    z-index: 3;
+  }
+  .logo.glitch span {
+    transition: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo span {
+      transition: none;
+    }
+  }
   /* dancing logos: quick snaps */
-  .logo[data-dance] span{transition:transform .14s cubic-bezier(.2,.9,.3,1);animation:float var(--fd) ease-in-out var(--fdl) infinite}
+  .logo[data-dance] span {
+    transition: transform 0.14s cubic-bezier(0.2, 0.9, 0.3, 1);
+    animation: float var(--fd) ease-in-out var(--fdl) infinite;
+  }
   /* a slow float on top of the beat moves (it uses `translate`, the beat uses `transform`), each layer on its own clock */
-  .logo[data-dance] span:nth-child(1){--fd:9.3s;--fdl:-2s}
-  .logo[data-dance] span:nth-child(2){--fd:11.7s;--fdl:-7s}
-  .logo[data-dance] span:nth-child(3){--fd:7.9s;--fdl:-4s}
-  @keyframes float{0%,100%{translate:0 0}25%{translate:.018em -.014em}50%{translate:-.012em .02em}75%{translate:-.02em -.008em}}
-  @media (prefers-reduced-motion:reduce){.logo[data-dance] span{animation:none}}
+  .logo[data-dance] span:nth-child(1) {
+    --fd: 9.3s;
+    --fdl: -2s;
+  }
+  .logo[data-dance] span:nth-child(2) {
+    --fd: 11.7s;
+    --fdl: -7s;
+  }
+  .logo[data-dance] span:nth-child(3) {
+    --fd: 7.9s;
+    --fdl: -4s;
+  }
+  @keyframes float {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    25% {
+      translate: 0.018em -0.014em;
+    }
+    50% {
+      translate: -0.012em 0.02em;
+    }
+    75% {
+      translate: -0.02em -0.008em;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .logo[data-dance] span {
+      animation: none;
+    }
+  }
   /* the tap-tempo key next to a dancing logo: shown on hover/focus (always on touch screens), its light flashes
      on every beat and brighter on the bar; while tapping it reads out the tempo */
-  .logo-wrap{position:relative;display:inline-block}
-  .tap{position:absolute;right:-.1em;bottom:-.2em;display:flex;align-items:center;gap:var(--s2);padding:var(--s2) var(--s3) var(--s2) var(--s2);border:1px solid var(--line);border-bottom-width:2px;border-radius:var(--r-s);background:var(--surface);font:600 .75rem/1 var(--mono);letter-spacing:var(--ls-caps);color:var(--fg);opacity:0;transform:translateY(.25rem);transition:opacity .25s ease,transform .25s ease;pointer-events:none;white-space:nowrap}
-  .tap i{width:.4375rem;height:.4375rem;border-radius:50%;background:var(--dev-led-off);transition:background .12s ease,box-shadow .12s ease}
-  .tap.lit i{background:var(--led);box-shadow:0 0 .5rem var(--led)}
-  .tap.lit:not(.down) i{opacity:.6}
-  .logo-wrap:hover .tap,.logo-wrap:focus-within .tap,.tap.on{opacity:1;transform:none}
-  .logo-wrap:hover .logo{cursor:pointer}
-  @media (hover:none){.tap{opacity:.85;transform:none}}
-  @media (prefers-reduced-motion:reduce){.tap{display:none}}
-  .logo-wrap .defs{position:absolute;width:0;height:0}
+  .logo-wrap {
+    position: relative;
+    display: inline-block;
+  }
+  .tap {
+    position: absolute;
+    right: -0.1em;
+    bottom: -0.2em;
+    display: flex;
+    align-items: center;
+    gap: var(--s2);
+    padding: var(--s2) var(--s3) var(--s2) var(--s2);
+    border: 1px solid var(--line);
+    border-bottom-width: 2px;
+    border-radius: var(--r-s);
+    background: var(--surface);
+    font: 600 0.75rem/1 var(--mono);
+    letter-spacing: var(--ls-caps);
+    color: var(--fg);
+    opacity: 0;
+    transform: translateY(0.25rem);
+    transition:
+      opacity 0.25s ease,
+      transform 0.25s ease;
+    pointer-events: none;
+    white-space: nowrap;
+  }
+  .tap i {
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 50%;
+    background: var(--dev-led-off);
+    transition:
+      background 0.12s ease,
+      box-shadow 0.12s ease;
+  }
+  .tap.lit i {
+    background: var(--led);
+    box-shadow: 0 0 0.5rem var(--led);
+  }
+  .tap.lit:not(.down) i {
+    opacity: 0.6;
+  }
+  .logo-wrap:hover .tap,
+  .logo-wrap:focus-within .tap,
+  .tap.on {
+    opacity: 1;
+    transform: none;
+  }
+  .logo-wrap:hover .logo {
+    cursor: pointer;
+  }
+  @media (hover: none) {
+    .tap {
+      opacity: 0.85;
+      transform: none;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .tap {
+      display: none;
+    }
+  }
+  .logo-wrap .defs {
+    position: absolute;
+    width: 0;
+    height: 0;
+  }
 </style>

@@ -7,7 +7,7 @@ listen: Burial, "Ghost Hardware". The hats and rims never hit equally hard or ex
 concepts:
   - h: Strong and weak steps
     p:
-      - "Beats are strongest, the \"&\"s are medium, and the e's and a's are weakest. Groove comes from how you treat the weak steps: how loud they are and exactly when they land."
+      - 'Beats are strongest, the "&"s are medium, and the e''s and a''s are weakest. Groove comes from how you treat the weak steps: how loud they are and exactly when they land.'
   - h: Swing
     p:
       - Swing delays only the weak sixteenths (the even trig keys). At 50% everything is straight; around 56–62% it sounds lazy and human; near 67% it becomes a triplet shuffle. The beats themselves never move, so the foundation stays solid. The Model:Cycles has a SWING knob per track (50–80%).
@@ -54,7 +54,12 @@ steps:
             rows:
               - { n: Kick, s: kick, hits: "1,9,11" }
               - { n: Snare, s: snare, hits: "5,13" }
-              - { n: Hat, s: hat, hits: "1:0.4,2,3:0.75,4,5:0.4,6,7:0.75,8,9:0.4,10,11:0.75,12,13:0.4,14,15:0.75,16", vel: 0.2 }
+              - {
+                  n: Hat,
+                  s: hat,
+                  hits: "1:0.4,2,3:0.75,4,5:0.4,6,7:0.75,8,9:0.4,10,11:0.75,12,13:0.4,14,15:0.75,16",
+                  vel: 0.2,
+                }
           - name: Ghost notes
             bpm: 90
             swing: 58
@@ -62,7 +67,12 @@ steps:
             rows:
               - { n: Kick, s: kick, hits: "1,9,11" }
               - { n: Snare, s: snare, hits: "5,8:0.18,12:0.15,13,16:0.2" }
-              - { n: Hat, s: hat, hits: "1:0.4,2,3:0.75,4,5:0.4,6,7:0.75,8,9:0.4,10,11:0.75,12,13:0.4,14,15:0.75,16", vel: 0.2 }
+              - {
+                  n: Hat,
+                  s: hat,
+                  hits: "1:0.4,2,3:0.75,4,5:0.4,6,7:0.75,8,9:0.4,10,11:0.75,12,13:0.4,14,15:0.75,16",
+                  vel: 0.2,
+                }
     t: The height of each square shows how hard it's hit (velocity). Switch between the three versions. Nothing changed in where the hits are, only how hard they are.
     hear: Ghost notes are barely audible, but take them away and the beat goes flat.
   - k: learn

@@ -17,16 +17,16 @@ Open http://localhost:4321. On your own computer the account page offers a **loc
 
 ## Addresses
 
-| Page | Address |
-| --- | --- |
-| Start page | `/` |
-| Course home | `/model-cycles` |
-| A lesson (its intro) | `/model-cycles/lessons/05` |
-| A step in a lesson | `/model-cycles/lessons/05/3` |
-| A song study | `/model-cycles/songs/looped/2` |
-| Panel guide, one control | `/model-cycles/panel/lfo` |
-| Machines, shortcuts | `/model-cycles/machines`, `/model-cycles/shortcuts` |
-| Sign in, back up progress | `/account` |
+| Page                      | Address                                             |
+| ------------------------- | --------------------------------------------------- |
+| Start page                | `/`                                                 |
+| Course home               | `/model-cycles`                                     |
+| A lesson (its intro)      | `/model-cycles/lessons/05`                          |
+| A step in a lesson        | `/model-cycles/lessons/05/3`                        |
+| A song study              | `/model-cycles/songs/looped/2`                      |
+| Panel guide, one control  | `/model-cycles/panel/lfo`                           |
+| Machines, shortcuts       | `/model-cycles/machines`, `/model-cycles/shortcuts` |
+| Sign in, back up progress | `/account`                                          |
 
 ## Where things are
 
@@ -43,8 +43,9 @@ After editing lessons, run `npm run check`: it renders every step and stops at t
 
 ## Tests
 
-- `npm test` runs everything that also runs on every pull request: `npm run check`, the unit tests (`tests/unit`: step text, grids, song links), a build with checks on the built pages (`tests/site`: every step page exists, no broken links, the player and other components as built), the server routes run in Cloudflare's local runtime with an empty local database (`tests/server`: the contact form, refusing writes from other sites, and, in a second build with `SIGN_IN=true`, signing in with the local test account, saving progress, the account download and deleting the account), and the browser tests (`tests/e2e`: moving through a lesson, ticks, notes, quizzes, progress files, theme, the phone menu; `account.spec.mjs` signs in on the sign-in build and checks that progress follows you to another browser, signing out and deleting the account). The browser tests need Chromium once: `npx playwright install chromium`.
+- `npm test` runs everything that also runs on every pull request: a formatting check (`npm run format:check`), `npm run check`, the unit tests (`tests/unit`: step text, grids, song links), a build with checks on the built pages (`tests/site`: every step page exists, no broken links, the player and other components as built), the server routes run in Cloudflare's local runtime with an empty local database (`tests/server`: the contact form, refusing writes from other sites, and, in a second build with `SIGN_IN=true`, signing in with the local test account, saving progress, the account download and deleting the account), and the browser tests (`tests/e2e`: moving through a lesson, ticks, notes, quizzes, progress files, theme, the phone menu; `account.spec.mjs` signs in on the sign-in build and checks that progress follows you to another browser, signing out and deleting the account). The browser tests need Chromium once: `npx playwright install chromium`.
 - `npm run test:unit` runs only the unit tests, in a second.
+- `npm run format` formats every file with Prettier (settings in `.prettierrc.json`, with the Astro plugin). Editors with a Prettier extension pick up the same settings and format on save.
 - `npm run compare` is for changes that should not change the site, like a cleanup. It builds `main` next to your checkout, compares the HTML of every page (ignoring whitespace layout and other differences a visitor can't see), and compares screenshots of the main pages (desktop and phone, dark and light). Any difference is listed, and the screenshots that differ are saved in `.compare/shots` with the changed pixels in red. `npm run compare <branch or commit>` compares with something other than `main`, and `--no-scripts` or `--no-styles` leave script tags, or styles, out of the HTML comparison (for changes that only move browser code or CSS; the screenshots still compare the result). Besides whole pages, the screenshots cover states reached by clicking: an open lesson picker, an answered quiz, the full-window player, a control's info box, an edited grid, notes being edited, saved progress, the phone menu and the contact form's messages.
 
 Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. Changing a lesson's id, or inserting a step in the middle of a lesson, moves people's ticks.
@@ -67,7 +68,7 @@ Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. 
    - **Google**: in Google Cloud Console create an OAuth client (type "Web application") with redirect URI `https://repreprep.studio/auth/google/callback`.
    - **GitHub**: in GitHub → Settings → Developer settings → OAuth Apps, create an app with callback URL `https://repreprep.studio/auth/github/callback`.
    - Store the keys as secrets: `npx wrangler secret put GOOGLE_CLIENT_ID`, then `GOOGLE_CLIENT_SECRET`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`.
-   The account page only shows the providers whose keys are set.
+     The account page only shows the providers whose keys are set.
 
 Messages sent from the contact form on `/privacy` are emailed to you and also stored in D1 (kept for a year; `npm run messages` lists the latest). Email needs Email Routing enabled on the repreprep.studio zone, your address verified there as a destination, and that address stored as a secret: `npx wrangler secret put CONTACT_TO`.
 

@@ -13,9 +13,13 @@ for (const I of COURSES) {
     ids.add(L.id);
     L.steps.forEach((st, i) => {
       const { lead, first, rest, para, items } = stepParts(st);
-      [lead, first, rest, para, ...(items || []), st.hear || "", st.a || "", ...(st.q || [])].forEach((t) => keyify(I, t || "", st.hl));
-      if (st.q && !st.q.some((o) => o.startsWith("!"))) throw new Error(`${L.id} step ${i}: no right answer (mark it with !)`);
-      if (st.fig && !renderFig(I, st.fig, `${L.id}:${i}`)) throw new Error(`${L.id} step ${i}: unknown drawing ${JSON.stringify(st.fig).slice(0, 40)}`);
+      [lead, first, rest, para, ...(items || []), st.hear || "", st.a || "", ...(st.q || [])].forEach((t) =>
+        keyify(I, t || "", st.hl)
+      );
+      if (st.q && !st.q.some((o) => o.startsWith("!")))
+        throw new Error(`${L.id} step ${i}: no right answer (mark it with !)`);
+      if (st.fig && !renderFig(I, st.fig, `${L.id}:${i}`))
+        throw new Error(`${L.id} step ${i}: unknown drawing ${JSON.stringify(st.fig).slice(0, 40)}`);
       steps++;
     });
     L.concepts.forEach((c) => c.p.forEach((p) => keyify(I, p, "")));

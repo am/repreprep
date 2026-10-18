@@ -17,7 +17,9 @@ const signIn = async (c, next = "/model-cycles") => {
   assert.equal(r.status, 302);
   return r.headers.get("location");
 };
-const progress = (updatedAt) => ({ data: { updatedAt, inst: { cycles: { steps: { "w01:0": true }, done: {}, notes: { w01: "hi" }, active: {} } } } });
+const progress = (updatedAt) => ({
+  data: { updatedAt, inst: { cycles: { steps: { "w01:0": true }, done: {}, notes: { w01: "hi" }, active: {} } } },
+});
 
 test("the pages offer sign-in", async () => {
   const html = await (await client(w.origin).req("/account")).text();
@@ -43,7 +45,16 @@ test("progress is saved to the account and read back", async () => {
   assert.deepEqual((await c.action("progress.load")).data, { data: null, updatedAt: 0 });
   assert.deepEqual((await c.action("progress.save", progress(1234))).data, { updatedAt: 1234 });
   assert.deepEqual((await c.action("progress.load")).data, { ...progress(1234), updatedAt: 1234 });
-  assert.equal((await c.req("/_actions/progress.save", { method: "POST", body: "{nope", headers: { "Content-Type": "application/json" } })).status >= 400, true);
+  assert.equal(
+    (
+      await c.req("/_actions/progress.save", {
+        method: "POST",
+        body: "{nope",
+        headers: { "Content-Type": "application/json" },
+      })
+    ).status >= 400,
+    true
+  );
   assert.equal((await c.action("progress.save", { data: [1] })).status, 400);
   assert.equal((await c.action("progress.save", { data: { inst: 3 } })).status, 400);
   assert.equal((await c.action("progress.save", { data: { inst: {}, pad: "x".repeat(600000) } })).status, 413);
@@ -54,7 +65,10 @@ test("the account download has everything kept about you", async () => {
   const c = client(w.origin);
   await signIn(c);
   await c.action("progress.save", progress(99));
-  await c.req("/api/contact", { method: "POST", body: c.form({ message: "From a signed-in person", reply_to: "a@b.co" }) });
+  await c.req("/api/contact", {
+    method: "POST",
+    body: c.form({ message: "From a signed-in person", reply_to: "a@b.co" }),
+  });
   await c.req("/api/contact", { method: "POST", body: c.form({ message: "bot", website: "x" }) });
   const r = await c.req("/api/export");
   assert.equal(r.headers.get("content-disposition"), 'attachment; filename="repreprep-account.json"');

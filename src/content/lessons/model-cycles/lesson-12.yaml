@@ -35,21 +35,36 @@ steps:
             rows:
               - { n: Kick, s: kick, hits: "1,9", vel: 0.6 }
               - { n: Bass, s: bass, hits: "1,9", vel: 0.6, note: 45 }
-              - { n: Melody, s: pluck, hits: "1,3,5,9,11,13,15", p: [ 69, 0, 72, 0, 71, 0, 0, 0, 69, 0, 72, 0, 71, 0, 69, 0 ] }
+              - {
+                  n: Melody,
+                  s: pluck,
+                  hits: "1,3,5,9,11,13,15",
+                  p: [69, 0, 72, 0, 71, 0, 0, 0, 69, 0, 72, 0, 71, 0, 69, 0],
+                }
           - name: Two questions
             bpm: 80
             note: "A C B twice: it never lands."
             rows:
               - { n: Kick, s: kick, hits: "1,9", vel: 0.6 }
               - { n: Bass, s: bass, hits: "1,9", vel: 0.6, note: 45 }
-              - { n: Melody, s: pluck, hits: "1,3,5,9,11,13", p: [ 69, 0, 72, 0, 71, 0, 0, 0, 69, 0, 72, 0, 71, 0, 0, 0 ] }
+              - {
+                  n: Melody,
+                  s: pluck,
+                  hits: "1,3,5,9,11,13",
+                  p: [69, 0, 72, 0, 71, 0, 0, 0, 69, 0, 72, 0, 71, 0, 0, 0],
+                }
           - name: Sequence
             bpm: 80
             note: A C B, the same shape from C (C E D), then home to A.
             rows:
               - { n: Kick, s: kick, hits: "1,9", vel: 0.6 }
               - { n: Bass, s: bass, hits: "1,9", vel: 0.6, note: 45 }
-              - { n: Melody, s: pluck, hits: "1,3,5,9,11,13,15", p: [ 69, 0, 72, 0, 71, 0, 0, 0, 72, 0, 76, 0, 74, 0, 69, 0 ] }
+              - {
+                  n: Melody,
+                  s: pluck,
+                  hits: "1,3,5,9,11,13,15",
+                  p: [69, 0, 72, 0, 71, 0, 0, 0, 72, 0, 76, 0, 74, 0, 69, 0],
+                }
     t: "Hear it: three notes asked, then answered. Then the version that never lands, and a sequence, where the motif repeats from a higher note."
     hear: Ending on the root feels like a full stop. Ending anywhere else feels like a comma.
   - k: play

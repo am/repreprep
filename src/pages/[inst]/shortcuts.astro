@@ -7,14 +7,41 @@ export async function getStaticPaths() {
 }
 const { I } = Astro.props;
 ---
+
 <Base title={`${I.name} shortcuts`} inst={I} tab="shortcuts">
   <p class="lede t-body">The combinations you'll use most, from the manual's key-shortcut list.</p>
-  <div class="tblwrap"><table class="sc"><tbody>{I.shortcuts.map(([a, b]: string[]) => <tr><td>{a}</td><td><Keys I={I} text={b} /></td></tr>)}</tbody></table></div>
+  <div class="tblwrap">
+    <table class="sc">
+      <tbody>
+        {I.shortcuts.map(([a, b]: string[]) => (
+          <tr>
+            <td>{a}</td>
+            <td>
+              <Keys I={I} text={b} />
+            </td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+  </div>
 </Base>
 
 <style>
-  .sc{width:100%;border-collapse:collapse;border-top:1px solid var(--line);font-size:var(--fs-sm)}
-  .sc td{padding:var(--s3) var(--s3) var(--s3) 0;border-bottom:1px solid var(--line);vertical-align:top}
-  .sc td:first-child{white-space:nowrap}
-  .tblwrap{overflow-x:auto}
+  .sc {
+    width: 100%;
+    border-collapse: collapse;
+    border-top: 1px solid var(--line);
+    font-size: var(--fs-sm);
+  }
+  .sc td {
+    padding: var(--s3) var(--s3) var(--s3) 0;
+    border-bottom: 1px solid var(--line);
+    vertical-align: top;
+  }
+  .sc td:first-child {
+    white-space: nowrap;
+  }
+  .tblwrap {
+    overflow-x: auto;
+  }
 </style>

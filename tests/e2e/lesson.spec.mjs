@@ -112,7 +112,8 @@ test("notes: add, save, edit, cancel", async ({ page }) => {
 test("quiz: a wrong answer is crossed out, the right one shows why", async ({ page }) => {
   const qi = L1.steps.findIndex((s) => s.q);
   await page.goto(`${L1.path}/${qi}`);
-  const wrong = page.locator('.quiz [data-opt="0"]').first(), right = page.locator('.quiz [data-opt="1"]');
+  const wrong = page.locator('.quiz [data-opt="0"]').first(),
+    right = page.locator('.quiz [data-opt="1"]');
   await wrong.click();
   await expect(wrong).toHaveClass(/wrong/);
   await expect(wrong).toBeDisabled();
@@ -184,7 +185,10 @@ test("Play steps light their controls; clicking a control explains it", async ({
 
 test("playable grid: squares toggle, Play becomes Stop, edits survive moving between steps", async ({ page }) => {
   let L, i;
-  for (L of I.lessons) { i = L.steps.findIndex((s) => s.fig?.grid && s.fig.grid.edit !== false && !s.fig.grid.presets); if (i > 0) break; }
+  for (L of I.lessons) {
+    i = L.steps.findIndex((s) => s.fig?.grid && s.fig.grid.edit !== false && !s.fig.grid.presets);
+    if (i > 0) break;
+  }
   await page.goto(`${L.path}/${i}`);
   const cell = page.locator(".gp .cell:not(.on):not([disabled])").first();
   const at = `.gp .cell[data-r="${await cell.getAttribute("data-r")}"][data-i="${await cell.getAttribute("data-i")}"]`;

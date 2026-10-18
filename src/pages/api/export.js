@@ -25,6 +25,10 @@ export async function GET({ locals: { user } }) {
     messages: messages.results.map((m) => ({ sentAt: iso(m.created_at), replyTo: m.reply_to, message: m.body })),
   };
   return new Response(JSON.stringify(body, null, 2), {
-    headers: { "Content-Type": "application/json", "Content-Disposition": 'attachment; filename="repreprep-account.json"', "Cache-Control": "no-store" },
+    headers: {
+      "Content-Type": "application/json",
+      "Content-Disposition": 'attachment; filename="repreprep-account.json"',
+      "Cache-Control": "no-store",
+    },
   });
 }

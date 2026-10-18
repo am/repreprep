@@ -7,7 +7,10 @@ import { CONTACT_TO } from "astro:env/server";
 const FROM = "contact@repreprep.studio";
 const b64 = (s) => btoa(String.fromCharCode(...new TextEncoder().encode(s)));
 const header = (s) => `=?UTF-8?B?${b64(s)}?=`;
-const oneLine = (s) => String(s).replace(/[\r\n]+/g, " ").trim();
+const oneLine = (s) =>
+  String(s)
+    .replace(/[\r\n]+/g, " ")
+    .trim();
 const looksLikeEmail = (s) => /^[^\s@<>",]+@[^\s@<>",]+\.[^\s@<>",]+$/.test(s || "");
 
 export const mailReady = () => !!(env.MAIL && CONTACT_TO);

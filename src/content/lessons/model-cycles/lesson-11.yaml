@@ -72,29 +72,65 @@ steps:
             bpm: 60
             note: "Am, G, Dm, Am: one chord per beat here, one per bar in a song."
             rows:
-              - { n: Bass, s: bass, hits: "1,5,9,13", vel: 0.7, p: [ 45, 0, 0, 0, 43, 0, 0, 0, 38, 0, 0, 0, 45, 0, 0, 0 ] }
-              - { n: Low, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 57, 0, 0, 0, 55, 0, 0, 0, 57, 0, 0, 0, 57, 0, 0, 0 ] }
-              - { n: Mid, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 60, 0, 0, 0, 59, 0, 0, 0, 62, 0, 0, 0, 60, 0, 0, 0 ] }
-              - { n: High, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 64, 0, 0, 0, 62, 0, 0, 0, 65, 0, 0, 0, 64, 0, 0, 0 ] }
+              - {
+                  n: Bass,
+                  s: bass,
+                  hits: "1,5,9,13",
+                  vel: 0.7,
+                  p: [45, 0, 0, 0, 43, 0, 0, 0, 38, 0, 0, 0, 45, 0, 0, 0],
+                }
+              - { n: Low, s: keys, hits: "1,5,9,13", vel: 0.6, p: [57, 0, 0, 0, 55, 0, 0, 0, 57, 0, 0, 0, 57, 0, 0, 0] }
+              - { n: Mid, s: keys, hits: "1,5,9,13", vel: 0.6, p: [60, 0, 0, 0, 59, 0, 0, 0, 62, 0, 0, 0, 60, 0, 0, 0] }
+              - {
+                  n: High,
+                  s: keys,
+                  hits: "1,5,9,13",
+                  vel: 0.6,
+                  p: [64, 0, 0, 0, 62, 0, 0, 0, 65, 0, 0, 0, 64, 0, 0, 0],
+                }
               - { n: Top, s: keys, hits: "", note: 67 }
           - name: i7 iv7 VImaj7 VII7
             bpm: 60
             note: Am7, Dm7, Fmaj7, G7.
             rows:
-              - { n: Bass, s: bass, hits: "1,5,9,13", vel: 0.7, p: [ 45, 0, 0, 0, 38, 0, 0, 0, 41, 0, 0, 0, 43, 0, 0, 0 ] }
-              - { n: Low, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 57, 0, 0, 0, 57, 0, 0, 0, 57, 0, 0, 0, 55, 0, 0, 0 ] }
-              - { n: Mid, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 60, 0, 0, 0, 60, 0, 0, 0, 60, 0, 0, 0, 59, 0, 0, 0 ] }
-              - { n: High, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 64, 0, 0, 0, 62, 0, 0, 0, 64, 0, 0, 0, 62, 0, 0, 0 ] }
-              - { n: Top, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 67, 0, 0, 0, 65, 0, 0, 0, 65, 0, 0, 0, 65, 0, 0, 0 ] }
+              - {
+                  n: Bass,
+                  s: bass,
+                  hits: "1,5,9,13",
+                  vel: 0.7,
+                  p: [45, 0, 0, 0, 38, 0, 0, 0, 41, 0, 0, 0, 43, 0, 0, 0],
+                }
+              - { n: Low, s: keys, hits: "1,5,9,13", vel: 0.6, p: [57, 0, 0, 0, 57, 0, 0, 0, 57, 0, 0, 0, 55, 0, 0, 0] }
+              - { n: Mid, s: keys, hits: "1,5,9,13", vel: 0.6, p: [60, 0, 0, 0, 60, 0, 0, 0, 60, 0, 0, 0, 59, 0, 0, 0] }
+              - {
+                  n: High,
+                  s: keys,
+                  hits: "1,5,9,13",
+                  vel: 0.6,
+                  p: [64, 0, 0, 0, 62, 0, 0, 0, 64, 0, 0, 0, 62, 0, 0, 0],
+                }
+              - { n: Top, s: keys, hits: "1,5,9,13", vel: 0.6, p: [67, 0, 0, 0, 65, 0, 0, 0, 65, 0, 0, 0, 65, 0, 0, 0] }
           - name: Your B01
             bpm: 60
             note: "Am7, Fmaj7, Dm7, Em7: the roots your bass already plays."
             rows:
-              - { n: Bass, s: bass, hits: "1,5,9,13", vel: 0.7, p: [ 45, 0, 0, 0, 41, 0, 0, 0, 38, 0, 0, 0, 40, 0, 0, 0 ] }
-              - { n: Low, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 57, 0, 0, 0, 57, 0, 0, 0, 57, 0, 0, 0, 55, 0, 0, 0 ] }
-              - { n: Mid, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 60, 0, 0, 0, 60, 0, 0, 0, 60, 0, 0, 0, 59, 0, 0, 0 ] }
-              - { n: High, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 64, 0, 0, 0, 64, 0, 0, 0, 62, 0, 0, 0, 62, 0, 0, 0 ] }
-              - { n: Top, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 67, 0, 0, 0, 65, 0, 0, 0, 65, 0, 0, 0, 64, 0, 0, 0 ] }
+              - {
+                  n: Bass,
+                  s: bass,
+                  hits: "1,5,9,13",
+                  vel: 0.7,
+                  p: [45, 0, 0, 0, 41, 0, 0, 0, 38, 0, 0, 0, 40, 0, 0, 0],
+                }
+              - { n: Low, s: keys, hits: "1,5,9,13", vel: 0.6, p: [57, 0, 0, 0, 57, 0, 0, 0, 57, 0, 0, 0, 55, 0, 0, 0] }
+              - { n: Mid, s: keys, hits: "1,5,9,13", vel: 0.6, p: [60, 0, 0, 0, 60, 0, 0, 0, 60, 0, 0, 0, 59, 0, 0, 0] }
+              - {
+                  n: High,
+                  s: keys,
+                  hits: "1,5,9,13",
+                  vel: 0.6,
+                  p: [64, 0, 0, 0, 64, 0, 0, 0, 62, 0, 0, 0, 62, 0, 0, 0],
+                }
+              - { n: Top, s: keys, hits: "1,5,9,13", vel: 0.6, p: [67, 0, 0, 0, 65, 0, 0, 0, 65, 0, 0, 0, 64, 0, 0, 0] }
     t: "Play the three progressions. Watch the four chord rows: the notes barely move from chord to chord. Each chord is voiced as an inversion, so it steps instead of jumping."
     hear: The 7ths blur the edges. Your B01 progression never quite comes home, which keeps it feeling like night.
   - k: play

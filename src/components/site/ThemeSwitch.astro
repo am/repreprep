@@ -1,24 +1,72 @@
 ---
 // Auto / light / dark. Base.astro's head script applies the saved choice before the first paint.
 ---
+
 <div class="theme" role="radiogroup" aria-label="Color theme">
   <button type="button" role="radio" data-theme-set="auto" aria-checked="true" title="Auto: follow the system">
-    <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="5.5"/><path d="M8 2.5a5.5 5.5 0 0 1 0 11z" fill="currentColor"/></svg><span>Auto</span>
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="8" r="5.5" />
+      <path d="M8 2.5a5.5 5.5 0 0 1 0 11z" fill="currentColor" />
+    </svg>
+    <span>Auto</span>
   </button>
   <button type="button" role="radio" data-theme-set="light" aria-checked="false" title="Light">
-    <svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="3"/><path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1"/></svg><span>Light</span>
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <circle cx="8" cy="8" r="3" />
+      <path d="M8 1.5v1.5M8 13v1.5M1.5 8H3M13 8h1.5M3.4 3.4l1 1M11.6 11.6l1 1M3.4 12.6l1-1M11.6 4.4l1-1" />
+    </svg>
+    <span>Light</span>
   </button>
   <button type="button" role="radio" data-theme-set="dark" aria-checked="false" title="Dark">
-    <svg viewBox="0 0 16 16" aria-hidden="true"><path d="M13 9.6A5.5 5.5 0 1 1 6.4 3a4.4 4.4 0 0 0 6.6 6.6z"/></svg><span>Dark</span>
+    <svg viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M13 9.6A5.5 5.5 0 1 1 6.4 3a4.4 4.4 0 0 0 6.6 6.6z" />
+    </svg>
+    <span>Dark</span>
   </button>
 </div>
 
 <style>
   /* theme switch: auto / light / dark */
-  .theme{display:inline-flex;gap:2px;padding:2px;border:1px solid var(--line);border-radius:var(--r-pill)}
-  .theme button{display:grid;place-items:center;width:1.625rem;height:1.375rem;padding:0;border:0;border-radius:var(--r-pill);background:none;color:var(--faint);cursor:pointer}
-  .theme button:hover{color:var(--fg)}
-  .theme button[aria-checked="true"]{background:var(--surface-2);color:var(--fg)}
-  .theme svg{width:.875rem;height:.875rem;fill:none;stroke:currentColor;stroke-width:1.4;stroke-linecap:round}
-  .theme span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+  .theme {
+    display: inline-flex;
+    gap: 2px;
+    padding: 2px;
+    border: 1px solid var(--line);
+    border-radius: var(--r-pill);
+  }
+  .theme button {
+    display: grid;
+    place-items: center;
+    width: 1.625rem;
+    height: 1.375rem;
+    padding: 0;
+    border: 0;
+    border-radius: var(--r-pill);
+    background: none;
+    color: var(--faint);
+    cursor: pointer;
+  }
+  .theme button:hover {
+    color: var(--fg);
+  }
+  .theme button[aria-checked="true"] {
+    background: var(--surface-2);
+    color: var(--fg);
+  }
+  .theme svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linecap: round;
+  }
+  .theme span {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
 </style>

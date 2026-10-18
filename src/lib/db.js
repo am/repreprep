@@ -15,6 +15,9 @@ let ready = null;
 export function db() {
   const d = env.DB;
   if (!d) throw new Error("The DB binding is missing. Check d1_databases in wrangler.jsonc.");
-  ready ??= d.batch(SCHEMA.map((s) => d.prepare(s))).catch((e) => { ready = null; throw e; });
+  ready ??= d.batch(SCHEMA.map((s) => d.prepare(s))).catch((e) => {
+    ready = null;
+    throw e;
+  });
   return ready.then(() => d);
 }
