@@ -445,9 +445,10 @@ a.icard:hover{border-color:var(--faint)}
 .back-all:hover{color:var(--fg)}
 .unit .band-h{padding-top:var(--s2)}
 .unit .band-h .t-label{margin:0;letter-spacing:var(--ls-key)}
-.unit .ls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:var(--s1) var(--s5);align-content:start}
+/* two columns read top to bottom (1 3 / 2 4): --rows is half the unit's lessons, rounded up */
+.unit .ls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(var(--rows,1),auto);grid-auto-flow:column;gap:var(--s1) var(--s5);align-content:start}
 .unit .wk .t{font-size:var(--fs-md)}
-@media (max-width:760px){.unit .band-h{padding-top:0}.unit .ls{grid-template-columns:minmax(0,1fr)}.unit .wk{width:100%;min-width:0;grid-template-columns:34px 1fr auto;border-color:transparent}}
+@media (max-width:760px){.unit .band-h{padding-top:0}.unit .ls{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-auto-flow:row}.unit .wk{width:100%;min-width:0;grid-template-columns:34px 1fr auto;border-color:transparent}}
 .top+#view{margin-top:var(--s5)}
 
 /* home: one idea per screen, each centered in the viewport, revealed as you scroll.
