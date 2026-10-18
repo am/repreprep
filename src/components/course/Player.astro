@@ -41,3 +41,82 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       </div>
     </div></div>
 </section>
+
+<script>
+  /* Marks where you are, saves ticks as you move on, and runs the player's controls: the step panel's
+     width, the full-window switch, the lesson picker, arrow keys, and clicking a control on the panel. */
+  import { onProgress, persist, refresh, ist, state } from "../../client/progress.js";
+  import { player, curLesson, markAllDone, goNextLesson } from "../../client/lesson.js";
+  import { CYCLES_CONTROLS, iconSvg } from "../../course/model-cycles/controls.js";
+  import { keyify } from "../../course/shared/text.js";
+  import { esc } from "../../course/shared/html.js";
+
+  const PANELS = { cycles: { controls: CYCLES_CONTROLS, icon: iconSvg } };
+  const $ = (s) => document.querySelector(s);
+
+  /* the player fills the window below the header */
+  function fitPlayer() {
+    const el = player(); if (!el) return;
+    const top = el.getBoundingClientRect().top + window.scrollY;
+    el.style.setProperty("--ph", `calc(100dvh - ${Math.round(top) + 20}px)`);
+  }
+  window.addEventListener("resize", fitPlayer);
+
+  onProgress(() => {
+    const c = curLesson(); if (!c) return;
+    const s = ist(c.k);
+    if (s.lesson !== c.id || (s.active[c.id] ?? 0) !== c.act) { s.lesson = c.id; s.active[c.id] = c.act; persist(); }
+    document.querySelectorAll(".dots [data-step]").forEach((a) => a.classList.toggle("done", !!s.steps[c.id + ":" + a.dataset.step]));
+    const mx = $("[data-max]"); if (mx) { const l = state.focus ? "Exit full window (Esc)" : "Maximize"; mx.setAttribute("aria-label", l); mx.title = l; }
+    document.documentElement.classList.toggle("focus", !!state.focus);
+    if (state.stepW) document.documentElement.style.setProperty("--sw", state.stepW + "px");
+    fitPlayer();
+  });
+  function setFocus(on) { state.focus = on; persist(); refresh(); }
+
+  /* drag the gutter to resize the step column; the width is saved with your progress */
+  function clampStepW(w) { const b = $("#pbody"); const max = b ? Math.max(320, b.clientWidth * 0.7) : 900; return Math.round(Math.min(Math.max(w, 260), max)); }
+  function setStepW(w, save) { state.stepW = clampStepW(w); document.documentElement.style.setProperty("--sw", state.stepW + "px"); if (save) persist(); }
+  document.addEventListener("pointerdown", (e) => {
+    const g = e.target.closest("#gutter"); if (!g) return;
+    e.preventDefault(); g.setPointerCapture(e.pointerId); g.classList.add("drag"); document.body.classList.add("resizing");
+    const right = $("#pbody").getBoundingClientRect().right;
+    const move = (ev) => setStepW(right - ev.clientX, false);
+    const up = () => { g.removeEventListener("pointermove", move); g.classList.remove("drag"); document.body.classList.remove("resizing"); persist(); };
+    g.addEventListener("pointermove", move); g.addEventListener("pointerup", up, { once: true }); g.addEventListener("pointercancel", up, { once: true });
+  });
+  document.addEventListener("dblclick", (e) => { if (e.target.closest("#gutter")) { delete state.stepW; document.documentElement.style.removeProperty("--sw"); persist(); } });
+
+  /* lesson picker: close when clicking elsewhere or pressing Esc */
+  document.addEventListener("click", (e) => { document.querySelectorAll("details.picker[open]").forEach((d) => { if (!d.contains(e.target)) d.open = false; }); }, true);
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") { const d = $("details.picker[open]"); if (d) { d.open = false; e.stopImmediatePropagation(); } } }, true);
+
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("[data-closectl]")) { $("#ctlinfo").hidden = true; return; }
+    if (e.target.closest("[data-max]")) { setFocus(!state.focus); return; }
+    /* a control on the panel: what it does, in a box over the step */
+    const ctl = e.target.closest("svg .c");
+    if (ctl) {
+      if (ctl.closest("[data-panel-guide]")) return;
+      const I = PANELS[document.body.dataset.inst], c = I && I.controls[ctl.dataset.id], box = $("#ctlinfo");
+      if (c && box) { box.hidden = false; box.innerHTML = `<div class="h">${esc(c.kind)} <button class="x" data-closectl aria-label="Close">×</button></div><b>${esc(c.name)}</b>${c.sub ? ` <span class="sec">(${esc(c.sub)})</span>` : ""}. ${keyify(I, c.desc, "")}`; }
+      return;
+    }
+    /* Next ticks the step you're on; Finish on the last step moves to the next lesson */
+    const nav = e.target.closest("[data-nav]");
+    const c = nav && nav.dataset.nav === "1" && curLesson(); if (!c) return;
+    const s = ist(c.k);
+    if (c.act < c.n) { s.steps[c.id + ":" + c.act] = true; markAllDone(s, c); } /* the optional challenge is never a rep */
+    if (nav.hasAttribute("data-end")) { e.preventDefault(); goNextLesson(s, c); return; }
+    persist(); /* the link opens the next step */
+  }, true); /* capture: runs before the router follows a link, so Finish can pick where to go */
+
+  document.addEventListener("keydown", (e) => {
+    if (e.target.id === "gutter" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) { e.preventDefault(); const cur = $(".pstep").getBoundingClientRect().width; setStepW(cur + (e.key === "ArrowLeft" ? 40 : -40), true); return; }
+    if (player() && !e.target.closest("textarea,input,select") && !e.metaKey && !e.ctrlKey && !e.altKey) {
+      if (e.key === "Escape" && state.focus) { setFocus(false); return; }
+      const nav = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
+      if (nav) { const b = $(`[data-nav="${nav}"]`); if (b) { e.preventDefault(); b.click(); } }
+    }
+  });
+</script>

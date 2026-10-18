@@ -9,7 +9,7 @@ import { page } from "./built.mjs";
 const [I] = READY;
 const count = (html, re) => (html.match(re) || []).length;
 /* just the player, or just the part under it, of a lesson page */
-const player = (L, i) => page(stepPath(L, i)).match(/<section class="player"[\s\S]*?<\/section>\s*<div class="below">/)[0];
+const player = (L, i) => page(stepPath(L, i)).match(/<section class="player"[\s\S]*?<\/section>/)[0];
 const below = (L) => page(L.path).match(/<div class="below">[\s\S]*?<\/main>/)[0];
 const reEsc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
 

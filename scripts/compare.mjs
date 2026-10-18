@@ -1,6 +1,6 @@
 // Refactor safety net: builds another version of the site (main by default) next to this one and
 // compares them. Every built page's HTML is compared, then a set of pages is screenshotted in both
-// (desktop and phone, dark and light) and compared pixel by pixel. Run with `npm run compare [git ref]`.
+// (desktop and phone, dark and light) and compared pixel by pixel. Run with `npm run compare [git ref] [--no-scripts]`.
 // A refactor that keeps the site the same reports no differences. Differing screenshots are saved in
 // .compare/shots (before, after and a diff image with the changed pixels in red).
 import { execSync, spawn } from "node:child_process";
@@ -8,7 +8,9 @@ import { existsSync, lstatSync, unlinkSync, mkdirSync, readFileSync, readdirSync
 import { join, relative } from "node:path";
 import { chromium } from "@playwright/test";
 
-const ref = process.argv[2] || "origin/main";
+/* --no-scripts leaves script tags out of the HTML comparison, for changes that only move the browser code */
+const args = process.argv.slice(2), noScripts = args.includes("--no-scripts");
+const ref = args.find((a) => !a.startsWith("--")) || "origin/main";
 const ROOT = new URL("..", import.meta.url).pathname;
 const WORK = join(ROOT, ".compare"), BASE = join(WORK, "base"), SHOTS = join(WORK, "shots");
 const sh = (cmd, cwd = ROOT) => execSync(cmd, { cwd, stdio: ["ignore", "pipe", "inherit"] }).toString().trim();
@@ -31,7 +33,7 @@ sh("npx astro build");
 /* ---------- HTML of every page ---------- */
 /* bundle hashes, comments in inline scripts, whitespace layout, self-closing tags and how a quote is written
    don't change what a visitor gets (the screenshots below catch any whitespace that shows) */
-const normalize = (html) => html
+const normalize = (html) => (noScripts ? html.replace(/<script\b[\s\S]*?<\/script>/g, "") : html)
   .replace(/\/_astro\/([\w.-]+?)\.[\w-]{8}\.(css|js)/g, "/_astro/$1.$2")
   .replace(/(<script\b[^>]*>)([\s\S]*?)(<\/script>)/g, (m, a, js, b) => a + js.replace(/\/\*[\s\S]*?\*\//g, "").replace(/^\s*\/\/.*$/gm, "").replace(/\n\s*\n/g, "\n") + b)
   .replace(/<(area|br|hr|img|input|link|meta)\b([^>]*?)\s*\/>/g, "<$1$2>")

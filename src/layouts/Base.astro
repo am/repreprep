@@ -37,7 +37,8 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
       } catch (e) {}
     };
     document.addEventListener("astro:after-swap", window.__rrrLayout);
-    /* theme: auto follows the system, light and dark are saved choices; applied before the first paint */
+    /* theme: auto follows the system, light and dark are saved choices; applied before the first paint
+       (ThemeSwitch saves a new choice and calls __rrrTheme) */
     (function () {
       function get() { try { return localStorage.getItem("rrr-theme") || "auto"; } catch (e) { return "auto"; } }
       function apply() {
@@ -45,28 +46,11 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
         if (t === "light" || t === "dark") r.setAttribute("data-theme", t); else r.removeAttribute("data-theme");
         Array.prototype.forEach.call(document.querySelectorAll("[data-theme-set]"), function (b) { b.setAttribute("aria-checked", String(b.getAttribute("data-theme-set") === t)); });
       }
+      window.__rrrTheme = apply;
       apply();
       document.addEventListener("DOMContentLoaded", apply);
       document.addEventListener("astro:after-swap", apply);
-      document.addEventListener("keydown", function (e) {
-        var top = document.querySelector(".top.open");
-        if (e.key === "Escape" && top) { top.classList.remove("open"); var k = top.querySelector("[data-menu]"); k.setAttribute("aria-expanded", "false"); k.focus(); }
-      });
       matchMedia("(prefers-color-scheme: light)").addEventListener("change", function () { if (get() === "auto") window.dispatchEvent(new Event("rrr-theme")); });
-      document.addEventListener("click", function (e) {
-        /* the knob menu on phones: the knob toggles it, a click outside or on a link closes it */
-        var top = document.querySelector(".top:not(.bare)"), knob = e.target.closest && e.target.closest("[data-menu]");
-        if (top && (knob || (top.classList.contains("open") && (!e.target.closest(".hmenu") || e.target.closest(".hmenu a"))))) {
-          var open = knob ? !top.classList.contains("open") : false;
-          top.classList.toggle("open", open);
-          top.querySelector("[data-menu]").setAttribute("aria-expanded", String(open));
-        }
-        var b = e.target.closest && e.target.closest("[data-theme-set]");
-        if (!b) return;
-        try { localStorage.setItem("rrr-theme", b.getAttribute("data-theme-set")); } catch (e) {}
-        apply();
-        window.dispatchEvent(new Event("rrr-theme"));
-      });
     })();
   </script>
   <ClientRouter fallback="swap" />
@@ -79,6 +63,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
   </div>
   <SiteFooter />
   <script is:inline>window.__rrrLayout();</script>
-  <script>import "../client/app.js";</script>
+  <script>import "../client/site.js";</script>
 </body>
 </html>

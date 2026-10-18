@@ -8,3 +8,15 @@ const c = I.controls[sel];
 ---
 <p class="lede t-body">Every key and knob on the {I.name}, with what it does. Click any control on the panel. <Keys I={I} text={I.panelIntro || ""} /></p>
 <div class="refgrid"><div class="dockpanel" data-panel-guide={`/${I.slug}/panel`}><PanelDrawing I={I} sel={sel} /></div><div class="info" id="info"><div class="t-eyebrow">{c.kind}</div><h3 class="t-title t-card">{c.name}</h3><p class="t-body"><Keys I={I} text={c.desc} /></p>{c.sub && <p class="t-body"><span class="t-label">Second label on the panel</span><b>{c.sub}</b></p>}</div></div>
+
+<script>
+  /* each control has its own page; clicking one opens it and keeps the scroll position */
+  import { navigate } from "astro:transitions/client";
+  import { onProgress } from "../../client/progress.js";
+  let keepScroll = null;
+  onProgress(() => { if (keepScroll != null) { window.scrollTo(0, keepScroll); keepScroll = null; } });
+  document.addEventListener("click", (e) => {
+    const ctl = e.target.closest("svg .c"), guide = ctl && ctl.closest("[data-panel-guide]");
+    if (guide) { keepScroll = window.scrollY; navigate(`${guide.dataset.panelGuide}/${ctl.dataset.id}`); }
+  }, true);
+</script>
