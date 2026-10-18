@@ -2,7 +2,7 @@ import { hits } from "../../shared/html.js";
 import { TRACK_MAP, songHome, songMachines, noteLock } from "./helpers.js";
 
 export const UNIT_2_LESSONS = [
-{ id:"w05", week:5, unit:"Sound", title:"What makes a sound", minutes:35,
+{ id:"w05", week:5, unit:"Sound", title:"What makes a sound",
   goal:"Describe any sound by its pitch, loudness, timbre and envelope, and reshape your kick and snare into soft, round night-time drums.",
   listen:"Trentemøller, \"Miss You\". Listen to how gently each sound starts and how slowly it fades away, rather than how loud it is.",
   concepts:[
@@ -27,7 +27,7 @@ export const UNIT_2_LESSONS = [
   ],
   challenge:"Pick a sound from a track you love and describe it in four words: one each for its pitch, loudness, timbre and envelope. Try to get T1 or T2 close to it."
 },
-{ id:"w06", week:6, unit:"Sound", title:"Bright and dark", minutes:40,
+{ id:"w06", week:6, unit:"Sound", title:"Bright and dark",
   goal:"Hear harmonics, tell bright sounds from dark ones, and use the macros to make a dark and a bright version of your loop.",
   listen:"Floating Points, \"Last Bloom\". Notice which sounds feel muffled and dark and which feel airy and bright, and whether that changes as the track goes on.",
   concepts:[
@@ -52,7 +52,7 @@ export const UNIT_2_LESSONS = [
   ],
   challenge:"In B01, give just one hat its own sparkle: press [RECORD], hold that hat's trig and turn [SHAPE] up. One bright hit in a dark loop pulls the ear to it."
 },
-{ id:"w07", week:7, unit:"Sound", title:"Building a sound palette", minutes:40,
+{ id:"w07", week:7, unit:"Sound", title:"Building a sound palette",
   goal:"Build a sound from layers that each do one job, add a found sound, and save your night-time kit.",
   listen:"Burial, \"Near Dark\". Listen past the drums to the crackle and small odd sounds around them. The texture is part of the music.",
   concepts:[
@@ -81,7 +81,7 @@ export const UNIT_2_LESSONS = [
   ],
   challenge:"Listen to Burial's \"Near Dark\" again and list three sounds that are neither drums nor melody. Try to make one of them on T4 and preset lock it to another T4 step."
 },
-{ id:"w08", week:8, unit:"Sound", title:"Movement", minutes:40,
+{ id:"w08", week:8, unit:"Sound", title:"Movement",
   goal:"Make sounds move on their own with an LFO, choosing its speed, depth, shape and destination, and fade a sound in with a slow attack.",
   listen:"Floating Points, \"Silhouettes (I, II & III)\". Listen for sounds that keep slowly changing colour while the notes stay where they are.",
   concepts:[

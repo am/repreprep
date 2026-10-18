@@ -2,7 +2,7 @@ import { hits } from "../../shared/html.js";
 import { TRACK_MAP, songHome, songMachines, noteLock } from "./helpers.js";
 
 export const SONG_LESSONS = [
-{ id:"s01", song:"Kiasmos – Looped", unit:"Kiasmos", title:"Looped", minutes:35,
+{ id:"s01", song:"Kiasmos – Looped", unit:"Kiasmos", title:"Looped",
   goal:"Build a club loop around one piano-like chord figure, add the beat one layer at a time, and keep the low end light.",
   listen:"Kiasmos, \"Looped\" (from the album Kiasmos, 2014). Notice what stays in front the whole time, and how the beat builds up around it.",
   concepts:[
@@ -32,7 +32,7 @@ export const SONG_LESSONS = [
   ],
   challenge:"Listen to Looped again and notice roughly how long each new layer waits before it arrives. Play your mutes with the same patience."
 },
-{ id:"s02", song:"Kiasmos – Thrown", unit:"Kiasmos", title:"Thrown", minutes:35,
+{ id:"s02", song:"Kiasmos – Thrown", unit:"Kiasmos", title:"Thrown",
   goal:"Turn one short, plucked sound into chords by stacking it at different pitches, and build a moving groove out of harmony.",
   listen:"Kiasmos, \"Thrown\" (from the album Kiasmos, 2014, first released on the Thrown EP in 2012). Listen for the short plucked chords that drive the track, and the bell-like melody above them.",
   concepts:[
@@ -57,7 +57,7 @@ export const SONG_LESSONS = [
   ],
   challenge:"Try other chord types on T6's [SHAPE] (sus2, m7) with the same rhythm, and keep the one that sounds most like night."
 },
-{ id:"s03", song:"Kiasmos – Swayed", unit:"Kiasmos", title:"Swayed", minutes:30,
+{ id:"s03", song:"Kiasmos – Swayed", unit:"Kiasmos", title:"Swayed",
   goal:"Start a track the way Kiasmos often do, from a drum machine groove, and bring it to life with small changes on single steps.",
   listen:"Kiasmos, \"Swayed\" (from the album Kiasmos, 2014). Listen to the drums only, and to how the small sounds shift slightly from bar to bar.",
   concepts:[
@@ -83,7 +83,7 @@ export const SONG_LESSONS = [
   ],
   challenge:"Lock a different [PITCH] on every one of the eight ticks to turn a percussion sound into a tiny melody."
 },
-{ id:"s04", song:"Kiasmos – Blurred", unit:"Kiasmos", title:"Blurred", minutes:30,
+{ id:"s04", song:"Kiasmos – Blurred", unit:"Kiasmos", title:"Blurred",
   goal:"Make a snare out of a sound that isn't a drum, and write a chord progression that climbs.",
   listen:"Kiasmos, \"Blurred\" (from the Blurred EP, 2017). Listen to the hit on 2 and 4 first, then follow the chords and notice how they rise.",
   concepts:[

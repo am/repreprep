@@ -127,7 +127,6 @@ const layers = [
         setTimeout(function () { frame(n - 1); }, rand(40, 110));
       })(frames);
     }
-    // beats are scheduled from a fixed start time so they never drift
     // beats are scheduled from a fixed start time so they never drift; tap() can restart them at a new tempo.
     // The tap key's light flashes on every beat, like the TEMPO key on the Model:Cycles.
     function beats(el, bpm, onBeat) {
