@@ -1,7 +1,12 @@
 ---
 // Course text with its [KEY] marks drawn as key caps and quoted song titles linked (see keyify).
 import { keyify } from "../../course/shared/text.js";
-interface Props { I: any; text: string; hl?: string }
+interface Props {
+  I: any;
+  text: string;
+  hl?: string;
+}
 const { I, text, hl = "" } = Astro.props;
 ---
+
 <Fragment set:html={keyify(I, text, hl)} />

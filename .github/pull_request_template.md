@@ -24,8 +24,8 @@ Write what the reader would see, not the code. -->
 <!-- Delete this section if nothing visible changed. Drag images in to upload them. -->
 
 | Before | After |
-| --- | --- |
-|  |  |
+| ------ | ----- |
+|        |       |
 
 ## How
 

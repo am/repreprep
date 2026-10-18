@@ -1,8 +1,15 @@
 ---
 // The "Listen for" note under a step ("Remember" on Check steps).
 import Keys from "./Keys.astro";
-interface Props { I: any; st: any }
+interface Props {
+  I: any;
+  st: any;
+}
 const { I, st } = Astro.props;
 const check = st.k === "check";
 ---
-<p class:list={["t-note hear", { done: check }]}><span class="t-label">{check ? "Remember" : "Listen for"}</span><Keys I={I} text={st.hear} /></p>
+
+<p class:list={["t-note hear", { done: check }]}>
+  <span class="t-label">{check ? "Remember" : "Listen for"}</span>
+  <Keys I={I} text={st.hear} />
+</p>

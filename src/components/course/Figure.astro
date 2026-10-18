@@ -1,9 +1,14 @@
 ---
 // A Learn step's drawing: a named figure, or a playable step grid the browser can redraw.
 import { renderFig } from "../../course/index.js";
-interface Props { I: any; fig: any; id: string }
+interface Props {
+  I: any;
+  fig: any;
+  id: string;
+}
 const { I, fig, id } = Astro.props;
 ---
+
 <Fragment set:html={renderFig(I, fig, id)} />
 
 <script>

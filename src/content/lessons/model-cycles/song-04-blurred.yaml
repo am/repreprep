@@ -55,9 +55,9 @@ steps:
         title: Chords that climb
         bpm: 122
         rows:
-          - { n: Chord, s: keys, p: [ 57, 0, 0, 0, 60, 0, 0, 0, 62, 0, 0, 0, 64, 0, 0, 0 ], hits: "1,5,9,13", vel: 0.75 }
-          - { n: Chord, s: keys, p: [ 60, 0, 0, 0, 63, 0, 0, 0, 65, 0, 0, 0, 67, 0, 0, 0 ], hits: "1,5,9,13", vel: 0.6 }
-          - { n: Chord, s: keys, p: [ 64, 0, 0, 0, 67, 0, 0, 0, 69, 0, 0, 0, 71, 0, 0, 0 ], hits: "1,5,9,13", vel: 0.6 }
+          - { n: Chord, s: keys, p: [57, 0, 0, 0, 60, 0, 0, 0, 62, 0, 0, 0, 64, 0, 0, 0], hits: "1,5,9,13", vel: 0.75 }
+          - { n: Chord, s: keys, p: [60, 0, 0, 0, 63, 0, 0, 0, 65, 0, 0, 0, 67, 0, 0, 0], hits: "1,5,9,13", vel: 0.6 }
+          - { n: Chord, s: keys, p: [64, 0, 0, 0, 67, 0, 0, 0, 69, 0, 0, 0, 71, 0, 0, 0], hits: "1,5,9,13", vel: 0.6 }
           - { n: Kick, s: kick, hits: "1,5,9,13" }
           - { n: Knock, s: perc, hits: "5,13", vel: 0.7 }
     t: Four minor chords, each a little higher than the last (0, 3, 5 and 7 semitones above the first). An example of the idea, not the song's own chords.

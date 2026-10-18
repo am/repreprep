@@ -11,11 +11,16 @@ test("every lesson step, challenge and reference page is built", () => {
   for (const I of COURSES) {
     want.push(`/${I.slug}`, `/${I.slug}/panel`, `/${I.slug}/machines`, `/${I.slug}/shortcuts`);
     for (const id of Object.keys(I.controls)) want.push(`/${I.slug}/panel/${id}`);
-    for (const L of I.lessons) for (let i = 0; i < L.steps.length + (L.challenge ? 1 : 0); i++) want.push(stepPath(L, i));
+    for (const L of I.lessons)
+      for (let i = 0; i < L.steps.length + (L.challenge ? 1 : 0); i++) want.push(stepPath(L, i));
   }
   const missing = want.filter((p) => !pages.has(p));
   assert.deepEqual(missing, []);
-  assert.equal(pages.size, want.length, `unexpected pages: ${[...pages.keys()].filter((p) => !want.includes(p)).join(", ")}`);
+  assert.equal(
+    pages.size,
+    want.length,
+    `unexpected pages: ${[...pages.keys()].filter((p) => !want.includes(p)).join(", ")}`
+  );
 });
 
 test("every link inside the site leads to a page or file", () => {

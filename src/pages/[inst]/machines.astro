@@ -6,18 +6,65 @@ export async function getStaticPaths() {
   return (await courses()).filter((I) => I.machines).map((I) => ({ params: { inst: I.slug }, props: { I } }));
 }
 const { I } = Astro.props;
-const COMMON = [["PITCH", "-24 to +24 semitones"], ["DECAY", "0–127, length of the sound"], ["VOL+DIST", "60 is clean; above adds level and distortion"], ["PUNCH", "compression-like accent"], ["GATE", "hold notes for their LEN"], ["LFO", "one per track, 7 waves: triangle, sine, square, saw, envelope, ramp, random"]];
+const COMMON = [
+  ["PITCH", "-24 to +24 semitones"],
+  ["DECAY", "0–127, length of the sound"],
+  ["VOL+DIST", "60 is clean; above adds level and distortion"],
+  ["PUNCH", "compression-like accent"],
+  ["GATE", "hold notes for their LEN"],
+  ["LFO", "one per track, 7 waves: triangle, sine, square, saw, envelope, ramp, random"],
+];
 ---
+
 <Base title={`${I.name} machines`} inst={I} tab="machines">
-  <p class="lede t-body">The six machines and what their four machine knobs do, from the machine table and tips in Elektron’s Model:Cycles manual (OS 1.13).</p>
+  <p class="lede t-body">
+    The six machines and what their four machine knobs do, from the machine table and tips in Elektron’s Model:Cycles
+    manual (OS 1.13).
+  </p>
   <div class="bands">
-    {I.machines.map((m: any) => <Band eyebrow={m.tag} title={m.n}><p class="t-body">{m.p}</p><dl class="spec">{Object.entries(m.m).map(([k, v]) => <Fragment><dt>{k}</dt><dd>{v}</dd></Fragment>)}</dl></Band>)}
-    <Band eyebrow="All machines" title="Every machine also has"><dl class="spec">{COMMON.map(([k, v]) => <Fragment><dt>{k}</dt><dd>{v}</dd></Fragment>)}</dl></Band>
+    {I.machines.map((m: any) => (
+      <Band eyebrow={m.tag} title={m.n}>
+        <p class="t-body">{m.p}</p>
+        <dl class="spec">
+          {Object.entries(m.m).map(([k, v]) => (
+            <Fragment>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </Fragment>
+          ))}
+        </dl>
+      </Band>
+    ))}
+    <Band eyebrow="All machines" title="Every machine also has">
+      <dl class="spec">
+        {COMMON.map(([k, v]) => (
+          <Fragment>
+            <dt>{k}</dt>
+            <dd>{v}</dd>
+          </Fragment>
+        ))}
+      </dl>
+    </Band>
   </div>
 </Base>
 
 <style>
-  .spec{margin:0;display:grid;grid-template-columns:auto 1fr;gap:var(--s2) var(--s5);font-size:var(--fs-sm);color:var(--muted)}
-  .spec dt{font-family:var(--mono);font-size:var(--fs-xs);font-weight:var(--fw-bold);color:var(--fg);padding-top:2px}
-  .spec dd{margin:0}
+  .spec {
+    margin: 0;
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: var(--s2) var(--s5);
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .spec dt {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    font-weight: var(--fw-bold);
+    color: var(--fg);
+    padding-top: 2px;
+  }
+  .spec dd {
+    margin: 0;
+  }
 </style>

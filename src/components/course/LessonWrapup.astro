@@ -2,17 +2,59 @@
 // Under the player: your notes (read, then Edit to write) and finishing the lesson. The steps and the
 // challenge live in the player, so they aren't repeated here.
 import { lessonLabel } from "../../course/index.js";
-interface Props { I: any; L: any }
+interface Props {
+  I: any;
+  L: any;
+}
 const { I, L } = Astro.props;
 ---
+
 <section class="wrapup stack" aria-label="After the lesson">
   <section class="notebox" data-notebox={L.id} aria-labelledby={`nb-${L.id}`}>
-    <div class="nb-h"><h2 class="t-title t-card" id={`nb-${L.id}`}>Notes</h2><button type="button" class="btn" data-note-edit>Add a note</button></div>
-    <div class="nb-view"><p class="t-body nb-text" hidden></p><p class="t-note nb-empty">Nothing yet. Presets you liked, what was hard, ideas for next time.</p></div>
-    <div class="nb-edit" hidden><textarea aria-label={`Notes for ${lessonLabel(L).toLowerCase()}`} placeholder="Presets you liked, what was hard, ideas for next time"></textarea><div class="row"><button type="button" class="btn primary" data-note-save>Save</button><button type="button" class="btn" data-note-cancel>Cancel</button></div></div>
-    <p class="t-note nb-stamp" hidden>Saved in this browser.</p>
+    <div class="nb-h">
+      <h2 class="t-title t-card" id={`nb-${L.id}`}>
+        Notes
+      </h2>
+      <button type="button" class="btn" data-note-edit>
+        Add a note
+      </button>
+    </div>
+    <div class="nb-view">
+      <p class="t-body nb-text" hidden></p>
+      <p class="t-note nb-empty">Nothing yet. Presets you liked, what was hard, ideas for next time.</p>
+    </div>
+    <div class="nb-edit" hidden>
+      <textarea
+        aria-label={`Notes for ${lessonLabel(L).toLowerCase()}`}
+        placeholder="Presets you liked, what was hard, ideas for next time"
+      ></textarea>
+      <div class="row">
+        <button type="button" class="btn primary" data-note-save>
+          Save
+        </button>
+        <button type="button" class="btn" data-note-cancel>
+          Cancel
+        </button>
+      </div>
+    </div>
+    <p class="t-note nb-stamp" hidden>
+      Saved in this browser.
+    </p>
   </section>
-  <div class="finish"><button class="btn primary" data-finish={L.id} data-label="Complete" title={`Mark this ${L.song ? "study" : "lesson"} done and open the next one`}>Complete</button><a class="btn" href={`/${I.slug}`}>All lessons</a><span class="stamp" hidden></span></div>
+  <div class="finish">
+    <button
+      class="btn primary"
+      data-finish={L.id}
+      data-label="Complete"
+      title={`Mark this ${L.song ? "study" : "lesson"} done and open the next one`}
+    >
+      Complete
+    </button>
+    <a class="btn" href={`/${I.slug}`}>
+      All lessons
+    </a>
+    <span class="stamp" hidden></span>
+  </div>
 </section>
 
 <script>
@@ -21,60 +63,160 @@ const { I, L } = Astro.props;
   import { curLesson, goNextLesson } from "../../client/lesson.js";
 
   function showNote(s, id, saved) {
-    const box = document.querySelector(`[data-notebox="${id}"]`); if (!box) return;
-    const t = s.notes[id] || "", txt = box.querySelector(".nb-text");
-    txt.textContent = t; txt.hidden = !t; box.querySelector(".nb-empty").hidden = !!t;
-    const ed = box.querySelector("[data-note-edit]"); ed.textContent = t ? "Edit" : "Add a note";
-    if (!box.classList.contains("editing")) { box.querySelector(".nb-view").hidden = false; box.querySelector(".nb-edit").hidden = true; ed.hidden = false; }
-    const st = box.querySelector(".nb-stamp"); if (saved !== undefined) st.hidden = !saved;
+    const box = document.querySelector(`[data-notebox="${id}"]`);
+    if (!box) return;
+    const t = s.notes[id] || "",
+      txt = box.querySelector(".nb-text");
+    txt.textContent = t;
+    txt.hidden = !t;
+    box.querySelector(".nb-empty").hidden = !!t;
+    const ed = box.querySelector("[data-note-edit]");
+    ed.textContent = t ? "Edit" : "Add a note";
+    if (!box.classList.contains("editing")) {
+      box.querySelector(".nb-view").hidden = false;
+      box.querySelector(".nb-edit").hidden = true;
+      ed.hidden = false;
+    }
+    const st = box.querySelector(".nb-stamp");
+    if (saved !== undefined) st.hidden = !saved;
   }
   function noteMode(box, edit) {
     box.classList.toggle("editing", edit);
-    box.querySelector(".nb-view").hidden = edit; box.querySelector(".nb-edit").hidden = !edit; box.querySelector("[data-note-edit]").hidden = edit;
+    box.querySelector(".nb-view").hidden = edit;
+    box.querySelector(".nb-edit").hidden = !edit;
+    box.querySelector("[data-note-edit]").hidden = edit;
     box.querySelector(".nb-stamp").hidden = true;
   }
 
   onProgress(() => {
-    const c = curLesson(); if (!c) return;
-    const s = ist(c.k), done = s.done[c.id];
-    const fb = document.querySelector("[data-finish]"), stamp = document.querySelector(".finish .stamp");
-    if (fb) { fb.textContent = done ? "Completed" : fb.dataset.label; fb.classList.toggle("primary", !done); }
-    if (stamp) { stamp.hidden = !done; if (done) stamp.textContent = "Done on " + new Date(done).toLocaleDateString(); }
+    const c = curLesson();
+    if (!c) return;
+    const s = ist(c.k),
+      done = s.done[c.id];
+    const fb = document.querySelector("[data-finish]"),
+      stamp = document.querySelector(".finish .stamp");
+    if (fb) {
+      fb.textContent = done ? "Completed" : fb.dataset.label;
+      fb.classList.toggle("primary", !done);
+    }
+    if (stamp) {
+      stamp.hidden = !done;
+      if (done) stamp.textContent = "Done on " + new Date(done).toLocaleDateString();
+    }
     showNote(s, c.id);
   });
 
-  document.addEventListener("click", (e) => {
-    const fin = e.target.closest("[data-finish]"), c = fin && curLesson(); if (!c) return;
-    const s = ist(c.k);
-    if (s.done[c.id]) { delete s.done[c.id]; persist(); refresh(); return; }
-    s.done[c.id] = Date.now(); for (let i = 0; i < c.n; i++) s.steps[c.id + ":" + i] = true;
-    goNextLesson(s, c);
-  }, true);
+  document.addEventListener(
+    "click",
+    (e) => {
+      const fin = e.target.closest("[data-finish]"),
+        c = fin && curLesson();
+      if (!c) return;
+      const s = ist(c.k);
+      if (s.done[c.id]) {
+        delete s.done[c.id];
+        persist();
+        refresh();
+        return;
+      }
+      s.done[c.id] = Date.now();
+      for (let i = 0; i < c.n; i++) s.steps[c.id + ":" + i] = true;
+      goNextLesson(s, c);
+    },
+    true
+  );
 
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-note-edit],[data-note-save],[data-note-cancel]"); if (!b) return;
-    const box = b.closest("[data-notebox]"), id = box.dataset.notebox, c = curLesson(); if (!c) return;
-    const s = ist(c.k), ta = box.querySelector("textarea");
-    if (b.hasAttribute("data-note-edit")) { ta.value = s.notes[id] || ""; noteMode(box, true); ta.focus(); return; }
-    if (b.hasAttribute("data-note-save")) { const v = ta.value.trim(); if (v) s.notes[id] = v; else delete s.notes[id]; persist(); }
-    noteMode(box, false); showNote(s, id, b.hasAttribute("data-note-save")); box.querySelector("[data-note-edit]").focus();
+    const b = e.target.closest("[data-note-edit],[data-note-save],[data-note-cancel]");
+    if (!b) return;
+    const box = b.closest("[data-notebox]"),
+      id = box.dataset.notebox,
+      c = curLesson();
+    if (!c) return;
+    const s = ist(c.k),
+      ta = box.querySelector("textarea");
+    if (b.hasAttribute("data-note-edit")) {
+      ta.value = s.notes[id] || "";
+      noteMode(box, true);
+      ta.focus();
+      return;
+    }
+    if (b.hasAttribute("data-note-save")) {
+      const v = ta.value.trim();
+      if (v) s.notes[id] = v;
+      else delete s.notes[id];
+      persist();
+    }
+    noteMode(box, false);
+    showNote(s, id, b.hasAttribute("data-note-save"));
+    box.querySelector("[data-note-edit]").focus();
   });
   document.addEventListener("keydown", (e) => {
-    const ta = e.target.closest && e.target.closest("[data-notebox] textarea"); if (!ta) return;
+    const ta = e.target.closest && e.target.closest("[data-notebox] textarea");
+    if (!ta) return;
     const box = ta.closest("[data-notebox]");
-    if (e.key === "Escape") { e.preventDefault(); box.querySelector("[data-note-cancel]").click(); }
-    else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); box.querySelector("[data-note-save]").click(); }
+    if (e.key === "Escape") {
+      e.preventDefault();
+      box.querySelector("[data-note-cancel]").click();
+    } else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
+      e.preventDefault();
+      box.querySelector("[data-note-save]").click();
+    }
   });
 </script>
 
 <style>
-  .notebox{display:flex;flex-direction:column;gap:var(--s3);padding-top:var(--s5);border-top:1px solid var(--line)}
-  .nb-h{display:flex;align-items:center;justify-content:space-between;gap:var(--s3)}
-  .nb-text{max-width:72ch;white-space:pre-wrap;overflow-wrap:anywhere}
-  .nb-edit{display:flex;flex-direction:column;gap:var(--s3)}
-  .nb-edit textarea{width:100%;min-height:7.5rem;padding:var(--s3);border-radius:var(--r-m);border:1px solid var(--line);background:var(--surface-2);color:var(--fg);font:inherit;font-size:var(--fs-sm);resize:vertical}
-  .nb-edit textarea:focus{outline:2px solid var(--led);outline-offset:1px}
-  .nb-stamp{color:var(--done)}
-  .finish{display:flex;flex-wrap:wrap;gap:var(--s3);align-items:center}
-  .finish .stamp{font-family:var(--mono);font-size:var(--fs-s);color:var(--done)}
+  .notebox {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    padding-top: var(--s5);
+    border-top: 1px solid var(--line);
+  }
+  .nb-h {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s3);
+  }
+  .nb-text {
+    max-width: 72ch;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .nb-edit {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+  .nb-edit textarea {
+    width: 100%;
+    min-height: 7.5rem;
+    padding: var(--s3);
+    border-radius: var(--r-m);
+    border: 1px solid var(--line);
+    background: var(--surface-2);
+    color: var(--fg);
+    font: inherit;
+    font-size: var(--fs-sm);
+    resize: vertical;
+  }
+  .nb-edit textarea:focus {
+    outline: 2px solid var(--led);
+    outline-offset: 1px;
+  }
+  .nb-stamp {
+    color: var(--done);
+  }
+  .finish {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--s3);
+    align-items: center;
+  }
+  .finish .stamp {
+    font-family: var(--mono);
+    font-size: var(--fs-s);
+    color: var(--done);
+  }
 </style>

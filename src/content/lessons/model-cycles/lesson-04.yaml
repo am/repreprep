@@ -7,7 +7,7 @@ listen: Nicolas Jaar, "Mi Mujer". Listen for what changes every 4 and 8 bars.
 concepts:
   - h: Phrases of 4 and 8 bars
     p:
-      - "Music talks in phrases. A common shape is A B A C, then A B A D: the loop, a small change, the loop, a bigger change. Bar 8 closes the phrase with a fill or an \"empty\", where something drops out. Listeners feel it coming even if they can't name it."
+      - 'Music talks in phrases. A common shape is A B A C, then A B A D: the loop, a small change, the loop, a bigger change. Bar 8 closes the phrase with a fill or an "empty", where something drops out. Listeners feel it coming even if they can''t name it.'
   - h: Variation without effort
     p:
       - "Trig conditions decide when a step plays: 1:2 plays the first of every two passes, 2:2 the second, 1:4 the first of every four, 50% is a coin toss, FILL plays only while you hold [PAGE]. A pass is one time round the pattern."

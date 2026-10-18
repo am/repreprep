@@ -6,64 +6,98 @@ import SiteHeader from "../components/site/SiteHeader.astro";
 import SectionTabs from "../components/site/SectionTabs.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
 
-interface Props { title?: string; description?: string; inst?: any; tab?: string; home?: boolean }
-const { title, description = "Hands-on lessons that teach music production on your own instruments, one short practice at a time.", inst, tab, home } = Astro.props;
+interface Props {
+  title?: string;
+  description?: string;
+  inst?: any;
+  tab?: string;
+  home?: boolean;
+}
+const {
+  title,
+  description = "Hands-on lessons that teach music production on your own instruments, one short practice at a time.",
+  inst,
+  tab,
+  home,
+} = Astro.props;
 const full = title ? `${title} · Rep Rep Rep` : "Rep Rep Rep";
 // steps per lesson, so the browser can count progress without loading the whole course
-const sizes = inst?.ready ? JSON.stringify(Object.fromEntries(inst.lessons.map((l: any) => [l.id, l.steps.length]))) : undefined;
+const sizes = inst?.ready
+  ? JSON.stringify(Object.fromEntries(inst.lessons.map((l: any) => [l.id, l.steps.length])))
+  : undefined;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
+
 <!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-  <title>{full}</title>
-  <meta name="description" content={description}>
-  <link rel="canonical" href={canonical}>
-  <meta property="og:title" content={full}>
-  <meta property="og:description" content={description}>
-  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
-  <Font cssVariable="--font-manrope" />
-  <Font cssVariable="--font-rasa" />
-  <Font cssVariable="--font-plex-mono" />
-  <script is:inline>
-    /* apply the saved layout before the first paint: full-window player, step panel width */
-    window.__rrrLayout = function () {
-      try {
-        var s = JSON.parse(localStorage.getItem("repreprep-progress-v1") || "null") || {};
-        var r = document.documentElement;
-        r.classList.toggle("focus", !!s.focus && !!document.getElementById("player"));
-        if (s.stepW) r.style.setProperty("--sw", s.stepW + "px"); else r.style.removeProperty("--sw");
-      } catch (e) {}
-    };
-    document.addEventListener("astro:after-swap", window.__rrrLayout);
-    /* theme: auto follows the system, light and dark are saved choices; applied before the first paint
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <title>{full}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={full} />
+    <meta property="og:description" content={description} />
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <Font cssVariable="--font-manrope" />
+    <Font cssVariable="--font-rasa" />
+    <Font cssVariable="--font-plex-mono" />
+    <script is:inline>
+      /* apply the saved layout before the first paint: full-window player, step panel width */
+      window.__rrrLayout = function () {
+        try {
+          var s = JSON.parse(localStorage.getItem("repreprep-progress-v1") || "null") || {};
+          var r = document.documentElement;
+          r.classList.toggle("focus", !!s.focus && !!document.getElementById("player"));
+          if (s.stepW) r.style.setProperty("--sw", s.stepW + "px");
+          else r.style.removeProperty("--sw");
+        } catch (e) {}
+      };
+      document.addEventListener("astro:after-swap", window.__rrrLayout);
+      /* theme: auto follows the system, light and dark are saved choices; applied before the first paint
        (ThemeSwitch saves a new choice and calls __rrrTheme) */
-    (function () {
-      function get() { try { return localStorage.getItem("rrr-theme") || "auto"; } catch (e) { return "auto"; } }
-      function apply() {
-        var t = get(), r = document.documentElement;
-        if (t === "light" || t === "dark") r.setAttribute("data-theme", t); else r.removeAttribute("data-theme");
-        Array.prototype.forEach.call(document.querySelectorAll("[data-theme-set]"), function (b) { b.setAttribute("aria-checked", String(b.getAttribute("data-theme-set") === t)); });
-      }
-      window.__rrrTheme = apply;
-      apply();
-      document.addEventListener("DOMContentLoaded", apply);
-      document.addEventListener("astro:after-swap", apply);
-      matchMedia("(prefers-color-scheme: light)").addEventListener("change", function () { if (get() === "auto") window.dispatchEvent(new Event("rrr-theme")); });
-    })();
-  </script>
-  <ClientRouter fallback="swap" />
-</head>
-<body data-inst={inst?.key} data-sizes={sizes}>
-  <div class="wrap">
-    <SiteHeader inst={inst} home={home} />
-    {inst?.ready && <SectionTabs inst={inst} tab={tab} />}
-    <main id="view"><slot /></main>
-  </div>
-  <SiteFooter />
-  <script is:inline>window.__rrrLayout();</script>
-  <script>import "../client/site.js";</script>
-</body>
+      (function () {
+        function get() {
+          try {
+            return localStorage.getItem("rrr-theme") || "auto";
+          } catch (e) {
+            return "auto";
+          }
+        }
+        function apply() {
+          var t = get(),
+            r = document.documentElement;
+          if (t === "light" || t === "dark") r.setAttribute("data-theme", t);
+          else r.removeAttribute("data-theme");
+          Array.prototype.forEach.call(document.querySelectorAll("[data-theme-set]"), function (b) {
+            b.setAttribute("aria-checked", String(b.getAttribute("data-theme-set") === t));
+          });
+        }
+        window.__rrrTheme = apply;
+        apply();
+        document.addEventListener("DOMContentLoaded", apply);
+        document.addEventListener("astro:after-swap", apply);
+        matchMedia("(prefers-color-scheme: light)").addEventListener("change", function () {
+          if (get() === "auto") window.dispatchEvent(new Event("rrr-theme"));
+        });
+      })();
+    </script>
+    <ClientRouter fallback="swap" />
+  </head>
+  <body data-inst={inst?.key} data-sizes={sizes}>
+    <div class="wrap">
+      <SiteHeader inst={inst} home={home} />
+      {inst?.ready && <SectionTabs inst={inst} tab={tab} />}
+      <main id="view">
+        <slot />
+      </main>
+    </div>
+    <SiteFooter />
+    <script is:inline>
+      window.__rrrLayout();
+    </script>
+    <script>
+      import "../client/site.js";
+    </script>
+  </body>
 </html>

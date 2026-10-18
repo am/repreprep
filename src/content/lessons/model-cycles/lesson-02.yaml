@@ -25,7 +25,7 @@ steps:
           - { n: Kick, s: kick, hits: "1,9,11" }
           - { n: Snare, s: snare, hits: "5,13" }
           - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.6 }
-    t: "Here's the spine of most downtempo and hip hop: kick on the 1 and around beat 3, snare on 2 and 4, hats on the \"&\"s. Play it, then click squares to move the second kick and hear how the feel changes."
+    t: 'Here''s the spine of most downtempo and hip hop: kick on the 1 and around beat 3, snare on 2 and 4, hats on the "&"s. Play it, then click squares to move the second kick and hear how the feel changes.'
     hear: Moving one kick by a single step changes the whole bounce.
   - k: learn
     fig:

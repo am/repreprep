@@ -39,21 +39,36 @@ steps:
             rows:
               - { n: Kick, s: kick, hits: "1,9,11" }
               - { n: Snare, s: snare, hits: "5,13" }
-              - { n: Hat, s: hat, hits: "1,2:0.3,3:0.4,4:0.5,5:0.6,6:0.7,7:0.8,8:0.9,9:0.9,10:0.8,11:0.7,12:0.6,13:0.5,14:0.4,15:0.3,16", vel: 0.2 }
+              - {
+                  n: Hat,
+                  s: hat,
+                  hits: "1,2:0.3,3:0.4,4:0.5,5:0.6,6:0.7,7:0.8,8:0.9,9:0.9,10:0.8,11:0.7,12:0.6,13:0.5,14:0.4,15:0.3,16",
+                  vel: 0.2,
+                }
           - name: Square
             bpm: 90
             note: Loud for half a bar, quiet for the other half.
             rows:
               - { n: Kick, s: kick, hits: "1,9,11" }
               - { n: Snare, s: snare, hits: "5,13" }
-              - { n: Hat, s: hat, hits: "1,2,3,4,5,6,7,8,9:0.25,10:0.25,11:0.25,12:0.25,13:0.25,14:0.25,15:0.25,16:0.25", vel: 0.8 }
+              - {
+                  n: Hat,
+                  s: hat,
+                  hits: "1,2,3,4,5,6,7,8,9:0.25,10:0.25,11:0.25,12:0.25,13:0.25,14:0.25,15:0.25,16:0.25",
+                  vel: 0.8,
+                }
           - name: Random
             bpm: 90
             note: A new value on every step.
             rows:
               - { n: Kick, s: kick, hits: "1,9,11" }
               - { n: Snare, s: snare, hits: "5,13" }
-              - { n: Hat, s: hat, hits: "1,2:0.3,3:0.8,4:0.4,5:0.6,6:0.9,7:0.3,8,9:0.7,10:0.4,11:0.8,12:0.3,13:0.6,14,15:0.9,16:0.4", vel: 0.5 }
+              - {
+                  n: Hat,
+                  s: hat,
+                  hits: "1,2:0.3,3:0.8,4:0.4,5:0.6,6:0.9,7:0.3,8,9:0.7,10:0.4,11:0.8,12:0.3,13:0.6,14,15:0.9,16:0.4",
+                  vel: 0.5,
+                }
     t: Here an LFO moves the hats' volume, shown as the height of each hit. The same 16 hats, four kinds of movement. Play each one.
     hear: The triangle breathes once a bar. Random sounds like an unsteady hand.
   - k: learn

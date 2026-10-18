@@ -4,7 +4,8 @@
 // tests/server/signin.test.mjs) in Cloudflare's local runtime.
 import { defineConfig, devices } from "@playwright/test";
 
-const port = 4329, signedInPort = 8793;
+const port = 4329,
+  signedInPort = 8793;
 export default defineConfig({
   testDir: "tests/e2e",
   fullyParallel: true,
@@ -15,10 +16,21 @@ export default defineConfig({
   projects: [
     { name: "desktop", use: { ...devices["Desktop Chrome"] }, grepInvert: /@phone/, testIgnore: /account\.spec/ },
     { name: "phone", use: { ...devices["Pixel 7"] }, grep: /@phone/, testIgnore: /account\.spec/ },
-    { name: "signed-in", use: { ...devices["Desktop Chrome"], baseURL: `http://localhost:${signedInPort}` }, testMatch: /account\.spec/ },
+    {
+      name: "signed-in",
+      use: { ...devices["Desktop Chrome"], baseURL: `http://localhost:${signedInPort}` },
+      testMatch: /account\.spec/,
+    },
   ],
-  webServer: process.env.BASE_URL ? undefined : [
-    { command: `node tests/serve.mjs ${port}`, port, reuseExistingServer: !process.env.CI },
-    { command: `node tests/server/serve.mjs dist-signin ${signedInPort}`, url: `http://localhost:${signedInPort}/`, reuseExistingServer: !process.env.CI, timeout: 90000 },
-  ],
+  webServer: process.env.BASE_URL
+    ? undefined
+    : [
+        { command: `node tests/serve.mjs ${port}`, port, reuseExistingServer: !process.env.CI },
+        {
+          command: `node tests/server/serve.mjs dist-signin ${signedInPort}`,
+          url: `http://localhost:${signedInPort}/`,
+          reuseExistingServer: !process.env.CI,
+          timeout: 90000,
+        },
+      ],
 });

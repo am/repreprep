@@ -8,7 +8,7 @@ concepts:
   - h: The beat, the bar and the grid
     p:
       - Almost all the music you love sits on a steady pulse, the beat. Tempo is how many beats come per minute (BPM). Beats are grouped in fours into bars (4/4 time), and the first beat of each bar, the downbeat, feels strongest.
-      - "Each beat splits into four sixteenths, counted \"1 e & a, 2 e & a…\". A bar has 16 of them, and the Model:Cycles has 16 trig keys: one key per sixteenth. That's why keys 1, 5, 9 and 13 have underlined numbers on the unit: they are the four beats."
+      - 'Each beat splits into four sixteenths, counted "1 e & a, 2 e & a…". A bar has 16 of them, and the Model:Cycles has 16 trig keys: one key per sixteenth. That''s why keys 1, 5, 9 and 13 have underlined numbers on the unit: they are the four beats.'
   - h: Tempo shapes the feel
     p:
       - The same pattern feels heavy at 70 BPM and urgent at 130. Dub sits around 60–80, downtempo and trip hop around 80–105, house around 120–128, psytrance around 140. Your track for this course lives at 90 BPM.
@@ -62,7 +62,7 @@ steps:
   - k: play
     t: Press [RECORD] to leave grid recording. While it plays, tap [T3] on every "&", halfway between kicks. Then try tapping on every "e" and "a".
     hl: p:record p:t3
-    hear: "The \"&\"s are easy to find. The e's and a's are quick and slippery: that's where groove will live."
+    hear: 'The "&"s are easy to find. The e''s and a''s are quick and slippery: that''s where groove will live.'
   - k: play
     t: "Feel tempo change: set [TEMPO] to 70, then to 120, listening to the same kick. Set it back to 90. Turn the metronome off (hold [FUNC] + [GATE]), then save: hold [FUNC] and long-press [SETTINGS]."
     hl: p:tempo t:level h:func p:gate p:settings
@@ -74,6 +74,6 @@ steps:
       - 1, 2, 3, 4
       - 1, 3, 5, 7
       - 4, 8, 12, 16
-    a: "Beats: 1, 5, 9, 13 (the underlined ones). The \"&\"s: 3, 7, 11, 15. All the even keys are e's and a's."
+    a: 'Beats: 1, 5, 9, 13 (the underlined ones). The "&"s: 3, 7, 11, 15. All the even keys are e''s and a''s.'
     hear: Every idea in this course lands on this 16-step grid. Count everything in "1 e & a".
 challenge: Put on three songs you love and tap the beat. Guess their tempo using the TEMPO menu's tap function (hold [FUNC] and tap [TEMPO]). Write the numbers in your notes.

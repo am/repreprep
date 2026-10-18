@@ -5,10 +5,23 @@ import { COURSES } from "../../src/course/files.js";
 const [I] = COURSES;
 const [L1, L2] = I.lessons;
 const ticks = (L, n) => Object.fromEntries([...Array(n).keys()].map((i) => [`${L.id}:${i}`, true]));
-const state = (cycles, extra = {}) => ({ updatedAt: 1, introSteps: 1, inst: { cycles: { lesson: null, steps: {}, done: {}, notes: {}, active: {}, ...cycles } }, ...extra });
+const state = (cycles, extra = {}) => ({
+  updatedAt: 1,
+  introSteps: 1,
+  inst: { cycles: { lesson: null, steps: {}, done: {}, notes: {}, active: {}, ...cycles } },
+  ...extra,
+});
 
 test("course map shows progress dots and Continue picks up where you left off", async ({ page }) => {
-  await setProgress(page, state({ lesson: L2.id, steps: { ...ticks(L1, L1.steps.length), ...ticks(L2, 3) }, done: { [L1.id]: 1 }, active: { [L2.id]: 3 } }));
+  await setProgress(
+    page,
+    state({
+      lesson: L2.id,
+      steps: { ...ticks(L1, L1.steps.length), ...ticks(L2, 3) },
+      done: { [L1.id]: 1 },
+      active: { [L2.id]: 3 },
+    })
+  );
   await page.goto(`/${I.slug}`);
   await expect(page.locator(`.umap [data-prog="${L1.id}"]`)).toHaveClass("s full");
   await expect(page.locator(`.umap [data-prog="${L2.id}"]`)).toHaveClass("s part");
@@ -28,7 +41,18 @@ test("with no progress the course home offers lesson 1", async ({ page }) => {
 });
 
 test("progress saved before lessons had an intro step moves every step by one", async ({ page }) => {
-  await setProgress(page, { updatedAt: 1, inst: { cycles: { lesson: L1.id, steps: { [`${L1.id}:0`]: true, [`${L1.id}:1`]: true }, done: {}, notes: { [L1.id]: "old" }, active: { [L1.id]: 2 } } } });
+  await setProgress(page, {
+    updatedAt: 1,
+    inst: {
+      cycles: {
+        lesson: L1.id,
+        steps: { [`${L1.id}:0`]: true, [`${L1.id}:1`]: true },
+        done: {},
+        notes: { [L1.id]: "old" },
+        active: { [L1.id]: 2 },
+      },
+    },
+  });
   await page.goto(`/${I.slug}`);
   await expect(page.locator("[data-continue]")).toHaveAttribute("href", `${L1.path}/3`);
   await page.goto(`${L1.path}/3`);
@@ -56,14 +80,25 @@ test("progress page: download, load and delete", async ({ page }, info) => {
 
   /* an old progress.json (no intro steps, old fields) loads and is moved by one step */
   const file = info.outputPath("old-progress.json");
-  await (await import("node:fs/promises")).writeFile(file, JSON.stringify({ instrument: "cycles", tab: "x", inst: { cycles: { steps: { [`${L2.id}:0`]: true }, done: {}, notes: {}, active: {} } } }));
+  await (
+    await import("node:fs/promises")
+  ).writeFile(
+    file,
+    JSON.stringify({
+      instrument: "cycles",
+      tab: "x",
+      inst: { cycles: { steps: { [`${L2.id}:0`]: true }, done: {}, notes: {}, active: {} } },
+    })
+  );
   await page.locator("[data-import]").setInputFiles(file);
   await expect(page.locator("[data-import-msg]")).toHaveText("Loaded. 2 ticked steps.");
   let p = await progress(page);
   expect(p.inst.cycles.steps).toEqual({ [`${L2.id}:0`]: true, [`${L2.id}:1`]: true });
   expect(p.instrument).toBeUndefined();
 
-  await page.locator("[data-import]").setInputFiles({ name: "x.json", mimeType: "application/json", buffer: Buffer.from("[1,2]") });
+  await page
+    .locator("[data-import]")
+    .setInputFiles({ name: "x.json", mimeType: "application/json", buffer: Buffer.from("[1,2]") });
   await expect(page.locator("[data-import-msg]")).toHaveText("That file isn't a Rep Rep Rep progress file.");
 
   page.once("dialog", (d) => d.dismiss());

@@ -6,7 +6,11 @@ import { lessonSchema } from "./course/schema.js";
 
 export const collections = {
   lessons: defineCollection({
-    loader: glob({ pattern: "*/*.yaml", base: "./src/content/lessons", generateId: ({ entry, data }) => `${entry.split("/")[0]}/${data.id}` }),
+    loader: glob({
+      pattern: "*/*.yaml",
+      base: "./src/content/lessons",
+      generateId: ({ entry, data }) => `${entry.split("/")[0]}/${data.id}`,
+    }),
     schema: lessonSchema,
   }),
 };

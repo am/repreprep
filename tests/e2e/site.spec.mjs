@@ -16,7 +16,9 @@ test("home page leads to the course; tapping its logo stays on it", async ({ pag
 
 test("the header logo gets its colors and links home", async ({ page }) => {
   await page.goto(`/${I.slug}/machines`);
-  const colors = await page.locator(".top .logo span").evaluateAll((s) => s.map((x) => x.style.getPropertyValue("--c")));
+  const colors = await page
+    .locator(".top .logo span")
+    .evaluateAll((s) => s.map((x) => x.style.getPropertyValue("--c")));
   expect(colors.every((c) => /^#[0-9a-f]{6}$/.test(c))).toBe(true);
   await page.locator(".top .logo").click();
   await expect(page).toHaveURL("/");
@@ -46,7 +48,12 @@ test("theme switch: light and dark are remembered, auto follows the system", asy
 });
 
 test("section tabs mark the current page", async ({ page }) => {
-  for (const [path, label] of [["", "Lessons"], ["/panel", "Panel guide"], ["/machines", "Machines"], ["/shortcuts", "Shortcuts"]]) {
+  for (const [path, label] of [
+    ["", "Lessons"],
+    ["/panel", "Panel guide"],
+    ["/machines", "Machines"],
+    ["/shortcuts", "Shortcuts"],
+  ]) {
     await page.goto(`/${I.slug}${path}`);
     await expect(page.locator('.tabs a[aria-current="page"]')).toHaveText(label);
   }
@@ -58,7 +65,7 @@ test("panel guide: clicking a control opens its page", async ({ page }) => {
   await page.locator('[data-panel-guide] svg .c[data-id="tempo"]').click();
   await expect(page).toHaveURL(`/${I.slug}/panel/tempo`);
   await expect(page.locator("#info h3")).toHaveText(I.controls.tempo.name);
-  await expect(page.locator('[data-panel-guide] svg .c.sel')).toHaveAttribute("data-id", "tempo");
+  await expect(page.locator("[data-panel-guide] svg .c.sel")).toHaveAttribute("data-id", "tempo");
 });
 
 test("machines and shortcuts list the reference data", async ({ page }) => {
@@ -86,7 +93,8 @@ test("unknown addresses get the not-found page", async ({ page }) => {
 
 test("phone: the knob opens and closes the header menu @phone", async ({ page }) => {
   await page.goto(`/${I.slug}`);
-  const top = page.locator(".top"), knob = page.locator("[data-menu]");
+  const top = page.locator(".top"),
+    knob = page.locator("[data-menu]");
   await expect(page.locator(".hmenu")).toBeHidden();
   await knob.click();
   await expect(top).toHaveClass(/open/);
@@ -100,9 +108,21 @@ test("phone: the knob opens and closes the header menu @phone", async ({ page })
 });
 
 test("phone: no page scrolls sideways @phone", async ({ page }) => {
-  for (const path of ["/", `/${I.slug}`, `/${I.slug}/panel`, `/${I.slug}/machines`, `/${I.slug}/shortcuts`, "/account", "/privacy", I.lessons[0].path, `${I.lessons[0].path}/2`]) {
+  for (const path of [
+    "/",
+    `/${I.slug}`,
+    `/${I.slug}/panel`,
+    `/${I.slug}/machines`,
+    `/${I.slug}/shortcuts`,
+    "/account",
+    "/privacy",
+    I.lessons[0].path,
+    `${I.lessons[0].path}/2`,
+  ]) {
     await page.goto(path);
-    expect(await page.evaluate(() => document.documentElement.scrollWidth), path).toBeLessThanOrEqual(page.viewportSize().width);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth), path).toBeLessThanOrEqual(
+      page.viewportSize().width
+    );
   }
 });
 

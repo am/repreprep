@@ -1,19 +1,28 @@
 ---
 // The footer on every page. The browser script writes where your progress is saved into #sync.
 ---
+
 <footer class="foot">
   <div class="foot-in">
     <section>
       <div class="foot-brand">Rep Rep Rep</div>
       <p>Learn music by playing it, one idea at a time, on the gear you own.</p>
-      <p class="foot-note"><span id="sync">Progress saved in this browser.</span></p>
+      <p class="foot-note">
+        <span id="sync">Progress saved in this browser.</span>
+      </p>
     </section>
     <section>
       <h2 class="t-label">About</h2>
       <ul>
-        <li><a href="/privacy">Privacy</a></li>
-        <li><a href="https://github.com/am/repreprep">Source code on GitHub</a></li>
-        <li><a href="https://github.com/am/repreprep/blob/main/CONTRIBUTING.md">Contribute a lesson or fix</a></li>
+        <li>
+          <a href="/privacy">Privacy</a>
+        </li>
+        <li>
+          <a href="https://github.com/am/repreprep">Source code on GitHub</a>
+        </li>
+        <li>
+          <a href="https://github.com/am/repreprep/blob/main/CONTRIBUTING.md">Contribute a lesson or fix</a>
+        </li>
         <li>Code MIT, lessons CC BY-NC-SA 4.0</li>
       </ul>
     </section>
@@ -22,13 +31,54 @@
 
 <style>
   /* footer: its own band at the bottom, one column per topic */
-  .foot{margin-top:var(--s8);border-top:1px solid var(--line);background:var(--surface);font-size:var(--fs-sm);color:var(--muted)}
-  .foot-in{max-width:86.25rem;margin:0 auto;padding:var(--s7) var(--s5) var(--s8);display:flex;flex-wrap:wrap;justify-content:flex-start;gap:var(--s6) var(--s9);align-items:start}
-  .foot-in section:first-child{max-width:36ch}
-  .foot .foot-note{margin-top:var(--s3);font-size:var(--fs-s);color:var(--faint)}
-  .foot p{margin:0}
-  .foot ul{list-style:none;margin:0;padding:0;display:grid;gap:var(--s1)}
-  .foot a{color:var(--fg);text-decoration-color:var(--faint);text-underline-offset:.1875rem}
-  .foot a:hover{text-decoration-color:currentColor}
-  .foot-brand{margin-bottom:var(--s2);font-family:var(--display);font-weight:var(--fw-black);font-size:var(--fs-lg);color:var(--fg)}
+  .foot {
+    margin-top: var(--s8);
+    border-top: 1px solid var(--line);
+    background: var(--surface);
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .foot-in {
+    max-width: 86.25rem;
+    margin: 0 auto;
+    padding: var(--s7) var(--s5) var(--s8);
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    gap: var(--s6) var(--s9);
+    align-items: start;
+  }
+  .foot-in section:first-child {
+    max-width: 36ch;
+  }
+  .foot .foot-note {
+    margin-top: var(--s3);
+    font-size: var(--fs-s);
+    color: var(--faint);
+  }
+  .foot p {
+    margin: 0;
+  }
+  .foot ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: var(--s1);
+  }
+  .foot a {
+    color: var(--fg);
+    text-decoration-color: var(--faint);
+    text-underline-offset: 0.1875rem;
+  }
+  .foot a:hover {
+    text-decoration-color: currentColor;
+  }
+  .foot-brand {
+    margin-bottom: var(--s2);
+    font-family: var(--display);
+    font-weight: var(--fw-black);
+    font-size: var(--fs-lg);
+    color: var(--fg);
+  }
 </style>

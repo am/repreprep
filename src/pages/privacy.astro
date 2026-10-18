@@ -3,29 +3,44 @@ import Base from "../layouts/Base.astro";
 import Card from "../components/site/Card.astro";
 import { SIGN_IN } from "astro:env/client";
 ---
+
 <Base title="Privacy" description="What Rep Rep Rep keeps about you, and how to see or delete it.">
   <div class="page" id="privacy">
     <h2>Privacy</h2>
     <p class="msg">Last updated 18 October 2026.</p>
-    <p>Rep Rep Rep is a free, non-commercial course run by one person. There are no ads, no analytics and no tracking. This page says what the site keeps and how you can see or delete it.</p>
+    <p>
+      Rep Rep Rep is a free, non-commercial course run by one person. There are no ads, no analytics and no tracking.
+      This page says what the site keeps and how you can see or delete it.
+    </p>
 
     <h3>{SIGN_IN ? "If you don't sign in" : "Your progress"}</h3>
-    <p>Your ticks, finished lessons, notes and layout are saved in your own browser (local storage). They never leave your device, and clearing your browser data removes them.</p>
+    <p>
+      Your ticks, finished lessons, notes and layout are saved in your own browser (local storage). They never leave
+      your device, and clearing your browser data removes them.
+    </p>
 
     {SIGN_IN ? (
       <Fragment>
         <h3>If you sign in with Google or GitHub</h3>
         <p>The site keeps:</p>
         <ul>
-          <li>your name and email address, as Google or GitHub share them (the email only if they say it's verified),</li>
+          <li>
+            your name and email address, as Google or GitHub share them (the email only if they say it's verified),
+          </li>
           <li>your Google or GitHub account number, so it can recognise you next time,</li>
           <li>your progress (the same ticks, notes and layout as above), so it follows you to other devices,</li>
           <li>a sign-in session that lasts 30 days. Only a scrambled form (a hash) of it is stored.</li>
         </ul>
-        <p>No password is ever seen or stored, and the site keeps nothing else from your Google or GitHub account. Your data is used only to run the course for you. It is never sold, shared or used for advertising.</p>
+        <p>
+          No password is ever seen or stored, and the site keeps nothing else from your Google or GitHub account. Your
+          data is used only to run the course for you. It is never sold, shared or used for advertising.
+        </p>
 
         <h3>Cookies</h3>
-        <p>Only when you sign in: one cookie that keeps you signed in, and three short-lived cookies (ten minutes) that protect the sign-in itself. There are no tracking or advertising cookies, so there is no cookie banner.</p>
+        <p>
+          Only when you sign in: one cookie that keeps you signed in, and three short-lived cookies (ten minutes) that
+          protect the sign-in itself. There are no tracking or advertising cookies, so there is no cookie banner.
+        </p>
       </Fragment>
     ) : (
       <Fragment>
@@ -36,26 +51,62 @@ import { SIGN_IN } from "astro:env/client";
 
     <h3>Where it's kept, and who else is involved</h3>
     <ul>
-      <li><b>Cloudflare</b> hosts the site and the database (D1). Like any web host, it handles your IP address to serve pages and keeps short-lived request logs for running and debugging the site.</li>
-      {SIGN_IN && <li><b>Google</b> or <b>GitHub</b>, only when you choose to sign in with them. Their own privacy policies apply on their sign-in pages.</li>}
+      <li>
+        <b>Cloudflare</b> hosts the site and the database (D1). Like any web host, it handles your IP address to serve
+        pages and keeps short-lived request logs for running and debugging the site.
+      </li>
+      {SIGN_IN && (
+        <li>
+          <b>Google</b> or <b>GitHub</b>, only when you choose to sign in with them. Their own privacy policies apply on
+          their sign-in pages.
+        </li>
+      )}
     </ul>
 
     <h3>See, download or delete your data</h3>
-    {SIGN_IN
-      ? <p>On <a href="/account">your account page</a> you can download everything the site keeps about you as one file, and delete your account. Deleting removes your account, your saved progress and your sessions straight away. Progress saved in your browser stays there until you clear it.</p>
-      : <p>Your progress lives only in your browser. <a href="/account">Download a copy</a> any time, and clear your browser data to delete it. For a message you sent, use the form below.</p>}
+    {SIGN_IN ? (
+      <p>
+        On <a href="/account">your account page</a> you can download everything the site keeps about you as one file,
+        and delete your account. Deleting removes your account, your saved progress and your sessions straight away.
+        Progress saved in your browser stays there until you clear it.
+      </p>
+    ) : (
+      <p>
+        Your progress lives only in your browser. <a href="/account">Download a copy</a> any time, and clear your
+        browser data to delete it. For a message you sent, use the form below.
+      </p>
+    )}
 
     <h3>Messages</h3>
-    <p>Messages sent with the form below are emailed to the person who runs the site (through Cloudflare) and a copy is kept for up to a year, then deleted.{SIGN_IN && " If you're signed in, a message is linked to your account and included in your download. When you delete your account, the link is removed but the message itself stays until it's dealt with."}</p>
+    <p>
+      Messages sent with the form below are emailed to the person who runs the site (through Cloudflare) and a copy is
+      kept for up to a year, then deleted.
+      {SIGN_IN &&
+        " If you're signed in, a message is linked to your account and included in your download. When you delete your account, the link is removed but the message itself stays until it's dealt with."}
+    </p>
 
     <Card title="Contact" id="contact">
-      <p class="t-body">Questions, requests about your data, or anything else. Leave an email address if you'd like an answer.</p>
+      <p class="t-body">
+        Questions, requests about your data, or anything else. Leave an email address if you'd like an answer.
+      </p>
       <p class="msg" data-contact-msg hidden></p>
       <form method="post" action="/api/contact" class="contact" data-astro-reload>
-        <label>Message<textarea name="message" required maxlength="4000" rows="5"></textarea></label>
-        <label>Email for a reply (optional)<input type="email" name="reply_to" maxlength="200" autocomplete="email"></label>
-        <label class="hp" aria-hidden="true">Leave this empty<input name="website" tabindex="-1" autocomplete="off"></label>
-        <div class="row"><button class="btn primary" type="submit">Send</button></div>
+        <label>
+          Message<textarea name="message" required maxlength="4000" rows="5"></textarea>
+        </label>
+        <label>
+          Email for a reply (optional)
+          <input type="email" name="reply_to" maxlength="200" autocomplete="email" />
+        </label>
+        <label class="hp" aria-hidden="true">
+          Leave this empty
+          <input name="website" tabindex="-1" autocomplete="off" />
+        </label>
+        <div class="row">
+          <button class="btn primary" type="submit">
+            Send
+          </button>
+        </div>
       </form>
     </Card>
   </div>
@@ -70,18 +121,51 @@ import { SIGN_IN } from "astro:env/client";
     busy: ["The form is getting a lot of messages right now. Please try again tomorrow.", "bad"],
   };
   document.addEventListener("astro:page-load", () => {
-    const el = document.querySelector("[data-contact-msg]"); if (!el) return;
+    const el = document.querySelector("[data-contact-msg]");
+    if (!el) return;
     const q = new URLSearchParams(location.search);
     const m = CONTACT_MSG[q.get("sent") ? "sent" : q.get("error")];
     el.hidden = !m;
-    if (m) { el.textContent = m[0]; el.className = "msg " + m[1]; }
+    if (m) {
+      el.textContent = m[0];
+      el.className = "msg " + m[1];
+    }
   });
 </script>
 
 <style>
-  .contact{display:flex;flex-direction:column;gap:var(--s4)}
-  .contact label{display:block;font-size:var(--fs-sm);color:var(--muted)}
-  .contact textarea,.contact input{display:block;width:100%;margin-top:var(--s2);padding:var(--s3) var(--s3);border-radius:var(--r-m);border:1px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;font-size:var(--fs-sm)}
-  .contact textarea{min-height:7.5rem;resize:vertical}
-  .contact .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+  .contact {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+  }
+  .contact label {
+    display: block;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .contact textarea,
+  .contact input {
+    display: block;
+    width: 100%;
+    margin-top: var(--s2);
+    padding: var(--s3) var(--s3);
+    border-radius: var(--r-m);
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    font-size: var(--fs-sm);
+  }
+  .contact textarea {
+    min-height: 7.5rem;
+    resize: vertical;
+  }
+  .contact .hp {
+    position: absolute;
+    left: -10000px;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+  }
 </style>
