@@ -264,6 +264,7 @@ body.resizing{cursor:col-resize;user-select:none}
 @media (max-width:900px){
   .player{height:auto;min-height:max(480px,var(--ph))}
   .pbody{grid-template-columns:minmax(0,1fr);flex:1}
+  .pstage{padding-block:var(--s5) var(--s6)}
   .pstage > svg{height:auto}
   /* the step scrolls inside its card, at most one screen tall, so its text is clipped by the card and never shows under the buttons
      (page-level sticky can't be covered reliably: iPhone Safari draws the page on under its floating toolbar) */
