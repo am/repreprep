@@ -5,6 +5,7 @@ import { spawn } from "node:child_process";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { parse } from "devalue";
 
 /* own: run wrangler in its own process group, so stop() also ends the runtime it starts; serve.mjs leaves it
    in Playwright's group instead, which Playwright ends as a whole */
@@ -49,5 +50,11 @@ export function client(origin) {
     }
     return r;
   }
-  return { req, jar, form: (fields) => { const f = new FormData(); for (const [k, v] of Object.entries(fields)) f.set(k, v); return f; } };
+  /* an Astro Action (src/actions), called the way astro:actions does: its result comes back as devalue */
+  async function action(name, input, opts = {}) {
+    const r = await req(`/_actions/${name}`, { method: "POST", ...(input === undefined ? { headers: { "Content-Length": "0" } } : { json: input }), ...opts });
+    const text = await r.text();
+    return { status: r.status, data: r.ok && text ? parse(text) : undefined, error: r.ok ? undefined : JSON.parse(text || "null") };
+  }
+  return { req, action, jar, form: (fields) => { const f = new FormData(); for (const [k, v] of Object.entries(fields)) f.set(k, v); return f; } };
 }

@@ -34,9 +34,9 @@ Open http://localhost:4321. On your own computer the account page offers a **loc
 - `src/course/`: the rest of the course. `model-cycles/figures/` (the drawings), `model-cycles/controls.js` (panel drawing and the description of every key and knob), `reference.js` (machines and shortcuts). `shared/` holds the step formatting, the playable grid and the Spotify links. `index.js` lists the instruments and turns lesson files into pages (intro step, address, short name); pages read the lessons through `content.js`, scripts and tests through `files.js`.
 - `src/components/`: the page pieces as Astro components. `course/` has the lesson player and its parts, the notes, the course map and the panel guide; `site/` has the header, footer, logo, theme switch and shared blocks (`Band`, `Card`).
 - `src/layouts/Base.astro`: the page shell every page uses.
-- `src/pages/`: one file per kind of address. `api/` and `auth/` are the only parts that run on the server.
+- `src/pages/`: one file per kind of address. Only `api/` (the contact form and the account download) and `auth/` (signing in) run on the server; every other page is built ahead of time.
 - Browser code: each component carries its own `<script>` (the player, notes, quiz, panel guide, grids). They share `src/client/progress.js` (your progress, saved in the browser and to your account) and `src/client/lesson.js`; `src/client/site.js` runs the header, footer and theme switch on every page, and `audio.js` plays the grids. The theme, saved layout, logo and home page fade stay as small inline scripts because they must run before the page first paints.
-- `src/lib/`: sign-in and the database.
+- Server code: `src/actions/` holds the Astro Actions the browser code calls (who is signed in, loading and saving progress, signing out, deleting the account), with their input checked. `src/middleware.js` runs before every server route and action: it refuses writes from other sites and sets `locals.user`. `src/lib/` has sign-in, the database and the contact email. Settings and secrets are declared with `astro:env` in `astro.config.mjs`.
 
 After editing lessons, run `npm run check`: it renders every step and stops at the first broken one.
 

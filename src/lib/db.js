@@ -18,4 +18,3 @@ export function db() {
   ready ??= d.batch(SCHEMA.map((s) => d.prepare(s))).catch((e) => { ready = null; throw e; });
   return ready.then(() => d);
 }
-export { env };
