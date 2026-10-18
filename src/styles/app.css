@@ -223,15 +223,16 @@ a.song svg{width:.95em;height:.95em;margin-left:var(--s1);vertical-align:-.12em;
 .maxbtn .mx-out,html.focus .maxbtn .mx-in{display:none}
 html.focus .maxbtn .mx-out{display:block}
 .maxbtn:hover{color:var(--fg);border-color:var(--faint)}
-.pbody{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 14px var(--sw,clamp(300px,30%,460px));gap:var(--s1)}
+/* one outlined pill holds both halves, like the header's meter + theme: the drawing sits on the page, the step fills with the outline color */
+.pbody{flex:1;min-height:0;display:grid;grid-template-columns:minmax(0,1fr) 14px var(--sw,clamp(300px,30%,460px));gap:var(--s1);border:1px solid var(--line);border-radius:var(--r-l)}
 .gutter{cursor:col-resize;display:flex;align-items:center;justify-content:center;border-radius:var(--r-s);touch-action:none}
 .gutter::before{content:"";width:4px;height:44px;border-radius:var(--r-xs);background:var(--line);transition:background .15s,height .15s}
 .gutter:hover::before,.gutter:focus-visible::before,.gutter.drag::before{background:var(--led);height:72px}
 body.resizing{cursor:col-resize;user-select:none}
-.pstage{min-height:0;display:flex;align-items:center;justify-content:center}
+.pstage{min-height:0;display:flex;align-items:center;justify-content:center;padding:var(--s5)}
 .pstage > svg{width:100%;height:100%;display:block}
 /* the step keeps its card: it separates the text from the drawing */
-.pstep{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--s6);padding:var(--s5) var(--s5);border-radius:var(--r-l);border:1px solid var(--line);background:var(--bg)}
+.pstep{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--s6);padding:var(--s5) var(--s5);margin:-1px -1px -1px 0;border-radius:var(--r-l);background:var(--line)}
 .pstep .h{margin:0;font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:var(--ls-caps);color:var(--faint);text-transform:uppercase}
 .pstep .ptxt{font-size:var(--fs-step);line-height:var(--lh-loose);margin:0}
 .ptxt p,.txt p{margin:0 0 .6em}.ptxt p:last-child,.txt p:last-child{margin-bottom:0}
@@ -244,7 +245,7 @@ body.resizing{cursor:col-resize;user-select:none}
 .pstep .grow{flex:1}
 /* legend and Back/Next stay in view at the bottom of the card when a long step scrolls */
 /* the top of the bar fades in, so text scrolling underneath stays visible and hints there is more */
-.pfoot{position:sticky;bottom:calc(-1 * var(--s5));margin:calc(-1 * var(--s6)) calc(-1 * var(--s5)) calc(-1 * var(--s5));padding:var(--s9) var(--s5) var(--s5);display:flex;flex-direction:column;gap:var(--s4);background:linear-gradient(to bottom,transparent,var(--bg) calc(var(--s9) - var(--s3)));pointer-events:none}
+.pfoot{position:sticky;bottom:calc(-1 * var(--s5));margin:calc(-1 * var(--s6)) calc(-1 * var(--s5)) calc(-1 * var(--s5));padding:var(--s9) var(--s5) var(--s5);display:flex;flex-direction:column;gap:var(--s4);background:linear-gradient(to bottom,transparent,var(--line) calc(var(--s9) - var(--s3)));pointer-events:none}
 .pfoot > *{pointer-events:auto}
 .ctl{padding:var(--s3) var(--s3);border-radius:var(--r-l);border:1px solid var(--line);background:var(--surface);font-size:var(--fs-sm)}
 .ctl .h{display:flex;justify-content:space-between;align-items:center}
@@ -265,7 +266,8 @@ body.resizing{cursor:col-resize;user-select:none}
   .player{height:auto;min-height:max(480px,var(--ph))}
   .pbody{grid-template-columns:minmax(0,1fr);flex:1}
   .pstage > svg{height:auto}
-  .pstep{overflow:visible}
+  .pstep{overflow:visible;margin:0 -1px -1px}
+  .pstage{padding:var(--s3)}
 }
 /* maximized: the player takes the whole window */
 html.focus body{overflow:hidden}
