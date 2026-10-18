@@ -34,9 +34,7 @@ test("account routes need a signed-in person", async () => {
 
 test("writes from another site are refused", async () => {
   for (const [path, method] of [["/api/progress", "PUT"], ["/api/me", "DELETE"], ["/auth/logout", "POST"], ["/api/contact", "POST"]]) {
-    /* (a form sent with no Origin at all isn't tried: the local runtime drops the connection when a route
-       answers without reading the form, which Cloudflare itself doesn't do) */
-    for (const origin of path === "/api/contact" ? ["https://evil.example"] : [null, "https://evil.example"]) {
+    for (const origin of [null, "https://evil.example"]) {
       const r = await c.req(path, { method, origin, body: method === "POST" ? c.form({ message: "hi" }) : undefined });
       assert.equal(r.status, 403, `${method} ${path} from ${origin}`);
     }

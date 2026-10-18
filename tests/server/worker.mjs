@@ -6,12 +6,14 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 
-export async function startWorker({ dist = "dist", port, vars = {} }) {
+/* own: run wrangler in its own process group, so stop() also ends the runtime it starts; serve.mjs leaves it
+   in Playwright's group instead, which Playwright ends as a whole */
+export async function startWorker({ dist = "dist", port, vars = {}, own = true }) {
   const persist = mkdtempSync(join(tmpdir(), "rrr-worker-"));
   const args = ["wrangler", "dev", "--config", `${dist}/server/wrangler.json`, "--port", String(port), "--ip", "127.0.0.1",
     "--local", "--local-upstream", `localhost:${port}`, "--persist-to", persist, "--show-interactive-dev-session=false",
     ...Object.entries(vars).flatMap(([k, v]) => ["--var", `${k}:${v}`])];
-  const proc = spawn("npx", args, { stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, WRANGLER_SEND_METRICS: "false" }, detached: true });
+  const proc = spawn("npx", args, { stdio: ["ignore", "pipe", "pipe"], env: { ...process.env, WRANGLER_SEND_METRICS: "false" }, detached: own });
   let log = "";
   await new Promise((ok, fail) => {
     const timer = setTimeout(() => fail(new Error(`wrangler dev did not start:\n${log}`)), 60000);
@@ -24,7 +26,7 @@ export async function startWorker({ dist = "dist", port, vars = {} }) {
   return {
     origin,
     log: () => log,
-    stop() { try { process.kill(-proc.pid); } catch {} rmSync(persist, { recursive: true, force: true }); },
+    stop() { try { own ? process.kill(-proc.pid) : proc.kill(); } catch {} rmSync(persist, { recursive: true, force: true }); },
   };
 }
 
@@ -35,6 +37,9 @@ export function client(origin) {
   async function req(path, { method = "GET", body, json, origin: o = origin, headers = {} } = {}) {
     const h = { ...headers };
     if (method !== "GET" && o) h.Origin = o;
+    /* a fresh connection for every request: the local runtime drops a connection when a route refuses a
+       form without reading it, which would otherwise fail the next request sent on it */
+    h.Connection = "close";
     if (jar.size) h.Cookie = [...jar].map(([k, v]) => `${k}=${v}`).join("; ");
     if (json !== undefined) { h["Content-Type"] = "application/json"; body = JSON.stringify(json); }
     const r = await fetch(origin + path, { method, body, headers: h, redirect: "manual" });
