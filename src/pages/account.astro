@@ -21,24 +21,24 @@ import { SIGN_IN } from "../lib/features.js";
     ) : (
       <p>Your ticks, finished lessons and notes are saved in this browser. <a href="/privacy">What the site keeps</a>.</p>
     )}
-    <section class="box">
-      <h3>Back up or move your progress</h3>
-      <p class="msg">Download a copy of your progress, or load one. A <code>progress.json</code> from the old local version of the course works too.</p>
+    <section class="card">
+      <h3 class="t-title t-card">Back up or move your progress</h3>
+      <p class="t-body">Download a copy of your progress, or load one. A <code>progress.json</code> from the old local version of the course works too.</p>
       <div class="row">
         <button class="btn" data-export>Download progress</button>
         <label class="btn">Load a progress file<input type="file" accept="application/json,.json" data-import hidden></label>
         <span class="msg" data-import-msg></span>
       </div>
     </section>
-    <section class="box">
-      <h3>Delete your progress</h3>
-      <p class="msg">Removes your ticks, finished lessons and notes{SIGN_IN ? " from this browser and, if you're signed in, from your account" : " from this browser"}. This can't be undone, so download a copy first if you might want it back.</p>
+    <section class="card">
+      <h3 class="t-title t-card">Delete your progress</h3>
+      <p class="t-body">Removes your ticks, finished lessons and notes{SIGN_IN ? " from this browser and, if you're signed in, from your account" : " from this browser"}. This can't be undone, so download a copy first if you might want it back.</p>
       <div class="row"><button class="btn danger" data-clear>Delete my progress</button><span class="msg" data-clear-msg></span></div>
     </section>
     {SIGN_IN && (
-      <section class="box" data-signed-in hidden>
-        <h3>Delete your account</h3>
-        <p class="msg">Removes your account and everything saved with it from this site. Your progress stays in this browser. See <a href="/privacy">Privacy</a> for what the site keeps.</p>
+      <section class="card" data-signed-in hidden>
+        <h3 class="t-title t-card">Delete your account</h3>
+        <p class="t-body">Removes your account and everything saved with it from this site. Your progress stays in this browser. See <a href="/privacy">Privacy</a> for what the site keeps.</p>
         <div class="row"><button class="btn danger" data-delete>Delete my account</button></div>
       </section>
     )}

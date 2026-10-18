@@ -10,7 +10,7 @@ export function renderGrid(G,id,playing=false){
   const rows=P.rows.map((r,ri)=>`<div class="rl">${esc(r.n)}${r.len&&r.len<n?`<small>${r.len} steps</small>`:""}</div>`+Array.from({length:n},(_,i)=>{const v=r.v[i]||0;const out=r.len&&i>=r.len;const off=(r.off&&r.off[i])||0;
     return `<button class="cell ${v?"on":""} ${out?"out":""} ${i%4===0?"bt":""}" data-g="${id}" data-r="${ri}" data-i="${i}" ${out?"disabled":""} aria-label="${esc(r.n)} step ${i+1}${v?" on":""}" style="--c:${ROWC[r.s]};--v:${v}"><i${off?` style="transform:translateX(${off*100}%)"`:""}></i></button>`;}).join("")).join("");
   const sw=G.swingCtl?`<label class="gsw">Swing <input type="range" min="50" max="75" step="1" value="${P.swing||50}" data-gswing="${id}"><b>${P.swing||50}%</b></label>`:"";
-  return `<div class="gp" data-gid="${id}">${G.title?`<div class="gt">${esc(G.title)}</div>`:""}${tabs}
+  return `<div class="gp" data-gid="${id}" style="--rows:${P.rows.length}">${G.title?`<div class="gt">${esc(G.title)}</div>`:""}${tabs}
     <div class="gg" style="--n:${n}">${head}${rows}</div>
     <div class="gctl"><button class="btn primary" data-gplay="${id}">${playing?"Stop":"Play"}</button><span class="gbpm">${P.bpm} BPM</span>${sw}${G.note?`<span class="gnote">${esc(P.note||G.note)}</span>`:P.note?`<span class="gnote">${esc(P.note)}</span>`:""}</div>
     <p class="ghint">${G.edit===false?"Press Play to hear it.":"Click a square to add or remove a hit, then press Play."}</p></div>`;

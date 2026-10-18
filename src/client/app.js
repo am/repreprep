@@ -94,8 +94,7 @@ function hydrate() {
     const s = ist(k), sz = sizes();
     let t = 0, d = 0;
     Object.entries(sz).forEach(([id, n]) => { t += n; for (let i = 0; i < n; i++) if (s.steps[id + ":" + i]) d++; });
-    const mt = $("#meterTxt"); if (mt) mt.textContent = `${d} / ${t} steps`;
-    const mb = $("#meterBar"); if (mb) mb.style.width = (t ? (100 * d) / t : 0) + "%";
+    const mt = $("#meterTxt"); if (mt) mt.textContent = `${d} of ${t} reps`;
     /* progress dots next to lessons, and lesson links that reopen the step you were on */
     $$("[data-prog]").forEach((el) => { const id = el.dataset.prog; const p = lessonPct(s, id, sz[id] || 0); el.className = "s " + (s.done[id] || p === 1 ? "full" : p > 0 ? "part" : ""); el.style.setProperty("--p", Math.round(p * 100) + "%"); });
     $$("a[data-lesson][data-path]").forEach((a) => { a.href = stepHref(a.dataset.path, s.active[a.dataset.lesson] || 0); });
@@ -112,14 +111,13 @@ function hydrateLesson(k, s) {
   const id = p.dataset.lesson, act = +p.dataset.step;
   if (s.lesson !== id || (s.active[id] ?? 0) !== act) { s.lesson = id; s.active[id] = act; persist(); }
   $$(".dots [data-step]").forEach((a) => a.classList.toggle("done", !!s.steps[id + ":" + a.dataset.step]));
-  $$(".steps .step").forEach((li) => { const on = !!s.steps[id + ":" + li.dataset.step]; li.classList.toggle("done", on); li.querySelector(".ck")?.setAttribute("aria-pressed", on); });
   const intro = act === 0;
   const dm = $("[data-donemark]"); if (dm) dm.hidden = !(s.steps[id + ":" + act] && !intro);
   const fb = $("[data-finish]"), stamp = $(".finish .stamp");
-  if (fb) { fb.textContent = s.done[id] ? "Completed" : fb.dataset.label; }
+  if (fb) { fb.textContent = s.done[id] ? "Completed" : fb.dataset.label; fb.classList.toggle("primary", !s.done[id]); }
   if (stamp) { stamp.hidden = !s.done[id]; if (s.done[id]) stamp.textContent = "Done on " + new Date(s.done[id]).toLocaleDateString(); }
   const ta = $("[data-notes]"); if (ta && document.activeElement !== ta) ta.value = s.notes[id] || "";
-  const mx = $("[data-max]"); if (mx) mx.textContent = state.focus ? "Exit full window (Esc)" : "Maximize";
+  const mx = $("[data-max]"); if (mx) { const l = state.focus ? "Exit full window (Esc)" : "Maximize"; mx.setAttribute("aria-label", l); mx.title = l; }
   document.documentElement.classList.toggle("focus", !!state.focus);
   if (state.stepW) document.documentElement.style.setProperty("--sw", state.stepW + "px");
   fitPlayer();
@@ -275,8 +273,6 @@ document.addEventListener("click", (e) => {
   }
   const c = curLesson(); if (!c) return;
   const s = ist(c.k);
-  const ck = e.target.closest("[data-check]");
-  if (ck) { const key = c.id + ":" + ck.dataset.check; s.steps[key] = !s.steps[key]; if (!s.steps[key]) delete s.steps[key]; persist(); hydrate(); return; }
   const nav = e.target.closest("[data-nav]");
   if (nav && nav.dataset.nav === "1") {
     s.steps[c.id + ":" + c.act] = true; markAllDone(s, c);
@@ -289,9 +285,6 @@ document.addEventListener("click", (e) => {
     s.done[c.id] = Date.now(); for (let i = 0; i < c.n; i++) s.steps[c.id + ":" + i] = true;
     goNextLesson(s, c); return;
   }
-  /* clicking a step in the lesson text opens it in the player */
-  const li = e.target.closest(".steps .step");
-  if (li && !e.target.closest("a,button,summary,details")) { navigate(li.dataset.href); }
 }, true); /* capture: runs before the router follows a link, so Finish can pick where to go */
 document.addEventListener("change", (e) => { const f = e.target.closest("[data-import]"); if (f && f.files[0]) { importProgress(f.files[0]); f.value = ""; } });
 document.addEventListener("keydown", (e) => {
