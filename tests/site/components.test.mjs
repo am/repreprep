@@ -38,7 +38,10 @@ test("player: dots, Back and Next on every step of every lesson", () => {
 
 test("player: the intro card, a quiz, an answer and the challenge", () => {
   const L = I.lessons.find((l) => l.challenge && l.steps.some((s) => s.q));
-  assert.match(player(L, 0), /<div class="introcard">.*You will learn to/s);
+  assert.match(
+    player(L, 0),
+    /<div class="introhero">.*You will learn to.*<div class="introcard">.*Ideas in this lesson/s
+  );
   const qi = L.steps.findIndex((s) => s.q);
   const quiz = player(L, qi);
   assert.match(quiz, /<div class="quiz">/);
