@@ -21,7 +21,7 @@ function lessonMenu(I, L) {
 
 function introCard(I, L) {
   const ideas = (L.concepts || []).map((c) => `<li>${esc(c.h)}</li>`).join("");
-  return `<div class="introcard"><div class="t-eyebrow">${wkLabel(L)} · ${L.unit ? esc(L.unit) + " · " : ""}about ${L.minutes} min</div>
+  return `<div class="introcard"><div class="t-eyebrow">${wkLabel(L)}${L.unit ? " · " + esc(L.unit) : ""}</div>
     <h3 class="t-title">${esc(L.title)}</h3>
     <p class="ptxt t-body"><b>You will learn to</b> ${esc(L.goal.charAt(0).toLowerCase() + L.goal.slice(1))}</p>
     ${ideas ? `<div class="ideas t-body"><div class="t-label">Ideas in this lesson</div><ul>${ideas}</ul></div>` : ""}
