@@ -116,7 +116,7 @@ function hydrateLesson(k, s) {
   const fb = $("[data-finish]"), stamp = $(".finish .stamp");
   if (fb) { fb.textContent = s.done[id] ? "Completed" : fb.dataset.label; fb.classList.toggle("primary", !s.done[id]); }
   if (stamp) { stamp.hidden = !s.done[id]; if (s.done[id]) stamp.textContent = "Done on " + new Date(s.done[id]).toLocaleDateString(); }
-  const ta = $("[data-notes]"); if (ta && document.activeElement !== ta) ta.value = s.notes[id] || "";
+  showNote(s, id);
   const mx = $("[data-max]"); if (mx) { const l = state.focus ? "Exit full window (Esc)" : "Maximize"; mx.setAttribute("aria-label", l); mx.title = l; }
   document.documentElement.classList.toggle("focus", !!state.focus);
   if (state.stepW) document.documentElement.style.setProperty("--sw", state.stepW + "px");
@@ -275,8 +275,8 @@ document.addEventListener("click", (e) => {
   const s = ist(c.k);
   const nav = e.target.closest("[data-nav]");
   if (nav && nav.dataset.nav === "1") {
-    s.steps[c.id + ":" + c.act] = true; markAllDone(s, c);
-    if (c.act === c.n - 1) { e.preventDefault(); goNextLesson(s, c); return; }
+    if (c.act < c.n) { s.steps[c.id + ":" + c.act] = true; markAllDone(s, c); } /* the optional challenge is never a rep */
+    if (nav.hasAttribute("data-end")) { e.preventDefault(); goNextLesson(s, c); return; }
     persist(); return; /* the link opens the next step */
   }
   const fin = e.target.closest("[data-finish]");
@@ -296,11 +296,34 @@ document.addEventListener("keydown", (e) => {
   }
   if ((e.key === "Enter" || e.key === " ") && e.target.classList && e.target.classList.contains("c")) { e.preventDefault(); e.target.dispatchEvent(new MouseEvent("click", { bubbles: true })); }
 });
-let notesTimer = null;
-document.addEventListener("input", (e) => {
-  const id = e.target.dataset && e.target.dataset.notes; if (!id) return;
-  const c = curLesson(); if (!c) return;
-  ist(c.k).notes[id] = e.target.value; clearTimeout(notesTimer); notesTimer = setTimeout(persist, 600);
+
+/* lesson notes: read mode by default; Edit opens the box, and only Save keeps what you typed */
+function showNote(s, id, saved) {
+  const box = $(`[data-notebox="${id}"]`); if (!box) return;
+  const t = s.notes[id] || "", txt = box.querySelector(".nb-text");
+  txt.textContent = t; txt.hidden = !t; box.querySelector(".nb-empty").hidden = !!t;
+  const ed = box.querySelector("[data-note-edit]"); ed.textContent = t ? "Edit" : "Add a note";
+  if (!box.classList.contains("editing")) { box.querySelector(".nb-view").hidden = false; box.querySelector(".nb-edit").hidden = true; ed.hidden = false; }
+  const st = box.querySelector(".nb-stamp"); if (saved !== undefined) st.hidden = !saved;
+}
+function noteMode(box, edit) {
+  box.classList.toggle("editing", edit);
+  box.querySelector(".nb-view").hidden = edit; box.querySelector(".nb-edit").hidden = !edit; box.querySelector("[data-note-edit]").hidden = edit;
+  box.querySelector(".nb-stamp").hidden = true;
+}
+document.addEventListener("click", (e) => {
+  const b = e.target.closest("[data-note-edit],[data-note-save],[data-note-cancel]"); if (!b) return;
+  const box = b.closest("[data-notebox]"), id = box.dataset.notebox, c = curLesson(); if (!c) return;
+  const s = ist(c.k), ta = box.querySelector("textarea");
+  if (b.hasAttribute("data-note-edit")) { ta.value = s.notes[id] || ""; noteMode(box, true); ta.focus(); return; }
+  if (b.hasAttribute("data-note-save")) { const v = ta.value.trim(); if (v) s.notes[id] = v; else delete s.notes[id]; persist(); }
+  noteMode(box, false); showNote(s, id, b.hasAttribute("data-note-save")); box.querySelector("[data-note-edit]").focus();
+});
+document.addEventListener("keydown", (e) => {
+  const ta = e.target.closest && e.target.closest("[data-notebox] textarea"); if (!ta) return;
+  const box = ta.closest("[data-notebox]");
+  if (e.key === "Escape") { e.preventDefault(); box.querySelector("[data-note-cancel]").click(); }
+  else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); box.querySelector("[data-note-save]").click(); }
 });
 
 /* every page view (first load and each in-site navigation) */
