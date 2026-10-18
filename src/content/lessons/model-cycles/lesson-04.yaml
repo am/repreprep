@@ -3,7 +3,7 @@ number: 4
 unit: Rhythm and time
 title: Phrasing and variation
 goal: Turn your one-bar loop into an 8-bar phrase that changes in the right places, and let it vary on its own with chance and trig conditions.
-listen: Nicolas Jaar, "Mi Mujer". Listen for what changes every 4 and 8 bars, and for the little percussion loops that don't line up with the bar.
+listen: Nicolas Jaar, "Mi Mujer". Listen for what changes every 4 and 8 bars.
 concepts:
   - h: Phrases of 4 and 8 bars
     p:

@@ -58,7 +58,7 @@ steps:
           - name: Ghost notes
             bpm: 90
             swing: 58
-            note: Very quiet snares just before the backbeat, plus swing.
+            note: Very quiet snares on weak steps between the main hits, plus swing.
             rows:
               - { n: Kick, s: kick, hits: "1,9,11" }
               - { n: Snare, s: snare, hits: "5,8:0.18,12:0.15,13,16:0.2" }
