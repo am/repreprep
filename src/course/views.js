@@ -40,14 +40,16 @@ export function player(I, L, act) {
   const nextHref = last ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
   const next = `<a class="btn primary" href="${nextHref}" data-nav="1">${last ? "Finish" : act === 0 ? "Start" : "Next"}</a>`;
   return `<section class="player" id="player" aria-label="Step player" data-inst="${I.key}" data-lesson="${L.id}" data-step="${act}" data-steps="${L.steps.length}"${nx ? ` data-next="${nx.id}" data-next-path="${nx.path}"` : ""}>
-    <div class="phead"><details class="picker"><summary class="ttl" title="Jump to another lesson">${wkLabel(L)} · ${esc(L.title)}<span class="caret" aria-hidden="true"></span></summary>${lessonMenu(I, L)}</details><div class="dots" style="--p:${L.steps.length > 1 ? act / (L.steps.length - 1) : 0}">${dots}</div><button class="maxbtn" data-max>Maximize</button></div>
+    <div class="phead"><details class="picker"><summary class="ttl" title="Jump to another lesson">${wkLabel(L)} · ${esc(L.title)}<span class="caret" aria-hidden="true"></span></summary>${lessonMenu(I, L)}</details><div class="dots" style="--p:${L.steps.length > 1 ? act / (L.steps.length - 1) : 0}">${dots}</div><button class="maxbtn" type="button" data-max aria-label="Maximize" title="Maximize"><svg class="mx-in" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4"/></svg><svg class="mx-out" viewBox="0 0 16 16" aria-hidden="true"><path d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4"/></svg></button></div>
     <div class="pbody" id="pbody"><div class="pstage">${stage}</div><div class="gutter" id="gutter" role="separator" aria-orientation="vertical" aria-label="Resize the step panel" tabindex="0" title="Drag to resize · double-click to reset"></div>
       <div class="pstep" id="now"><div class="h"><span class="kind k-${k}">${KIND[k]}</span><span data-donemark hidden> · done</span></div>
         ${st.intro ? introCard(I, L) : `<div class="ptxt">${fmtStep(I, st)}</div>`}${st.q ? quiz(I, st) : st.a ? `<details class="ans"><summary>Show the answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? hearNote(I, st) : ""}
         <div class="ctl" id="ctlinfo" hidden></div>
         <div class="grow"></div>
-        <div class="legend"${k !== "play" ? " hidden" : ""}>${keyCap("PRESS", "press")}${keyCap("HOLD", "hold")}${keyCap("TURN", "turn")}<button type="button" class="hint" aria-label="Tips: click a control to learn it. Left and right arrow keys move between steps.">i<span class="tip" aria-hidden="true">Click a control to learn it. The ← → keys move between steps.</span></button></div>
-        <div class="navrow">${back}${next}</div>
+        <div class="pfoot">
+          <div class="legend"${k !== "play" ? " hidden" : ""}>${keyCap("PRESS", "press")}${keyCap("HOLD", "hold")}${keyCap("TURN", "turn")}<button type="button" class="hint" aria-label="Tips: click a control to learn it. Left and right arrow keys move between steps.">i<span class="tip" aria-hidden="true">Click a control to learn it. The ← → keys move between steps.</span></button></div>
+          <div class="navrow">${back}${next}</div>
+        </div>
       </div></div>
   </section>`;
 }
