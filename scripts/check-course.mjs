@@ -1,11 +1,12 @@
 // Renders every step, drawing and question of every course, so a broken lesson edit fails here
 // instead of on the site. Run with `npm run check`.
-import { INSTRUMENTS, renderFig } from "../src/course/index.js";
+import { renderFig } from "../src/course/index.js";
+import { COURSES } from "../src/course/files.js";
 import { stepParts, keyify } from "../src/course/shared/text.js";
 
 let steps = 0;
 const ids = new Set();
-for (const I of INSTRUMENTS.filter((i) => i.ready)) {
+for (const I of COURSES) {
   I.draw();
   for (const L of I.lessons) {
     if (ids.has(L.id)) throw new Error(`Two lessons share the id ${L.id}`);

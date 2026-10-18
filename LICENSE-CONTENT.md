@@ -3,8 +3,8 @@
 The lessons, drawings and written explanations in this repository are licensed under the
 **Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International** license (CC BY-NC-SA 4.0).
 
-This covers everything in `src/course/` except `src/course/shared/`: the lesson files, the figures,
-the panel drawings and the descriptions of each control.
+This covers the lesson files in `src/content/` and everything in `src/course/` except `src/course/shared/`:
+the figures, the panel drawings and the descriptions of each control.
 
 In short, you may share and adapt this material if you:
 

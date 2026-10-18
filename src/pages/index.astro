@@ -1,7 +1,8 @@
 ---
 import Base from "../layouts/Base.astro";
 import Logo from "../components/site/Logo.astro";
-import { INSTRUMENTS } from "../course/index.js";
+import { catalog } from "../course/content.js";
+const instruments = await catalog();
 const count = (I: any) => {
   const songs = I.lessons.filter((l: any) => l.song).length;
   return `${I.lessons.length - songs} lessons · ${songs} song studies`;
@@ -20,7 +21,7 @@ const count = (I: any) => {
     <section class="scene">
       <h2>Rep after rep.</h2>
       <nav class="gear" aria-label="Pick your instrument">
-        {INSTRUMENTS.map((I) => I.ready
+        {instruments.map((I) => I.ready
           ? <a class="go" href={`/${I.slug}`}><b>{I.name}</b><small>{count(I)}</small></a>
           : <span class="soon"><b>{I.name}</b><small>coming next</small></span>)}
       </nav>

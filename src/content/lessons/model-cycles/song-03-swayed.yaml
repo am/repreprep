@@ -1,0 +1,91 @@
+id: s03
+song: Kiasmos – Swayed
+unit: Kiasmos
+title: Swayed
+goal: Start a track the way Kiasmos often do, from a drum machine groove, and bring it to life with small changes on single steps.
+listen: Kiasmos, "Swayed" (from the album Kiasmos, 2014). Listen to the drums only, and to how the small sounds shift slightly from bar to bar.
+concepts:
+  - h: What Kiasmos said
+    p:
+      - Ólafur Arnalds called Swayed a nod to their early, more techno days. Janus Rasmussen said it came late, was driven by the groove, and is full of micro edits to the synths and effects. Ólafur has also said they often start a track from a beat on an Elektron Machinedrum and jam over it. It runs at about 122 BPM.
+  - h: Groove first
+    p:
+      - Starting from the beat gives every later part something to lock to. Techno at 120–130 BPM usually means a kick on every beat, an open hat between the beats, and a clap or snare on 2 and 4.
+  - h: Found sounds as hats
+    p:
+      - On their first album they used a thumb piano, finger snaps and the grinding wheel of a lighter where others would use electronic hi-hats. Any short, bright sound can do a hi-hat's job.
+  - h: Micro edits
+    p:
+      - "Small changes on single steps, a bit longer here, a touch lower there, keep a loop from sounding copied and pasted. On Elektron machines these are parameter locks: hold a step and turn a knob."
+steps:
+  - k: learn
+    fig:
+      grid:
+        title: The techno frame
+        bpm: 122
+        rows:
+          - { n: Kick, s: kick, hits: "1,5,9,13" }
+          - { n: Open hat, s: ohat, hits: "3,7,11,15", vel: 0.6 }
+          - { n: Clap, s: clap, hits: "5,13", vel: 0.7 }
+          - { n: Shaker, s: shaker, hits: "2,4:0.4,6,8:0.4,10,12:0.4,14,16:0.4", vel: 0.3 }
+    t: "The classic techno frame at 122 BPM: a kick on every beat, an open hat in between, a clap on 2 and 4. Press Play."
+    hear: The open hat between the kicks is what pushes it forward.
+  - k: learn
+    fig:
+      grid:
+        title: Machine hats or found sounds
+        presets:
+          - name: Electronic hats
+            bpm: 122
+            note: A clean, even hat.
+            rows:
+              - { n: Kick, s: kick, hits: "1,5,9,13" }
+              - { n: Hat, s: hat, hits: "2,3,4,6,7,8,10,11,12,14,15,16", vel: 0.5 }
+              - { n: Rim, s: rim, hits: "" }
+              - { n: Perc, s: perc, hits: "" }
+          - name: Found sounds
+            bpm: 122
+            note: Small woody and clicky hits sharing the hat's job.
+            rows:
+              - { n: Kick, s: kick, hits: "1,5,9,13" }
+              - { n: Hat, s: shaker, hits: "3,7,11,15", vel: 0.5 }
+              - { n: Rim, s: rim, hits: "4,8:0.25,12:0.35,16:0.2", vel: 0.3 }
+              - { n: Perc, s: perc, hits: "6,14:0.25", vel: 0.3 }
+    t: Kiasmos swapped electronic hats for things like finger snaps and a lighter's wheel. Compare a clean hat with a mix of small found-sound hits.
+    hear: The found sounds feel more like a room and less like a machine.
+  - k: learn
+    fig: plock
+    t: "Micro edits: the same sound on every step, but some steps get their own small change. Hold a step and turn a knob, and only that step changes. Elektron calls this a parameter lock."
+  - k: play
+    t: "Go to this study's own pattern: hold [PATTERN], press [T3] (bank C), then press [TRIG 3]. If anything plays there, clear it with [FUNC] + [PLAY]. Press [TEMPO], set 122 BPM with [LEVEL/DATA], and press [BACK]."
+    hl: h:pattern p:t3 p:s3 p:tempo t:level p:back
+    hear: C03 on the screen, at 122 BPM.
+  - k: play
+    t: "Set the machines this study needs, the same layout as your course track: T1 KICK, T2 SNARE, T3 METAL, T4 PERC. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
+    hl: h:track p:machines t:level p:back
+  - k: play
+    t: "Lay the frame: press [RECORD]. On T1, kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. On T2, a snare on [TRIG 5] and [TRIG 13]. On T3, hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15], with [DECAY] turned up so they ring open. Press [PLAY]."
+    hl: p:record h:track p:t1 p:t2 p:t3 t:decay p:play
+    hear: The techno frame from the grid.
+  - k: play
+    t: "Make a found-sound tick: select [T4] (PERC), turn [PITCH] right up and [DECAY] down until it clicks like wood. Place it on every even trig, [TRIG 2] to [TRIG 16]."
+    hl: h:track p:t4 t:pitch t:decay p:s2 p:s4 p:s6 p:s8 p:s10 p:s12 p:s14 p:s16
+    hear: A small, woody tick filling the gaps, more object than drum.
+  - k: play
+    t: "Micro edits: hold [TRIG 6] and turn [DECAY] up a little. Hold [TRIG 10] and turn [PITCH] down a little. Hold [TRIG 14] and turn [DECAY] down a little."
+    hl: h:s6 t:decay h:s10 t:pitch h:s14
+    hear: Three ticks now sound slightly different. Their keys flash quickly to show the locks.
+  - k: play
+    t: "Jam over it: press [RECORD] to leave grid recording, select [T4] and slowly ride [DECAY] and [COLOR] while it plays. Save: hold [FUNC] and long-press [SETTINGS]."
+    hl: p:record h:track p:t4 t:decay t:color h:func p:settings
+    hear: The groove stays steady while the small sounds keep changing.
+  - k: check
+    t: How do Kiasmos often start a track?
+    q:
+      - "!From a beat on a drum machine"
+      - From a piano melody
+      - From a vocal
+      - From a field recording
+    a: From a beat. Ólafur Arnalds said they often start from a groove on an Elektron Machinedrum and jam over it. Swayed is one of their most groove-driven tracks.
+    hear: Start with the groove, then give single steps their own small changes.
+challenge: Lock a different [PITCH] on every one of the eight ticks to turn a percussion sound into a tiny melody.

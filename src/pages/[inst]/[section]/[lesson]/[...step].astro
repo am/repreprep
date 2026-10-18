@@ -2,10 +2,11 @@
 import Base from "../../../../layouts/Base.astro";
 import Player from "../../../../components/course/Player.astro";
 import LessonWrapup from "../../../../components/course/LessonWrapup.astro";
-import { READY, lessonLabel } from "../../../../course/index.js";
+import { lessonLabel } from "../../../../course/index.js";
+import { courses } from "../../../../course/content.js";
 /* /model-cycles/lessons/<lesson> (or /songs/<study>) is the intro; .../<n> is step n; one past the last step is the optional challenge */
-export function getStaticPaths() {
-  return READY.flatMap((I) =>
+export async function getStaticPaths() {
+  return (await courses()).flatMap((I) =>
     I.lessons.flatMap((L) =>
       [...L.steps.keys(), ...(L.challenge ? [L.steps.length] : [])].map((i) => ({
         params: { inst: I.slug, section: L.song ? "songs" : "lessons", lesson: L.slug, step: i ? String(i) : undefined },

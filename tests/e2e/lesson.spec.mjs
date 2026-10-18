@@ -1,8 +1,8 @@
 // The lesson player: moving through steps, ticks, finishing, notes, quizzes, the panel and the grids.
 import { test, expect, progress } from "./fixtures.mjs";
-import { INSTRUMENTS } from "../../src/course/index.js";
+import { COURSES } from "../../src/course/files.js";
 
-const I = INSTRUMENTS.find((i) => i.ready);
+const [I] = COURSES;
 const [L1, L2] = I.lessons;
 const steps = (L) => L.steps.length;
 

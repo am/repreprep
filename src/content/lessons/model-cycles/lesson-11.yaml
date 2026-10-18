@@ -1,0 +1,141 @@
+id: w11
+number: 11
+unit: Notes and harmony
+title: Chords that feel like night
+goal: Build minor, major and seventh chords from semitone formulas, and play a slow four-chord progression on the CHORD machine over your bass.
+listen: 'Bonobo, "Black Sands". Listen past the beat to the harmony underneath: a few soft chords, repeated, set the whole mood.'
+concepts:
+  - h: A chord is a formula
+    p:
+      - Stack notes on a root, counting semitones. Minor is 0-3-7, major is 0-4-7. Only the middle note moves, and it flips the mood from dark to bright.
+  - h: Sevenths for the night
+    p:
+      - Add a fourth note and the chord softens. A minor 7th (0-3-7-10) sounds relaxed and dusky, a major 7th (0-4-7-11) warm and dreamy. A lot of downtempo and jazz lives on these two.
+  - h: Progressions in numerals
+    p:
+      - "Chords are named by where their root sits in the scale: i is the root chord, iv the chord on the 4th note, VI on the 6th. Lower case means minor, upper case major. Am–G–Dm–Am is i–VII–iv–i, in any key."
+  - h: Inversions and a taste of Dorian
+    p:
+      - "An inversion plays the same chord notes in another order, so chords can change by small steps instead of jumps. Dorian is minor with a raised 6th: in A it turns the iv chord into D major, a brighter, more hopeful minor."
+steps:
+  - k: learn
+    fig: u3formula
+    t: "A chord is a formula, counted in semitones from the root. Minor is 0-3-7 and major 0-4-7: only the middle note moves. Add a fourth note and you get the soft seventh chords. The CHORD machine's SHAPE knob uses these same names."
+  - k: learn
+    fig:
+      grid:
+        title: Four chords on A
+        presets:
+          - name: Minor
+            bpm: 60
+            note: "0-3-7: A, C, E."
+            rows:
+              - { n: Root, s: keys, hits: "1,9", vel: 0.7, note: 57 }
+              - { n: 3rd, s: keys, hits: "1,9", vel: 0.7, note: 60 }
+              - { n: 5th, s: keys, hits: "1,9", vel: 0.7, note: 64 }
+              - { n: 7th, s: keys, hits: "", note: 67 }
+          - name: Major
+            bpm: 60
+            note: "0-4-7: A, C#, E."
+            rows:
+              - { n: Root, s: keys, hits: "1,9", vel: 0.7, note: 57 }
+              - { n: 3rd, s: keys, hits: "1,9", vel: 0.7, note: 61 }
+              - { n: 5th, s: keys, hits: "1,9", vel: 0.7, note: 64 }
+              - { n: 7th, s: keys, hits: "", note: 68 }
+          - name: m7
+            bpm: 60
+            note: "0-3-7-10: A, C, E, G."
+            rows:
+              - { n: Root, s: keys, hits: "1,9", vel: 0.7, note: 57 }
+              - { n: 3rd, s: keys, hits: "1,9", vel: 0.7, note: 60 }
+              - { n: 5th, s: keys, hits: "1,9", vel: 0.7, note: 64 }
+              - { n: 7th, s: keys, hits: "1,9", vel: 0.7, note: 67 }
+          - name: Maj7
+            bpm: 60
+            note: "0-4-7-11: A, C#, E, G#."
+            rows:
+              - { n: Root, s: keys, hits: "1,9", vel: 0.7, note: 57 }
+              - { n: 3rd, s: keys, hits: "1,9", vel: 0.7, note: 61 }
+              - { n: 5th, s: keys, hits: "1,9", vel: 0.7, note: 64 }
+              - { n: 7th, s: keys, hits: "1,9", vel: 0.7, note: 68 }
+    t: Hear each formula on the same root, A. Switch between the four while it plays.
+    hear: "Minor: dark. Major: bright. m7: relaxed and dusky. Maj7: warm, a little bittersweet."
+  - k: learn
+    fig: u3prog
+    t: "Chords move in progressions, written in Roman numerals so they work in any key. Here are two melancholic ones, and the one your bass already plays: A, F, D, E."
+  - k: learn
+    fig:
+      grid:
+        title: Three progressions
+        presets:
+          - name: i VII iv i
+            bpm: 60
+            note: "Am, G, Dm, Am: one chord per beat here, one per bar in a song."
+            rows:
+              - { n: Bass, s: bass, hits: "1,5,9,13", vel: 0.7, p: [ 45, 0, 0, 0, 43, 0, 0, 0, 38, 0, 0, 0, 45, 0, 0, 0 ] }
+              - { n: Low, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 57, 0, 0, 0, 55, 0, 0, 0, 57, 0, 0, 0, 57, 0, 0, 0 ] }
+              - { n: Mid, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 60, 0, 0, 0, 59, 0, 0, 0, 62, 0, 0, 0, 60, 0, 0, 0 ] }
+              - { n: High, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 64, 0, 0, 0, 62, 0, 0, 0, 65, 0, 0, 0, 64, 0, 0, 0 ] }
+              - { n: Top, s: keys, hits: "", note: 67 }
+          - name: i7 iv7 VImaj7 VII7
+            bpm: 60
+            note: Am7, Dm7, Fmaj7, G7.
+            rows:
+              - { n: Bass, s: bass, hits: "1,5,9,13", vel: 0.7, p: [ 45, 0, 0, 0, 38, 0, 0, 0, 41, 0, 0, 0, 43, 0, 0, 0 ] }
+              - { n: Low, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 57, 0, 0, 0, 57, 0, 0, 0, 57, 0, 0, 0, 55, 0, 0, 0 ] }
+              - { n: Mid, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 60, 0, 0, 0, 60, 0, 0, 0, 60, 0, 0, 0, 59, 0, 0, 0 ] }
+              - { n: High, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 64, 0, 0, 0, 62, 0, 0, 0, 64, 0, 0, 0, 62, 0, 0, 0 ] }
+              - { n: Top, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 67, 0, 0, 0, 65, 0, 0, 0, 65, 0, 0, 0, 65, 0, 0, 0 ] }
+          - name: Your B01
+            bpm: 60
+            note: "Am7, Fmaj7, Dm7, Em7: the roots your bass already plays."
+            rows:
+              - { n: Bass, s: bass, hits: "1,5,9,13", vel: 0.7, p: [ 45, 0, 0, 0, 41, 0, 0, 0, 38, 0, 0, 0, 40, 0, 0, 0 ] }
+              - { n: Low, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 57, 0, 0, 0, 57, 0, 0, 0, 57, 0, 0, 0, 55, 0, 0, 0 ] }
+              - { n: Mid, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 60, 0, 0, 0, 60, 0, 0, 0, 60, 0, 0, 0, 59, 0, 0, 0 ] }
+              - { n: High, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 64, 0, 0, 0, 64, 0, 0, 0, 62, 0, 0, 0, 62, 0, 0, 0 ] }
+              - { n: Top, s: keys, hits: "1,5,9,13", vel: 0.6, p: [ 67, 0, 0, 0, 65, 0, 0, 0, 65, 0, 0, 0, 64, 0, 0, 0 ] }
+    t: "Play the three progressions. Watch the four chord rows: the notes barely move from chord to chord. Each chord is voiced as an inversion, so it steps instead of jumping."
+    hear: The 7ths blur the edges. Your B01 progression never quite comes home, which keeps it feeling like night.
+  - k: play
+    t: Go to B01, press [RECORD] and select [T6]. Turn [SHAPE] until the screen shows m7, [DECAY] to about 110 and [REVERB SEND] to about 60.
+    hl: p:record h:track p:t6 t:shape t:decay t:reverb
+    hear: "Tap [T6]: a soft minor 7th chord."
+  - k: play
+    t: "Tap [T5] and [T6] together. If they clash, the sounds are tuned differently: select [T6], hold [FUNC] and turn [PITCH] one semitone at a time until chord and bass agree."
+    hl: p:t5 p:t6 h:track h:func t:pitch
+    hear: "Bass and chord on the same root: one instrument, low and high."
+  - k: play
+    t: Open the SCALE menu ([FUNC] + [PAGE]), press [T6], set LEN to 16 and press [BACK]. Place one chord on [TRIG 1]. Then set T6's LEN back to 64 the same way.
+    hl: h:func p:page p:t6 t:level p:back p:s1
+    hear: One long chord at the top of every bar, copied to all four pages.
+  - k: play
+    t: "Follow the bass: press [PAGE] for page 2 and on [TRIG 1], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 4 semitones down. Page 3: 7 down. Page 4: 5 down."
+    hl: p:page h:s1 p:level t:level
+    hear: "The chords move with the bass now. Bar 2 sounds sour: an F minor doesn't belong in A minor."
+  - k: play
+    t: "Fix bar 2 with a major 7th: on page 2, hold [TRIG 1] and turn [SHAPE] to Maj7. Bars 3 and 4 stay m7."
+    hl: p:page h:s1 t:shape
+    hear: "Am7, Fmaj7, Dm7, Em7: warm and wide in the middle, never fully home."
+  - k: play
+    t: "Shape the voicing: with no trig held, turn [COLOR] slowly. On the CHORD machine it changes the mix of the chord's voices, so some notes come forward and others fade. Then try [SWEEP] for the timbre."
+    hl: t:color t:sweep
+    hear: Same chords, from thin and glassy to full and soft. Keep what feels like night.
+  - k: play
+    t: "A taste of Dorian: on page 3, hold [TRIG 1] and turn [SHAPE] to Major. D major brings in F#, the raised 6th of A. Keep it, or turn it back to m7."
+    hl: p:page h:s1 t:shape
+    hear: "Bar 3 glows brighter for a moment: a hopeful kind of minor."
+  - k: play
+    t: "Press [RECORD] to leave grid recording and listen to all four bars with the bass and drums. Save: hold [FUNC] and long-press [SETTINGS]."
+    hl: p:record h:func p:settings
+    hear: "Beat, bass and four chords: a full night-time loop."
+  - k: check
+    t: Which semitone formula is a minor 7th chord (m7)?
+    q:
+      - 0-4-7
+      - 0-3-7
+      - "!0-3-7-10"
+      - 0-4-7-11
+    a: A minor triad (0-3-7) plus a 7th 10 semitones up. 0-4-7-11 is the major 7th, Maj7.
+    hear: 3 up is minor, 4 up is major. 10 or 11 on top makes a seventh.
+challenge: Lock a different SHAPE onto one chord at a time (sus2, sus4, madd9, m9no5) and hear how each one colours your progression. Keep your favourite and write the others in your notes.

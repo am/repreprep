@@ -1,0 +1,74 @@
+id: w04
+number: 4
+unit: Rhythm and time
+title: Phrasing and variation
+goal: Turn your one-bar loop into an 8-bar phrase that changes in the right places, and let it vary on its own with chance and trig conditions.
+listen: Nicolas Jaar, "Mi Mujer". Listen for what changes every 4 and 8 bars, and for the little percussion loops that don't line up with the bar.
+concepts:
+  - h: Phrases of 4 and 8 bars
+    p:
+      - "Music talks in phrases. A common shape is A B A C, then A B A D: the loop, a small change, the loop, a bigger change. Bar 8 closes the phrase with a fill or an \"empty\", where something drops out. Listeners feel it coming even if they can't name it."
+  - h: Variation without effort
+    p:
+      - "Trig conditions decide when a step plays: 1:2 plays the first of every two passes, 2:2 the second, 1:4 the first of every four, 50% is a coin toss, FILL plays only while you hold [PAGE]. A pass is one time round the pattern."
+      - Chance (the CHANCE knob) gives a whole track a probability, so a shaker can come and go on its own.
+  - h: Loops of different lengths
+    p:
+      - Give one track 12 steps while the others have 16. It drifts against the bar and only lines up again every 3 bars. This is called polymeter, and it makes a short loop sound like it keeps changing.
+steps:
+  - k: learn
+    fig: phrase
+    t: "Your loop is one bar. Music thinks in 4 and 8-bar phrases: A B A C, A B A D. Bar 4 changes a bit more, and bar 8 closes the phrase with a fill or a gap, so the ear knows a new phrase is starting."
+  - k: learn
+    fig: conditions
+    t: Trig conditions let a step play only on some passes through the pattern. With a 4-bar pattern, 1:2 plays in bars 1–4 but not 5–8, and 2:2 plays only in bars 5–8. That's how one pattern can hold an 8-bar phrase.
+  - k: learn
+    fig:
+      grid:
+        title: Loops that drift
+        bpm: 90
+        rows:
+          - { n: Kick, s: kick, hits: "1,9,11" }
+          - { n: Snare, s: snare, hits: "5,13" }
+          - { n: Perc (12), s: perc, len: 12, hits: "1,4,7,10", vel: 0.6 }
+          - { n: Shaker (7), s: shaker, len: 7, hits: "1,4", vel: 0.45 }
+    t: The perc loop is 12 steps long and the shaker 7. Press Play and watch them slide against the kick and snare. Every bar sounds slightly different, though nothing random is happening.
+    hear: The perc lines up with the kick again only every third bar.
+  - k: play
+    t: "Make B01 four bars long: hold [FUNC] and press [PAGE] to open the SCALE menu, set LEN to 64 with [LEVEL/DATA], then press [BACK]. Your bar is copied onto pages 2, 3 and 4."
+    hl: h:func p:page t:level p:back
+    hear: Still sounds the same, but now it's 4 bars, A A A A. The four page lights show where you are.
+  - k: play
+    t: "Make bar 2 the B: press [RECORD], press [PAGE] until the second page light is on, select [T2] and add a quiet snare on [TRIG 16] (hold it, set VEL to about 30)."
+    hl: p:record p:page h:track p:t2 p:s16 t:level
+    hear: A small pickup at the end of bar 2.
+  - k: play
+    t: "Make bar 4 the C: press [PAGE] until the fourth light is on, and on T2 add snares on [TRIG 14], [TRIG 15] and [TRIG 16] at low velocity."
+    hl: p:page p:s14 p:s15 p:s16
+    hear: A little roll that leads back to the top.
+  - k: play
+    t: "Turn the second time through bar 4 into bar 8, the D: still on page 4, hold [TRIG 14], [TRIG 15] and [TRIG 16] and turn [CHANCE] until the screen shows 2:2. Then select [T1], hold the kicks on [TRIG 9] and [TRIG 11], and set them to 1:2."
+    hl: h:s14 h:s15 h:s16 t:chance h:track p:t1 h:s9 h:s11
+    hear: "Bar 4 now has its kicks and no roll. Bar 8 drops the kicks and plays the roll: an empty plus a fill."
+  - k: play
+    t: "Add a fill you play by hand: select [T3], add an extra hat on [TRIG 1] of page 1, hold it and turn [CHANCE] to FILL. Press [RECORD] to listen, and hold [PAGE] whenever you want the fill."
+    hl: h:track p:t3 p:s1 h:s1 t:chance p:record h:page
+    hear: The extra hit only plays while [PAGE] is held.
+  - k: play
+    t: "Make T4 drift: open the SCALE menu ([FUNC] + [PAGE]), set MOD to TRACK, select [T4] and set its LEN to 12, then [BACK]. Press [RECORD], select [T4] and place perc on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 10]."
+    hl: h:func p:page t:level p:t4 p:back p:record p:s1 p:s4 p:s7 p:s10
+    hear: A 12-step loop sliding across your 16-step bar, just like the drawing.
+  - k: play
+    t: "Let it breathe: press [RECORD] to leave grid recording, select [T4] and turn [CHANCE] down to about 70%. Then save the pattern (hold [FUNC], long-press [SETTINGS])."
+    hl: p:record h:track p:t4 t:chance h:func p:settings
+    hear: "Listen to eight bars without touching anything: it never quite repeats."
+  - k: check
+    t: Your pattern is 4 bars long. Which condition makes a trig play only in bar 8?
+    q:
+      - 1:2
+      - "!2:2"
+      - FILL
+      - 50%
+    a: 2:2. On a 4-bar pattern it is true on every second pass, and the second pass through bar 4 is bar 8. The kicks set to 1:2 do the opposite and disappear in bar 8.
+    hear: A phrase needs a beginning and an end. Give bar 4 a small change and bar 8 a big one.
+challenge: Listen to Bonobo's "Kiara" or Burial's "Archangel" and write down what changes at bars 4, 8 and 16. Copy one of those ideas into your B01 phrase.

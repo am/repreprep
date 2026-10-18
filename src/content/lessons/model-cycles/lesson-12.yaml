@@ -1,0 +1,96 @@
+id: w12
+number: 12
+unit: Notes and harmony
+title: Melody, question and answer
+goal: Write a short melody that asks a question and answers it, using steps and the root, and let it vary with trig conditions.
+listen: Air, "Playground Love". Notice how short the melody's phrases are, and how each one seems to reply to the one before.
+concepts:
+  - h: Steps and leaps
+    p:
+      - Melodies move mostly by steps, to the next note of the scale, with a few leaps for drama. After a leap, stepping back the other way sounds natural.
+  - h: Chord tones
+    p:
+      - Notes that belong to the chord underneath (root, 3rd, 5th, 7th) sound stable, especially on strong beats. Other scale notes work as passing notes in between.
+  - h: Question and answer
+    p:
+      - A phrase that ends away from the root sounds like a question. Repeat its start and end on the root, and it becomes the answer. A short motif repeated, sometimes at a new pitch (a sequence), is what makes a melody stick.
+  - h: One track, two voices
+    p:
+      - "Each track plays one sound at a time. Your melody lives on T6 in the gaps between chords: a SHAPE lock to Unison turns a chord step into a single note."
+steps:
+  - k: learn
+    fig: u3contour
+    t: A melody is a line of steps and leaps. Steps, to the next scale note, feel smooth and singable. Leaps feel dramatic, and sound best when the line then steps back the other way.
+  - k: learn
+    fig: u3qa
+    t: Melodies talk in phrases. A question ends away from home, often on the 2nd or 5th. The answer starts the same way and lands on the root. In B01 the chords play bars 1 and 3, and the melody asks in bar 2 and answers in bar 4.
+  - k: learn
+    fig:
+      grid:
+        title: Ask, then answer
+        presets:
+          - name: Question and answer
+            bpm: 80
+            note: A C B (a comma), then A C B A (a full stop).
+            rows:
+              - { n: Kick, s: kick, hits: "1,9", vel: 0.6 }
+              - { n: Bass, s: bass, hits: "1,9", vel: 0.6, note: 45 }
+              - { n: Melody, s: pluck, hits: "1,3,5,9,11,13,15", p: [ 69, 0, 72, 0, 71, 0, 0, 0, 69, 0, 72, 0, 71, 0, 69, 0 ] }
+          - name: Two questions
+            bpm: 80
+            note: "A C B twice: it never lands."
+            rows:
+              - { n: Kick, s: kick, hits: "1,9", vel: 0.6 }
+              - { n: Bass, s: bass, hits: "1,9", vel: 0.6, note: 45 }
+              - { n: Melody, s: pluck, hits: "1,3,5,9,11,13", p: [ 69, 0, 72, 0, 71, 0, 0, 0, 69, 0, 72, 0, 71, 0, 0, 0 ] }
+          - name: Sequence
+            bpm: 80
+            note: A C B, the same shape from C (C E D), then home to A.
+            rows:
+              - { n: Kick, s: kick, hits: "1,9", vel: 0.6 }
+              - { n: Bass, s: bass, hits: "1,9", vel: 0.6, note: 45 }
+              - { n: Melody, s: pluck, hits: "1,3,5,9,11,13,15", p: [ 69, 0, 72, 0, 71, 0, 0, 0, 72, 0, 76, 0, 74, 0, 69, 0 ] }
+    t: "Hear it: three notes asked, then answered. Then the version that never lands, and a sequence, where the motif repeats from a higher note."
+    hear: Ending on the root feels like a full stop. Ending anywhere else feels like a comma.
+  - k: play
+    t: "Go to B01, press [RECORD] and select [T6]. Press [PAGE] for page 2 and place a note on [TRIG 9]: the melody's first note."
+    hl: p:record h:track p:t6 p:page p:s9
+    hear: "The chord in bar 2 now stops halfway: a track plays one sound at a time."
+  - k: play
+    t: "Make it a single note: hold [TRIG 9] and turn [SHAPE] to Unison ×2. Still holding it, hold [FUNC] and turn [PITCH] 12 semitones up, so the melody sits an octave above the chords."
+    hl: h:s9 t:shape h:func t:pitch
+    hear: "One clear, higher note. If it sounds sour, hold the trig and turn [COLOR] down: in Unison, COLOR is detune."
+  - k: play
+    t: "Copy it: hold [TRIG 9] and press [RECORD]. Then hold [TRIG 11] and press [STOP], and hold [TRIG 13] and press [STOP]."
+    hl: h:s9 p:record h:s11 p:stop h:s13 p:stop
+    hear: Three identical notes. The SHAPE and PITCH locks came along with them.
+  - k: play
+    t: "Shape the question: on [TRIG 11], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones up. On [TRIG 13], 2 up. The motif is now A, C, B."
+    hl: h:s11 p:level t:level h:s13
+    hear: "It ends on B, the 2nd, and hangs in the air: a question."
+  - k: play
+    t: "Answer it: hold [TRIG 9], [TRIG 11] and [TRIG 13] and press [RECORD]. Press [PAGE] for page 4, hold [TRIG 9] and press [STOP]. Then copy [TRIG 9] to [TRIG 15] the same way."
+    hl: h:s9 h:s11 h:s13 p:record p:page p:stop h:s15
+    hear: "Bar 4 plays A, C, B and then A again: the answer lands home."
+  - k: play
+    t: "Make the answer wait: on page 4, hold [TRIG 15] and turn [CHANCE] until the screen shows 2:2. It now lands home only every second time round."
+    hl: h:s15 t:chance
+    hear: "Bars 1–4 ask twice, bars 5–8 finally answer: an 8-bar phrase from a 4-bar pattern."
+  - k: play
+    t: "Let the question vary: on page 2, copy [TRIG 13] to [TRIG 15]. On [TRIG 15], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones higher, to D. Then hold it and turn [CHANCE] to 50%."
+    hl: p:page h:s13 p:record h:s15 p:stop p:level t:level t:chance
+    hear: Sometimes the question climbs one step further. It never plays quite the same way twice.
+  - k: play
+    t: Press [RECORD] to leave grid recording and listen to eight bars. Mute T6 ([FUNC] + [T6]) to hear the space it fills, unmute it, and save (hold [FUNC], long-press [SETTINGS]).
+    hl: p:record h:func p:t6 p:settings
+    hear: Chords call in bars 1 and 3, the melody replies in 2 and 4. Your track now sings.
+  - k: check
+    t: Bar 2 plays A, C, B and bar 4 plays A, C, B, A. Why does bar 4 sound finished?
+    q:
+      - It's louder
+      - "!It ends on the root, A"
+      - It has more notes
+      - It uses a leap
+    a: Ending on the root sounds like a full stop. Ending on B, the 2nd, sounds like a comma. That's question and answer.
+    hear: Ask away from home, answer on the root.
+challenge: Hum a four-note answer of your own over the loop, then find it on the pentatonic keys ([TRIG 2], [TRIG 4], [TRIG 7], [TRIG 9], [TRIG 12], [TRIG 14], [TRIG 16]). Put it on page 4 in place of A, C, B, A, and keep the last note on the root.

@@ -1,0 +1,72 @@
+id: w06
+number: 6
+unit: Sound
+title: Bright and dark
+goal: Hear harmonics, tell bright sounds from dark ones, and use the macros to make a dark and a bright version of your loop.
+listen: Floating Points, "Last Bloom". Notice which sounds feel muffled and dark and which feel airy and bright, and whether that changes as the track goes on.
+concepts:
+  - h: Harmonics
+    p:
+      - "Almost every sound is a stack of tones: the note you hear plus quieter harmonics above it. Few harmonics sound dark, soft or pure. Many sound bright, buzzy or glassy."
+  - h: Waveforms
+    p:
+      - A sine wave has no harmonics, so it is pure and round. A triangle adds a few quiet ones, a square more, and a sawtooth has them all, so it's the brightest.
+  - h: Filters and FM
+    p:
+      - "A low-pass filter darkens a sound by removing the harmonics above a cutoff. FM works the other way: one oscillator wobbles another's pitch very fast, which adds harmonics. More modulation, brighter sound."
+      - The Model:Cycles is an FM machine with no filter knob, so you darken a sound by turning its modulation down.
+  - h: Listen, don't calculate
+    p:
+      - "COLOR, SHAPE, SWEEP and CONTOUR do different jobs on each machine. Don't think in FM terms: turn one, listen, and name what changed."
+steps:
+  - k: learn
+    fig: u2waves
+    t: "Every sound is a stack of tones: the note you hear plus quieter harmonics above it. A sine has none, a sawtooth has them all. The more harmonics, the brighter the sound."
+  - k: learn
+    fig: u2spectrum
+    t: A low-pass filter darkens a sound by turning down everything above a cutoff. Burial's hats in "Ghost Hardware" are pitched way down with their highs cut away, so they sound dusty rather than crisp.
+  - k: learn
+    fig: u2fm
+    t: "FM, in plain words: one oscillator wobbles another's pitch very fast. A little wobble adds a few harmonics; a lot adds many, then noise. The Model:Cycles has no filter knob, so less modulation is how you go dark."
+  - k: learn
+    fig: u2macros
+    t: The four macros mean something different on each machine. On five of the six, SHAPE and CONTOUR set how much modulation there is, so they are your main brightness knobs.
+    hear: COLOR and SWEEP change the tuning and movement of the tone. Use your ears to decide if that's brighter.
+  - k: play
+    t: "Let pattern changes wait for the bar: on B01, hold [FUNC] and press [PAGE] to open the SCALE menu, set CHG to 64 with [LEVEL/DATA], then press [BACK]."
+    hl: h:func p:page t:level p:back
+    hear: Nothing changes in the sound. When you pick another pattern now, it starts at the end of your 4 bars.
+  - k: play
+    t: "Make a twin: hold [PATTERN] + [TRIG 1] and press [RECORD] to copy B01. Then hold [PATTERN] + [TRIG 4] and press and hold [STOP] until the countdown finishes. Go to B04 (hold [PATTERN], press [TRIG 4])."
+    hl: h:pattern p:s1 p:record p:s4 h:stop
+    hear: B04 is an exact copy. B04 becomes the bright version, B01 the dark one.
+  - k: play
+    t: "Brighten B04's hats: press [PLAY], select [T3] and turn [SHAPE] and [CONTOUR] up. Hold [FUNC] and turn [PITCH] up a few semitones."
+    hl: p:play h:track p:t3 t:shape t:contour h:func t:pitch
+    hear: Crisp, glassy hats, the kind that cut through a club.
+  - k: play
+    t: "Brighten the rest of B04: on T1 turn [CONTOUR] up for click, on T2 turn [SHAPE] up for more crack, and on T4 turn [SHAPE] and [COLOR] up."
+    hl: h:track p:t1 t:contour p:t2 t:shape p:t4 t:color
+    hear: The same beat, now hard and shiny.
+  - k: play
+    t: "Now the dark one: hold [PATTERN] and press [TRIG 1]. When B01 starts, select [T3], hold [FUNC] and turn [PITCH] well down. Turn [SHAPE] and [CONTOUR] down and [DECAY] a little shorter."
+    hl: h:pattern p:s1 h:track p:t3 h:func t:pitch t:shape t:contour t:decay
+    hear: "Dusty hats: more like brushed paper than cymbals."
+  - k: play
+    t: "Darken the perc too: select [T4] and turn [SHAPE] and [COLOR] down. Leave your round kick and snare from lesson 5 as they are."
+    hl: h:track p:t4 t:shape t:color
+    hear: A soft, muted loop where nothing pokes out.
+  - k: play
+    t: "Compare: switch between B01 and B04 while it plays (hold [PATTERN], press [TRIG 1] or [TRIG 4]). Finish on B01, your track, and save it: hold [FUNC] and long-press [SETTINGS]."
+    hl: h:pattern p:s1 p:s4 h:func p:settings
+    hear: Same rhythm, two worlds. Dark sits back and lets you lean in; bright jumps forward.
+  - k: check
+    t: You want your hats darker. Which move works on the Model:Cycles?
+    q:
+      - Turn SHAPE and CONTOUR up
+      - "!Turn SHAPE and CONTOUR down, and lower PITCH"
+      - Turn VOLUME + DIST up
+      - Turn SWING up
+    a: Less modulation means fewer harmonics, and a lower pitch moves everything down. Together they do the job a low-pass filter does on other synths.
+    hear: More harmonics, brighter. Fewer, darker. In night music, start dark and add brightness only where you want the ear to go.
+challenge: "In B01, give just one hat its own sparkle: press [RECORD], hold that hat's trig and turn [SHAPE] up. One bright hit in a dark loop pulls the ear to it."

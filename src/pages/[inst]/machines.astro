@@ -1,9 +1,9 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Band from "../../components/site/Band.astro";
-import { READY } from "../../course/index.js";
-export function getStaticPaths() {
-  return READY.filter((I) => I.machines).map((I) => ({ params: { inst: I.slug }, props: { I } }));
+import { courses } from "../../course/content.js";
+export async function getStaticPaths() {
+  return (await courses()).filter((I) => I.machines).map((I) => ({ params: { inst: I.slug }, props: { I } }));
 }
 const { I } = Astro.props;
 const COMMON = [["PITCH", "-24 to +24 semitones"], ["DECAY", "0–127, length of the sound"], ["VOL+DIST", "60 is clean; above adds level and distortion"], ["PUNCH", "compression-like accent"], ["GATE", "hold notes for their LEN"], ["LFO", "one per track, 7 waves: triangle, sine, square, saw, envelope, ramp, random"]];

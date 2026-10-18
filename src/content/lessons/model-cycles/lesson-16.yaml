@@ -1,0 +1,72 @@
+id: w16
+number: 16
+unit: Space, arrangement and finishing
+title: Perform, record and finish
+goal: Perform your song live with mutes, fills, chance and Control All, record a 3–5 minute take into Live, and start the finishing loop.
+listen: Your own take, once you've recorded it. Listen once all the way through without stopping, then once more away from where you made it.
+concepts:
+  - h: Performance tools
+    p:
+      - "Mutes take parts out and bring them back: switch just before the 1 so they land on the beat. Hold [PAGE] for fills, turn [CHANCE] to thin a track, and hold [TRACK] while turning a knob to move all six tracks at once (Control All)."
+      - "On the Model:Cycles mutes are global: a muted track stays muted when the pattern changes."
+  - h: A safety net
+    p:
+      - Before a big move, make a temporary save with a short press of [FUNC] + [SETTINGS]. [FUNC] + [PATTERN] brings the pattern back to that point. It isn't a permanent save, so you can tweak without fear.
+  - h: Record the whole take
+    p:
+      - Record one stereo take from start to finish and don't stop for mistakes. The Model:Cycles' main outputs go into an audio interface, and Live records them on one audio track. Editing it in Live comes in the Live course.
+  - h: The finishing loop
+    p:
+      - "Listen back away from where you made it: on a walk, on a phone, in the car. Write down three fixes, make them, record again. After three to five rounds, call it finished and start the next one."
+steps:
+  - k: learn
+    fig: u4perf
+    t: A performance is the arrangement played by hand. Each pattern loops until you cue the next, so you decide how long each section lasts. Plan your moves before you press record.
+  - k: learn
+    fig: u4rec
+    t: "The setup: two cables from MAIN OUT L and R on the back of the Model:Cycles into two inputs of your audio interface. In Live, one audio track listens to those inputs and records what you play."
+  - k: learn
+    fig: u4finish
+    t: Finishing is a loop, not a moment. Record, listen away from the studio, write three fixes, fix and save, then record again. Small rounds finish more music than one perfect attempt.
+  - k: play
+    t: "Rehearse the cues: go to B05 and press [PLAY]. In the last bar of each section, hold [PATTERN] and press the next pattern's trig key. The new pattern flashes on the screen and starts when the current one ends."
+    hl: h:pattern p:s5 p:play p:s6 p:s7 p:s8 p:s9
+    hear: Clean switches on the bar line. A section loops until you cue the next, so stay as long as it feels right.
+  - k: play
+    t: "Add mutes and fills: in an A, mute the hats ([FUNC] + [T3]) for its last bar and unmute them on the 1 of the B. Going into a new section, hold [PAGE] through the first beat to play lesson 4's FILL hat."
+    hl: h:func p:t3 h:page
+    hear: Small moves at the edges of sections make each change feel deliberate.
+  - k: play
+    t: "In the break (B08), make a temporary save: hold [FUNC] and briefly press [SETTINGS]. Hold [TRACK] and turn [REVERB SEND] up: every track pours into the room. Then hold [FUNC] and press [PATTERN] to snap back."
+    hl: h:func p:settings h:track t:reverb p:pattern
+    hear: A wash of reverb over the whole break, then the dry groove exactly as it was.
+  - k: play
+    t: "End it: in the outro (B09), select [T3] and slowly turn [CHANCE] down so the hats thin out, then mute tracks one by one ([FUNC] + pad) until only the chords ring. Press [STOP]. Afterwards, unmute every track."
+    hl: h:track p:t3 t:chance h:func p:t2 p:t4 p:stop
+    hear: The song comes apart gently instead of just stopping. Reverb and delay ring on after [STOP].
+  - k: play
+    t: "Connect: with everything switched off, run two 1/4\" jack cables from MAIN OUT L and R to inputs 1 and 2 of your audio interface. Switch on. In Live, create an audio track, set its input to the interface's inputs 1/2, and arm it for recording."
+    hl: p:mainvol
+    hear: "Play B07: the track's meter in Live moves with the beat."
+  - k: play
+    t: "Set the level: play B07, your loudest section, and turn [MAIN VOLUME] until Live's meter peaks comfortably below the top, never in the red. Leave [MAIN VOLUME] there for the whole take. Press [STOP]."
+    hl: p:play t:mainvol p:stop
+    hear: Peaks with room to spare. A take that clips can't be fixed later.
+  - k: play
+    t: "Record: go to B05, start recording in Live, wait a bar, and press [PLAY]. Perform your plan for 3 to 5 minutes, letting A and B loop two or three times each. Don't stop for mistakes. After the outro, press [STOP], let the tails ring out, then stop Live."
+    hl: h:pattern p:s5 p:play p:stop
+    hear: "One continuous take. A slip in a live take is part of it: keep going."
+  - k: play
+    t: "Start the finishing loop: listen back once without stopping, then again away from the studio. Write three fixes, make them in the patterns, save each one (hold [FUNC], long-press [SETTINGS]), and record a new take another day."
+    hl: h:func p:settings
+    hear: Each round the song gets a little clearer. After a few rounds, let it go and start the next.
+  - k: check
+    t: You mute the kick ([FUNC] + [T1]) in the break, then cue the B. What happens to the kick?
+    q:
+      - It comes back by itself in the B
+      - "!It stays muted until you unmute it"
+      - The B pattern loses its kick for good
+      - The pattern change is cancelled
+    a: "It stays muted. On the Model:Cycles mutes are global: they belong to the performance, not the pattern, so they carry across pattern changes. Unmute it just before the 1 of the B."
+    hear: "Plan mutes like cues: out before a change, back in on the 1."
+challenge: Record a second take on another day with a different order or length of sections, and keep the better one. Give it a name and play it to someone.

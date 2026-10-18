@@ -1,8 +1,8 @@
 // Site-wide pieces: home page, header, theme, panel guide, reference pages, privacy form messages.
 import { test, expect } from "./fixtures.mjs";
-import { INSTRUMENTS } from "../../src/course/index.js";
+import { COURSES } from "../../src/course/files.js";
 
-const I = INSTRUMENTS.find((i) => i.ready);
+const [I] = COURSES;
 
 test("home page leads to the course; tapping its logo stays on it", async ({ page }) => {
   await page.goto("/");

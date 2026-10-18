@@ -1,12 +1,14 @@
-// The course data and the shared HTML helpers (src/course/index.js, shared/*). The pages built from them are tested in tests/site.
+// The course data, the lesson schema and the shared HTML helpers (src/course/index.js, files.js, schema.js, shared/*). The pages built from them are tested in tests/site.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { INSTRUMENTS, READY, instrumentBySlug, lessonLabel, pad2, stepPath, nextLesson, renderFig } from "../../src/course/index.js";
+import { INSTRUMENTS, lessonLabel, pad2, stepPath, nextLesson, renderFig } from "../../src/course/index.js";
+import { CATALOG, COURSES } from "../../src/course/files.js";
+import { lessonSchema } from "../../src/course/schema.js";
 import { esc, hits, svgFig, T } from "../../src/course/shared/html.js";
 import { renderGrid, gridPreset } from "../../src/course/shared/grid.js";
 import { SONGS, linkSongs } from "../../src/course/shared/songs.js";
 
-const I = instrumentBySlug("model-cycles");
+const [I] = COURSES;
 const count = (html, re) => (html.match(re) || []).length;
 
 test("esc escapes the four HTML characters", () => {
@@ -25,12 +27,29 @@ test("svgFig and T build SVG pieces", () => {
   assert.equal(T(1, 2, "hi", "fh", "start"), '<text x="1" y="2" text-anchor="start" class="fh">hi</text>');
 });
 
-test("instruments: only the ready ones have lessons; slugs find them", () => {
+test("instruments: only the ready ones have lessons", () => {
   assert.equal(I.name, "Model:Cycles");
-  assert.ok(INSTRUMENTS.filter((x) => !x.ready).every((x) => !x.lessons));
-  assert.deepEqual(READY, [I]);
-  assert.equal(instrumentBySlug("nope"), undefined);
+  assert.deepEqual(CATALOG.map((x) => x.key), INSTRUMENTS.map((x) => x.key));
+  assert.ok(CATALOG.filter((x) => !x.ready).every((x) => !x.lessons));
+  assert.deepEqual(COURSES, [I]);
+  assert.equal(I.lessons.length, 20);
   assert.equal(pad2(3), "03");
+});
+
+test("lesson schema: grid hits become 16 velocities, mistakes are caught", () => {
+  const step = (fig) => ({ k: "play", t: "Play it.", fig });
+  const lesson = (steps, more = {}) => ({ id: "w99", number: 99, unit: "U", title: "T", goal: "Go", concepts: [], steps, ...more });
+  const grid = { bpm: 90, rows: [{ n: "Kick", s: "kick", hits: "1,9", vel: .5 }, { n: "Hat", s: "hat", hits: 3 }] };
+  const ok = lessonSchema.parse(lesson([step({ grid })]));
+  assert.deepEqual(ok.steps[0].fig.grid.rows.map((r) => r.v), [hits("1,9", .5), hits("3")]);
+  assert.ok(!("hits" in ok.steps[0].fig.grid.rows[0]));
+  const bad = (l) => assert.equal(lessonSchema.safeParse(l).success, false);
+  bad(lesson([step()], { typo: 1 }));                                                  /* unknown field */
+  bad(lesson([step({ grid: { bpm: 90, rows: [{ n: "K", s: "nope", hits: "1" }] } })])); /* unknown sound */
+  bad(lesson([step({ grid: { bpm: 90, rows: [{ n: "K", s: "kick" }] } })]));            /* no hits */
+  bad(lesson([{ k: "check", t: "Which?", q: ["a", "b"], a: "a" }]));                   /* no right answer */
+  bad(lesson([step()], { song: true }));                                               /* a song study has no number */
+  bad(lesson([step()], { id: "x1" }));
 });
 
 test("lessons: ids, addresses and short names are unique and stable", () => {

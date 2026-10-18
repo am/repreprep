@@ -1,9 +1,9 @@
 ---
 import Base from "../../layouts/Base.astro";
 import CourseMap from "../../components/course/CourseMap.astro";
-import { READY } from "../../course/index.js";
-export function getStaticPaths() {
-  return READY.map((I) => ({ params: { inst: I.slug }, props: { I } }));
+import { courses } from "../../course/content.js";
+export async function getStaticPaths() {
+  return (await courses()).map((I) => ({ params: { inst: I.slug }, props: { I } }));
 }
 const { I } = Astro.props;
 const first = I.lessons[0];

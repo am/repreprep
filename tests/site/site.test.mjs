@@ -2,12 +2,13 @@
 // every link on every page goes somewhere, and no page shows "undefined" or "NaN".
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { INSTRUMENTS, stepPath } from "../../src/course/index.js";
+import { stepPath } from "../../src/course/index.js";
+import { COURSES } from "../../src/course/files.js";
 import { pages, exists } from "./built.mjs";
 
 test("every lesson step, challenge and reference page is built", () => {
   const want = ["/", "/account", "/privacy", "/404"];
-  for (const I of INSTRUMENTS.filter((i) => i.ready)) {
+  for (const I of COURSES) {
     want.push(`/${I.slug}`, `/${I.slug}/panel`, `/${I.slug}/machines`, `/${I.slug}/shortcuts`);
     for (const id of Object.keys(I.controls)) want.push(`/${I.slug}/panel/${id}`);
     for (const L of I.lessons) for (let i = 0; i < L.steps.length + (L.challenge ? 1 : 0); i++) want.push(stepPath(L, i));

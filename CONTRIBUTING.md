@@ -13,6 +13,7 @@ Thanks for helping. Fixes to lessons, corrections against the real instruments a
 
 - One idea per lesson. Each lesson has an intro, Learn steps (the idea, with our own drawings or a playable grid), Play steps (click-by-click on the device) and Check steps (multiple choice).
 - Write Play steps as short separate sentences. Each sentence becomes a bullet.
+- Each lesson is a YAML file in `src/content/lessons/<instrument>/`. Steps are listed under `steps:` with `k` (learn, play or check), `t` (the text), `hl` (keys to light up), `fig` (a drawing's name, or a playable `grid` whose rows give `hits: "1,5,9,13"`), and for Check steps `q` (the options, the right one starting with `!`) and `a` (why). `src/course/schema.js` lists every field.
 - Write keys as `[NAME]`, for example `[FUNC]` or `[TRIG 5]`. They render as keycaps.
 - Button combinations must match the instrument's official manual. Say which page or section you checked in your pull request.
 - Everything lives inside the lessons: no links to videos or other sites. The one exception is songs, which name the artist and link to the original track on Spotify.

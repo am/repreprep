@@ -30,7 +30,8 @@ Open http://localhost:4321. On your own computer the account page offers a **loc
 
 ## Where things are
 
-- `src/course/`: the course itself. `model-cycles/lessons/` (one file per unit plus `songs.js`), `model-cycles/figures/` (the drawings), `model-cycles/controls.js` (panel drawing and the description of every key and knob), `reference.js` (machines and shortcuts). `shared/` holds the step formatting, the playable grid and the Spotify links.
+- `src/content/lessons/`: the lessons, one YAML file each (`model-cycles/lesson-05.yaml`, `model-cycles/song-01-looped.yaml`). They are an Astro content collection (`src/content.config.ts`): every file is checked against `src/course/schema.js` when the site builds, so a missing or misspelled field stops the build and names the file.
+- `src/course/`: the rest of the course. `model-cycles/figures/` (the drawings), `model-cycles/controls.js` (panel drawing and the description of every key and knob), `reference.js` (machines and shortcuts). `shared/` holds the step formatting, the playable grid and the Spotify links. `index.js` lists the instruments and turns lesson files into pages (intro step, address, short name); pages read the lessons through `content.js`, scripts and tests through `files.js`.
 - `src/components/`: the page pieces as Astro components. `course/` has the lesson player and its parts, the notes, the course map and the panel guide; `site/` has the header, footer, logo, theme switch and shared blocks (`Band`, `Card`).
 - `src/layouts/Base.astro`: the page shell every page uses.
 - `src/pages/`: one file per kind of address. `api/` and `auth/` are the only parts that run on the server.

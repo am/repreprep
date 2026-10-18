@@ -1,0 +1,117 @@
+id: s01
+song: Kiasmos – Looped
+unit: Kiasmos
+title: Looped
+goal: Build a club loop around one piano-like chord figure, add the beat one layer at a time, and keep the low end light.
+listen: Kiasmos, "Looped" (from the album Kiasmos, 2014). Notice what stays in front the whole time, and how the beat builds up around it.
+concepts:
+  - h: What Kiasmos said
+    p:
+      - Janus Rasmussen called Looped an experiment in putting piano and strings into a club track, and said the piano chords are pretty much the only thing in focus for most of the song. It runs at about 120 BPM.
+  - h: One idea, many layers
+    p:
+      - Instead of writing new parts, keep one idea and let other layers arrive and leave around it. Each new layer is one step up in energy, and the ear stays with the idea.
+  - h: Low chords, light bass
+    p:
+      - Ólafur Arnalds explained that because the piano chords sit low, the bass line can be lighter. Two busy parts in the same low range crowd each other.
+steps:
+  - k: learn
+    fig: layers
+    t: "Looped keeps one thing in focus: the piano chords. Everything else comes and goes around them, and each layer that arrives lifts the energy a step."
+  - k: learn
+    fig:
+      grid:
+        title: Build it in layers
+        presets:
+          - name: Chords alone
+            bpm: 120
+            note: The idea on its own.
+            rows:
+              - { n: Chord, s: keys, note: 55, hits: "1,7,11", vel: 0.8 }
+              - { n: Chord, s: keys, note: 58, hits: "1,7,11", vel: 0.7 }
+              - { n: Chord, s: keys, note: 62, hits: "1,7,11", vel: 0.7 }
+              - { n: Kick, s: kick, hits: "" }
+              - { n: Hat, s: hat, hits: "" }
+              - { n: Clap, s: clap, hits: "" }
+          - name: + kick
+            bpm: 120
+            note: The same chords, now with a pulse.
+            rows:
+              - { n: Chord, s: keys, note: 55, hits: "1,7,11", vel: 0.8 }
+              - { n: Chord, s: keys, note: 58, hits: "1,7,11", vel: 0.7 }
+              - { n: Chord, s: keys, note: 62, hits: "1,7,11", vel: 0.7 }
+              - { n: Kick, s: kick, hits: "1,5,9,13" }
+              - { n: Hat, s: hat, hits: "" }
+              - { n: Clap, s: clap, hits: "" }
+          - name: + hats and clap
+            bpm: 120
+            note: The full beat. The chords haven't changed at all.
+            rows:
+              - { n: Chord, s: keys, note: 55, hits: "1,7,11", vel: 0.8 }
+              - { n: Chord, s: keys, note: 58, hits: "1,7,11", vel: 0.7 }
+              - { n: Chord, s: keys, note: 62, hits: "1,7,11", vel: 0.7 }
+              - { n: Kick, s: kick, hits: "1,5,9,13" }
+              - { n: Hat, s: ohat, hits: "3,7,11,15", vel: 0.6 }
+              - { n: Clap, s: clap, hits: "5,13", vel: 0.7 }
+    t: Switch through the three versions while it plays. The chord part never changes. Only what surrounds it does.
+    hear: With the beat under it, the same chords feel faster and more urgent.
+  - k: learn
+    fig:
+      grid:
+        title: Heavy or light low end
+        presets:
+          - name: Busy bass
+            bpm: 120
+            note: A bass on every eighth note, under low chords.
+            rows:
+              - { n: Chord, s: keys, note: 55, hits: "1,7,11", vel: 0.8 }
+              - { n: Chord, s: keys, note: 58, hits: "1,7,11", vel: 0.7 }
+              - { n: Kick, s: kick, hits: "1,5,9,13" }
+              - { n: Bass, s: bass, note: 31, hits: "1,3,5,7,9,11,13,15", vel: 0.8 }
+          - name: Light bass
+            bpm: 120
+            note: Two bass notes per bar. The chords breathe.
+            rows:
+              - { n: Chord, s: keys, note: 55, hits: "1,7,11", vel: 0.8 }
+              - { n: Chord, s: keys, note: 58, hits: "1,7,11", vel: 0.7 }
+              - { n: Kick, s: kick, hits: "1,5,9,13" }
+              - { n: Bass, s: bass, note: 31, hits: "1,11", vel: 0.8 }
+    t: When the chords sit low, a busy bass fights them for the same space. Compare the two and listen to the chords, not the bass.
+    hear: With the light bass you can hear each chord ring out.
+  - k: play
+    t: "Go to this study's own pattern: hold [PATTERN], press [T3] (bank C), then press [TRIG 1]. If anything plays there, clear it with [FUNC] + [PLAY]. Press [TEMPO], set 120 BPM with [LEVEL/DATA], and press [BACK]."
+    hl: h:pattern p:t3 p:s1 p:tempo t:level p:back
+    hear: C01 on the screen, at 120 BPM.
+  - k: play
+    t: "Set the machines this study needs, the same layout as your course track: T1 KICK, T2 SNARE, T3 METAL, T5 TONE, T6 CHORD. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
+    hl: h:track p:machines t:level p:back
+  - k: play
+    t: "Make the piano chords: press [RECORD], select [T6]. Turn [SHAPE] until the screen shows minor, [PITCH] down to -12 to sit low, and [DECAY] up to about 90 so it rings."
+    hl: p:record h:track p:t6 t:shape t:pitch t:decay
+    hear: "Tap [T6]: one dark, low chord."
+  - k: play
+    t: "Give it the figure from the drawing: on T6, place chords on [TRIG 1], [TRIG 7] and [TRIG 11]. Press [PLAY]."
+    hl: p:s1 p:s7 p:s11 p:play
+    hear: A short, off-balance chord figure. This is the whole idea of your loop.
+  - k: play
+    t: "Add the beat: on T1, kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. On T3, hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15] with [DECAY] turned up so they ring open. On T2, a snare on [TRIG 5] and [TRIG 13]."
+    hl: h:track p:t1 p:s1 p:s5 p:s9 p:s13 p:t3 t:decay p:t2
+    hear: A club beat around your chords.
+  - k: play
+    t: "Add a light bass: select [T5] (TONE), turn [PITCH] down to -24 and place notes only on [TRIG 1] and [TRIG 11]."
+    hl: h:track p:t5 t:pitch p:s1 p:s11
+    hear: Just two low notes. The chords already fill the middle.
+  - k: play
+    t: "Play the build: press [RECORD] to leave grid recording, then mute T1, T2, T3 and T5 ([FUNC] + each pad) so only the chords play. Every 8 bars, unmute one more track. Save when you're done: hold [FUNC] and long-press [SETTINGS]."
+    hl: p:record h:func p:t1 p:t2 p:t3 p:t5 p:settings
+    hear: The loop never changes, but the energy keeps climbing.
+  - k: check
+    t: What did Kiasmos keep in focus for most of Looped?
+    q:
+      - The drums
+      - "!The piano chords"
+      - A vocal
+      - The bassline
+    a: The piano chords. Janus Rasmussen said they are pretty much the only thing in focus for most of the song. The beat builds up around them.
+    hear: One strong idea, with layers arriving around it one at a time.
+challenge: Listen to Looped again and notice roughly how long each new layer waits before it arrives. Play your mutes with the same patience.
