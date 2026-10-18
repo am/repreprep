@@ -156,7 +156,8 @@ h3{font-weight:var(--fw-bold)}
 .stack{display:flex;flex-direction:column;gap:var(--s5)}
 .goal{margin:0;font-size:var(--fs-lg);color:var(--fg);max-width:65ch}
 .meta{display:flex;flex-wrap:wrap;gap:var(--s2) var(--s4);margin:var(--s3) 0 var(--s4);font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted)}
-.k{display:inline;font-family:var(--mono);font-weight:var(--fw-bold);font-size:.74em;line-height:1;letter-spacing:var(--ls-key);padding:2px var(--s2) 1px;border-radius:var(--r-xs);background:var(--surface-2);border:1px solid var(--line);border-bottom-width:2px;white-space:nowrap;margin:0 1px}
+/* key cap (keyCap in shared/text.js): inline-block with its own line-height so it is the same size in running text and in flex rows like the legend */
+.k{display:inline-block;font-family:var(--mono);font-weight:var(--fw-bold);font-size:.74em;line-height:1.3;letter-spacing:var(--ls-key);padding:2px var(--s2) 1px;border-radius:var(--r-xs);background:var(--surface-2);border:1px solid var(--line);border-bottom-width:2px;white-space:nowrap;margin:0 1px}
 .k .ico{width:1.05em;height:1.05em;vertical-align:-.16em}
 .k.press{border-color:var(--act-press);color:var(--act-press)}
 .k.hold{border-color:var(--act-hold);color:var(--act-hold)}

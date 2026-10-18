@@ -2,7 +2,7 @@
    the browser script (src/client/app.js) then fills in ticks, progress dots and notes. */
 import { esc } from "./shared/html.js";
 import { linkSongs } from "./shared/songs.js";
-import { KIND, keyify, fmtStep, hearNote, quiz, withHl } from "./shared/text.js";
+import { KIND, keyify, keyCap, fmtStep, hearNote, quiz, withHl } from "./shared/text.js";
 import { wkLabel, stepPath, nextLesson, renderFig } from "./index.js";
 
 const prog = (l) => `<span class="s" data-prog="${l.id}"></span>`;
@@ -46,7 +46,7 @@ export function player(I, L, act) {
         ${st.intro ? introCard(I, L) : `<div class="ptxt">${fmtStep(I, st)}</div>`}${st.q ? quiz(I, st) : st.a ? `<details class="ans"><summary>Show the answer</summary><p>${keyify(I, st.a, "")}</p></details>` : ""}${st.hear ? hearNote(I, st) : ""}
         <div class="ctl" id="ctlinfo" hidden></div>
         <div class="grow"></div>
-        <div class="legend"${k !== "play" ? " hidden" : ""}><span class="k press">press</span><span class="k hold">hold down</span><span class="k turn">turn</span><button type="button" class="hint" aria-label="Tips: click a control to learn it. Left and right arrow keys move between steps.">i<span class="tip" aria-hidden="true">Click a control to learn it. The ← → keys move between steps.</span></button></div>
+        <div class="legend"${k !== "play" ? " hidden" : ""}>${keyCap("PRESS", "press")}${keyCap("HOLD", "hold")}${keyCap("TURN", "turn")}<button type="button" class="hint" aria-label="Tips: click a control to learn it. Left and right arrow keys move between steps.">i<span class="tip" aria-hidden="true">Click a control to learn it. The ← → keys move between steps.</span></button></div>
         <div class="navrow">${back}${next}</div>
       </div></div>
   </section>`;

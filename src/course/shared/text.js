@@ -13,6 +13,10 @@ function byName(C){
   Object.assign(m,{"REC":"record","LFO":"lfo","VOLUME+DIST":"vol","VOL+DIST":"vol"});
   byNameCache.set(C,m); return m;
 }
+/* the one key cap used everywhere (step text, legend, control info): action is "press", "hold", "turn" or "" */
+export function keyCap(label,action="",icon="",title=""){
+  return `<span class="k ${action}"${title?` title="${esc(title)}"`:""}>${icon}${label}</span>`;
+}
 /* I = the instrument ({controls, icon}) whose keys the text names */
 export function keyify(I,text,hl){
   const C=I.controls||{}; const names=byName(C); const h=parseHl(hl);
@@ -20,7 +24,7 @@ export function keyify(I,text,hl){
     let id=names[name.toUpperCase()]; let cls="";
     if(id){ if(h.hold.includes(id))cls="hold"; else if(h.turn.includes(id))cls="turn"; else if(h.press.includes(id))cls="press"; }
     const ic=id&&C[id].icon&&I.icon?I.icon(C[id].icon):"";
-    return `<span class="k ${cls}"${ic?` title="${esc(C[id].kind)}"`:""}>${ic}${name.replace(/^TRIG (\d+)$/i,"$1")}</span>`;
+    return keyCap(name.replace(/^TRIG (\d+)$/i,"$1"),cls,ic,ic?C[id].kind:"");
   }).replace(/&quot;(.{2,80}?)&quot;/g,songLink);
 }
 export function splitSent(t){const out=[];let d=0,cur="";for(let i=0;i<t.length;i++){const c=t[i];cur+=c;if(c==="("||c==="[")d++;else if(c===")"||c==="]")d=Math.max(0,d-1);
