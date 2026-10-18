@@ -217,18 +217,6 @@ function fitPlayer() {
   el.style.setProperty("--ph", `calc(100dvh - ${Math.round(top) + 20}px)`);
 }
 window.addEventListener("resize", fitPlayer);
-/* "stuck" while Back/Next are pinned to the bottom of the window with step text running on underneath (phones).
-   Measured on scroll: when pinned, the buttons end above the step card's own bottom. (IntersectionObserver misreads
-   this in iPhone Safari, whose page runs on under its floating toolbar.) */
-let footRaf = 0;
-function checkFoot() {
-  footRaf = 0;
-  const f = $(".pfoot"), st = f && f.closest(".pstep"); if (!st) return;
-  f.classList.toggle("stuck", st.getBoundingClientRect().bottom - f.getBoundingClientRect().bottom > 2);
-}
-const watchFoot = () => { if (!footRaf) footRaf = requestAnimationFrame(checkFoot); };
-window.addEventListener("scroll", watchFoot, { passive: true });
-window.addEventListener("resize", watchFoot);
 const curLesson = () => { const p = P(); return p && { k: p.dataset.inst, id: p.dataset.lesson, act: +p.dataset.step, n: +p.dataset.steps, next: p.dataset.next, nextPath: p.dataset.nextPath }; };
 function markAllDone(s, c) { if (!s.done[c.id] && [...Array(c.n).keys()].every((i) => s.steps[c.id + ":" + i])) s.done[c.id] = Date.now(); }
 /* finishing a lesson opens the next one where you left it (or its intro); the last lesson stays put */
@@ -340,5 +328,5 @@ document.addEventListener("keydown", (e) => {
 
 /* every page view (first load and each in-site navigation) */
 document.addEventListener("astro:before-swap", gridStop);
-document.addEventListener("astro:page-load", () => { mountGrids(); hydrate(); watchFoot(); });
+document.addEventListener("astro:page-load", () => { mountGrids(); hydrate(); });
 loadAccount();

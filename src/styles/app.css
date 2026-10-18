@@ -265,9 +265,9 @@ body.resizing{cursor:col-resize;user-select:none}
   .player{height:auto;min-height:max(480px,var(--ph))}
   .pbody{grid-template-columns:minmax(0,1fr);flex:1}
   .pstage > svg{height:auto}
-  .pstep{overflow:visible}
-  /* the step scrolls with the page here: fade it out below the buttons too, so text never shows under them (e.g. behind a phone's browser bar) */
-  .pfoot.stuck::after{content:"";position:absolute;left:0;right:0;top:100%;height:calc(var(--s9) + env(safe-area-inset-bottom,0px));background:linear-gradient(to bottom,var(--bg),transparent);pointer-events:none}
+  /* the step scrolls inside its card, at most one screen tall, so its text is clipped by the card and never shows under the buttons
+     (page-level sticky can't be covered reliably: iPhone Safari draws the page on under its floating toolbar) */
+  .pstep{max-height:calc(100svh - var(--s5))}
 }
 /* maximized: the player takes the whole window */
 html.focus body{overflow:hidden}
