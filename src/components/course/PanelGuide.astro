@@ -20,3 +20,12 @@ const c = I.controls[sel];
     if (guide) { keepScroll = window.scrollY; navigate(`${guide.dataset.panelGuide}/${ctl.dataset.id}`); }
   }, true);
 </script>
+
+<style>
+  .refgrid{display:grid;grid-template-columns:minmax(0,1.6fr) minmax(0,1fr);gap:var(--s5) var(--s7);align-items:start}
+  /* panel guide: the selected control's details, open text under a hairline like the bands */
+  .info{display:flex;flex-direction:column;gap:var(--s3);padding-top:var(--s5);border-top:1px solid var(--line)}
+  .info > *{margin:0}
+  @media (max-width:1078px){.refgrid{grid-template-columns:minmax(0,1fr)}}
+  .dockpanel > :global(svg){width:100%;height:auto;display:block}
+</style>

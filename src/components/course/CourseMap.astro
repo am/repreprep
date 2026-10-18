@@ -10,3 +10,14 @@ const { I } = Astro.props;
     <LessonLink l={l} class="wk"><span class="t">{l.title}{l.song && <small class="by">{l.song.split(" – ")[0]}</small>}</span></LessonLink>
   ))}</div></section>
 ))}
+
+<style>
+  /* course map: no boxes, each part is a band between hairlines, its name on the left and its lessons on the right */
+  .unit .band-h{padding-top:var(--s2)}
+  .unit .band-h .t-label{margin:0;letter-spacing:var(--ls-key)}
+  /* two columns read top to bottom (1 3 / 2 4): --rows is half the unit's lessons, rounded up */
+  .unit .ls{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(var(--rows,1),auto);grid-auto-flow:column;gap:var(--s1) var(--s5);align-content:start}
+  .unit :global(.wk .t){font-size:var(--fs-md)}
+  @media (max-width:836px){.unit .band-h{padding-top:0}.unit .ls{grid-template-columns:minmax(0,1fr);grid-template-rows:none;grid-auto-flow:row}.unit :global(.wk){width:100%;min-width:0;grid-template-columns:2.125rem 1fr auto;border-color:transparent}}
+  .by{display:block;font-size:var(--fs-xs);color:var(--muted)}
+</style>

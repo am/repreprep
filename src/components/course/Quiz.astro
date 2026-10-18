@@ -15,3 +15,15 @@ const { I, st } = Astro.props;
     else { b.classList.add("wrong"); b.disabled = true; m.textContent = "Not quite. Try another one."; m.className = "qmsg no"; }
   }, true);
 </script>
+
+<style>
+  .quiz{margin:var(--s4) 0}.qhint{margin:0 0 var(--s2);font-size:.75rem;font-weight:var(--fw-semibold);letter-spacing:var(--ls-key);text-transform:uppercase;color:var(--muted)}
+  .opts{display:grid;gap:var(--s2)}
+  .opt{font:inherit;text-align:left;padding:var(--s3) var(--s4);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);color:inherit;cursor:pointer}
+  .opt:hover:not(:disabled){border-color:var(--done)}
+  .opt.right{border-color:var(--done);box-shadow:inset 0 0 0 1px var(--done);font-weight:var(--fw-semibold)}
+  .opt.wrong{opacity:.5;text-decoration:line-through}
+  .opt:disabled{cursor:default}
+  .qmsg{margin:var(--s3) 0 0;font-weight:var(--fw-semibold)}.qmsg.ok{color:var(--done)}
+  .qexp{margin:var(--s2) 0 0}
+</style>

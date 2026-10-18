@@ -6,3 +6,10 @@ interface Props { I: any; L: any }
 const { I, L } = Astro.props;
 ---
 <div class="pmenu">{byUnit(I.lessons).map((g) => <div class="pm-g"><div class="pm-h">{g.u}</div>{g.ls.map((l: any) => <LessonLink l={l} class="pm-i" current={l === L}><span class="t">{l.title}</span></LessonLink>)}</div>)}</div>
+
+<style>
+  .pmenu{position:absolute;z-index:30;top:calc(100% + .375rem);left:0;width:min(32.5rem,calc(100vw - 2rem));max-height:min(70vh,35rem);overflow:auto;background:var(--surface);border:1px solid var(--line);border-radius:var(--r-l);box-shadow:0 .75rem 2rem var(--shadow);padding:var(--s2);display:grid;grid-template-columns:1fr 1fr;gap:var(--s1) var(--s3);font-family:var(--body,inherit);font-weight:var(--fw-regular);font-size:var(--fs-sm)}
+  @media (max-width:660px){.pmenu{grid-template-columns:1fr;position:fixed;top:auto;left:1rem;right:1rem;width:auto;max-height:65vh}}
+  .pm-g{min-width:0}
+  .pm-h{font-family:var(--display);font-weight:var(--fw-bold);font-size:var(--fs-s);margin:var(--s2) var(--s2) var(--s1);color:var(--fg)}
+</style>

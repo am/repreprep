@@ -4,3 +4,10 @@ interface Props { title: string; [attr: string]: any }
 const { title, ...attrs } = Astro.props;
 ---
 <section class="card" {...attrs}><h3 class="t-title t-card">{title}</h3><slot /></section>
+
+<style>
+  /* card: the one information block. Same padding everywhere, and its children are spaced by one gap, never by their own margins.
+     Inside: .t-eyebrow > .t-title.t-card > .t-body, with .t-label for small print. */
+  .card{display:flex;flex-direction:column;gap:var(--s3);padding:var(--s5);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);min-width:0}
+  .card > :global(*){margin:0}
+</style>

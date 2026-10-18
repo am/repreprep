@@ -33,3 +33,48 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
   </header>
 )}
 
+<style>
+  .top{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s4) var(--s5);padding-bottom:var(--s4);border-bottom:1px solid var(--line)}
+  .brand{display:flex;align-items:baseline;gap:var(--s3)}
+  .brand h1{font-size:var(--fs-logo);line-height:.9}
+  .instr{display:flex;gap:var(--s5);flex-wrap:wrap;align-items:baseline}
+  .instr a,.instr .off{text-decoration:none;color:var(--muted);font-family:var(--display);font-weight:var(--fw-semibold);font-size:var(--fs-sm)}
+  .instr a:hover{color:var(--fg)}
+  .instr a[aria-current="page"]{color:var(--fg)}
+  .instr .off{opacity:.55;cursor:default}
+  .instr small{font-family:var(--body);font-weight:var(--fw-regular);opacity:.8;margin-left:var(--s1)}
+  .ctrls{margin-left:auto;display:inline-flex;align-items:center;gap:var(--s2);border:1px solid var(--line);border-radius:var(--r-pill)}
+  /* the theme pill shares the outer pill's height and right edge: their borders overlap */
+  .ctrls :global(.theme){margin:-1px -1px -1px 0}
+  .meter{font-family:var(--mono);font-size:var(--fs-s);color:var(--muted);text-decoration:none;white-space:nowrap;padding:0 var(--s1) 0 var(--s3)}
+  .meter:hover{color:var(--fg)}
+  /* header menu: on wide screens the menu is simply the rest of the header row */
+  .knob{display:none;flex:none;width:2.75rem;height:2.75rem;margin-left:auto;padding:0;border:0;background:none;cursor:pointer;-webkit-tap-highlight-color:transparent}
+  .knob svg{width:100%;height:100%;display:block;transition:transform .25s cubic-bezier(.2,.9,.3,1.2)}
+  .kn-cap{fill:var(--led)}
+  .kn-mark{stroke:var(--bg);stroke-width:2.8;stroke-linecap:butt}
+  .top.open .knob svg{transform:rotate(135deg)}
+  .hmenu{display:contents}
+  .hsep{display:none}
+  /* phones: logo and the knob; turning the knob opens every header option in a panel under it */
+  /* phones and tablets: logo + nav + meter + theme don't fit in one row, so they fold into the knob menu */
+  @media (max-width:946px){
+    .top{position:relative;flex-wrap:nowrap;padding-bottom:var(--s3)}
+    .knob{display:block}
+    .hmenu{display:none;position:absolute;z-index:40;top:calc(100% + var(--s2));left:auto;right:0;width:max-content;max-width:100%;flex-direction:column;align-items:stretch;gap:var(--s5);padding:var(--s5);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);box-shadow:0 1rem 2.5rem var(--shadow)}
+    .top.open .hmenu{display:flex}
+    .hmenu .instr{flex-direction:column;gap:var(--s3)}
+    .hmenu .instr a,.hmenu .instr .off{font-size:var(--fs-md)}
+    .hmenu .ctrls{margin:0;align-self:flex-start}
+    .hsep{display:block;width:100%;margin:0;border:0;border-top:1px solid var(--line)}
+    .hmenu .acct{align-self:flex-start;font-size:var(--fs-s);padding:var(--s2) var(--s4)}
+  }
+  @media (max-width:836px){
+    .brand h1{font-size:2.3rem}
+  }
+  .acct{font-family:var(--mono);font-size:var(--fs-xs);color:var(--muted);text-decoration:none;border:1px solid var(--line);border-radius:var(--r-pill);padding:var(--s1) var(--s3);white-space:nowrap}
+  .acct:hover{color:var(--fg);border-color:var(--faint)}
+  .brand :global(a){color:inherit;text-decoration:none}
+  /* the home page header: just the theme switch and the progress link, floating top right */
+  .top.bare{position:absolute;z-index:10;top:var(--s4);right:var(--s5);border:0;padding:0}
+</style>

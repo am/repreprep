@@ -78,3 +78,11 @@ import { SIGN_IN } from "../lib/features.js";
     if (m) { el.textContent = m[0]; el.className = "msg " + m[1]; }
   });
 </script>
+
+<style>
+  .contact{display:flex;flex-direction:column;gap:var(--s4)}
+  .contact label{display:block;font-size:var(--fs-sm);color:var(--muted)}
+  .contact textarea,.contact input{display:block;width:100%;margin-top:var(--s2);padding:var(--s3) var(--s3);border-radius:var(--r-m);border:1px solid var(--line);background:var(--surface);color:var(--fg);font:inherit;font-size:var(--fs-sm)}
+  .contact textarea{min-height:7.5rem;resize:vertical}
+  .contact .hp{position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden}
+</style>
