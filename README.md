@@ -38,6 +38,12 @@ Open http://localhost:4321. On your own computer the account page offers a **loc
 
 After editing lessons, run `npm run check`: it renders every step and stops at the first broken one.
 
+## Tests
+
+- `npm test` runs everything that also runs on every pull request: `npm run check`, the unit tests (`tests/unit`: step text, grids, song links, page markup), a build with checks on the built pages (`tests/site`: every step page exists, no broken links), and the browser tests (`tests/e2e`: moving through a lesson, ticks, notes, quizzes, progress files, theme, the phone menu). The browser tests need Chromium once: `npx playwright install chromium`.
+- `npm run test:unit` runs only the unit tests, in a second.
+- `npm run compare` is for changes that should not change the site, like a cleanup. It builds `main` next to your checkout, compares the HTML of every page, and compares screenshots of the main pages (desktop and phone, dark and light). Any difference is listed, and the screenshots that differ are saved in `.compare/shots` with the changed pixels in red. `npm run compare <branch or commit>` compares with something other than `main`.
+
 Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. Changing a lesson's id, or inserting a step in the middle of a lesson, moves people's ticks.
 
 ## Progress and accounts
@@ -61,7 +67,7 @@ Lesson ids (`w05`, `s01`) and step positions are what progress is stored under. 
 
 Messages sent from the contact form on `/privacy` are emailed to you and also stored in D1 (kept for a year; `npm run messages` lists the latest). Email needs Email Routing enabled on the repreprep.studio zone, your address verified there as a destination, and that address stored as a secret: `npx wrangler secret put CONTACT_TO`.
 
-Pushes to `main` deploy automatically through GitHub Actions (`.github/workflows/deploy.yml`), and every pull request gets a preview link at `pr-<number>-repreprep.<subdomain>.workers.dev`, posted as a PR comment. The workflow needs a `CLOUDFLARE_API_TOKEN` repository secret (an API token from the "Edit Cloudflare Workers" template, plus Account → D1 → Edit) and a `CLOUDFLARE_ACCOUNT_ID` repository variable. Previews share the production D1 database.
+Pushes to `main` run the tests and then deploy automatically through GitHub Actions (`.github/workflows/deploy.yml`), and every pull request that passes the tests gets a preview link at `pr-<number>-repreprep.<subdomain>.workers.dev`, posted as a PR comment. The workflow needs a `CLOUDFLARE_API_TOKEN` repository secret (an API token from the "Edit Cloudflare Workers" template, plus Account → D1 → Edit) and a `CLOUDFLARE_ACCOUNT_ID` repository variable. Previews share the production D1 database.
 
 ## License and contributing
 

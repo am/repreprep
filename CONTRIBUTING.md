@@ -7,6 +7,7 @@ Thanks for helping. Fixes to lessons, corrections against the real instruments a
 - For anything bigger than a typo, open an issue first so we can agree on the idea.
 - Run the site locally with `npm install` and `npm run dev` (see the README).
 - After changing lessons, run `npm run check`. It renders every step and stops at the first broken one.
+- Before opening a pull request, run `npm test` (see Tests in the README).
 
 ## How lessons are written
 
