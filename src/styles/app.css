@@ -101,7 +101,7 @@ h3{font-weight:var(--fw-bold)}
 @media (max-width:860px){
   .top{position:relative;flex-wrap:nowrap;padding-bottom:var(--s3)}
   .knob{display:block}
-  .hmenu{display:none;position:absolute;z-index:40;top:calc(100% + var(--s2));left:auto;right:0;width:min(360px,100%);flex-direction:column;align-items:stretch;gap:var(--s5);padding:var(--s5);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);box-shadow:0 16px 40px var(--shadow)}
+  .hmenu{display:none;position:absolute;z-index:40;top:calc(100% + var(--s2));left:auto;right:0;width:max-content;max-width:100%;flex-direction:column;align-items:stretch;gap:var(--s5);padding:var(--s5);border:1px solid var(--line);border-radius:var(--r-l);background:var(--surface);box-shadow:0 16px 40px var(--shadow)}
   .top.open .hmenu{display:flex}
   .hmenu .instr{flex-direction:column;gap:var(--s3)}
   .hmenu .instr a,.hmenu .instr .off{font-size:var(--fs-md)}
@@ -111,7 +111,6 @@ h3{font-weight:var(--fw-bold)}
 }
 @media (max-width:760px){
   .brand h1{font-size:2.3rem}
-  .hmenu{left:0;width:auto}
   .tabs{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin:var(--s3) calc(-1 * var(--s5)) var(--s5);padding-inline:var(--s5)}
   .tabs::-webkit-scrollbar{display:none}
   .tabs a{white-space:nowrap;padding-inline:var(--s2)}
