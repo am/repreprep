@@ -7,7 +7,7 @@ import { TRACK_MAP, songHome, songMachines, noteLock } from "./helpers.js";
    Step kinds: learn (concept, shows a drawing in place of the panel when fig is set), play (on the device, hl lights the panel),
    check (question t, answer a). hl = "p:x h:y t:z" (press / hold / turn), hear = what to listen for, [KEY] renders a keycap. */
 export const CYCLES_LESSONS = [
-{ id:"w01", week:1, unit:"Rhythm and time", title:"Pulse, bars and the grid",
+{ id:"w01", number:1, unit:"Rhythm and time", title:"Pulse, bars and the grid",
   goal:"Feel the beat, count a bar in sixteenths, and see how the 16 trig keys are one bar of music.",
   listen:"Bonobo, \"Kiara\". Tap your foot on every beat and count 1 2 3 4 out loud. Notice how the music changes every 4 or 8 bars.",
   concepts:[
@@ -32,7 +32,7 @@ export const CYCLES_LESSONS = [
   ],
   challenge:"Put on three songs you love and tap the beat. Guess their tempo using the TEMPO menu's tap function (hold [FUNC] and tap [TEMPO]). Write the numbers in your notes."
 },
-{ id:"w02", week:2, unit:"Rhythm and time", title:"What each drum does",
+{ id:"w02", number:2, unit:"Rhythm and time", title:"What each drum does",
   goal:"Learn the job of each drum, build the beat of your track, and try five classic patterns that styles are built on.",
   listen:"Bob Marley & The Wailers, \"One Drop\", then Burial, \"Archangel\". Same idea, a kick and a snare, placed in very different spots.",
   concepts:[
@@ -60,7 +60,7 @@ export const CYCLES_LESSONS = [
   ],
   challenge:"On B03, recreate the 2-step pattern from the drawing at 90 BPM. Does it still feel like garage when it's slow? Keep B01 as your track."
 },
-{ id:"w03", week:3, unit:"Rhythm and time", title:"Groove",
+{ id:"w03", number:3, unit:"Rhythm and time", title:"Groove",
   goal:"Make your beat breathe with swing, loud and soft hits, ghost notes and tiny timing shifts.",
   listen:"Burial, \"Ghost Hardware\". The hats and rims never hit equally hard or exactly on time, and that's why it sounds human and haunted.",
   concepts:[
@@ -91,7 +91,7 @@ export const CYCLES_LESSONS = [
   ],
   challenge:"Copy B01 to B03 and make a \"drunk\" version: swing 70%, ghost notes on 8 and 16, and one hat nudged early. Compare it with B01. Keep whichever you like better as your track."
 },
-{ id:"w04", week:4, unit:"Rhythm and time", title:"Phrasing and variation",
+{ id:"w04", number:4, unit:"Rhythm and time", title:"Phrasing and variation",
   goal:"Turn your one-bar loop into an 8-bar phrase that changes in the right places, and let it vary on its own with chance and trig conditions.",
   listen:"Nicolas Jaar, \"Mi Mujer\". Listen for what changes every 4 and 8 bars, and for the little percussion loops that don't line up with the bar.",
   concepts:[

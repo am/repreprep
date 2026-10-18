@@ -39,6 +39,10 @@ test("theme switch: light and dark are remembered, auto follows the system", asy
   expect(await bg()).toBe("rgb(20, 21, 23)");
   await page.emulateMedia({ colorScheme: "light" });
   expect(await bg()).toBe("rgb(239, 237, 232)");
+  /* a saved dark choice wins over a light system */
+  await page.locator('.top [data-theme-set="dark"]').click();
+  await expect(html).toHaveAttribute("data-theme", "dark");
+  expect(await bg()).toBe("rgb(20, 21, 23)");
 });
 
 test("section tabs mark the current page", async ({ page }) => {

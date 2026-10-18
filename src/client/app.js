@@ -18,7 +18,11 @@ const $$ = (s) => document.querySelectorAll(s);
    {inst:{cycles:{lesson, steps:{"w05:3":true}, done:{w05:ts}, notes:{w05:"…"}, active:{w05:3}}}, focus, stepW, updatedAt}
    ============================================================ */
 const LS_KEY = "repreprep-progress-v1";
-let state = { updatedAt: 0, inst: {}, introSteps: 1 };
+const fresh = () => ({ updatedAt: 0, inst: {}, introSteps: 1 });
+let state = fresh();
+const saveLocal = () => { try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {} };
+/* a progress object from the account or a file: drop old app fields, bring old step numbers up to date */
+const adopt = (s) => { state = Object.assign(fresh(), migrate(clean(s))); };
 function ist(k) { return state.inst[k] || (state.inst[k] = { lesson: null, steps: {}, done: {}, notes: {}, active: {} }); }
 /* progress saved before lessons had an intro step: shift every step by one */
 function migrate(st) {
@@ -39,7 +43,7 @@ function setSync(t) { const el = $("#sync"); if (el) el.textContent = t; }
 const syncMsg = () => (me ? "Progress saved to your account." : "Progress saved in this browser.");
 function persist() {
   state.updatedAt = Date.now();
-  try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
+  saveLocal();
   if (!me) return;
   dirty = true; clearTimeout(saveTimer); saveTimer = setTimeout(flush, 1200);
 }
@@ -70,8 +74,8 @@ async function loadAccount() {
       const j = r.ok ? await r.json() : null;
       const remote = j && j.data;
       if (remote && remote.inst && (remote.updatedAt || 0) > (state.updatedAt || 0)) {
-        state = Object.assign({ updatedAt: 0, inst: {}, introSteps: 1 }, migrate(clean(remote)));
-        try { localStorage.setItem(LS_KEY, JSON.stringify(state)); } catch (e) {}
+        adopt(remote);
+        saveLocal();
       } else if (state.updatedAt && (state.updatedAt || 0) > ((remote && remote.updatedAt) || 0)) { dirty = true; flush(); }
     } catch (e) { setSync("Couldn't reach your account. Progress is saved in this browser."); }
   }
@@ -199,7 +203,7 @@ async function importProgress(file) {
   try {
     const s = JSON.parse(await file.text());
     if (!s || typeof s.inst !== "object") throw new Error("not a progress file");
-    state = Object.assign({ updatedAt: 0, inst: {}, introSteps: 1 }, migrate(clean(s)));
+    adopt(s);
     persist(); hydrate();
     const n = Object.values(state.inst).reduce((a, v) => a + Object.keys(v.steps || {}).length, 0);
     if (msg) msg.textContent = `Loaded. ${n} ticked steps.`;
