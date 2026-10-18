@@ -180,7 +180,8 @@ a.song svg{width:.95em;height:.95em;margin-left:var(--s1);vertical-align:-.12em;
 .finish .stamp{font-family:var(--mono);font-size:var(--fs-s);color:var(--done)}
 
 /* step player */
-.player{--ph:calc(100dvh - 32px);height:max(520px,var(--ph));display:flex;flex-direction:column;border:1px solid var(--line);border-radius:var(--r-xl);background:var(--surface);padding:var(--s4) var(--s4) var(--s4);gap:var(--s3);scroll-margin-top:var(--s3)}
+/* open on the page, no box: the drawing and the step sit straight on the background */
+.player{--ph:calc(100dvh - 32px);height:max(520px,var(--ph));display:flex;flex-direction:column;gap:var(--s3);scroll-margin-top:var(--s3)}
 .phead{display:flex;flex-wrap:wrap;align-items:center;gap:var(--s2) var(--s4)}
 .phead .ttl{font-family:var(--display);font-weight:var(--fw-semibold);font-size:var(--fs-lg);min-width:0}
 .phead .ttl span{color:var(--muted);font-weight:var(--fw-medium)}
@@ -221,7 +222,7 @@ a.song svg{width:.95em;height:.95em;margin-left:var(--s1);vertical-align:-.12em;
 body.resizing{cursor:col-resize;user-select:none}
 .pstage{min-height:0;display:flex;align-items:center;justify-content:center}
 .pstage > svg{width:100%;height:100%;display:block}
-.pstep{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--s3);padding:var(--s4) var(--s4);border-radius:var(--r-l);background:var(--surface-2)}
+.pstep{min-height:0;overflow:auto;display:flex;flex-direction:column;gap:var(--s3);padding:var(--s2) 0 0 var(--s4)}
 .pstep .h{margin-bottom:var(--s3);font-family:var(--mono);font-size:var(--fs-xs);letter-spacing:var(--ls-caps);color:var(--faint);text-transform:uppercase}
 .pstep .ptxt{font-size:var(--fs-step);line-height:var(--lh-loose);margin:0}
 .ptxt p,.txt p{margin:0 0 .6em}.ptxt p:last-child,.txt p:last-child{margin-bottom:0}
@@ -251,11 +252,11 @@ body.resizing{cursor:col-resize;user-select:none}
   .player{height:auto;min-height:max(480px,var(--ph))}
   .pbody{grid-template-columns:minmax(0,1fr);flex:1}
   .pstage > svg{height:auto}
-  .pstep{overflow:visible}
+  .pstep{overflow:visible;padding:var(--s4) 0 0}
 }
 /* maximized: the player takes the whole window */
 html.focus body{overflow:hidden}
-html.focus body .player{position:fixed;inset:0;z-index:50;height:auto;min-height:0;border-radius:0;border:0;padding:calc(env(safe-area-inset-top,0px) + var(--s4)) var(--s5) calc(env(safe-area-inset-bottom,0px) + var(--s4));overflow:auto}
+html.focus body .player{position:fixed;inset:0;z-index:50;height:auto;min-height:0;background:var(--bg);padding:calc(env(safe-area-inset-top,0px) + var(--s4)) var(--s5) calc(env(safe-area-inset-bottom,0px) + var(--s4));overflow:auto}
 html.focus body .pbody{grid-template-columns:minmax(0,1fr) 14px var(--sw,clamp(320px,30%,520px))}
 @media (max-width:900px){html.focus body .pbody{grid-template-columns:minmax(0,1fr)}}
 @media (max-width:900px){.gutter{display:none}}
