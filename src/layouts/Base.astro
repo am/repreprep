@@ -12,6 +12,12 @@ interface Props {
   inst?: any;
   tab?: string;
   home?: boolean;
+  /* the page's whole title, in place of "<title> · Rep Rep Rep" */
+  fullTitle?: string;
+  /* the address search engines should list this page under, when it isn't the page's own */
+  canonicalPath?: string;
+  /* keep this page out of search results (its links are still followed) */
+  noindex?: boolean;
 }
 const {
   title,
@@ -19,13 +25,18 @@ const {
   inst,
   tab,
   home,
+  fullTitle,
+  canonicalPath,
+  noindex,
 } = Astro.props;
-const full = title ? `${title} · Rep Rep Rep` : "Rep Rep Rep";
+const full = fullTitle ?? (title ? `${title} · Rep Rep Rep` : "Rep Rep Rep");
 // steps per lesson, so the browser can count progress without loading the whole course
 const sizes = inst?.ready
   ? JSON.stringify(Object.fromEntries(inst.lessons.map((l: any) => [l.id, l.steps.length])))
   : undefined;
-const canonical = new URL(Astro.url.pathname, Astro.site);
+// built pages are files like /model-cycles.html and /index.html, but they are served as /model-cycles and /
+const canonical = new URL(canonicalPath ?? (Astro.url.pathname.replace(/(\/index)?\.html$/, "") || "/"), Astro.site);
+const image = new URL("/og-image.png", Astro.site);
 ---
 
 <!doctype html>
@@ -36,8 +47,18 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <title>{full}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
+    {noindex && <meta name="robots" content="noindex" />}
+    <!-- link previews in chat apps and social media -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Rep Rep Rep" />
+    <meta property="og:url" content={canonical} />
     <meta property="og:title" content={full} />
     <meta property="og:description" content={description} />
+    <meta property="og:image" content={image} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Rep Rep Rep: learn music by playing it" />
+    <meta name="twitter:card" content="summary_large_image" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
     <!-- home screen icon (iOS reads apple-touch-icon, other browsers the manifest) -->
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />

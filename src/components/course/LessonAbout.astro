@@ -1,0 +1,84 @@
+---
+// Under the player on a lesson's intro: the lesson's ideas written out, so the intro page reads on its own
+// (and is the page search engines list for the lesson). Closed until opened; search engines read it either way. The steps themselves stay in the player.
+import Keys from "./Keys.astro";
+import { stepPath } from "../../course/index.js";
+interface Props {
+  I: any;
+  L: any;
+}
+const { I, L } = Astro.props;
+const ideas = L.concepts || [];
+const n = L.steps.length;
+---
+
+{ideas.length > 0 && (
+  <details class="about">
+    <summary>
+      <h2 class="t-title t-card">About this {L.song ? "study" : "lesson"}</h2>
+      <span class="caret" aria-hidden="true"></span>
+    </summary>
+    <div class="about-body stack">
+      {ideas.map((c: any) => (
+        <div class="idea">
+          <h3>{c.h}</h3>
+          {c.p.map((p: string) => (
+            <p class="t-body">
+              <Keys I={I} text={p} />
+            </p>
+          ))}
+        </div>
+      ))}
+      <p class="t-note">
+        {n - 1} steps{L.challenge && ", then an optional challenge"}. <a href={stepPath(L, 1)}>Start the first step</a>
+      </p>
+    </div>
+  </details>
+)}
+
+<style>
+  .about {
+    margin-bottom: var(--s6);
+    padding-top: var(--s6);
+    border-top: 1px solid var(--line);
+  }
+  .about summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s3);
+  }
+  .about summary::-webkit-details-marker {
+    display: none;
+  }
+  .about summary h2 {
+    margin: 0;
+  }
+  .about summary:hover {
+    color: var(--led);
+  }
+  /* the same chevron as the lesson picker: down when closed, up when open */
+  .about .caret {
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    opacity: 0.6;
+  }
+  .about[open] .caret {
+    transform: rotate(-135deg) translateY(-2px);
+  }
+  .about-body {
+    max-width: 44rem;
+    margin-top: var(--s5);
+  }
+  .idea h3 {
+    margin: 0 0 var(--s2);
+    font-size: var(--fs-md);
+  }
+  .idea p {
+    margin: 0 0 var(--s3);
+  }
+</style>

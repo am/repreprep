@@ -8,11 +8,11 @@ export async function getStaticPaths() {
   return (await courses()).flatMap((I) =>
     [undefined, ...Object.keys(I.controls)].map((control) => ({
       params: { inst: I.slug, control },
-      props: { I, sel: control || Object.keys(I.controls)[0] },
+      props: { I, sel: control || Object.keys(I.controls)[0], first: control === Object.keys(I.controls)[0] },
     }))
   );
 }
-const { I, sel } = Astro.props;
+const { I, sel, first } = Astro.props;
 const c = I.controls[sel];
 ---
 
@@ -21,6 +21,7 @@ const c = I.controls[sel];
   description={`${c.name} on the ${I.name}: ${c.desc.replace(/[\[\]]/g, "")}`}
   inst={I}
   tab="panel"
+  canonicalPath={first ? `/${I.slug}/panel` : undefined}
 >
   <PanelGuide I={I} sel={sel} />
 </Base>

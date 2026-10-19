@@ -1,0 +1,4 @@
+# Copies of the site on workers.dev (the old address and every PR preview) stay out of search results;
+# only repreprep.studio is listed.
+https://:sub.:account.workers.dev/*
+  X-Robots-Tag: noindex
