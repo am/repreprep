@@ -2,7 +2,7 @@
 import Base from "../../../../layouts/Base.astro";
 import Player from "../../../../components/course/Player.astro";
 import LessonWrapup from "../../../../components/course/LessonWrapup.astro";
-import { lessonLabel } from "../../../../course/index.js";
+import LessonAbout from "../../../../components/course/LessonAbout.astro";
 import { courses } from "../../../../course/content.js";
 /* /model-cycles/lessons/<lesson> (or /songs/<study>) is the intro; .../<n> is step n; one past the last step is the optional challenge */
 export async function getStaticPaths() {
@@ -21,14 +21,17 @@ export async function getStaticPaths() {
   );
 }
 const { I, L, act } = Astro.props;
+// names the device and, for a song study, the artist and track, since that is what people search for
 const title =
-  `${lessonLabel(L)}: ${L.title}` +
+  (L.song ? `${L.song}: song study on the ${I.name}` : `${I.name} lesson ${L.number}: ${L.title}`) +
   (act === L.steps.length ? " (challenge)" : act ? ` (${act + 1}/${L.steps.length})` : "");
 ---
 
-<Base title={title} description={L.goal} inst={I} tab="lessons">
+<!-- only the lesson's intro is listed in search results; its steps are reached from there -->
+<Base title={title} description={L.goal} inst={I} tab="lessons" noindex={act > 0}>
   <Player I={I} L={L} act={act} />
   <div class="below">
+    {!act && <LessonAbout I={I} L={L} />}
     <LessonWrapup I={I} L={L} />
   </div>
 </Base>

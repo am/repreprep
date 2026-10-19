@@ -1,0 +1,48 @@
+---
+// Under the player on a lesson's intro: the lesson's ideas written out, so the intro page reads on its own
+// (and is the page search engines list for the lesson). The steps themselves stay in the player.
+import Keys from "./Keys.astro";
+import { stepPath } from "../../course/index.js";
+interface Props {
+  I: any;
+  L: any;
+}
+const { I, L } = Astro.props;
+const ideas = L.concepts || [];
+const n = L.steps.length;
+---
+
+{ideas.length > 0 && (
+  <section class="about stack" aria-labelledby={`about-${L.id}`}>
+    <h2 class="t-title t-card" id={`about-${L.id}`}>
+      About this {L.song ? "study" : "lesson"}
+    </h2>
+    {ideas.map((c: any) => (
+      <div class="idea">
+        <h3>{c.h}</h3>
+        {c.p.map((p: string) => (
+          <p class="t-body">
+            <Keys I={I} text={p} />
+          </p>
+        ))}
+      </div>
+    ))}
+    <p class="t-note">
+      {n - 1} steps{L.challenge && ", then an optional challenge"}. <a href={stepPath(L, 1)}>Start the first step</a>
+    </p>
+  </section>
+)}
+
+<style>
+  .about {
+    max-width: 44rem;
+    margin-bottom: var(--s6);
+  }
+  .idea h3 {
+    margin: 0 0 var(--s2);
+    font-size: var(--fs-md);
+  }
+  .idea p {
+    margin: 0 0 var(--s3);
+  }
+</style>
