@@ -46,6 +46,9 @@ const step = z
     fig: z.union([text, z.strictObject({ grid })]).optional() /* a drawing by name, or a playable grid */,
     q: z.array(text).min(2).optional() /* a Check question's answers, the right one starting with ! */,
     a: text.optional() /* why that answer is right */,
+    more: z
+      .strictObject({ text, to: z.enum(["panel", "saving", "machines", "shortcuts"]) })
+      .optional() /* a link to one of the instrument's reference tabs */,
   })
   .refine((s) => !s.q || s.q.filter((o) => o.startsWith("!")).length === 1, "mark exactly one answer right with !")
   .refine((s) => !s.q || s.a, "a question needs its explanation, a");

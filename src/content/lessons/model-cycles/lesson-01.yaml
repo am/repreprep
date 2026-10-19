@@ -64,9 +64,16 @@ steps:
     hl: p:record p:t3
     hear: 'The "&"s are easy to find. The e''s and a''s are quick and slippery: that''s where groove will live.'
   - k: play
-    t: "Feel tempo change: set [TEMPO] to 70, then to 120, listening to the same kick. Set it back to 90. Turn the metronome off (hold [FUNC] + [GATE]), then save: hold [FUNC] and long-press [SETTINGS]."
-    hl: p:tempo t:level h:func p:gate p:settings
+    t: "Feel tempo change: set [TEMPO] to 70, then to 120, listening to the same kick. Set it back to 90. Turn the metronome off (hold [FUNC] + [GATE])."
+    hl: p:tempo t:level h:func p:gate
     hear: "Same four kicks: sleepy at 70, pushing at 120."
+  - k: play
+    t: "Save your work: press [SETTINGS] and open PROJECT. Pick an empty ----- slot with [LEVEL/DATA], choose SAVE and name it. Then hold [FUNC] and long-press [SETTINGS] to save the pattern."
+    hl: p:settings t:level h:func
+    hear: The project step is needed only once. From now on, switch off by holding [MAIN VOLUME], never by pulling the plug.
+    more:
+      text: How the Model:Cycles saves your work
+      to: saving
   - k: check
     t: Which trig keys are the four beats of a bar?
     q:

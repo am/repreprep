@@ -11,7 +11,7 @@ import { pages, exists, ROOT } from "./built.mjs";
 test("every lesson step, challenge and reference page is built", () => {
   const want = ["/", "/account", "/privacy", "/404"];
   for (const I of COURSES) {
-    want.push(`/${I.slug}`, `/${I.slug}/panel`, `/${I.slug}/machines`, `/${I.slug}/shortcuts`);
+    want.push(`/${I.slug}`, `/${I.slug}/panel`, `/${I.slug}/machines`, `/${I.slug}/shortcuts`, `/${I.slug}/saving`);
     for (const id of Object.keys(I.controls)) want.push(`/${I.slug}/panel/${id}`);
     for (const L of I.lessons)
       for (let i = 0; i < L.steps.length + (L.challenge ? 1 : 0); i++) want.push(stepPath(L, i));
