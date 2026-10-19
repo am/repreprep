@@ -4,7 +4,9 @@ import { test } from "node:test";
 import assert from "node:assert/strict";
 import { stepPath } from "../../src/course/index.js";
 import { COURSES } from "../../src/course/files.js";
-import { pages, exists } from "./built.mjs";
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
+import { pages, exists, ROOT } from "./built.mjs";
 
 test("every lesson step, challenge and reference page is built", () => {
   const want = ["/", "/account", "/privacy", "/404"];
@@ -51,4 +53,11 @@ test("lesson pages carry what the browser script needs", () => {
   assert.match(html, /<section class="player" id="player"[^>]*data-lesson="w05" data-step="3"/);
   assert.match(html, /data-notebox="w05"/);
   assert.match(html, /<span[^>]*id="sync"/);
+});
+
+test("the home screen icons named in the manifest are all there", () => {
+  const manifest = JSON.parse(readFileSync(join(ROOT, "manifest.webmanifest"), "utf8"));
+  const missing = manifest.icons.map((i) => i.src).filter((src) => !exists(src));
+  assert.deepEqual(missing, []);
+  assert.ok(exists("/apple-touch-icon.png"));
 });
