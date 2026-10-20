@@ -104,3 +104,32 @@ export const CYCLES_SHORTCUTS = [
   ["Track pan", "[FUNC] + turn [LEVEL/DATA]"],
   ["Chain patterns", "Hold [PATTERN], hold first [TRIG], press others in order"],
 ];
+
+/* the Saving tab: when your work is kept, from the manual (3, 9.12.7, 9.13, 12.1, 12.2, 6.8); [eyebrow, title, text] */
+export const CYCLES_SAVING = [
+  [
+    "Automatic",
+    "Every change",
+    "Each knob turn and trig is kept in the machine straight away. It survives switching off only if you hold [MAIN VOLUME] to do it. Pull the plug and you get the last saved version back.",
+  ],
+  [
+    "Temporary",
+    "Snapshot",
+    "Tap [FUNC] + [SETTINGS] before trying something wild, and tap [FUNC] + [PATTERN] to go back to it. The snapshot is gone when you load another project.",
+  ],
+  [
+    "Permanent",
+    "Save",
+    "Hold [FUNC] + [SETTINGS] for a second to save the pattern, and hold [FUNC] + [PATTERN] to go back to the saved version. The first time, save the project itself: [SETTINGS], then PROJECT, then SAVE.",
+  ],
+  [
+    "On your computer",
+    "Backup",
+    "Elektron's free Transfer app copies your projects and sounds to a computer over USB.",
+  ],
+  [
+    "Not saved",
+    "Chains",
+    "A chain of patterns is lost when you switch off or pick another pattern. There is no song mode, so write the order down or record it into Live.",
+  ],
+];

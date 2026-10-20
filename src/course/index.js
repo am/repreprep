@@ -1,6 +1,6 @@
 /* ============================================================
    COURSE DATA. Add an instrument by adding an entry to INSTRUMENTS
-   with: key (progress key), slug (URL), name, controls, icon, draw, figs, machines, shortcuts,
+   with: key (progress key), slug (URL), name, controls, icon, draw, figs, machines, shortcuts, saving,
    and its lessons as YAML files in src/content/lessons/<slug>/.
    ============================================================ */
 import { MODEL_CYCLES } from "./model-cycles/index.js";

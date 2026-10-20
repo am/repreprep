@@ -126,6 +126,11 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
           )}
           {st.q && <Quiz I={I} st={st} />}
           {st.hear && <HearNote I={I} st={st} />}
+          {st.more && (
+            <p class="more">
+              <a href={`/${I.slug}/${st.more.to}`}>{st.more.text}</a>
+            </p>
+          )}
         </Fragment>
       )}
       <div class="ctl" id="ctlinfo" hidden></div>
@@ -343,6 +348,20 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
 
 <style>
   /* step player */
+  /* a step's link to a reference tab, under its text */
+  .more {
+    margin: 0;
+    font-size: var(--fs-sm);
+  }
+  .more a {
+    color: inherit;
+    text-decoration-color: var(--led);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.1875rem;
+  }
+  .more a:hover {
+    color: var(--led);
+  }
   /* open on the page, no box: the drawing and the step sit straight on the background */
   .player {
     --ph: calc(100dvh - 2rem);
