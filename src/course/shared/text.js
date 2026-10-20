@@ -21,9 +21,11 @@ function byName(C) {
   let m = byNameCache.get(C);
   if (m) return m;
   m = {};
+  /* a control's name, then its other names (aka); a name already taken keeps its first control */
   Object.entries(C).forEach(([id, c]) => {
-    m[c.name.toUpperCase()] = id;
+    m[c.name.toUpperCase()] ??= id;
   });
+  Object.entries(C).forEach(([id, c]) => (c.aka || []).forEach((a) => (m[a.toUpperCase()] ??= id)));
   Object.assign(m, { REC: "record", LFO: "lfo", "VOLUME+DIST": "vol", "VOL+DIST": "vol" });
   byNameCache.set(C, m);
   return m;

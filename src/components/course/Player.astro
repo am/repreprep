@@ -10,7 +10,7 @@ import Keys from "./Keys.astro";
 import Figure from "./Figure.astro";
 import PanelDrawing from "./PanelDrawing.astro";
 import { KIND, keyCap } from "../../course/shared/text.js";
-import { lessonLabel, stepPath, nextLesson } from "../../course/index.js";
+import { lessonLabel, stepPath, nextLesson, skipTo } from "../../course/index.js";
 interface Props {
   I: any;
   L: any;
@@ -26,6 +26,10 @@ const end = act === total - 1;
 const nx = nextLesson(I, L);
 const nextHref = end ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
 const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN", "turn");
+/* a shared step (one another course has too) can be skipped, with the shared steps right after it */
+const skip = !ch && st.shared ? skipTo(L, act) : 0;
+const skipEnd = skip >= n && !L.challenge;
+const skipHref = skipEnd ? nextHref : stepPath(L, Math.min(skip, n));
 ---
 
 <section
@@ -126,6 +130,14 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
           )}
           {st.q && <Quiz I={I} st={st} />}
           {st.hear && <HearNote I={I} st={st} />}
+          {st.shared && (
+            <p class="shared">
+              {st.also?.length ? `This idea is also in the ${st.also.join(" and ")} course. ` : ""}
+              <a href={skipHref} data-skip={skip} data-end={skipEnd ? "" : undefined}>
+                Skip, I know this
+              </a>
+            </p>
+          )}
           {st.more && (
             <p class="more">
               <a href={`/${I.slug}/${st.more.to}`}>{st.more.text}</a>
@@ -174,10 +186,14 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   import { onProgress, persist, refresh, ist, state } from "../../client/progress.js";
   import { player, curLesson, markAllDone, goNextLesson } from "../../client/lesson.js";
   import { CYCLES_CONTROLS, iconSvg } from "../../course/model-cycles/controls.js";
+  import { MF_CONTROLS } from "../../course/microfreak/controls.js";
   import { keyify } from "../../course/shared/text.js";
   import { esc } from "../../course/shared/html.js";
 
-  const PANELS = { cycles: { controls: CYCLES_CONTROLS, icon: iconSvg } };
+  const PANELS = {
+    cycles: { controls: CYCLES_CONTROLS, icon: iconSvg },
+    microfreak: { controls: MF_CONTROLS, icon: () => "" },
+  };
   const $ = (s) => document.querySelector(s);
 
   /* the player fills the window below the header */
@@ -303,6 +319,21 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
         }
         return;
       }
+      /* Skip ticks this shared step and the shared ones right after it, as if you'd done them */
+      const sk = e.target.closest("[data-skip]");
+      const cs = sk && curLesson();
+      if (cs) {
+        const s = ist(cs.k);
+        for (let i = cs.act; i < Math.min(+sk.dataset.skip, cs.n); i++) s.steps[cs.id + ":" + i] = true;
+        markAllDone(s, cs);
+        if (sk.hasAttribute("data-end")) {
+          e.preventDefault();
+          goNextLesson(s, cs);
+          return;
+        }
+        persist();
+        return;
+      }
       /* Next ticks the step you're on; Finish on the last step moves to the next lesson */
       const nav = e.target.closest("[data-nav]");
       const c = nav && nav.dataset.nav === "1" && curLesson();
@@ -348,6 +379,23 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
 
 <style>
   /* step player */
+  /* under a shared step: where else it's taught, and the offer to skip it */
+  .shared {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .shared a {
+    color: var(--fg);
+    font-weight: var(--fw-semibold);
+    text-decoration-color: var(--led);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.1875rem;
+    white-space: nowrap;
+  }
+  .shared a:hover {
+    color: var(--led);
+  }
   /* a step's link to a reference tab, under its text */
   .more {
     margin: 0;

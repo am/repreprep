@@ -1,0 +1,67 @@
+id: f12
+number: 12
+unit: Notes, chords and patterns
+title: The sequencer
+goal: Write a bassline for your track step by step, with held notes and rests, then record a melody in real time.
+listen: 'Air, "La Femme d''Argent". The bass plays a short line that repeats, and most of its notes are held long. The space between them matters as much as the notes.'
+concepts:
+  - h: Steps, ties and rests
+    p:
+      - "A sequence is a row of steps. Each step plays a note, holds the note before it (a tie), or stays silent (a rest). Long notes are just a note followed by ties."
+  - h: Length and speed
+    p:
+      - "The sequence can be 4 to 64 steps long, and the Rate sets how long a step is. At eighth notes, 32 steps are four bars, one bar for each chord."
+  - h: Step and real-time recording
+    p:
+      - "In step recording you enter one step at a time, without worrying about timing. In real-time recording you play along while it loops, like a looper pedal."
+  - h: Steps and leaps
+    p:
+      - "A melody moves by steps to the next scale note, with the odd leap that then steps back."
+steps:
+  - k: learn
+    fig: mf-steps
+    t: "A sequence is a row of steps. Each step plays a new note, holds the note before it (a tie) or stays silent (a rest). A long note is one note and a few ties."
+  - k: learn
+    t: "Your bassline: in each bar, the chord's root held for six eighth notes, one eighth of silence, and the root an octave up to lead into the next bar. Four bars, one per chord: A, F, D, E. That's 32 eighth-note steps."
+  - k: play
+    t: "Load RR Bass. Hold [Shift] and press [Arp | Seq] so its light turns blue: the sequencer is on. The icons above the keys now read Tie/Rest, A, B, ● and ▶."
+    hl: t:preset h:shift p:arpseq
+  - k: play
+    t: "Set the length: press [Utility], open Preset, then Seq Length, and set 32. Press [Utility] to leave. Set the step length: with Sync lit on [Rate/Swing], turn it to 1/8."
+    hl: p:utility t:preset p:preset t:rate
+  - k: play
+    t: "Touch [Up | A] to choose sequence A. With ▶ off, touch [Random | ●] so it lights: you're step recording, on step 1. Press [Octave Down] once so the bass sits low."
+    hl: p:up p:random p:octdown
+  - k: play
+    t: "Bar 1: hold A and touch [Hold] five times, then let go. Touch [Hold] once more on its own for a rest. Then press and release the A an octave up."
+    hl: h:k10 p:hold p:k22
+    hear: Nothing sounds yet. The screen counts the steps as you go.
+  - k: play
+    t: "Bars 2 to 4, the same way: F held with five ties, a rest, high F. Then D, then E. After the last step the MicroFreak starts playing on its own."
+    hl: h:k6 p:hold p:k18 h:k3 p:k15 h:k5 p:k17
+    hear: A slow, heavy line that follows your chords, with a small hop at the end of each bar.
+  - k: play
+    t: "Touch [Pattern | ▶] to stop and start. To fix a step: stop, touch [Random | ●], turn [Rate/Swing] to the step and play a new note. Touch ● again to finish. Save the sound: the sequence is saved with it."
+    hl: p:pattern p:random t:rate p:save
+  - use: steps-and-leaps
+  - k: play
+    t: "Now a melody. Load RR Lead, turn the sequencer on and set Seq Length to 32 here too. Touch [Pattern | ▶] and then [Random | ●]: the empty sequence loops and records what you play."
+    hl: t:preset h:shift p:arpseq p:pattern p:random
+  - k: play
+    t: "Play a few notes from A minor: mostly steps, one leap that steps back, and leave gaps. When a pass sounds right, touch ● to stop recording, and save."
+    hl: p:random p:save
+    hear: A short phrase that comes round every four bars.
+  - k: play
+    t: "Transpose while it plays: hold [Shift] and press a key. Press A again to bring it home."
+    hl: h:shift p:k10
+    hear: The whole line moves to start on the key you pressed.
+  - k: check
+    t: "In step recording you hold A, touch Hold twice, then let go. How many steps does the A last?"
+    q:
+      - "1"
+      - "2"
+      - "!3"
+      - "4"
+    a: "The step you're on plus one for each touch of Hold: three steps."
+    hear: Each tie adds one step to the note you're holding.
+challenge: "Copy sequence A of RR Bass to B: hold [Up | A] and touch [Order | B]. Change only the last note of each bar in B, and switch between A and B while it plays."

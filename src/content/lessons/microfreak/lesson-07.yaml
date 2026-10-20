@@ -1,0 +1,62 @@
+id: f07
+number: 7
+unit: Movement
+title: Playing with feeling
+goal: Connect notes smoothly or separately, slide between them with glide, bend and shake a note by hand, and let finger pressure open the sound.
+listen: 'Air, "Playground Love". Listen to how the lead''s notes join: do they slide, bend, or simply change?'
+concepts:
+  - h: Articulation
+    p:
+      - "How notes connect is called articulation. Staccato notes are short and separate. Legato notes run into each other without a gap. The same melody feels completely different either way."
+  - h: Glide
+    p:
+      - "Glide (portamento) slides the pitch from one note to the next, the way a voice or a violin does. A short glide sounds expressive; a long one sounds like a siren."
+  - h: Bend and vibrato
+    p:
+      - "A bend moves a note's pitch by hand. A vibrato is a small, quick wobble around it. Both make a held synth note sound played instead of just switched on."
+  - h: Pressure
+    p:
+      - "The MicroFreak senses pressure under each finger separately, from how flat the finger lies. In the Matrix it's the Press row, so it can open the filter or change the tone as you lean in."
+steps:
+  - k: learn
+    fig: mf-artic
+    t: "How notes join is called articulation. Staccato: short and separate. Legato: each note runs into the next. A glide slides the pitch between them, the way a voice does."
+  - k: learn
+    t: "The keys sense pressure under each finger: as a finger flattens on its key, the pressure rises for that note alone. In the Matrix that's the Press row, ready to move any destination."
+  - k: learn
+    t: "A bend moves the pitch by hand. A vibrato is a small, quick wobble around the note. Both are what makes a held synth note sound played, not just switched on."
+  - k: play
+    t: "Build a lead. Start from Init and set [Type] to V.Analog. Turn [Cutoff] to about half with a little [Resonance]. Light [Amp Mod], then set [Attack] short, [Decay/Rel] medium and [Sustain] low. Make sure [Paraphonic] is off."
+    hl: p:preset t:type t:cutoff t:resonance p:ampmod t:attack t:decay t:sustain
+    hear: A clear, slightly buzzy voice that plays one note at a time.
+  - k: play
+    t: "Play a slow line: A, C, D, E. Play it staccato first, letting go before each new key. Then legato: press each key before you let go of the last."
+    hl: p:k10 p:k13 p:k15 p:k17
+  - k: play
+    t: "Turn [Glide] up a little, to about 100 ms on the screen, and play the line legato again."
+    hl: t:glide
+    hear: Each note slides into the next, like a singer.
+  - k: play
+    t: "Make legato smoother: press [Utility], go into Preset and set Envelope Legato to On. Now only the first note of a joined phrase restarts the envelope."
+    hl: p:utility t:preset p:preset
+    hear: Joined notes flow on without a new attack each time.
+  - k: play
+    t: "Let pressure open the filter: set Press to Cutoff to about +40 in the Matrix. Hold a note with your fingertip, then slowly flatten your finger."
+    hl: t:matrix p:mx-press-cutoff
+    hear: The more finger on the key, the brighter the note.
+  - k: play
+    t: "Bend and shake: touch [Bend] so it lights. Touch the middle of the strip first, then slide a little up and back. Small, quick movements make a vibrato. If a small slide bends too far, lower Bend Range in [Utility], Preset."
+    hl: p:bend p:strip
+  - k: play
+    t: "Save the sound in an empty slot, category Lead, as RR Lead."
+    hl: p:save t:preset p:preset
+  - k: check
+    t: Which one is legato?
+    q:
+      - Short notes with a gap between each
+      - "!Each note runs into the next with no gap"
+      - Every note slides in pitch
+      - Notes played as hard as possible
+    a: Legato means joined. Glide can be added on top, but legato is about the missing gaps, not the slide.
+    hear: Legato joins, staccato separates, glide slides.
+challenge: "Play the same four notes three ways: staccato, legato, and legato with glide. Which one fits a slow night track best?"

@@ -1,0 +1,61 @@
+id: f08
+number: 8
+unit: Movement
+title: Sounds that evolve
+goal: Make movement that takes a long time to repeat, let one modulation control another, and keep high notes bright with key tracking.
+listen: 'Burial, "Near Dark". Follow one held sound for a while and notice how it changes even when nothing new is played.'
+concepts:
+  - h: Movements that don't line up
+    p:
+      - "Two movements at speeds that don't divide into each other take a long time to come back to where they started. Together they make a sound that keeps changing without ever quite repeating."
+  - h: Modulating a modulation
+    p:
+      - "A modulation's amount can itself be moved. Let an envelope control how deep a vibrato is, and the vibrato fades in as you hold the note, the way a singer's does."
+  - h: Key tracking
+    p:
+      - "Key tracking lets the keys move the filter, so higher notes open it more. Without it, a filter set for low notes can make high notes sound dull."
+steps:
+  - k: learn
+    fig: mf-twospeeds
+    t: "Two movements at speeds that don't line up take a long time to meet again where they started. Put the LFO on one knob and the looping cycling envelope on another, and the sound keeps changing without repeating."
+  - k: learn
+    fig: mf-delayvib
+    t: "A modulation can change another one. Send the LFO to Pitch for a vibrato, then let an envelope control how much: the vibrato fades in as you hold the note, like a singer's."
+  - k: learn
+    fig: mf-keytrack
+    t: "Key tracking makes the filter follow the keys: the higher the note, the more it opens, so high notes don't go dull. In the Matrix that's Key/Arp to Cutoff."
+  - k: play
+    t: "Load RR Lead. Set LFO to Pitch to about +2, choose the sine with [LFO Shape] and turn [LFO Rate] to about 5 Hz."
+    hl: t:preset t:matrix p:mx-lfo-pitch p:lfoshape t:lforate
+    hear: A small, steady vibrato on every note.
+  - k: play
+    t: "Set up the cycling envelope as a slow fade-in: press [Mode] until Env lights, turn [Rise] to about a second and a half, [Hold/Sustain] fully right and [Amount] up."
+    hl: p:cycmode t:rise t:cychold t:amount
+  - k: play
+    t: "Now let it control the vibrato. Turn [Matrix] to CycEnv to Assign 1. Hold [Assign 1], turn [Matrix] to LFO to Pitch and press [Matrix]. Then turn back to CycEnv to Assign 1, press [Matrix], set about +40 and press again."
+    hl: t:matrix h:assign1 p:mx-cycenv-a1 p:mx-lfo-pitch
+    hear: Each held note starts straight, then the vibrato grows in.
+  - k: play
+    t: "Save over RR Lead with a long press on [Save]. Then load RR Pluck and lower [Cutoff] until the high notes sound dull."
+    hl: h:save t:preset t:cutoff
+  - k: play
+    t: "Add key tracking: set Key/Arp to Cutoff to about +30 in the Matrix. Play low and high notes, then save over RR Pluck."
+    hl: t:matrix p:mx-key-cutoff h:save
+    hear: Low notes stay round, high notes now sparkle instead of going dull.
+  - k: play
+    t: "Load RR Pad. Keep its LFO on Cutoff, and set its cycling envelope to Run with [Rise] and [Fall] at different lengths from the LFO's sweep. Send CycEnv to Timbre at a small amount."
+    hl: t:preset p:cycmode t:rise t:fall t:matrix p:mx-cycenv-timbre
+  - k: play
+    t: "Touch [Hold] so it lights, play a chord and let go. Listen for a minute without touching anything. Change only one speed, listen again, then touch [Hold] to stop and save."
+    hl: p:hold h:save
+    hear: The pad keeps shifting, slowly, without an obvious loop.
+  - k: check
+    t: You want a vibrato that fades in while a note is held. What should control the vibrato's depth?
+    q:
+      - The LFO's rate
+      - Glide
+      - "!An envelope sent to the amount of the LFO to Pitch point"
+      - The amp envelope's attack
+    a: The depth of the vibrato is the LFO to Pitch amount. An envelope sent to that amount, through an Assign column, raises it over time, so the vibrato grows.
+    hear: Modulate the amount, not the knob.
+challenge: "Send Press to Assign 2 and point it at the LFO to Cutoff point, the same way. Now your finger decides how much the pad moves."

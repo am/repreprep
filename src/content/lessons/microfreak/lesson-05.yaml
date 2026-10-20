@@ -1,0 +1,61 @@
+id: f05
+number: 5
+unit: Movement
+title: The Matrix
+goal: Connect a moving source to a knob in the modulation Matrix, set how much and which way, and give your pad a vibrato and a slow sweep.
+listen: 'Floating Points, "Silhouettes (I, II & III)". Listen for sounds that keep slowly changing while the notes stay the same.'
+concepts:
+  - h: Modulation
+    p:
+      - "Modulation is something turning a knob for you: a wave, an envelope, your fingers. It's what keeps a held sound alive instead of frozen."
+  - h: The LFO
+    p:
+      - "An LFO is a slow, repeating wave. Its rate is how fast it repeats, the amount is how far it moves the knob, and its shape is how it gets there: smoothly, in steps, or at random."
+  - h: A patch bay without cables
+    p:
+      - "The Matrix connects five sources to seven destinations. A lit point is a connection, with an amount from -100 to +100. Negative amounts move the knob the other way."
+  - h: Sources add up
+    p:
+      - "Several sources can feed one destination, and their movements add together. That's how a sound can sweep slowly and wobble quickly at the same time."
+steps:
+  - k: learn
+    fig: mf-lfo
+    t: "An LFO is a slow wave that turns a knob for you. [LFO Rate] is how fast it repeats, the amount is how far it moves the knob, and [LFO Shape] is how it gets there: smooth, square or random."
+  - k: learn
+    fig: mf-matrix
+    t: "The Matrix is a patch bay without cables. Each row is a source that moves: the cycling envelope, the envelope, the LFO, finger pressure and the keys. Each column is something it moves. A lit point is a connection."
+  - k: learn
+    fig: mf-bipolar
+    t: "Each point has an amount from -100 to +100. A negative amount turns the movement upside down: where a positive LFO raises the pitch, a negative one lowers it. Several points on one destination add up."
+  - k: play
+    t: "Load RR Pad: turn [Preset] to it and press it. Turn [Matrix] until the light where LFO meets Pitch blinks. Press [Matrix], turn it to about +5 and press it again. Hold a chord."
+    hl: t:preset t:matrix p:mx-lfo-pitch
+    hear: A gentle wobble in pitch, a vibrato.
+  - k: play
+    t: "Turn [LFO Rate] slowly up and down, and press [LFO Shape] to step through its six shapes."
+    hl: t:lforate p:lfoshape
+    hear: Slow and seasick, fast and nervous. Square jumps between two notes, random hops anywhere.
+  - k: play
+    t: "Clear it: turn [Matrix] back to LFO to Pitch and hold [Matrix] for half a second. The light goes out."
+    hl: t:matrix h:mx-lfo-pitch
+  - k: play
+    t: "A slow sweep: set LFO to Cutoff to about +30 the same way. Choose the triangle with [LFO Shape] and turn [LFO Rate] down until one sweep takes a few seconds."
+    hl: t:matrix p:mx-lfo-cutoff p:lfoshape t:lforate
+    hear: The pad slowly opens and closes, like breathing.
+  - k: play
+    t: "Turn [Matrix] to the point where Env meets Cutoff: it's already lit. That point is the [Filter Amt] knob, the envelope's link to the filter you used in lesson 3."
+    hl: t:matrix p:mx-env-cutoff t:filteramt
+  - k: play
+    t: "Turn the LFO to Cutoff amount to -30 and listen again. Then set it back to about +30 and save over RR Pad with a long press on [Save]."
+    hl: t:matrix p:mx-lfo-cutoff h:save
+    hear: Negative, the sweep runs the other way. Saved with a long press, the screen says so.
+  - k: check
+    t: The point LFO to Cutoff is set to -30 instead of +30. What changes?
+    q:
+      - Nothing, only the size matters
+      - The LFO gets slower
+      - "!The filter moves the other way: it closes where it used to open"
+      - The pitch starts to wobble
+    a: The sign flips the movement. The size of the amount sets how far, the sign sets which way.
+    hear: Amount is how far. Sign is which way.
+challenge: "Set [LFO Shape] to stepped random and send the LFO to Timbre at a small amount. Find a rate where the pad sounds like it's quietly talking."

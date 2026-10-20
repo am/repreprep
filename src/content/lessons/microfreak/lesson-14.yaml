@@ -1,0 +1,69 @@
+id: f14
+number: 14
+unit: Sound worlds and finishing
+title: A tour of synthesis
+goal: Hear five other ways of making a tone, and build a bell and a hi-hat for your track.
+listen: 'Kiasmos, "Thrown". Listen for the struck, bell-like tones and the short ticking sounds on top. Each one could come from a different kind of oscillator.'
+concepts:
+  - h: Many ways to make a tone
+    p:
+      - "Every oscillator type is a different recipe for the raw tone. The filter and envelopes after it stay the same, so you can swap the recipe and keep the rest of the sound."
+  - h: Wavetable and additive
+    p:
+      - "A wavetable is a row of waveforms you can move through, so the tone changes shape as you go. Additive synthesis builds a tone from harmonics, like the drawbars of an organ."
+  - h: FM
+    p:
+      - "In FM one wave wobbles the pitch of another so fast that you hear it as a new tone colour. The ratio between the two sets whether it sounds musical or metallic; the amount sets how bright."
+  - h: Physical modelling and noise
+    p:
+      - "Physical modelling copies how real things vibrate: a plucked string or a struck bar. Noise has no pitch at all, which makes it right for hi-hats and breath."
+steps:
+  - k: learn
+    fig: mf-engines
+    t: "Each oscillator type is a different recipe for the raw tone. What comes after it, the filter and the envelopes, stays the same, so you can swap the recipe and keep the shape of the sound. The screen always names what [Wave], [Timbre] and [Shape] do on the type you're on."
+  - k: learn
+    fig: mf-fm
+    t: "FM, in plain words: one wave wobbles the pitch of another so fast you hear it as a new colour, not a wobble. Simple ratios between the two, like 1 or 2, sound musical; odd ones sound metallic. More amount, more brightness."
+  - k: play
+    t: "Load RR Lead and touch [Pattern | ▶] so its melody plays. Turn [Type] to Wavetable. Turn [Timbre] slowly, then try another table with [Wave]."
+    hl: t:preset p:pattern t:type t:timbre t:wave
+    hear: The tone morphs as it moves along the table.
+  - k: play
+    t: "Turn [Type] to Harmo. Turn [Wave] slowly through its settings."
+    hl: t:type t:wave
+    hear: Organ-like tones, built from harmonics added together.
+  - k: play
+    t: "Turn [Type] to Two Op. FM. Start with [Timbre] low and raise it, then turn [Wave] for other ratios."
+    hl: t:type t:timbre t:wave
+    hear: From soft and round to bright and glassy, then clangy as the ratio gets odd.
+  - k: play
+    t: "Turn [Type] to KarplusStr. Turn [Shape] to make the string ring longer or shorter, and [Timbre] to move where it's plucked."
+    hl: t:type t:shape t:timbre
+    hear: A plucked string, like a harp or a koto.
+  - k: play
+    t: "Touch [Pattern | ▶] to stop, and reload RR Lead without saving, so your lead stays as it was."
+    hl: p:pattern t:preset p:preset
+  - k: play
+    t: "A bell. Start from Init and set [Type] to Modal. Turn [Wave] until it sounds like metal, [Timbre] about halfway and [Shape] until it rings for a second or two. Turn [Cutoff] fully up."
+    hl: p:preset t:type t:wave t:timbre t:shape t:cutoff
+    hear: A struck metal bar, with a clear note.
+  - k: play
+    t: "Save it in the next empty slot, category Keys, as RR Bell."
+    hl: p:save t:preset p:preset
+  - k: play
+    t: "A hi-hat. From Init, set [Type] to Noise with [Wave] in the middle for white noise. Press [Filter Type] until HPF lights and turn [Cutoff] high. Make sure [Amp Mod] is lit, then [Attack] fully left, [Decay/Rel] short, [Sustain] fully left."
+    hl: p:preset t:type t:wave p:filtertype t:cutoff p:ampmod t:attack t:decay t:sustain
+    hear: A short, bright tick on every key, with no note in it.
+  - k: play
+    t: "Save it, category Percussion, as RR Hat."
+    hl: p:save t:preset p:preset
+  - k: check
+    t: You want a tone that sounds like a struck metal bar. Which type do you start from?
+    q:
+      - Noise
+      - Harmo
+      - "!Modal"
+      - Wavetable
+    a: "Modal copies how a struck object rings. Noise has no pitch, Harmo is organ-like and Wavetable morphs between shapes."
+    hear: Pick the recipe first, then shape it with the filter and envelope.
+challenge: "Make RR Hat open and close: give it a slightly longer [Decay/Rel] for an open hat, and save that as a second sound."

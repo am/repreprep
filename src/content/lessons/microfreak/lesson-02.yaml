@@ -1,0 +1,63 @@
+id: f02
+number: 2
+unit: A sound from nothing
+title: Waveforms and the filter
+goal: Hear what a waveform's harmonics do, then darken and sharpen a sound with the analog filter's cutoff, resonance and three types.
+listen: 'Burial, "Ghost Hardware". The hats are pitched down with their highs cut away, so they sound dusty instead of crisp: a filter at work.'
+concepts:
+  - h: Harmonics
+    p:
+      - "Almost every sound is a note plus quieter harmonics above it. A sine has none and sounds pure. A square has every other one and sounds hollow. A saw has them all and sounds bright and buzzy."
+  - h: The low-pass filter
+    p:
+      - "A low-pass filter lets the lows through and turns down everything above its cutoff. Lower the cutoff and the sound gets darker, while the note stays the same."
+  - h: Resonance
+    p:
+      - "Resonance boosts the harmonics right at the cutoff. A little gives an edge; a lot gives a whistle that follows the cutoff as it moves."
+  - h: Three filter types
+    p:
+      - "Low pass keeps the lows, high pass keeps the highs, band pass keeps a band in the middle. The MicroFreak's analog filter is gentle (12 dB per octave), so even a closed filter keeps some colour."
+steps:
+  - use: harmonics
+  - k: learn
+    fig: mf-basicwaves
+    t: "Basic Waves morphs between shapes with [Wave]: a square on the left, a saw in the middle, and two saws on the right. [Shape] adds a pure sine an octave below, for weight."
+  - use: low-pass-filter
+  - k: learn
+    fig: mf-filter
+    t: "[Cutoff] sets where the filter starts to cut. [Resonance] boosts the harmonics right at the cutoff, for a vocal, whistling edge. Near the top the filter starts to ring on its own, so keep the volume down while you explore."
+  - k: learn
+    fig: mf-filtertypes
+    t: "Low pass (LPF) keeps the lows and darkens the sound. High pass (HPF) keeps the highs and thins it out. Band pass (BPF) keeps a band in the middle, like a voice on the phone. [Filter Type] steps through them."
+  - k: play
+    t: "Start from Init (press [Preset] three times quickly) and set [Type] to BasicWaves. Hold the A key and turn [Wave] slowly from left to right."
+    hl: p:preset t:type t:wave h:k10
+    hear: Hollow and woody on the left, bright and buzzy in the middle, wide and doubled on the right.
+  - k: play
+    t: "Set [Wave] to the middle, a saw. Hold A and turn [Cutoff] all the way down, then slowly back up."
+    hl: t:wave t:cutoff h:k10
+    hear: From a muffled hum to full brightness. The note never changes, only its colour.
+  - k: play
+    t: "Set [Cutoff] about a third of the way up. Turn [Resonance] up slowly, then move [Cutoff] a little while you hold the note."
+    hl: t:resonance t:cutoff h:k10
+    hear: A whistle appears at the cutoff and follows it as it moves.
+  - k: play
+    t: "Press [Filter Type] to step from LPF to BPF to HPF, and sweep [Cutoff] on each one. The lights show which type is on."
+    hl: p:filtertype t:cutoff
+    hear: Dark and round, then nasal and thin in the middle, then airy with no low end.
+  - k: play
+    t: "Back on LPF, turn [Resonance] down. Turn [Shape] up and play low notes: the sine an octave below adds weight under a dark sound."
+    hl: p:filtertype t:resonance t:shape
+  - k: play
+    t: "Make two versions of the same note: a dark one ([Cutoff] low, no [Resonance]) and a bright one ([Cutoff] high, a little [Resonance]). Write two words for each, like round and soft, or sharp and glassy."
+    hl: t:cutoff t:resonance
+  - k: check
+    t: You turn Cutoff down on a low-pass filter. What do you hear?
+    q:
+      - The note gets lower
+      - "!The highs fade, so it gets darker, and the note stays the same"
+      - It gets louder
+      - The low end disappears
+    a: A low-pass filter removes harmonics above the cutoff. The note you hear is the lowest part of the sound, so it stays where it is; the sound just loses brightness.
+    hear: Cutoff is colour, not pitch.
+challenge: "Find the darkest sound that is still clearly the note A, and the brightest one that doesn't hurt. The screen shows each knob's value as you turn it: write down Cutoff and Resonance for both."

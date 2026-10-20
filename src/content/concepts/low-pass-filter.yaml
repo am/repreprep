@@ -1,0 +1,4 @@
+id: low-pass-filter
+k: learn
+fig: u2spectrum
+t: A low-pass filter darkens a sound by turning down everything above a cutoff. Burial's hats in "Ghost Hardware" are pitched way down with their highs cut away, so they sound dusty rather than crisp.

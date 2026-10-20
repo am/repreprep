@@ -1,0 +1,5 @@
+id: envelope-adsr
+k: learn
+fig: u2adsr
+t: "An envelope is a sound's shape in time. Attack: how fast it rises. Decay: how fast it falls to the sustain level. Sustain: the level held while you hold the key. Release: the fade after you let go."
+hear: A pad has a slow attack and long release. A drum is an instant attack and a decay.

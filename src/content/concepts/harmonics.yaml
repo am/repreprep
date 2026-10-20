@@ -1,0 +1,4 @@
+id: harmonics
+k: learn
+fig: u2waves
+t: "Every sound is a stack of tones: the note you hear plus quieter harmonics above it. A sine has none, a sawtooth has them all. The more harmonics, the brighter the sound."

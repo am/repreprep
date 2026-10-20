@@ -1,14 +1,14 @@
 // The course data, the lesson schema and the shared HTML helpers (src/course/index.js, files.js, schema.js, shared/*). The pages built from them are tested in tests/site.
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { INSTRUMENTS, lessonLabel, pad2, stepPath, nextLesson, renderFig } from "../../src/course/index.js";
+import { INSTRUMENTS, lessonLabel, pad2, stepPath, nextLesson, renderFig, skipTo } from "../../src/course/index.js";
 import { CATALOG, COURSES } from "../../src/course/files.js";
 import { lessonSchema } from "../../src/course/schema.js";
 import { esc, hits, svgFig, T } from "../../src/course/shared/html.js";
 import { renderGrid, gridPreset } from "../../src/course/shared/grid.js";
 import { SONGS, linkSongs } from "../../src/course/shared/songs.js";
 
-const [I] = COURSES;
+const [I, MF] = COURSES;
 const count = (html, re) => (html.match(re) || []).length;
 
 test("esc escapes the four HTML characters", () => {
@@ -37,9 +37,32 @@ test("instruments: only the ready ones have lessons", () => {
     INSTRUMENTS.map((x) => x.key)
   );
   assert.ok(CATALOG.filter((x) => !x.ready).every((x) => !x.lessons));
-  assert.deepEqual(COURSES, [I]);
+  assert.deepEqual(
+    COURSES.map((x) => x.key),
+    ["cycles", "microfreak"]
+  );
   assert.equal(I.lessons.length, 20);
+  assert.equal(MF.lessons.length, 16);
   assert.equal(pad2(3), "03");
+});
+
+test("shared steps: written once, the same in both courses, each pointing at the other", () => {
+  const find = (C, id) => C.lessons.flatMap((L) => L.steps).find((st) => st.shared === id);
+  const a = find(I, "envelope-adsr"),
+    b = find(MF, "envelope-adsr");
+  assert.equal(a.t, b.t);
+  assert.deepEqual(a.also, ["MicroFreak"]);
+  assert.deepEqual(b.also, ["Model:Cycles"]);
+  // extra text is added to one course's copy only
+  const swing = find(MF, "swing");
+  assert.ok(swing.t.startsWith(find(I, "swing").t) && swing.t.length > find(I, "swing").t.length);
+});
+
+test("skipTo jumps past a run of shared steps", () => {
+  const L = { steps: [{}, { shared: "a" }, { shared: "b" }, {}, { shared: "c" }] };
+  assert.equal(skipTo(L, 1), 3);
+  assert.equal(skipTo(L, 4), 5);
+  assert.equal(skipTo(L, 0), 0);
 });
 
 test("lesson schema: grid hits become 16 velocities, mistakes are caught", () => {

@@ -1,0 +1,106 @@
+id: f11
+number: 11
+unit: Notes, chords and patterns
+title: Arpeggios
+goal: Turn your track's chords into moving patterns with the arpeggiator, and choose the order, the range, the note value and the swing.
+listen: 'Kiasmos, "Looped". The fast repeating notes are a chord played one note at a time, over and over, while the chords underneath change slowly.'
+concepts:
+  - h: An arpeggio
+    p:
+      - "An arpeggio is a chord played one note at a time instead of all at once. Repeated in a loop, it turns a held chord into a moving pattern."
+  - h: Order and range
+    p:
+      - "The same notes can go up, follow the order you pressed them, or come in a random order. Spreading the pattern over two octaves makes it wider without adding new notes."
+  - h: Note values
+    p:
+      - "A beat can be split into two eighth notes, four sixteenths, or three eighth-note triplets. Triplets roll instead of tick."
+  - h: Swing
+    p:
+      - "Swing delays every second note a little, so pairs of notes become long-short. A little swing makes a pattern feel relaxed."
+steps:
+  - k: learn
+    fig:
+      grid:
+        title: One chord, three patterns
+        presets:
+          - name: Up
+            bpm: 90
+            note: "Am7 going up, A C E G, one note per sixteenth."
+            rows:
+              - {
+                  n: Arp,
+                  s: pluck,
+                  hits: "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16",
+                  vel: 0.7,
+                  p: [57, 60, 64, 67, 57, 60, 64, 67, 57, 60, 64, 67, 57, 60, 64, 67],
+                }
+          - name: Order
+            bpm: 90
+            note: "The same four notes in the order the keys were pressed: A, E, G, C."
+            rows:
+              - {
+                  n: Arp,
+                  s: pluck,
+                  hits: "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16",
+                  vel: 0.7,
+                  p: [57, 64, 67, 60, 57, 64, 67, 60, 57, 64, 67, 60, 57, 64, 67, 60],
+                }
+          - name: Up, 2 octaves
+            bpm: 90
+            note: "Up through the chord, then the same notes an octave higher."
+            rows:
+              - {
+                  n: Arp,
+                  s: pluck,
+                  hits: "1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16",
+                  vel: 0.7,
+                  p: [57, 60, 64, 67, 69, 72, 76, 79, 57, 60, 64, 67, 69, 72, 76, 79],
+                }
+    t: "An arpeggio is a chord played one note at a time, in a loop. The notes are the same as the chord's; only the order and the range change. Press play on each pattern and compare."
+  - k: learn
+    fig: mf-notevalues
+    t: "The arpeggiator plays one note per step, and you choose how long a step is. Eighths split a beat in two, sixteenths in four, and eighth-note triplets in three. Triplets roll instead of tick."
+  - use: swing
+    extra: "The MicroFreak's arpeggiator has its own swing, from 50% to 75%."
+  - k: play
+    t: "Load RR Pluck. Press [Arp | Seq] so its light is white: the arpeggiator is on. Hold Am7 (A, C, E and G) and listen."
+    hl: t:preset p:arpseq h:k10 h:k13 h:k17 h:k20
+    hear: The chord comes out one note at a time, going up.
+  - k: play
+    t: "Touch [Hold] so it lights, play Am7 and let go. The pattern keeps going on its own. While it plays, play Fmaj7 (A, C, E, F): the new notes replace the old ones."
+    hl: p:hold h:k10 h:k13 h:k17 h:k18
+    hear: Your hands are free, and a new chord takes over straight away.
+  - k: play
+    t: "Set the speed. With the Sync light off, [Rate/Swing] sets a tempo: turn it to 90. Then press [Rate/Swing] so Sync lights, and turn it to 1/16."
+    hl: t:rate p:rate
+    hear: The same tempo as your track, now counted in sixteenths.
+  - k: play
+    t: "Try the orders: touch [Up | A], then [Order | B], then [Random | ●]. For Order, play the chord again one key at a time, in the order A, E, G, C."
+    hl: p:up p:order p:random
+    hear: Up climbs, Order follows your fingers, Random never repeats the same way.
+  - k: play
+    t: "Back to Up. Press [Oct | Mod] to light 2, so the pattern runs over two octaves. Try 3 and 4, then come back to 2."
+    hl: p:up p:octmod
+    hear: The same four notes, spread wider and wider.
+  - k: play
+    t: "Change the note value with [Rate/Swing]: 1/8, then 1/16, then 1/8T. The T stands for triplet."
+    hl: t:rate
+    hear: "1/8T has a rolling, three-in-a-beat feel."
+  - k: play
+    t: "Back at 1/16, add swing: hold [Shift] and turn [Rate/Swing] to about 60%."
+    hl: h:shift t:rate
+    hear: The pattern loosens and starts to lean.
+  - k: play
+    t: "Play the night chords under the arpeggio, one per bar: Am7, Fmaj7, Dm7 (A, C, D, F), Em7 (G, B, D, E). Touch [Hold] to stop when you're done."
+    hl: p:hold
+    hear: Your track's four chords, now as a moving pattern.
+  - k: check
+    t: "The arpeggio should roll with three notes in each beat. Which note value do you pick?"
+    q:
+      - "1/8"
+      - "1/16"
+      - "!1/8T"
+      - "1/4"
+    a: "1/8T is the eighth-note triplet: three notes in the time of two eighths."
+    hear: Triplets roll; straight eighths and sixteenths tick.
+challenge: "While the arpeggio plays with [Hold] on, hold [Shift] and press another key. Does it move the whole pattern to a new starting note?"

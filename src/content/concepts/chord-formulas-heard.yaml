@@ -1,0 +1,40 @@
+id: chord-formulas-heard
+k: learn
+fig:
+  grid:
+    title: Four chords on A
+    presets:
+      - name: Minor
+        bpm: 60
+        note: "0-3-7: A, C, E."
+        rows:
+          - { n: Root, s: keys, hits: "1,9", vel: 0.7, note: 57 }
+          - { n: 3rd, s: keys, hits: "1,9", vel: 0.7, note: 60 }
+          - { n: 5th, s: keys, hits: "1,9", vel: 0.7, note: 64 }
+          - { n: 7th, s: keys, hits: "", note: 67 }
+      - name: Major
+        bpm: 60
+        note: "0-4-7: A, C#, E."
+        rows:
+          - { n: Root, s: keys, hits: "1,9", vel: 0.7, note: 57 }
+          - { n: 3rd, s: keys, hits: "1,9", vel: 0.7, note: 61 }
+          - { n: 5th, s: keys, hits: "1,9", vel: 0.7, note: 64 }
+          - { n: 7th, s: keys, hits: "", note: 68 }
+      - name: m7
+        bpm: 60
+        note: "0-3-7-10: A, C, E, G."
+        rows:
+          - { n: Root, s: keys, hits: "1,9", vel: 0.7, note: 57 }
+          - { n: 3rd, s: keys, hits: "1,9", vel: 0.7, note: 60 }
+          - { n: 5th, s: keys, hits: "1,9", vel: 0.7, note: 64 }
+          - { n: 7th, s: keys, hits: "1,9", vel: 0.7, note: 67 }
+      - name: Maj7
+        bpm: 60
+        note: "0-4-7-11: A, C#, E, G#."
+        rows:
+          - { n: Root, s: keys, hits: "1,9", vel: 0.7, note: 57 }
+          - { n: 3rd, s: keys, hits: "1,9", vel: 0.7, note: 61 }
+          - { n: 5th, s: keys, hits: "1,9", vel: 0.7, note: 64 }
+          - { n: 7th, s: keys, hits: "1,9", vel: 0.7, note: 68 }
+t: Hear each formula on the same root, A. Switch between the four while it plays.
+hear: "Minor: dark. Major: bright. m7: relaxed and dusky. Maj7: warm, a little bittersweet."

@@ -1,0 +1,61 @@
+id: f15
+number: 15
+unit: Sound worlds and finishing
+title: Texture from samples
+goal: Play a recording on the keys, reverse and loop it, stretch it into grains, and save a grainy texture for your track.
+listen: 'Burial, "Archangel". Under the beat there is a haze of crackle, rain and blurred voices. None of it is a note; it is texture.'
+concepts:
+  - h: Samples
+    p:
+      - "A sample is a short recording. Played from the keys, it goes higher and faster on high notes, lower and slower on low ones. You can choose where it starts, how much of it plays, play it backwards and loop it."
+  - h: Grains
+    p:
+      - "Granular synthesis chops a recording into tiny slices, called grains, and plays many of them at once. The sound keeps its colour but loses its rhythm, so time can stretch or freeze."
+  - h: Texture
+    p:
+      - "Texture is sound that sits behind the music: crackle, rain, breath, a blurred voice. It is felt more than heard, and it makes a track feel like a place."
+steps:
+  - k: learn
+    fig: mf-sample
+    t: "A sample is a short recording. On the keys, high notes play it higher and faster, low notes lower and slower. You can choose where it starts, how much of it plays, play it backwards and loop it."
+  - k: learn
+    fig: mf-grains
+    t: "Grains are tiny slices of a recording, a few hundredths of a second each. Play many of them, overlapping, and the sound keeps its colour but loses its rhythm, so you can stretch it or freeze it in place."
+  - k: learn
+    t: "Texture is the sound behind the music: crackle, rain, breath, a blurred voice. Burial's tracks are full of it. You feel it more than you hear it, and it makes a track feel like a place."
+  - k: play
+    t: "Start from Init and turn [Type] to Sample. Hold [Shift] and turn [Type] to browse the samples, playing a key on each. Hold [Shift] and turn [Type] again when you find one with some movement in it, like a voice or a loop."
+    hl: p:preset t:type h:shift
+    hear: While the screen shows Smp you're still browsing.
+  - k: play
+    t: "Turn [Wave] to move the start point, then [Timbre] to set how much plays. Turn [Timbre] left of the middle to play it backwards. Turn [Shape] up to loop it."
+    hl: t:wave t:timbre t:shape
+    hear: Backwards, the sound swells in instead of starting sharply.
+  - k: play
+    t: "Turn [Type] to Scan Grains. Turn [Wave] slowly from left to right, then raise [Timbre] for more grains."
+    hl: t:type t:wave t:timbre
+    hear: The same recording, slowed right down and smeared, like a tape stretched in time.
+  - k: play
+    t: "Turn [Type] to Cloud Grains. Raise [Shape] a little to scatter the grains, and move [Wave] to pick which part of the recording they come from."
+    hl: t:type t:shape t:wave
+    hear: A cloud of sound that hangs in the air while you hold the key.
+  - k: play
+    t: "Make it a pad: [Attack] about one second, [Sustain] high, [Decay/Rel] long. Turn [Cutoff] down until it sits behind the music."
+    hl: t:attack t:sustain t:decay t:cutoff
+  - k: play
+    t: "Give it slow movement: in the Matrix, set LFO to Wave to about +20, and turn [LFO Rate] very slow."
+    hl: t:matrix p:mx-lfo-wave t:lforate
+    hear: The haze slowly drifts through the recording.
+  - k: play
+    t: "Save it, category Sfx, as RR Texture."
+    hl: p:save t:preset p:preset
+  - k: check
+    t: You want a recording to hang in the air while you hold a key, without its rhythm. Which do you use?
+    q:
+      - Sample with Shape turned up
+      - "!Cloud Grains"
+      - Sample played backwards
+      - Noise
+    a: "Cloud Grains plays many tiny slices at once, so the recording's colour stays and its rhythm goes."
+    hear: Samples keep time; grains let go of it.
+challenge: "Find the least musical factory sample you can, like a noise or a voice, and turn it into a soft pad with Cloud Grains."

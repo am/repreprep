@@ -1,0 +1,63 @@
+id: f03
+number: 3
+unit: A sound from nothing
+title: Shapes in time
+goal: Use one envelope to shape both the volume and the filter, and turn the same tone into a pluck, an organ and a slow swell.
+listen: 'Trentemøller, "Miss You". Listen to how gently each sound starts and how slowly it fades, more than to how loud it is.'
+concepts:
+  - h: The envelope
+    p:
+      - "ADSR: attack (how fast it starts), decay (how fast it falls), sustain (the level it holds while you hold the key) and release (how long it fades after you let go)."
+  - h: One envelope, two jobs
+    p:
+      - "On the MicroFreak the envelope can move the volume and the filter at once. Opening the filter as the volume rises is how a synth copies the bright start of a plucked string or a struck key."
+  - h: Amp Mod
+    p:
+      - "With Amp Mod off, the volume is simply on while you hold a key and off when you let go, like an organ. With it on, the envelope shapes the volume too."
+  - h: Shapes you already know
+    p:
+      - "A plucked string: instant attack, short decay, no sustain. An organ: on and off. Strings and pads: a slow attack and a long release."
+steps:
+  - use: envelope-adsr
+  - k: learn
+    fig: mf-ampmod
+    t: "On the MicroFreak one envelope does two jobs. [Filter Amt] sets how far it moves the filter. With [Amp Mod] lit it shapes the volume too; with it off, the volume just opens while you hold a key and shuts when you let go."
+  - k: learn
+    fig: mf-filteramt
+    t: "Two knobs need a closer look. [Decay/Rel] sets two times at once: the fall to the sustain level and the fade after you let go. [Filter Amt] starts in the middle, at none: right opens the filter with each note, left closes it."
+  - k: learn
+    fig: mf-shapes
+    t: "Every instrument has its own shape. A pluck: instant attack, short decay, no sustain. An organ: straight on and off. Strings and pads: a slow attack and a long release."
+    hear: Shape before colour. Most of what makes a pad a pad is its envelope.
+  - k: play
+    t: "Start from Init and set [Type] to BasicWaves with [Wave] in the middle, a saw. Set [Cutoff] to about a quarter. If [Amp Mod] isn't lit, press it."
+    hl: p:preset t:type t:wave t:cutoff p:ampmod
+  - k: play
+    t: "A pluck: turn [Attack] fully left, [Decay/Rel] short, [Sustain] to zero and [Filter Amt] to the right of the middle. Play short notes."
+    hl: t:attack t:decay t:sustain t:filteramt
+    hear: A bright click at the start that dies quickly, like a plucked string.
+  - k: play
+    t: "An organ: press [Amp Mod] so it goes off, and turn [Filter Amt] back to the middle. Hold a key for a while, then let go."
+    hl: p:ampmod t:filteramt
+    hear: Full volume for as long as you hold, gone the moment you let go.
+  - k: play
+    t: "A swell: press [Amp Mod] on again. Turn [Attack] up to about two seconds (the screen shows the time), [Sustain] high and [Decay/Rel] long. Hold a note, then let go."
+    hl: p:ampmod t:attack t:sustain t:decay
+    hear: It fades in slowly, holds, and fades out after you let go.
+  - k: play
+    t: "Keep the swell and turn [Filter Amt] to the right: now the brightness swells with the volume. Then try it to the left of the middle."
+    hl: t:filteramt
+    hear: Right, it blooms open. Left, it starts bright and darkens as it grows.
+  - k: play
+    t: "The silent synth: turn [Cutoff] to zero and [Filter Amt] fully left, then play. Nothing. Bring [Filter Amt] back to the middle and [Cutoff] up. Whenever the MicroFreak goes quiet, check these two first."
+    hl: t:cutoff t:filteramt
+  - k: check
+    t: Amp Mod is off. What happens when you let go of a key?
+    q:
+      - "!The sound stops at once"
+      - It fades out over the Decay/Rel time
+      - It keeps playing
+      - The filter opens
+    a: With Amp Mod off the volume only follows the key, so it shuts straight away. The release you set on Decay/Rel only shapes the volume when Amp Mod is lit.
+    hear: No Amp Mod, no release.
+challenge: "Copy the shape of a piano note: an instant start and a slow fade while you hold the key. Then let go early. Why does the fade after you let go take as long as the fall before it?"

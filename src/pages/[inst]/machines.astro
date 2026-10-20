@@ -1,30 +1,23 @@
 ---
 import Base from "../../layouts/Base.astro";
 import Band from "../../components/site/Band.astro";
+import Keys from "../../components/course/Keys.astro";
 import { courses } from "../../course/content.js";
 export async function getStaticPaths() {
   return (await courses()).filter((I) => I.machines).map((I) => ({ params: { inst: I.slug }, props: { I } }));
 }
 const { I } = Astro.props;
-const COMMON = [
-  ["PITCH", "-24 to +24 semitones"],
-  ["DECAY", "0–127, length of the sound"],
-  ["VOL+DIST", "60 is clean; above adds level and distortion"],
-  ["PUNCH", "compression-like accent"],
-  ["GATE", "hold notes for their LEN"],
-  ["LFO", "one per track, 7 waves: triangle, sine, square, saw, envelope, ramp, random"],
-];
+const [commonEyebrow, commonTitle, COMMON] = I.machinesCommon;
 ---
 
-<Base title={`${I.name} machines`} inst={I} tab="machines">
-  <p class="lede t-body">
-    The six machines and what their four machine knobs do, from the machine table and tips in Elektron’s Model:Cycles
-    manual (OS 1.13).
-  </p>
+<Base title={`${I.name} ${I.machinesTab.toLowerCase()}`} inst={I} tab="machines">
+  <p class="lede t-body">{I.machinesIntro}</p>
   <div class="bands">
     {I.machines.map((m: any) => (
       <Band eyebrow={m.tag} title={m.n}>
-        <p class="t-body">{m.p}</p>
+        <p class="t-body">
+          <Keys I={I} text={m.p} />
+        </p>
         <dl class="spec">
           {Object.entries(m.m).map(([k, v]) => (
             <Fragment>
@@ -35,7 +28,7 @@ const COMMON = [
         </dl>
       </Band>
     ))}
-    <Band eyebrow="All machines" title="Every machine also has">
+    <Band eyebrow={commonEyebrow} title={commonTitle}>
       <dl class="spec">
         {COMMON.map(([k, v]) => (
           <Fragment>

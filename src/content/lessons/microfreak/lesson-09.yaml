@@ -1,0 +1,56 @@
+id: f09
+number: 9
+unit: Notes, chords and patterns
+title: Scales and modes
+goal: Find the notes of A minor on a real keyboard, hear how Dorian and harmonic minor each change one note, and use scale lock so every key fits.
+listen: 'Air, "La Femme d''Argent". Hum along with the bass and listen to which notes feel like home.'
+concepts:
+  - h: Twelve notes and scales
+    p:
+      - "Western music uses 12 notes, a semitone apart. A scale picks some of them. A natural minor uses A B C D E F G: on a keyboard, the white keys from A to A."
+  - h: Modes
+    p:
+      - "Change one note of a scale and its mood changes. A Dorian raises the 6th, F, to F#: still minor, but brighter and more hopeful. A harmonic minor raises the 7th, G, to G#, for a darker pull back home to A."
+  - h: Scale lock
+    p:
+      - "The MicroFreak can lock the keyboard to a scale, so every key plays a note that belongs. It's a setting of each preset."
+steps:
+  - use: twelve-notes
+  - use: three-scales
+  - k: learn
+    fig: mf-modes
+    t: "Change one note of a scale and its mood changes. A natural minor is A B C D E F G. A Dorian raises the 6th to F#: still minor, but brighter and more hopeful. A harmonic minor raises the 7th to G#, which pulls hard back to A."
+    hear: Same root, same rhythm, one note different.
+  - k: learn
+    t: "Scale lock: the MicroFreak can move every key to a note of the scale you pick, so a wrong note can't happen. It's a setting of each preset, in [Utility], with the scale and its root note."
+  - k: play
+    t: "Load RR Pluck. Play the white keys from A up to the next A, slowly, and back down. That's A natural minor: no black keys at all."
+    hl: t:preset p:k10 p:k12 p:k13 p:k15 p:k17 p:k18 p:k20 p:k22
+    hear: Dark and a little sad, and it sounds finished when you land on A.
+  - k: play
+    t: "Turn on scale lock: press [Utility], go into Preset, set Scale to Minor and Root Note to A. Press [Utility] to leave."
+    hl: p:utility t:preset p:preset
+  - k: play
+    t: "Now play any keys, black ones too, slowly across the keyboard. End each phrase on A."
+    hear: Nothing clashes any more. Every key lands on a note of A minor.
+  - k: play
+    t: "Change Scale to Dorian (same place in [Utility]) and play the same kind of phrases."
+    hl: p:utility t:preset p:preset
+    hear: Brighter, almost hopeful, every time the F# comes by.
+  - k: play
+    t: "Change Scale to Harmonic minor. Play a phrase that climbs from E to A."
+    hl: p:utility t:preset p:preset
+    hear: The G# just below A pulls hard to resolve, like a film's dramatic moment.
+  - k: play
+    t: "Set Scale back to Minor and save over RR Pluck with a long press on [Save]. Set the same scale on RR Lead and save it too."
+    hl: h:save t:preset
+  - k: check
+    t: Which one note turns A natural minor into A Dorian?
+    q:
+      - C becomes C#
+      - "!F becomes F#"
+      - G becomes G#
+      - B becomes B♭
+    a: Dorian is natural minor with a raised 6th. In A, the 6th note is F, so it becomes F#. G to G# is harmonic minor.
+    hear: Dorian lifts the 6th, harmonic minor lifts the 7th.
+challenge: "Pick the mode that feels most like night to you. Set it on RR Lead and play a slow phrase that ends on A."

@@ -21,9 +21,7 @@ steps:
   - k: learn
     fig: hierarchy
     t: Not all 16 steps are equal. Beats are strongest, the "&"s are medium, the e's and a's are weakest. The difference between a stiff loop and a groove is mostly what happens on those weak, short steps.
-  - k: learn
-    fig: swing
-    t: Swing pushes only the weak sixteenths a little later, so each pair of steps becomes long-short. At 50% it's straight. Around 60% it's lazy. At 67% it turns into a shuffle. The strong steps never move.
+  - use: swing
   - k: learn
     fig:
       grid:
