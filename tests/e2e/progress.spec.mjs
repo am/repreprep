@@ -91,9 +91,12 @@ test("progress page: download, load and delete", async ({ page }, info) => {
     })
   );
   await page.locator("[data-import]").setInputFiles(file);
-  await expect(page.locator("[data-import-msg]")).toHaveText("Loaded. 2 ticked steps.");
+  /* it's added to what this browser has */
+  await expect(page.locator("[data-import-msg]")).toHaveText("Loaded and combined. 4 ticked steps.");
   let p = await progress(page);
-  expect(p.inst.cycles.steps).toEqual({ [`${L2.id}:0`]: true, [`${L2.id}:1`]: true });
+  const both = { ...ticks(L1, 2), [`${L2.id}:0`]: true, [`${L2.id}:1`]: true };
+  expect(p.inst.cycles.steps).toEqual(both);
+  expect(p.inst.cycles.notes).toEqual({ [L1.id]: "hi" });
   expect(p.instrument).toBeUndefined();
 
   await page
@@ -103,12 +106,32 @@ test("progress page: download, load and delete", async ({ page }, info) => {
 
   page.once("dialog", (d) => d.dismiss());
   await page.locator("[data-clear]").click();
-  expect((await progress(page)).inst.cycles.steps).toEqual({ [`${L2.id}:0`]: true, [`${L2.id}:1`]: true });
+  expect((await progress(page)).inst.cycles.steps).toEqual(both);
   page.once("dialog", (d) => d.accept());
   await page.locator("[data-clear]").click();
   await expect(page.locator("[data-clear-msg]")).toHaveText("Progress deleted.");
   p = await progress(page);
   expect(p.inst).toEqual({});
+});
+
+test("two tabs: a step ticked in one shows in the other, and neither undoes the other", async ({ page, context }) => {
+  await page.goto(L1.path);
+  const other = await context.newPage();
+  await other.goto(L2.path);
+  await other.locator(".navrow .btn.primary").click();
+  await expect(other).toHaveURL(`${L2.path}/1`);
+  /* the first tab never reloaded, and its next tick keeps the other tab's */
+  await page.locator(".navrow .btn.primary").click();
+  await expect(page).toHaveURL(`${L1.path}/1`);
+  const p = await progress(page);
+  expect(p.inst.cycles.steps).toEqual({ [`${L1.id}:0`]: true, [`${L2.id}:0`]: true });
+  await page.goto(`/${I.slug}`);
+  await expect(page.locator(`.umap [data-prog="${L2.id}"]`)).toHaveClass("s part");
+  /* the course map open in a tab updates when the other tab ticks a step */
+  await other.locator(".navrow .btn.primary").click();
+  await expect(other).toHaveURL(`${L2.path}/2`);
+  await expect(page.locator("#meterTxt")).toHaveText(/^3 of \d+ reps$/);
+  await other.close();
 });
 
 test("a broken progress entry doesn't break the site", async ({ page }) => {
