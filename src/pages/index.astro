@@ -21,24 +21,25 @@ const count = (I: any) => {
       <h2>Learn music by playing it.</h2>
       <p>One idea at a time, in short lessons on the gear you own.</p>
     </section>
-    <section class="scene">
+    <span class="snap" aria-hidden="true"></span>
+    <section class="scene last">
       <h2>Rep after rep.</h2>
-      <nav class="gear" aria-label="Pick your instrument">
-        {instruments.map((I) =>
-          I.ready ? (
-            <a class="go" href={`/${I.slug}`}>
-              <b>{I.name}</b>
-              <small>{count(I)}</small>
-            </a>
-          ) : (
-            <span class="soon">
-              <b>{I.name}</b>
-              <small>coming next</small>
-            </span>
-          )
-        )}
-      </nav>
     </section>
+    <nav class="gear" aria-label="Pick your instrument">
+      {instruments.map((I) =>
+        I.ready ? (
+          <a class="go" href={`/${I.slug}`}>
+            <b>{I.name}</b>
+            <small>{count(I)}</small>
+          </a>
+        ) : (
+          <span class="soon">
+            <b>{I.name}</b>
+            <small>coming next</small>
+          </span>
+        )
+      )}
+    </nav>
   </div>
 </Base>
 <script is:inline data-astro-rerun>
@@ -70,7 +71,15 @@ const count = (I: any) => {
 
 <style>
   /* home: one idea per screen, each centered in the viewport, revealed as you scroll.
-     The instrument picker at the end is the page's only set of links into the course. */
+     The instrument picker is the page's only set of links into the course, so it stays docked at the bottom. */
+  /* a grid three screens tall: two scenes, then free space split evenly above and below the last line and
+     the picker, which centers that pair on the last screen while the picker stays a direct child it can stick in */
+  .home {
+    --dock: 6.5rem;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto auto 1fr;
+    min-height: 300svh;
+  }
   .scene {
     min-height: 100svh;
     display: flex;
@@ -78,13 +87,22 @@ const count = (I: any) => {
     align-items: center;
     justify-content: center;
     text-align: center;
-    padding: 12vh 0;
+    padding: 12vh 0 calc(12vh + var(--dock));
     position: relative;
     scroll-snap-align: start;
     scroll-snap-stop: always;
   }
   .scene:first-child {
     padding-top: 0;
+  }
+  /* the last line and the picker under it share the last screen; .snap marks where that screen starts */
+  .scene.last {
+    min-height: 0;
+    padding: 0;
+  }
+  .snap {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
   /* each scene snaps into place; the footer gets its own snap point so it stays reachable */
   :global(html:has(.home)) {
@@ -116,7 +134,7 @@ const count = (I: any) => {
   /* scroll hint: a thin line with a dot sliding down it */
   .cue {
     position: absolute;
-    bottom: 5vh;
+    bottom: calc(var(--dock) + 2vh);
     left: 50%;
     width: 1px;
     height: 3.5rem;
@@ -173,28 +191,37 @@ const count = (I: any) => {
     opacity: 1;
     transform: none;
   }
+  /* docked at the bottom of the viewport while the home scrolls; the footer pushes it up at the end.
+     Like the lesson player's step footer, its top fades in from transparent, so the page shows through.
+     The fade is a border-image with a wide outset: it spans the whole window without adding page width. */
   .gear {
+    position: sticky;
+    bottom: 0;
+    z-index: 2;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: var(--s3);
-    margin-top: clamp(var(--s6), 6vh, var(--s8));
+    gap: var(--s2) var(--s3);
+    padding: var(--s7) 0 var(--s4);
+    padding-bottom: max(var(--s4), env(safe-area-inset-bottom));
+    border-image: linear-gradient(to bottom, transparent, var(--bg) calc(var(--s7) - var(--s2))) fill 0 / 0 / 0 100vw;
   }
   .gear a,
   .gear span {
     display: flex;
     flex-direction: column;
-    gap: 2px;
-    padding: var(--s4) var(--s5);
+    align-items: center;
+    gap: 1px;
+    padding: var(--s2) var(--s4);
     border: 1px solid var(--line);
-    border-radius: var(--r-xl);
+    border-radius: var(--r-l);
     text-decoration: none;
     color: inherit;
   }
   .gear b {
     font-family: var(--display);
     font-weight: var(--fw-bold);
-    font-size: var(--fs-xl);
+    font-size: var(--fs-lg);
   }
   .gear small {
     font-family: var(--mono);
@@ -217,19 +244,45 @@ const count = (I: any) => {
   }
   .gear .soon {
     opacity: 0.5;
+    background: var(--bg);
   }
   @media (max-width: 616px) {
     .scene .mark {
       font-size: 40vw;
     }
+    /* phones: the open course on one full-width line, the two coming next side by side under it */
+    .home {
+      --dock: 7.5rem;
+    }
     .gear {
-      width: 100%;
+      gap: var(--s2);
+    }
+    .gear a,
+    .gear span {
+      padding: var(--s2) var(--s3);
     }
     .gear a {
       flex: 1 1 100%;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      align-items: baseline;
+      gap: 0 var(--s2);
+      min-width: 0;
     }
     .gear span {
-      flex: 1 1 40%;
+      flex: 1 1 0;
+    }
+    .gear b {
+      font-size: var(--fs-md);
+    }
+    .gear .soon b {
+      font-size: var(--fs-sm);
+    }
+    .gear a small {
+      font-size: 0.66rem;
+      white-space: nowrap;
+      letter-spacing: 0;
     }
   }
   @media (prefers-reduced-motion: reduce) {
