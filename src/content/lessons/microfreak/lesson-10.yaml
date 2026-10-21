@@ -1,0 +1,63 @@
+id: f10
+number: 10
+unit: Notes, chords and patterns
+title: Chords from a scale
+goal: Build the chords that belong to A minor, see why your track's four chords fit together, and play them by hand with smooth voice leading.
+listen: 'Bonobo, "Black Sands". Listen past the beat to the few soft chords underneath that set the whole mood.'
+concepts:
+  - h: Chord formulas
+    p:
+      - "A chord is counted in semitones from its root. Minor is 0-3-7, major 0-4-7, and a fourth note makes a seventh chord: m7 is 0-3-7-10, maj7 is 0-4-7-11."
+  - h: Chords from a scale
+    p:
+      - "Stack every other note of a scale and you get its own chords. A minor gives Am7, Bm7♭5, Cmaj7, Dm7, Em7, Fmaj7 and G7. Your track's Am7, Fmaj7, Dm7 and Em7 all come from this family, which is why they sound right together."
+  - h: Voice leading
+    p:
+      - "Move as few fingers as you can from one chord to the next, by the smallest steps. The chords then flow into each other instead of jumping."
+  - h: Paraphony
+    p:
+      - "With Paraphonic on, the MicroFreak plays up to four notes at once. They share one filter, so a chord opens and closes together. Four notes is exactly a seventh chord."
+steps:
+  - k: learn
+    fig: mf-formula
+    t: "A chord is a formula counted in semitones from its root. Minor is 0-3-7 and major 0-4-7: only the middle note moves. Add a fourth note for the soft seventh chords: m7 is 0-3-7-10, maj7 is 0-4-7-11."
+  - use: chord-formulas-heard
+  - k: learn
+    fig: mf-diatonic
+    t: "Stack every other note of A minor, starting on each note in turn, and you get the scale's own chords: Am7, Bm7♭5, Cmaj7, Dm7, Em7, Fmaj7 and G7. Your track's four, Am7, Fmaj7, Dm7 and Em7, all come from this list. That's why they fit."
+  - k: learn
+    fig: mf-voicing
+    t: "Voice leading: move each finger as little as possible. Am7 to Fmaj7 changes one note, G down to F. Fmaj7 to Dm7 changes one, E down to D. Dm7 to Em7 moves three fingers down a step, and D stays."
+  - k: learn
+    t: "With [Paraphonic] lit the MicroFreak plays four notes at once. They share one filter, so a chord opens and closes together. Four notes is exactly a seventh chord."
+  - k: play
+    t: "Load RR Pad and check [Paraphonic] is lit. Play Am7 in the middle of the keyboard: A, C, E and G, as lit on the panel. Hold it for four slow counts."
+    hl: t:preset p:paraphonic h:k10 h:k13 h:k17 h:k20
+    hear: Soft, dusky, a little unresolved.
+  - k: play
+    t: "Change to Fmaj7: keep A, C and E, and move G down to F."
+    hl: h:k10 h:k13 h:k17 h:k18
+    hear: One finger moved, and the mood turned warm.
+  - k: play
+    t: "Then Dm7: keep A, C and F, and move E down to D. Then Em7: G, B, D and E, each finger one step from where it was."
+    hl: h:k10 h:k13 h:k15 h:k18 p:k8 p:k12 p:k17
+  - k: play
+    t: "Play the four in a loop, one per bar, counting slowly to four on each: Am7, Fmaj7, Dm7, Em7."
+    hear: A loop that never quite comes home, which keeps it feeling like night.
+  - k: play
+    t: "Chord mode plays a whole chord from one key. Hold [Paraphonic], play Am7, let go of the keys, then let go of [Paraphonic]. Its light blinks slowly. Now press A alone, then other keys."
+    hl: h:paraphonic h:k10 h:k13 h:k17 h:k20
+    hear: One finger, a full chord, moving as a shape up and down the keys.
+  - k: play
+    t: "Press [Paraphonic] to leave Chord mode. Another way to get chords from one key: set [Type] to Chords, then [Wave] picks the chord type (the screen names it, like m7) and [Timbre] the inversion. Reload RR Pad afterwards without saving."
+    hl: p:paraphonic t:type t:wave t:timbre t:preset p:preset
+  - k: check
+    t: Which of these chords doesn't belong to A natural minor?
+    q:
+      - Dm7
+      - Fmaj7
+      - Em7
+      - "!D major (D, F#, A)"
+    a: A natural minor has F, not F#, so D major is outside it. Dm7, Fmaj7 and Em7 use only A B C D E F G.
+    hear: A chord fits a key when all of its notes are in the scale.
+challenge: "Swap the last chord, Em7, for G7 (G, B, D and F). Does the loop still feel like night, or does it start to point somewhere?"

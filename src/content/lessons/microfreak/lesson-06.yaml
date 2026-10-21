@@ -1,0 +1,66 @@
+id: f06
+number: 6
+unit: Movement
+title: The cycling envelope
+goal: Use the cycling envelope once per note for a punchy strike, and on a loop to make your pad breathe.
+listen: 'Floating Points, "Last Bloom". Listen for sounds that pulse or breathe in a repeating way under the notes.'
+concepts:
+  - h: An envelope that can loop
+    p:
+      - "The cycling envelope rises, holds and falls. In Env mode it does that once per note. In Run mode it loops by itself, like an LFO. In Loop mode it loops too, but starts over with every note."
+  - h: A strike
+    p:
+      - "A very fast drop in pitch at the start of a note isn't heard as a slide. It's heard as a hit. Synth kicks and punchy basses get their attack this way."
+  - h: Curves
+    p:
+      - "A rise can be straight, quick then slow, or slow then quick. The curve changes the feel: a quick start sounds like a pluck, a slow start like a swell."
+  - h: A knob to play
+    p:
+      - "The cycling envelope only moves the sound through the Matrix, and its Amount knob sets how much gets through. Turn Amount by hand and the movement comes and goes."
+steps:
+  - k: learn
+    fig: mf-cycenv
+    t: "The cycling envelope rises, holds and falls. [Mode] picks how it runs. Env: once per note. Run: it loops on its own, like an LFO. Loop: it loops too, but starts again with every note."
+  - k: learn
+    t: "It does nothing until you connect it in the Matrix, in the CycEnv row. [Amount] then sets how much of it gets through, so it's a knob you can play live."
+  - k: learn
+    fig: mf-strike
+    t: "A fast drop in pitch at the very start of a note is heard as a strike, not a slide. It's how synth kicks and punchy basses get their attack."
+  - k: play
+    t: "Load RR Bass. Press [Mode] until Env lights. Turn [Rise] fully left, [Fall] short, [Hold/Sustain] fully left and [Amount] to about half."
+    hl: t:preset p:cycmode t:rise t:fall t:cychold t:amount
+  - k: play
+    t: "Connect it: turn [Matrix] to CycEnv to Pitch, press it, set about +30 and press again. Play a few low notes."
+    hl: t:matrix p:mx-cycenv-pitch
+    hear: Each note starts with a quick downward blip.
+  - k: play
+    t: "Turn [Fall] longer, then shorter. Find the point where the drop stops sounding like a slide and becomes a punch. Keep it there and save over RR Bass with a long press on [Save]."
+    hl: t:fall h:save
+    hear: Long, it's a laser. Very short, it's a thump.
+  - k: play
+    t: "A detour: press [Octave Down] twice and turn [Decay/Rel] shorter. The same idea makes a soft synth kick. Don't save this one."
+    hl: p:octdown t:decay
+  - k: play
+    t: "Make the pad breathe: load RR Pad, press [Mode] until Loop lights, and turn [Rise] and [Fall] to about a second each. Set CycEnv to Cutoff to about +25 in the Matrix, then play a chord a few times."
+    hl: t:preset p:cycmode t:rise t:fall t:matrix p:mx-cycenv-cutoff
+    hear: The brightness swells and falls in a slow pulse, starting fresh with each chord.
+  - k: play
+    t: "Press [Mode] until Run lights and play the chord again a few times. In Run the breathing carries on where it was; in Loop each new chord starts it from the beginning."
+    hl: p:cycmode
+  - k: play
+    t: "Shape the breath: hold [Shift] and turn [Rise]. Left gives a rise that's quick at first and then slows down, right one that starts slowly and shoots up. The middle is straight."
+    hl: h:shift t:rise
+  - k: play
+    t: "Play a chord and turn [Amount] by hand from zero to full and back. Choose Loop or Run, then save over RR Pad."
+    hl: t:amount p:cycmode h:save
+    hear: The breathing fades in and out under your hand.
+  - k: check
+    t: Which mode loops, but starts over with every new note?
+    q:
+      - Env
+      - Run
+      - "!Loop"
+      - None of them loops
+    a: Env runs once per note. Run loops freely and ignores the notes. Loop loops and restarts on each note, so every chord breathes the same way.
+    hear: Env once, Run free, Loop restarts.
+challenge: "In Run mode, turn [Rise] and [Fall] fully left and send CycEnv to Pitch. When it cycles that fast it stops being movement and becomes a tone of its own. Describe it in two words."

@@ -1,0 +1,62 @@
+id: f13
+number: 13
+unit: Notes, chords and patterns
+title: Patterns that change
+goal: Let chance vary an arpeggio, keep the version you like as a sequence, and give each step its own sound with a modulation track.
+listen: 'Nicolas Jaar, "Mi Mujer". The loop keeps the same notes for a long time, but small things change from bar to bar, so it never gets dull.'
+concepts:
+  - h: Variation by chance
+    p:
+      - "Dice reshuffles which steps play long, short or not at all. Spice sets how much of that reshuffle you hear. Small amounts keep a loop alive without losing it."
+  - h: Keeping a happy accident
+    p:
+      - "Spice and Dice aren't saved. To keep a version you like, move the arpeggio into a sequence, which is saved with the sound."
+  - h: A different sound on each step
+    p:
+      - "A modulation track stores one knob's position on each step. Record the filter, and every step can be brighter or darker than the one before."
+steps:
+  - k: learn
+    fig: mf-spice
+    t: "Dice reshuffles the pattern: which steps play long, short or not at all. Spice sets how much of that reshuffle you hear, from none to all. A little keeps a loop alive; a lot turns it into something new."
+  - k: learn
+    fig: mf-modtrack
+    t: "A modulation track remembers one knob for every step. Record [Cutoff] and each step can be brighter or darker than the one before."
+  - k: play
+    t: "Load RR Pluck. Press [Arp | Seq] for the arpeggiator, touch [Hold] and play Am7. Keep [Rate/Swing] on 1/16."
+    hl: t:preset p:arpseq p:hold
+  - k: play
+    t: "Touch [Dice], then tap the strip near its left end. Tap again a few times, then once near the right end."
+    hl: p:dice p:strip
+    hear: Left changes a few steps; right reshuffles almost everything.
+  - k: play
+    t: "Touch [Spice] and slide along the strip from left to right, then back to about a third."
+    hl: p:spice p:strip
+    hear: From the plain arpeggio to the shuffled one, and a mix of the two in between.
+  - k: play
+    t: "When you like what you hear, keep it: hold [Shift] and touch [Up | A]. The arpeggio moves into sequence A and keeps playing, chance and all."
+    hl: h:shift p:up
+    hear: The same pattern, now fixed. Dice no longer changes it.
+  - k: play
+    t: "Stop with [Pattern | ▶]. Touch [Random | ●] to step record, and turn [Rate/Swing] back to step 1."
+    hl: p:pattern p:random t:rate
+  - k: play
+    t: "Turn [Cutoff] to a new position and let go: that step remembers it. Turn [Rate/Swing] to the next step, set [Cutoff] again, and go on for a few steps, some dark, some bright."
+    hl: t:cutoff t:rate
+    hear: Each step you pass over sounds with its own filter setting.
+  - k: play
+    t: "Touch ● to finish and [Pattern | ▶] to play. Save the sound to keep both the sequence and the filter track."
+    hl: p:random p:pattern p:save
+    hear: The pattern now has a shape in its colour as well as its notes.
+  - k: play
+    t: "To start the filter track again, stop the sequence, press [Oct | Mod] until its light blinks, then hold [Oct | Mod] and touch [Hold]."
+    hl: h:octmod p:hold
+  - k: check
+    t: You've found a great Spice and Dice version of an arpeggio. How do you keep it?
+    q:
+      - Save the sound
+      - Touch Hold
+      - "!Transfer it to a sequence with Shift and A or B"
+      - Turn Spice to zero
+    a: Spice and Dice aren't saved with the sound. Transferring the arpeggio to a sequence keeps it, and the sequence is saved.
+    hear: Chance makes the idea; the sequence keeps it.
+challenge: "Record a second modulation track on [Type], so a few steps play a different oscillator. Keep the changes rare."

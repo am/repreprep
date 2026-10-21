@@ -1,0 +1,58 @@
+id: f16
+number: 16
+unit: Sound worlds and finishing
+title: Two machines, one track
+goal: Run the MicroFreak and the Model:Cycles from one clock in Live, give the MicroFreak space with Live's effects, and record a take of your track.
+listen: 'Augustus Pablo, "King Tubby Meets Rockers Uptown". A few instruments, lots of space, and echoes that come and go. Notice how much room is left around each sound.'
+concepts:
+  - h: One clock
+    p:
+      - "When two machines play together, one of them sets the tempo and the others follow. Here Live leads, and both machines follow its clock over USB, so they start, stop and stay in time together."
+  - h: Space from outside
+    p:
+      - "The MicroFreak has no effects of its own. Its echo and reverb come from Live, on the track you record it on."
+  - h: Balance
+    p:
+      - "Each sound has its own job and its own place: bass low and steady, pad soft behind, lead and hats on top. Turn down what's crowding before you turn anything up."
+  - h: Latency
+    p:
+      - "Sound takes a moment to travel out to a machine and back. If the recording comes in a little late, Live can shift it back into time."
+steps:
+  - k: learn
+    fig: mf-setup
+    t: "One machine sets the tempo and the others follow. Here Live leads: both the MicroFreak and the Model:Cycles listen to its clock over USB, so they start, stop and stay in time together. Their audio goes into Live through your audio interface."
+  - k: learn
+    t: "The MicroFreak has no echo or reverb of its own, so the space around it comes from Live. That's how dub works too: a dry sound, and the echo sent to it only now and then."
+  - k: learn
+    t: "Balance before you record: bass low and steady, pad soft behind, lead and hats on top. If something is crowding, turn something else down rather than turning it up."
+  - k: play
+    t: "Connect the MicroFreak and the Model:Cycles to the computer with USB cables, and plug each one's audio output into your audio interface. In Live's settings, under Link, Tempo and MIDI, turn on Sync for both machines' output ports. Set Live's tempo to 90."
+  - k: play
+    t: "On the MicroFreak: press [Utility], open Global, then Sync, and set Source to USB. Press [Utility] to leave."
+    hl: p:utility t:preset p:preset
+  - k: play
+    t: "On the Model:Cycles: in its settings, set MIDI, Sync, Clock In to On, and MIDI, Ports, Input From to USB. If you built the night track there, load pattern B01; any 90 BPM pattern works too."
+  - k: play
+    t: "In Live, add a MIDI track with an External Instrument. Set its MIDI To to the MicroFreak, and Audio From to the interface input the MicroFreak is plugged into. Arm the track."
+  - k: play
+    t: "Load RR Bass on the MicroFreak and turn its sequencer on. Press play in Live: the Model:Cycles and the MicroFreak's sequence should start together."
+    hl: t:preset h:shift p:arpseq
+    hear: The drums and your bassline locked together at 90 BPM.
+  - k: play
+    t: "Add a return track in Live with a Delay set to 1/8 and a Reverb after it. Turn the MicroFreak track's send up briefly at the end of a bar, then back down."
+    hear: An echo that appears, trails off and leaves the dry bass again.
+  - k: play
+    t: "Record: press Live's record button and let the track play for a few rounds of the four chords. Play the pad or the lead by hand on top if you like."
+  - k: play
+    t: "Check the timing: listen back. If the MicroFreak sounds a little late against the drums, raise Hardware Latency in the External Instrument until they line up."
+    hear: Kick and bass landing together, not a moment apart.
+  - k: check
+    t: In this setup, which one sets the tempo?
+    q:
+      - The MicroFreak
+      - The Model:Cycles
+      - "!Live"
+      - Each machine its own
+    a: "Live sends its clock over USB, and both machines follow it, so they always agree."
+    hear: One leader, everyone else follows.
+challenge: "Record a second take where you move one thing by hand all the way through, like the MicroFreak's [Cutoff]. Compare the two takes."

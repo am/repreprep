@@ -1,0 +1,63 @@
+id: f01
+number: 1
+unit: A sound from nothing
+title: Oscillator, filter, amp
+goal: Follow the path every synth sound takes, find your way around the MicroFreak's keys, and start a sound from nothing.
+listen: 'Air, "La Femme d''Argent". Pick out one sound that holds for as long as a note lasts, and one that fades away on its own.'
+concepts:
+  - h: Three parts, one path
+    p:
+      - "Almost every synth works the same way. An oscillator makes a raw tone, a filter shapes its colour, and an amplifier shapes its loudness over time. Learn the path once and you can find your way around any synth."
+  - h: A keyboard in patterns
+    p:
+      - "Twelve notes repeat up the keyboard: seven white keys and five black ones in groups of two and three. Once you can find the groups, you can find any note."
+  - h: Keys you touch, not press
+    p:
+      - "The MicroFreak's keys are flat touch plates. They feel how much of your finger is on them, not how hard you push. That takes a little practice, and it gives you control later."
+  - h: Your track
+    p:
+      - "The MicroFreak plays new parts for the same slow night track in A minor that the Model:Cycles course builds: a bass, a pad, a lead and arpeggios. You can follow this course without the Model:Cycles too."
+steps:
+  - k: learn
+    fig: mf-chain
+    t: "Every synth sound takes the same path. An oscillator makes a raw tone. A filter shapes its colour, from dark to bright. An amplifier shapes its loudness, moved by an envelope. On the MicroFreak they are the Digital Oscillator, the Analog Filter and the Envelope."
+  - k: learn
+    fig: mf-keyboard
+    t: "The MicroFreak has 25 keys, from C up to C two octaves higher. The black keys come in groups of two and three. A, your track's home note, is the white key between the second and third black key of a group of three."
+  - k: learn
+    t: "The keys are touch plates. They sense how much of your finger touches them, not how hard you push: a fingertip is light, a flat finger is strong. The black keys are raised so you can feel your way without looking."
+  - k: play
+    t: "Connect the power supply that came with the MicroFreak, not a power bank: the touch keys need it to work well. Switch on at the back, plug in headphones or speakers, and turn [Master] up slowly."
+    hl: t:master
+    hear: The screen shows the number and name of the last saved sound.
+  - k: play
+    t: "Turn [Preset] slowly to step through the factory sounds, playing a few notes on each. A preset is a saved sound: the setting of every knob."
+    hl: t:preset
+    hear: Some bright, some dark, some short, some long. All from the same three parts.
+  - k: play
+    t: "Make browsing safe. Menus work the same everywhere: press [Utility], turn [Preset] to scroll, press [Preset] to open an item, turn to change the value, press to confirm. Open Global, then Controls, and set Click to Load to On. Press [Utility] again to leave. From now on [Preset] only browses, and pressing it loads, so a bumped knob can't wipe your work."
+    hl: p:utility t:preset p:preset
+  - k: play
+    t: "Start from nothing: press [Preset] three times quickly. The screen shows Init, an empty sound for you to build. Nothing is stored until you press [Save]."
+    hl: p:preset
+  - k: play
+    t: "Turn [Type] until the screen reads BasicWaves and play a few keys. That's the raw oscillator, through a filter and an amp."
+    hl: t:type
+    hear: A plain, buzzy tone that starts and stops with your finger.
+  - k: play
+    t: "Each knob takes over from the preset as soon as you move it. [Panel] makes the whole sound match the knobs at once. You won't need it yet: just know it's there if a sound ever seems to ignore a knob."
+    hl: p:panel
+  - k: play
+    t: "Find A: the white key between the second and third black key of a group of three. Play it, then the next A up. Press [Octave Down] and play it again, then [Octave Up] twice. Each press moves every key by an octave."
+    hl: p:k10 p:k22 p:octdown p:octup
+    hear: The same note, lower and higher. The light by the octave keys blinks when you're away from the middle.
+  - k: check
+    t: Which part of a synth shapes how loud the sound is over time?
+    q:
+      - The oscillator
+      - The filter
+      - "!The amplifier, moved by an envelope"
+      - The keyboard
+    a: "The oscillator makes the tone and the filter its colour. The amplifier, driven by the envelope, decides how the sound starts, holds and fades."
+    hear: Oscillator makes it, filter colours it, amp shapes it.
+challenge: "Load three factory presets and write one line for each: bright or dark, short or long, one note or many. Then press [Preset] three times quickly to start from Init again."

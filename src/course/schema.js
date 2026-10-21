@@ -37,25 +37,37 @@ const grid = z
   })
   .refine((g) => !!g.rows !== !!g.presets, "give a grid either rows or presets");
 
-const step = z
-  .strictObject({
-    k: z.enum(["learn", "play", "check"]).optional() /* the step's kind; play when left out */,
-    t: text /* what it says; [KEY] draws a key cap */,
-    hl: z.string().optional() /* controls to light: "p:play h:func t:level" (press, hold, turn) */,
-    hear: text.optional() /* what to listen for */,
-    fig: z.union([text, z.strictObject({ grid })]).optional() /* a drawing by name, or a playable grid */,
-    q: z.array(text).min(2).optional() /* a Check question's answers, the right one starting with ! */,
-    a: text.optional() /* why that answer is right */,
-    more: z
-      .strictObject({ text, to: z.enum(["panel", "saving", "machines", "shortcuts"]) })
-      .optional() /* a link to one of the instrument's reference tabs */,
-  })
-  .refine((s) => !s.q || s.q.filter((o) => o.startsWith("!")).length === 1, "mark exactly one answer right with !")
-  .refine((s) => !s.q || s.a, "a question needs its explanation, a");
+const stepFields = {
+  k: z.enum(["learn", "play", "check"]).optional() /* the step's kind; play when left out */,
+  t: text /* what it says; [KEY] draws a key cap */,
+  hl: z.string().optional() /* controls to light: "p:play h:func t:level" (press, hold, turn) */,
+  hear: text.optional() /* what to listen for */,
+  fig: z.union([text, z.strictObject({ grid })]).optional() /* a drawing by name, or a playable grid */,
+  q: z.array(text).min(2).optional() /* a Check question's answers, the right one starting with ! */,
+  a: text.optional() /* why that answer is right */,
+  more: z
+    .strictObject({ text, to: z.enum(["panel", "saving", "machines", "shortcuts"]) })
+    .optional() /* a link to one of the instrument's reference tabs */,
+};
+const checked = (o) =>
+  o
+    .refine((s) => !s.q || s.q.filter((o) => o.startsWith("!")).length === 1, "mark exactly one answer right with !")
+    .refine((s) => !s.q || s.a, "a question needs its explanation, a");
+const step = z.union([
+  checked(z.strictObject(stepFields)),
+  /* a shared step (src/content/concepts/<use>.yaml), with this course's own sentence after it */
+  z.strictObject({ use: text, extra: text.optional() }),
+]);
+
+/* A step written once and used by more than one course (src/content/concepts/*.yaml): pure theory, so it
+   never names a device's keys. A lesson takes it with `use: <id>`; the player offers to skip it. */
+const { more, hl, ...conceptFields } =
+  stepFields; /* no device keys to light, no links to one device's reference tabs */
+export const conceptSchema = checked(z.strictObject({ id: z.string().regex(/^[a-z0-9-]+$/), ...conceptFields }));
 
 export const lessonSchema = z
   .strictObject({
-    id: z.string().regex(/^[ws]\d\d$/) /* saved progress uses it: never change it */,
+    id: z.string().regex(/^[wsf]\d\d$/) /* saved progress uses it: never change it */,
     number: z.number().int().min(1).optional() /* lessons are numbered; song studies are not */,
     song: text.optional() /* "Artist – Title" for a song study */,
     unit: text,

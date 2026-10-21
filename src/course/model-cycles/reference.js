@@ -68,6 +68,14 @@ export const CYCLES_MACHINES = [
     },
   },
 ];
+export const CYCLES_MACHINES_COMMON = [
+  ["PITCH", "-24 to +24 semitones"],
+  ["DECAY", "0–127, length of the sound"],
+  ["VOL+DIST", "60 is clean; above adds level and distortion"],
+  ["PUNCH", "compression-like accent"],
+  ["GATE", "hold notes for their LEN"],
+  ["LFO", "one per track, 7 waves: triangle, sine, square, saw, envelope, ramp, random"],
+];
 export const CYCLES_SHORTCUTS = [
   ["Select bank / pattern", "[PATTERN] + [T1–T6] / [PATTERN] + [TRIG 1–16]"],
   ["Select track silently", "[TRACK] + [T1–T6]"],

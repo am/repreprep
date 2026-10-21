@@ -18,9 +18,7 @@ concepts:
     p:
       - "Each track plays one sound at a time. Your melody lives on T6 in the gaps between chords: a SHAPE lock to Unison turns a chord step into a single note."
 steps:
-  - k: learn
-    fig: u3contour
-    t: A melody is a line of steps and leaps. Steps, to the next scale note, feel smooth and singable. Leaps feel dramatic, and sound best when the line then steps back the other way.
+  - use: steps-and-leaps
   - k: learn
     fig: u3qa
     t: Melodies talk in phrases. A question ends away from home, often on the 2nd or 5th. The answer starts the same way and lands on the root. In B01 the chords play bars 1 and 3, and the melody asks in bar 2 and answers in bar 4.

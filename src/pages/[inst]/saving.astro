@@ -20,74 +20,76 @@ const TRACKS: [string, number[]][] = [
 ---
 
 <Base title={`${I.name} saving`} inst={I} tab="saving">
-  <p class="lede t-body">
-    What sits inside what, and when your work is saved. From Elektron’s Model:Cycles manual (OS 1.13).
-  </p>
+  <p class="lede t-body">{I.savingIntro}</p>
 
-  <h3 class="sec t-label">What sits inside what</h3>
-  <div class="bands">
-    <Band eyebrow="Up to 96" title="Projects">
-      <p class="t-body">
-        The machine’s memory, the <b>+Drive</b>, keeps your projects. Think of a project as a song file: one is open at
-        a time.
-      </p>
-      <div class="slots" aria-hidden="true">
-        <span class="on">01</span>
-        <span>02</span>
-        <span>03</span>
-        <span>04</span>
-        <span>…</span>
-        <span>96</span>
-      </div>
-    </Band>
-    <Band eyebrow="Inside a project" title="6 banks">
-      <p class="t-body">
-        Banks A to F. Pick one with <Keys I={I} text="[PATTERN] + [T1]…[T6]" />.
-      </p>
-      <div class="banks" aria-hidden="true">
-        {["A", "B", "C", "D", "E", "F"].map((b, i) => (
-          <span class={i === 1 ? "on" : ""}>
-            {b}
-            <small>T{i + 1}</small>
-          </span>
-        ))}
-      </div>
-    </Band>
-    <Band eyebrow="Inside a bank" title="16 patterns">
-      <p class="t-body">
-        Pick one with <Keys I={I} text="[PATTERN] + [TRIG 1]…[TRIG 16]" />. The course track lives in B01.
-      </p>
-      <div class="pats" aria-hidden="true">
-        {STEPS.map((n) => (
-          <span class={n === 1 ? "on" : ""}>{String(n).padStart(2, "0")}</span>
-        ))}
-      </div>
-    </Band>
-    <Band eyebrow="Inside a pattern" title="6 tracks">
-      <p class="t-body">
-        Each track has its own sound, called a <b>preset</b>, and its trigs. The pattern also keeps the tempo, length,
-        swing, and delay and reverb settings.
-      </p>
-      <div class="trk" aria-hidden="true">
-        {TRACKS.map(([t, on]) => (
-          <div class="row">
-            <span class="t">{t}</span>
-            <span class="steps">
-              {STEPS.map((n) => (
-                <i class={on.includes(n) ? "x" : ""} />
-              ))}
-            </span>
+  {I.key === "cycles" && (
+    <Fragment>
+      <h3 class="sec t-label">What sits inside what</h3>
+      <div class="bands">
+        <Band eyebrow="Up to 96" title="Projects">
+          <p class="t-body">
+            The machine’s memory, the <b>+Drive</b>, keeps your projects. Think of a project as a song file: one is open
+            at a time.
+          </p>
+          <div class="slots" aria-hidden="true">
+            <span class="on">01</span>
+            <span>02</span>
+            <span>03</span>
+            <span>04</span>
+            <span>…</span>
+            <span>96</span>
           </div>
-        ))}
+        </Band>
+        <Band eyebrow="Inside a project" title="6 banks">
+          <p class="t-body">
+            Banks A to F. Pick one with <Keys I={I} text="[PATTERN] + [T1]…[T6]" />.
+          </p>
+          <div class="banks" aria-hidden="true">
+            {["A", "B", "C", "D", "E", "F"].map((b, i) => (
+              <span class={i === 1 ? "on" : ""}>
+                {b}
+                <small>T{i + 1}</small>
+              </span>
+            ))}
+          </div>
+        </Band>
+        <Band eyebrow="Inside a bank" title="16 patterns">
+          <p class="t-body">
+            Pick one with <Keys I={I} text="[PATTERN] + [TRIG 1]…[TRIG 16]" />. The course track lives in B01.
+          </p>
+          <div class="pats" aria-hidden="true">
+            {STEPS.map((n) => (
+              <span class={n === 1 ? "on" : ""}>{String(n).padStart(2, "0")}</span>
+            ))}
+          </div>
+        </Band>
+        <Band eyebrow="Inside a pattern" title="6 tracks">
+          <p class="t-body">
+            Each track has its own sound, called a <b>preset</b>, and its trigs. The pattern also keeps the tempo,
+            length, swing, and delay and reverb settings.
+          </p>
+          <div class="trk" aria-hidden="true">
+            {TRACKS.map(([t, on]) => (
+              <div class="row">
+                <span class="t">{t}</span>
+                <span class="steps">
+                  {STEPS.map((n) => (
+                    <i class={on.includes(n) ? "x" : ""} />
+                  ))}
+                </span>
+              </div>
+            ))}
+          </div>
+        </Band>
+        <Band eyebrow="Also on the +Drive" title="Sound library">
+          <p class="t-body">
+            Sounds you keep for any project. Open it with <Keys I={I} text="[FUNC] + [MACHINES]" />. Loading a sound
+            puts a <b>copy</b> on the track, so tweaking it there leaves the library version as it was.
+          </p>
+        </Band>
       </div>
-    </Band>
-    <Band eyebrow="Also on the +Drive" title="Sound library">
-      <p class="t-body">
-        Sounds you keep for any project. Open it with <Keys I={I} text="[FUNC] + [MACHINES]" />. Loading a sound puts a{" "}
-        <b>copy</b> on the track, so tweaking it there leaves the library version as it was.
-      </p>
-    </Band>
-  </div>
+    </Fragment>
+  )}
 
   <h3 class="sec t-label">When it’s saved</h3>
   <div class="bands">

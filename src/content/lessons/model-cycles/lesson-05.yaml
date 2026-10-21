@@ -18,13 +18,8 @@ concepts:
     p:
       - Stock drum sounds are built to punch. This unit reshapes B01 for the night, one sound at a time, starting here with a soft, round kick and snare.
 steps:
-  - k: learn
-    fig: u2four
-    t: "Every sound has four sides: pitch (high or low), loudness, timbre (its colour) and an envelope (its shape in time). Two sounds can share three of them and still feel completely different because of the fourth."
-  - k: learn
-    fig: u2adsr
-    t: "An envelope is a sound's shape in time. Attack: how fast it rises. Decay: how fast it falls to the sustain level. Sustain: the level held while you hold the key. Release: the fade after you let go."
-    hear: A pad has a slow attack and long release. A drum is an instant attack and a decay.
+  - use: sound-four-sides
+  - use: envelope-adsr
   - k: learn
     fig: u2gate
     t: "On the Model:Cycles every sound starts at full level at once and then decays, and [DECAY] sets how long. [GATE] adds a hold: the sound stays at full level while the pad is held, or for the trig's length, before it decays."

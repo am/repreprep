@@ -1,6 +1,6 @@
 # Rep Rep Rep
 
-Hands-on lessons that teach music production on your own instruments. The Model:Cycles course is ready; MicroFreak and Ableton Live come next.
+Hands-on lessons that teach music production on your own instruments. The Model:Cycles and MicroFreak courses are ready; Ableton Live comes next.
 
 Built with [Astro](https://astro.build) and hosted on Cloudflare Workers. Every lesson step is its own page, built ahead of time. Progress is saved in the browser, and in a Cloudflare D1 database for people who sign in.
 
@@ -30,8 +30,8 @@ Open http://localhost:4321. On your own computer the account page offers a **loc
 
 ## Where things are
 
-- `src/content/lessons/`: the lessons, one YAML file each (`model-cycles/lesson-05.yaml`, `model-cycles/song-01-looped.yaml`). They are an Astro content collection (`src/content.config.ts`): every file is checked against `src/course/schema.js` when the site builds, so a missing or misspelled field stops the build and names the file.
-- `src/course/`: the rest of the course. `model-cycles/figures/` (the drawings), `model-cycles/controls.js` (panel drawing and the description of every key and knob), `reference.js` (machines and shortcuts). `shared/` holds the step formatting, the playable grid and the Spotify links. `index.js` lists the instruments and turns lesson files into pages (intro step, address, short name); pages read the lessons through `content.js`, scripts and tests through `files.js`.
+- `src/content/lessons/`: the lessons, one YAML file each (`model-cycles/lesson-05.yaml`, `model-cycles/song-01-looped.yaml`). Theory that more than one course teaches is written once in `src/content/concepts/` and used in a lesson with `- use: <id>`; those steps show a "Skip, I know this" link. They are an Astro content collection (`src/content.config.ts`): every file is checked against `src/course/schema.js` when the site builds, so a missing or misspelled field stops the build and names the file.
+- `src/course/`: the rest of the course, one folder per instrument (`model-cycles/`, `microfreak/`). `model-cycles/figures/` (the drawings), `model-cycles/controls.js` (panel drawing and the description of every key and knob), `reference.js` (machines and shortcuts). `shared/` holds the step formatting, the playable grid and the Spotify links. `index.js` lists the instruments and turns lesson files into pages (intro step, address, short name); pages read the lessons through `content.js`, scripts and tests through `files.js`.
 - `src/components/`: the page pieces as Astro components. `course/` has the lesson player and its parts, the notes, the course map and the panel guide; `site/` has the header, footer, logo, theme switch and shared blocks (`Band`, `Card`).
 - `src/layouts/Base.astro`: the page shell every page uses.
 - `src/pages/`: one file per kind of address. Only `api/` (the contact form and the account download) and `auth/` (signing in) run on the server; every other page is built ahead of time.

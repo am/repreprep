@@ -92,6 +92,28 @@
   --dev-lcd-ink: #2a2c30;
   --dev-lcd-ink-inv: #e6e8e2;
   --dev-on-hold: #1b1b1b;
+  /* the MicroFreak, colours sampled from Arturia's top-down image */
+  --mf-case: #444444;
+  --mf-plate: #1b2227;
+  --mf-band: #0d1012;
+  --mf-iconbg: #181818;
+  --mf-print: #d0e2e4;
+  --mf-blue: #0589be;
+  --mf-shift: #038dc0;
+  --mf-orange: #f95700;
+  --mf-orange-edge: #e33700;
+  --mf-knob: #1d1c1d;
+  --mf-scale: #bac8ca;
+  --mf-cap: #e7e7e1;
+  --mf-button: #4a4b49;
+  --mf-rim: #a7b9bd;
+  --mf-led: #282513;
+  --mf-copper: #885434;
+  --mf-keys: #cfd9d9;
+  --mf-blackkey: #382417;
+  --mf-abox: #bccfd4;
+  --mf-frame: #15141b;
+  --mf-frame-edge: #4a5458;
   --on-bar: #141517;
   /* actions: one color per action, shared by the key labels in the text, the legend and the lit controls on the panel */
   --act-press: var(--led);
@@ -520,6 +542,247 @@ html.focus body {
 }
 .lcd-small.inv {
   fill: var(--dev-lcd-ink-inv);
+}
+/* the MicroFreak panel: its own colours and print sizes (its drawing is about 2.5 times the Model:Cycles' scale) */
+.mfp .c .ring {
+  stroke-width: 8;
+}
+.mfp .keycap {
+  fill: var(--mf-button);
+  stroke: #00000080;
+  stroke-width: 2;
+}
+.mfp .mf-white {
+  fill: var(--mf-keys);
+  stroke: none;
+}
+.mfp .mf-blackkey {
+  fill: var(--mf-blackkey);
+  stroke: #00000060;
+  stroke-width: 2;
+}
+.mf-case {
+  fill: var(--mf-case);
+}
+.mf-plate {
+  fill: var(--mf-plate);
+}
+.mf-band {
+  fill: var(--mf-band);
+}
+.mf-bandline {
+  stroke: #8a9090;
+  stroke-width: 3;
+}
+.mf-brand {
+  fill: #8a9090;
+  font-family: var(--panel);
+  font-size: 30px;
+  letter-spacing: 0.4em;
+}
+.mf-iconbg {
+  fill: var(--mf-iconbg);
+}
+.mf-head {
+  fill: var(--mf-print);
+  font-family: var(--panel);
+  font-size: 19px;
+  font-weight: var(--fw-bold);
+  letter-spacing: var(--ls-caps);
+}
+.mf-rule {
+  fill: none;
+  stroke: var(--mf-scale);
+  stroke-width: 2;
+}
+.mf-lbl {
+  fill: var(--mf-print);
+  font-family: var(--panel);
+  font-size: 19px;
+  font-weight: var(--fw-semibold);
+}
+.mf-small {
+  fill: var(--mf-print);
+  font-family: var(--panel);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+}
+.mf-blue {
+  fill: var(--mf-blue);
+}
+.mf-mx {
+  fill: var(--mf-print);
+  font-family: var(--panel);
+  font-size: 14px;
+  font-weight: var(--fw-semibold);
+}
+.mf-mxdark {
+  fill: var(--mf-plate);
+  font-family: var(--panel);
+  font-size: 12px;
+  font-weight: var(--fw-bold);
+}
+.mf-abox {
+  fill: var(--mf-abox);
+}
+.mf-led,
+.mf-mxled {
+  fill: var(--mf-led);
+  stroke: #0b0d0e;
+  stroke-width: 2;
+}
+.c.hl-press .mf-mxled {
+  fill: var(--dev-lit);
+}
+.c.hl-hold .mf-mxled {
+  fill: var(--hl-hold);
+}
+.mf-scale {
+  fill: none;
+  stroke: var(--mf-scale);
+  stroke-width: 3;
+}
+.mf-arrow {
+  fill: var(--mf-scale);
+}
+.mf-black {
+  fill: var(--mf-knob);
+  stroke: #000;
+  stroke-width: 2;
+}
+.mf-knobtop {
+  fill: #ffffff0d;
+}
+.mf-ptr {
+  stroke: var(--mf-print);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.mf-ptr-o {
+  stroke: var(--mf-orange);
+  stroke-width: 4;
+  stroke-linecap: round;
+}
+.mf-orange {
+  fill: var(--mf-orange);
+  stroke: var(--mf-orange-edge);
+  stroke-width: 3;
+}
+.mf-orangetop {
+  fill: #ffffff1f;
+}
+.mf-enc {
+  fill: var(--mf-cap);
+  stroke: #9a9a94;
+  stroke-width: 2;
+}
+.mf-enctop {
+  fill: none;
+  stroke: #c9c9c2;
+  stroke-width: 2;
+}
+.mf-rim {
+  fill: var(--mf-rim);
+}
+.mf-shiftrim {
+  fill: var(--mf-shift);
+}
+.mf-lbox {
+  fill: none;
+  stroke: var(--mf-print);
+  stroke-width: 1.5;
+}
+.mf-frame {
+  fill: var(--mf-frame);
+  stroke: var(--mf-frame-edge);
+  stroke-width: 2;
+}
+.mf-script {
+  fill: var(--mf-print);
+  font-family: var(--panel);
+  font-style: italic;
+  font-size: 22px;
+}
+.mf-oled {
+  fill: #050507;
+}
+.mf-oledbig {
+  fill: #e8f0f0;
+  font-family: var(--panel);
+  font-weight: var(--fw-bold);
+  font-size: 20px;
+  letter-spacing: var(--ls-caps);
+}
+.mf-lfoico {
+  fill: none;
+  stroke: var(--mf-print);
+  stroke-width: 2;
+  stroke-linejoin: round;
+}
+.mf-touch {
+  fill: none;
+  stroke: var(--mf-copper);
+  stroke-width: 2.5;
+}
+.c.hl-press .mf-touch {
+  fill: var(--dev-lit);
+}
+.c.hl-hold .mf-touch {
+  fill: var(--hl-hold);
+}
+.mf-art {
+  fill: none;
+  stroke: #bfc6c6;
+  stroke-width: 2.5;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+.mf-tlbl {
+  fill: var(--mf-copper);
+  font-family: var(--panel);
+  font-size: 12.5px;
+  font-weight: var(--fw-semibold);
+}
+.mf-orule {
+  fill: none;
+  stroke: var(--mf-copper);
+  stroke-width: 2;
+}
+.mf-cap {
+  fill: #0b0d0e;
+}
+.mf-zig {
+  fill: none;
+  stroke: #6c7070;
+  stroke-width: 2;
+}
+.mf-kbd {
+  fill: var(--mf-keys);
+}
+.mf-slot {
+  stroke: #2a2a2a;
+  stroke-width: 10;
+  stroke-linecap: round;
+}
+.mf-copper {
+  stroke: #794c34;
+  stroke-width: 6;
+  stroke-dasharray: 8 10;
+}
+.mf-logo {
+  fill: #55504c;
+  font-family: var(--panel);
+  font-size: 24px;
+  font-weight: 300;
+}
+.mf-logo.b {
+  fill: #7a4a30;
+  font-weight: var(--fw-bold);
+}
+.mf-logosm {
+  fill: #55504c;
+  font-family: var(--panel);
+  font-size: 8px;
 }
 .c .ring {
   fill: none;

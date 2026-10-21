@@ -5,7 +5,7 @@ import { catalog } from "../course/content.js";
 const instruments = await catalog();
 const count = (I: any) => {
   const songs = I.lessons.filter((l: any) => l.song).length;
-  return `${I.lessons.length - songs} lessons · ${songs} song studies`;
+  return `${I.lessons.length - songs} lessons` + (songs ? ` · ${songs} song studies` : "");
 };
 ---
 

@@ -9,7 +9,7 @@ test("home page leads to the course; tapping its logo stays on it", async ({ pag
   await page.locator(".logo[data-dance]").click();
   await expect(page).toHaveURL("/");
   await expect(page.locator(".logo[data-dance] span")).toHaveCount(3);
-  await page.locator(".gear a.go").click();
+  await page.locator(`.gear a.go[href="/${I.slug}"]`).click();
   await expect(page).toHaveURL(`/${I.slug}`);
   await expect(page.locator("main h2")).toContainText(I.name);
 });

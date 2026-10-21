@@ -9,13 +9,15 @@ import { pages, ROOT } from "./built.mjs";
 const SITE = "https://repreprep.studio";
 const canonical = (html) => html.match(/<link rel="canonical" href="([^"]*)"/)?.[1];
 const noindex = (html) => /<meta name="robots" content="noindex"/.test(html);
+/* each instrument's first control: Model:Cycles LEVEL/DATA, MicroFreak Matrix */
+const FIRST = /\/panel\/(level|matrix)$/;
 const isStep = (path) => /\/(lessons|songs)\/[^/]+\/\d+$/.test(path);
 
 test("every page names its own served address as canonical, never a .html file", () => {
   const wrong = [];
   for (const [path, html] of pages) {
     // the panel guide's first control is the same page as the panel guide itself
-    const want = SITE + (/\/panel\/level$/.test(path) ? path.replace(/\/level$/, "") : path);
+    const want = SITE + (FIRST.test(path) ? path.replace(/\/[^/]+$/, "") : path);
     if (canonical(html) !== want) wrong.push(`${path}: ${canonical(html)}`);
   }
   assert.deepEqual(wrong, []);
@@ -27,12 +29,12 @@ test("lesson steps, the progress page and the 404 stay out of search results; ev
   for (const [path, html] of pages) {
     const hidden = isStep(path) || path === "/account" || path === "/404";
     assert.equal(noindex(html), hidden, `${path} noindex`);
-    if (path.endsWith("/panel/level")) continue;
+    if (FIRST.test(path)) continue;
     assert.equal(listed.has(path), !hidden, `${path} in the sitemap`);
   }
   assert.equal(
     listed.size,
-    [...pages.keys()].filter((p) => !isStep(p) && !/^\/(account|404)$|\/panel\/level$/.test(p)).length
+    [...pages.keys()].filter((p) => !isStep(p) && !/^\/(account|404)$/.test(p) && !FIRST.test(p)).length
   );
 });
 

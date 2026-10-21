@@ -19,12 +19,8 @@ concepts:
     p:
       - "COLOR, SHAPE, SWEEP and CONTOUR do different jobs on each machine. Don't think in FM terms: turn one, listen, and name what changed."
 steps:
-  - k: learn
-    fig: u2waves
-    t: "Every sound is a stack of tones: the note you hear plus quieter harmonics above it. A sine has none, a sawtooth has them all. The more harmonics, the brighter the sound."
-  - k: learn
-    fig: u2spectrum
-    t: A low-pass filter darkens a sound by turning down everything above a cutoff. Burial's hats in "Ghost Hardware" are pitched way down with their highs cut away, so they sound dusty rather than crisp.
+  - use: harmonics
+  - use: low-pass-filter
   - k: learn
     fig: u2fm
     t: "FM, in plain words: one oscillator wobbles another's pitch very fast. A little wobble adds a few harmonics; a lot adds many, then noise. The Model:Cycles has no filter knob, so less modulation is how you go dark."

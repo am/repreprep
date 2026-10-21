@@ -1,0 +1,68 @@
+id: f04
+number: 4
+unit: A sound from nothing
+title: Three sounds for your track
+goal: Design a sound from three questions, build a bass, a pad and a pluck for your track, and save each one.
+listen: 'Bonobo, "Kiara". Listen for three layers at once: something low, something in the middle and something on top.'
+concepts:
+  - h: One job per sound
+    p:
+      - "A bass holds the low end, a pad fills the middle, a pluck or lead sits on top. Sounds that each own their own range don't fight, so the whole track sounds clearer."
+  - h: Three questions
+    p:
+      - "Before touching a knob, decide: bright or dark? Short or long? One note at a time or many? The answers tell you where to start: the oscillator, the envelope and the voice mode."
+  - h: One change at a time
+    p:
+      - "Start from Init and change one thing, then listen. If you change three knobs at once you won't know which one made the sound better or worse."
+  - h: Saving
+    p:
+      - "A sound you don't save is gone as soon as you load another. Save each sound in its own slot with a name you'll recognise."
+steps:
+  - k: learn
+    fig: mf-roles
+    t: "Every sound in a track has a job. A bass holds the low end, a pad fills the middle, and a pluck or lead sits on top. Three sounds that each own a range never fight."
+  - k: learn
+    fig: mf-questions
+    t: "Design a sound in three questions. Bright or dark? That's the oscillator and the filter. Short or long? That's the envelope. One note or many? That's [Paraphonic]."
+  - k: play
+    t: "The bass, dark, short-ish, one note. Start from Init, set [Type] to BasicWaves, [Wave] to a saw in the middle and turn [Shape] up for the sine below. Press [Octave Down] once."
+    hl: p:preset t:type t:wave t:shape p:octdown
+  - k: play
+    t: "Shape it: [Cutoff] low, a touch of [Resonance], [Amp Mod] lit, [Attack] fully left, [Decay/Rel] short, [Sustain] about half and [Filter Amt] a little right of the middle. Play A, F, D and E, low and slow."
+    hl: t:cutoff t:resonance p:ampmod t:attack t:decay t:sustain t:filteramt
+    hear: Round and warm, with a soft thump at the start of each note.
+  - k: play
+    t: "Save it. Press [Save] and turn [Preset] to an empty slot (an empty slot is named Init), press [Preset], choose the category Bass and press again. Name it RR Bass: turn [Preset] to each letter and press it, then press [Save]."
+    hl: p:save t:preset p:preset
+    hear: The screen confirms the save. RR stands for Rep Rep.
+  - k: play
+    t: "The pad, soft, long, many notes. Start from Init, set [Type] to SuperWave and [Wave] to Saw (the screen names it). Turn [Timbre] to about half, to detune the copies, and [Shape] to about two thirds, to bring them up."
+    hl: p:preset t:type t:wave t:timbre t:shape
+  - k: play
+    t: "Shape it: [Cutoff] a little over half, [Amp Mod] lit, [Attack] about 1.5 seconds, [Decay/Rel] about 2.5 seconds, [Sustain] high and [Filter Amt] a little right. Press [Paraphonic] so it lights, then hold A, C, E and G together."
+    hl: t:cutoff p:ampmod t:attack t:decay t:sustain t:filteramt p:paraphonic h:k10 h:k13 h:k17 h:k20
+    hear: A soft, wide chord that fades in and lingers after you let go.
+  - k: play
+    t: "Save it in the next empty slot, category Pad, as RR Pad."
+    hl: p:save t:preset p:preset
+  - k: play
+    t: "The pluck, bright, short, one note. Start from Init: BasicWaves, [Wave] just left of the middle, [Cutoff] about a third, [Resonance] about a third, [Amp Mod] lit, [Attack] left, [Decay/Rel] short, [Sustain] zero and [Filter Amt] well to the right. Press [Octave Up] once."
+    hl: p:preset t:wave t:cutoff t:resonance p:ampmod t:attack t:decay t:sustain t:filteramt p:octup
+    hear: A short, bright blip with a little squelch from the resonance.
+  - k: play
+    t: "Save it, category Keys, as RR Pluck. If any of your sounds is quieter than the factory ones, raise it in [Utility], Preset, Preset Volume, then save again."
+    hl: p:save p:utility t:preset
+  - k: play
+    t: "Switch between your three sounds with [Preset] and play each in its own range: bass low, pad in the middle, pluck high."
+    hl: t:preset p:preset
+    hear: Three sounds that would sit together without stepping on each other.
+  - k: check
+    t: Your pad and your bass sound muddy together. What do you try first?
+    q:
+      - Turn both of them up
+      - Add resonance to both
+      - Play them in the same octave
+      - "!Darken or thin out the pad's low end, or play it higher, so each owns its range"
+    a: Mud is two sounds fighting over the same range, usually the low end. Give each one its own space by moving one up or filtering it.
+    hear: One job, one range, per sound.
+challenge: "Make a fourth sound with a job none of the others has, like a high bell or a soft hiss, and save it."
