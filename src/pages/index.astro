@@ -21,7 +21,7 @@ const count = (I: any) => {
       <h2>Learn music by playing it.</h2>
       <p>One idea at a time, in short lessons on the gear you own.</p>
     </section>
-    <section class="scene">
+    <section class="scene last">
       <h2>Rep after rep.</h2>
     </section>
     <nav class="gear" aria-label="Pick your instrument">
@@ -88,6 +88,12 @@ const count = (I: any) => {
   }
   .scene:first-child {
     padding-top: 0;
+  }
+  /* the last line sits just above the middle, so the docked picker lands right under it */
+  .scene.last {
+    min-height: 55svh;
+    justify-content: flex-end;
+    padding: 0;
   }
   /* each scene snaps into place; the footer gets its own snap point so it stays reachable */
   :global(html:has(.home)) {
@@ -187,7 +193,7 @@ const count = (I: any) => {
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--s2) var(--s3);
-    margin-top: calc(-1 * var(--dock));
+    margin: 0 0 var(--s8);
     padding: var(--s7) 0 var(--s4);
     padding-bottom: max(var(--s4), env(safe-area-inset-bottom));
     border-image: linear-gradient(to bottom, transparent, var(--bg) calc(var(--s7) - var(--s2))) fill 0 / 0 / 0 100vw;
