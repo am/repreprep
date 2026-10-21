@@ -21,6 +21,7 @@ const count = (I: any) => {
       <h2>Learn music by playing it.</h2>
       <p>One idea at a time, in short lessons on the gear you own.</p>
     </section>
+    <span class="snap" aria-hidden="true"></span>
     <section class="scene last">
       <h2>Rep after rep.</h2>
     </section>
@@ -71,8 +72,13 @@ const count = (I: any) => {
 <style>
   /* home: one idea per screen, each centered in the viewport, revealed as you scroll.
      The instrument picker is the page's only set of links into the course, so it stays docked at the bottom. */
+  /* a grid three screens tall: two scenes, then free space split evenly above and below the last line and
+     the picker, which centers that pair on the last screen while the picker stays a direct child it can stick in */
   .home {
     --dock: 6.5rem;
+    display: grid;
+    grid-template-rows: auto auto 1fr auto auto 1fr;
+    min-height: 300svh;
   }
   .scene {
     min-height: 100svh;
@@ -89,11 +95,14 @@ const count = (I: any) => {
   .scene:first-child {
     padding-top: 0;
   }
-  /* the last line sits just above the middle, so the docked picker lands right under it */
+  /* the last line and the picker under it share the last screen; .snap marks where that screen starts */
   .scene.last {
-    min-height: 55svh;
-    justify-content: flex-end;
+    min-height: 0;
     padding: 0;
+  }
+  .snap {
+    scroll-snap-align: start;
+    scroll-snap-stop: always;
   }
   /* each scene snaps into place; the footer gets its own snap point so it stays reachable */
   :global(html:has(.home)) {
@@ -193,7 +202,6 @@ const count = (I: any) => {
     flex-wrap: wrap;
     justify-content: center;
     gap: var(--s2) var(--s3);
-    margin: 0 0 var(--s8);
     padding: var(--s7) 0 var(--s4);
     padding-bottom: max(var(--s4), env(safe-area-inset-bottom));
     border-image: linear-gradient(to bottom, transparent, var(--bg) calc(var(--s7) - var(--s2))) fill 0 / 0 / 0 100vw;

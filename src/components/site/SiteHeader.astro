@@ -257,7 +257,9 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     color: inherit;
     text-decoration: none;
   }
-  /* the home page header: just the theme switch and the progress link, pinned top right while the page scrolls */
+  /* the home page header: just the theme switch and the progress link, pinned top right while the page scrolls.
+     A band of page color behind it, fading out at its bottom, keeps scrolling content from running into it
+     (a border-image outset paints the whole width without catching clicks or adding page width). */
   .top.bare {
     position: fixed;
     z-index: 10;
@@ -265,5 +267,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     right: var(--s5);
     border: 0;
     padding: 0;
+    border-image: linear-gradient(to top, transparent, var(--bg) var(--s5)) fill 0 / 0 /
+      max(var(--s4), env(safe-area-inset-top)) 100vw var(--s6) 100vw;
   }
 </style>
