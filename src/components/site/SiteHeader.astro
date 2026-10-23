@@ -14,18 +14,22 @@ interface Props {
   home?: boolean;
 }
 const { inst, home } = Astro.props;
-const acct = SIGN_IN ? "Sign in" : "Progress";
+const acct = "Sign in"; /* only shown while sign-in is on; site.js puts your name in once you're signed in */
 ---
 
+{/* one pill, the same on every page: the What's new bell, the step count on a course's pages (a link to the
+    progress page: back up, load, reset) and the theme switch */}
 {home ? (
   <header class="top bare">
     <div class="ctrls">
       <NewsLink />
       <ThemeSwitch />
     </div>
-    <a class="acct" href="/account" id="acct">
-      {acct}
-    </a>
+    {SIGN_IN && (
+      <a class="acct" href="/account" id="acct">
+        {acct}
+      </a>
+    )}
   </header>
 ) : (
   <header class="top">
@@ -59,7 +63,6 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
         )}
       </nav>
       <hr class="hsep" />
-      {/* one pill: the What's new bell, the step count (a link to the progress page: back up, load, reset) with the theme switch nested in it */}
       <div class="ctrls">
         <NewsLink />
         {inst?.ready && (
@@ -69,7 +72,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
         )}
         <ThemeSwitch />
       </div>
-      {(SIGN_IN || !inst?.ready) && (
+      {SIGN_IN && (
         <a class="acct" href="/account" id="acct">
           {acct}
         </a>
@@ -134,7 +137,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     border: 1px solid var(--line);
     border-radius: var(--r-pill);
   }
-  /* the theme pill shares the outer pill's height and right edge: their borders overlap */
+  /* the bell's and the theme's pills share the outer pill's height and edges: their borders overlap */
   .ctrls :global(.theme) {
     margin: -1px -1px -1px 0;
   }
@@ -144,7 +147,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     color: var(--muted);
     text-decoration: none;
     white-space: nowrap;
-    padding: 0 var(--s1);
+    padding: 0 var(--s3);
   }
   .meter:hover {
     color: var(--fg);
