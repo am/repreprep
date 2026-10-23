@@ -1,6 +1,6 @@
 # Rep Rep Rep
 
-Hands-on lessons that teach music production on your own instruments. The Model:Cycles course is ready; MicroFreak and Ableton Live come next.
+Hands-on lessons that teach music production on your own instruments. The Model:Cycles course is ready; MicroFreak and Ableton Move come next.
 
 Built with [Astro](https://astro.build) and hosted on Cloudflare Workers. Every lesson step is its own page, built ahead of time. Progress is saved in the browser, and in a Cloudflare D1 database for people who sign in.
 

@@ -10,7 +10,7 @@ import { renderGrid } from "./shared/grid.js";
 export const INSTRUMENTS = [
   MODEL_CYCLES,
   { key: "microfreak", slug: "microfreak", name: "MicroFreak", ready: false },
-  { key: "live", slug: "live", name: "Ableton Live", ready: false },
+  { key: "move", slug: "move", name: "Ableton Move", ready: false },
 ];
 
 export const lessonLabel = (L) => (L.song ? "Song study" : "Lesson " + L.number);
