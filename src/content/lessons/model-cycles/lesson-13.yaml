@@ -14,6 +14,9 @@ concepts:
   - h: Dub throws
     p:
       - Dub engineers played the mixer like an instrument. They kept kick and bass dry, opened the echo send for one snare or one word, then closed it again, and rode the feedback so the echoes swelled and died away.
+  - h: "Repeats as texture"
+    p:
+      - "Repeat a chord fast enough and it stops sounding like separate hits: it becomes a tremolo or a strum. Short repeats with a short decay sound choppy; send them to reverb and delay and they blur into a shimmering texture."
 steps:
   - id: reverb-sound-space-dry
     k: learn
@@ -27,6 +30,9 @@ steps:
     k: learn
     fig: u4dub
     t: "A throw sends one hit into the delay and lets its echoes carry on alone. DEL FEEDBACK sends the echoes back in again: low gives a few fading repeats, high makes them swell. Ride it up for a moment, then pull it back."
+  - id: retrig-setup-sets-how
+    k: learn
+    t: "RETRIG SETUP ([FUNC] + [RETRIG]) sets how a pad repeats when you play it. RTE is the rate: 1/16 is one hit per step, 1/32 two. A.ON (always on) makes the pad repeat every time you press it, with no need to hold [RETRIG]."
   - id: play-b01-low-set
     k: play
     t: "Play B01 with [MAIN VOLUME] low. Set the shared room: turn [REVERB SIZE] to about 90. Then hold [FUNC] and turn [REVERB SIZE] to set REV TONE to about +20, which trims the lows from the reverb so it doesn't cloud the kick."
@@ -62,6 +68,16 @@ steps:
     t: "Try [DELAY TIME] at 32 (a quarter note) and at 16 (an eighth), and keep the one that sits best. Then save: hold [FUNC] and long-press [SETTINGS]."
     hl: t:deltime h:func p:settings
     hear: Longer echoes feel slower and wider. Shorter ones feel busier.
+  - id: strummed-chord
+    k: play
+    t: "A strummed chord: go to B04 (hold [PATTERN], press [TRIG 4]) and select [T6]. Press [FUNC] + [RETRIG], set RTE to 1/32 and A.ON to ON, then press [BACK]. Hold [T6] for a bar, then try [DECAY] short and long."
+    hl: h:pattern p:s4 h:track p:t6 h:func p:retrig t:level p:back h:t6 t:decay
+    hear: "The chord repeats fast while you hold the pad: choppy with a short decay, smoother with a long one."
+  - id: blur
+    k: play
+    t: "Blur it: turn [DELAY SEND] and [REVERB SEND] up to about 80 on T6 and hold [T6] again. Then press [LFO], set WAV to RND, DST to the delay send, MUL to 1K and DEP to about 40, and play it once more."
+    hl: t:delay t:reverb h:t6 p:lfo t:level
+    hear: "The repeats melt into a shimmer. With the fast random LFO on the send, each echo carries a little buzz of its own."
   - id: dub-mix-which-parts
     k: check
     t: In a dub mix, which parts usually stay dry?

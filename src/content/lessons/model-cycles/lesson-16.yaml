@@ -7,7 +7,7 @@ listen: Your own take, once you've recorded it. Listen once all the way through 
 concepts:
   - h: Performance tools
     p:
-      - "Mutes take parts out and bring them back: switch just before the 1 so they land on the beat. Hold [PAGE] for fills, turn [CHANCE] to thin a track, and hold [TRACK] while turning a knob to move all six tracks at once (Control All)."
+      - "Mutes take parts out and bring them back: switch just before the 1 so they land on the beat. Hold [PAGE] for fills, hold [RETRIG] and hit a pad for a roll, turn [CHANCE] to thin a track, and hold [TRACK] while turning a knob to move all six tracks at once (Control All)."
       - "On the Model:Cycles mutes are global: a muted track stays muted when the pattern changes."
   - h: A safety net
     p:
@@ -41,6 +41,11 @@ steps:
     t: "Add mutes and fills: in an A, mute the hats ([FUNC] + [T3]) for its last bar and unmute them on the 1 of the B. Going into a new section, hold [PAGE] through the first beat to play lesson 4's FILL hat."
     hl: h:func p:t3 h:page
     hear: Small moves at the edges of sections make each change feel deliberate.
+  - id: play-roll-hand
+    k: play
+    t: "Play a roll by hand: press [FUNC] + [RETRIG] on T2, set RTE to 1/32 and A.ON to OFF, and press [BACK]. In the last beat before a new section, hold [RETRIG] and hold [T2]. Let go on the 1."
+    hl: h:func p:retrig t:level p:back h:t2
+    hear: "A snare roll you play live. Press the pad harder for a louder roll: T2's VDEP is up, so the repeats follow how hard you press."
   - id: break-b08-make-temporary
     k: play
     t: "In the break (B08), make a temporary save: hold [FUNC] and briefly press [SETTINGS]. Hold [TRACK] and turn [REVERB SEND] up: every track pours into the room. Then hold [FUNC] and press [PATTERN] to snap back."

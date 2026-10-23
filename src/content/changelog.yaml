@@ -3,6 +3,25 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.3.0
+  date: "2026-10-23"
+  title: Rolls, velocity and the three speeds of an LFO
+  lessons:
+    - lesson: model-cycles/w03
+      what: Clearer wording on VDEP. At 0 it stops velocity changing the volume, but velocity can still move other things.
+    - lesson: model-cycles/w04
+      what: A snare roll that rises into each new phrase, made from one trig with TRIG REPEAT.
+    - lesson: model-cycles/w05
+      what: Velocity as a second knob. Harder snare hits now ring longer, like a real drum.
+    - lesson: model-cycles/w08
+      what: "The three speeds of an LFO: a kick that fades in and out over bars, an envelope on pitch, and an LFO fast enough to change the tone itself."
+    - lesson: model-cycles/w13
+      what: Fast repeats as texture. A strummed chord with RETRIG, blurred with reverb, delay and a random LFO on the delay send.
+    - lesson: model-cycles/w15
+      what: An intro and outro that play themselves, with slow random LFOs on the chords and hats.
+    - lesson: model-cycles/w16
+      what: Play a snare roll live by holding RETRIG and a pad.
+
 - id: 0.2.0
   date: "2026-10-23"
   title: Version numbers and What's new

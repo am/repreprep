@@ -116,6 +116,8 @@ w04:
     - make-t4-drift
     - let-breathe
     - pattern-4-bars-long
+    - roll-one-trig
+    - roll-into-bar-8
   retired: []
 w05:
   used:
@@ -131,6 +133,8 @@ w05:
     - soften-snare
     - write-two-words-new
     - turned-sweep-down-kick
+    - velocity-move-second-knob
+    - make-harder-hits-ring
   retired: []
 w06:
   used:
@@ -177,6 +181,10 @@ w08:
     - try-slow-attack-b04
     - press-check-fix-off
     - hats-move-lfo-decay
+    - one-lfo-three-speeds
+    - slow-over-bars
+    - medium-over-one-note
+    - fast-inside-tone
   retired: []
 w09:
   used:
@@ -252,6 +260,9 @@ w13:
     - ride-feedback
     - try-32-quarter-note
     - dub-mix-which-parts
+    - retrig-setup-sets-how
+    - strummed-chord
+    - blur
   retired: []
 w14:
   used:
@@ -281,6 +292,9 @@ w15:
     - chain
     - listen-every-change-where
     - about-how-many-changes
+    - intro-has-room-something
+    - let-intro-play-itself
+    - end-where-began
   retired: []
 w16:
   used:
@@ -296,4 +310,5 @@ w16:
     - record
     - start-finishing-loop
     - mute-kick-break-cue
+    - play-roll-hand
   retired: []

@@ -15,6 +15,9 @@ concepts:
   - h: Loops of different lengths
     p:
       - Give one track 12 steps while the others have 16. It drifts against the bar and only lines up again every 3 bars. This is called polymeter, and it makes a short loop sound like it keeps changing.
+  - h: "Rolls"
+    p:
+      - "A roll is a burst of fast hits on one drum that gets louder as it goes. It tells the listener a new section is coming, which is why producers put one at the end of a phrase."
 steps:
   - id: loop-one-bar-music
     k: learn
@@ -37,6 +40,9 @@ steps:
           - { n: Shaker (7), s: shaker, len: 7, hits: "1,4", vel: 0.45 }
     t: The perc loop is 12 steps long and the shaker 7. Press Play and watch them slide against the kick and snare. Every bar sounds slightly different, though nothing random is happening.
     hear: The perc lines up with the kick again only every third bar.
+  - id: roll-one-trig
+    k: learn
+    t: "A roll from one trig: TRIG REPEAT plays a trig again and again at a rate you choose. RTE sets how fast, LEN how long the velocity curve lasts, and FDE fades the repeats in or out. Fading in gives the classic rising roll."
   - id: make-b01-four-bars
     k: play
     t: "Make B01 four bars long: hold [FUNC] and press [PAGE] to open the SCALE menu, set LEN to 64 with [LEVEL/DATA], then press [BACK]. Your bar is copied onto pages 2, 3 and 4."
@@ -57,6 +63,11 @@ steps:
     t: "Turn the second time through bar 4 into bar 8, the D: still on page 4, hold [TRIG 14], [TRIG 15] and [TRIG 16] and turn [CHANCE] until the screen shows 2:2. Then select [T1], hold the kicks on [TRIG 9] and [TRIG 11], and set them to 1:2."
     hl: h:s14 h:s15 h:s16 t:chance h:track p:t1 h:s9 h:s11
     hear: "Bar 4 now has its kicks and no roll. Bar 8 drops the kicks and plays the roll: an empty plus a fill."
+  - id: roll-into-bar-8
+    k: play
+    t: "Turn bar 8's snares into a roll: still on page 4, select [T2], hold [TRIG 14] and press [RETRIG] to open TRIG REPEAT. Keep holding it. With [LEVEL/DATA] set it ON, RTE to 1/32, LEN to 3/16 (three steps) and FDE to about 100. Let go of [TRIG 14]."
+    hl: h:track p:t2 h:s14 p:retrig t:level
+    hear: "Every eighth bar the snare rises in a fast roll into bar 1. The fade is a velocity curve, so it works because T2's VDEP is at 127 from lesson 3."
   - id: add-fill-play-hand
     k: play
     t: "Add a fill you play by hand: select [T3], add an extra hat on [TRIG 1] of page 1, hold it and turn [CHANCE] to FILL. Press [RECORD] to listen, and hold [PAGE] whenever you want the fill."
