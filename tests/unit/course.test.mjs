@@ -194,10 +194,10 @@ test("a Get ready step shows the pattern as a playable grid, new steps outlined,
   const fig = L.steps[0].fig;
   assert.deepEqual(fig.pattern.rows[0].nw, [9]);
   const html = renderFig(I, fig, "w99:1");
-  assert.match(html, /B01 as you saved it/);
+  assert.match(html, /<div class="gt">B01<\/div>/);
   assert.equal(count(html, /class="cell on\s+nw/g), 1);
   assert.match(html, /Added last lesson/);
-  assert.match(html, /<h4>Your other patterns<\/h4>/);
+  assert.match(html, /<h4>Other patterns<\/h4>/);
   assert.match(html, /data-spec=/);
   const bars = { ...fig.pattern, rows: undefined, bars: [fig.pattern.rows, fig.pattern.rows] };
   assert.equal(count(renderFig(I, { pattern: bars }, "x"), /data-gpre=/g), 2);
