@@ -794,6 +794,56 @@ svg.fig {
 .gp .btn {
   font-size: 1em;
 }
+.cell.nw {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
+}
+/* a Get ready step's map: the playable grid with room under it for what the grid can't show */
+.pmap {
+  --gw: max(min(100cqi - 16px, 22rem), min(100cqi - 16px, (100cqh - 440px) / (var(--rows, 6) * 1.25) * 16 + 90px));
+  width: var(--gw);
+  margin: auto;
+  font-size: clamp(13px, calc(var(--gw) / 48), 22px);
+}
+.pmap .gp {
+  --gw: inherit;
+}
+.pmap-notes {
+  padding: 0 var(--s2) var(--s3);
+  font-family: var(--body);
+  font-size: 0.95em;
+  line-height: var(--lh-snug);
+}
+.pmap-notes h4 {
+  margin: var(--s3) 0 var(--s1);
+  font-family: var(--display);
+  font-size: 0.85em;
+  letter-spacing: var(--ls-caps);
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.pmap-notes ul {
+  margin: 0;
+  padding-left: 1.1em;
+  display: grid;
+  gap: var(--s1);
+}
+.pmap-key {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--s2);
+  color: var(--muted);
+  font-size: 0.9em;
+}
+.pmap-nw {
+  width: 0.9em;
+  height: 1.1em;
+  border-radius: var(--r-xs);
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
+  background: var(--surface);
+}
 .gctl {
   display: flex;
   flex-wrap: wrap;

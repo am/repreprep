@@ -43,6 +43,35 @@ steps:
   - id: roll-one-trig
     k: learn
     t: "A roll from one trig: TRIG REPEAT plays a trig again and again at a rate you choose. RTE sets how fast, LEN how long the velocity curve lasts, and FDE fades the repeats in or out. Fading in gives the classic rising roll."
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        rows:
+          - { n: T1 Kick, s: kick, hits: "1,9,11" }
+          - { n: T2 Snare, s: snare, hits: "5,12:.2,13", new: "12" }
+          - {
+              n: T3 Hats,
+              s: hat,
+              hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24",
+              new: "2,4,6,8,10,12,14,16",
+            }
+          - { n: T4 Perc, s: perc, hits: "" }
+          - { n: T5 Tone, s: bass, hits: "" }
+          - { n: T6 Chord, s: keys, hits: "" }
+        notes:
+          - "Swing at about 58% on every track."
+          - "T2 and T3 have VDEP at 127, so the short squares really play quietly."
+          - "The ghost snare on [TRIG 12] is nudged a little late."
+        others:
+          - "B02: the steppers beat. This lesson doesn't touch it."
+          - "B03: whatever you tried in a challenge, if anything. Not used here."
+    t: "B01 is where you left it at the end of lesson 3, and this lesson adds to it. Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]) and press [PLAY]. Compare it with the map. If it sounds different, hold [FUNC] + [PATTERN] for a second and choose YES to go back to your last save. If you were in another project, load yours first: press [SETTINGS], open PROJECT, pick it with [LEVEL/DATA] and choose LOAD."
+    hl: h:pattern p:t2 p:s1 p:play h:func p:settings t:level
+    hear: Kick on 1 and around beat 3, snares on 2 and 4 with a soft ghost just before the second, and busy hats with quiet ones in between.
   - id: make-b01-four-bars
     k: play
     t: "Make B01 four bars long: hold [FUNC] and press [PAGE] to open the SCALE menu, set LEN to 64 with [LEVEL/DATA], then press [BACK]. Your bar is copied onto pages 2, 3 and 4."

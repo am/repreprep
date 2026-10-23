@@ -3,7 +3,14 @@ import { songLink } from "./songs.js";
 
 /* Step text: [KEY] becomes a keycap (coloured by the step's hl), quoted song titles become Spotify links,
    and Play steps are split into one bullet per sentence. */
-export const KIND = { intro: "Intro", learn: "Learn", play: "Play", check: "Check", challenge: "Challenge" };
+export const KIND = {
+  intro: "Intro",
+  ready: "Get ready",
+  learn: "Learn",
+  play: "Play",
+  check: "Check",
+  challenge: "Challenge",
+};
 export function parseHl(s) {
   const r = { press: [], hold: [], turn: [] };
   (s || "")

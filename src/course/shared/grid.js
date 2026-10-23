@@ -19,7 +19,8 @@ export function renderGrid(G, id, playing = false) {
           const v = r.v[i] || 0;
           const out = r.len && i >= r.len;
           const off = (r.off && r.off[i]) || 0;
-          return `<button class="cell ${v ? "on" : ""} ${out ? "out" : ""} ${i % 4 === 0 ? "bt" : ""}" data-g="${id}" data-r="${ri}" data-i="${i}" ${out ? "disabled" : ""} aria-label="${esc(r.n)} step ${i + 1}${v ? " on" : ""}" style="--c:${ROWC[r.s]};--v:${v}"><i${off ? ` style="transform:translateX(${off * 100}%)"` : ""}></i></button>`;
+          const nw = r.nw && r.nw.includes(i + 1);
+          return `<button class="cell ${v ? "on" : ""} ${out ? "out" : ""} ${nw ? "nw" : ""} ${i % 4 === 0 ? "bt" : ""}" data-g="${id}" data-r="${ri}" data-i="${i}" ${out ? "disabled" : ""} aria-label="${esc(r.n)} step ${i + 1}${v ? " on" : ""}${nw ? ", new" : ""}" style="--c:${ROWC[r.s]};--v:${v}"><i${off ? ` style="transform:translateX(${off * 100}%)"` : ""}></i></button>`;
         }).join("")
     )
     .join("");

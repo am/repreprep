@@ -16,9 +16,14 @@ const row = z
     v: z.array(z.number().min(0).max(1)).length(16).optional(),
     len: z.number().int().min(1).max(16).optional() /* a shorter loop than 16 steps */,
     p: z.array(z.number()).length(16).optional() /* a MIDI note per step */,
+    new: z.string().optional() /* steps added in the last lesson, "2,4,6", drawn outlined */,
   })
   .refine((r) => (r.hits !== undefined) !== (r.v !== undefined), "give a row either hits or v")
-  .transform(({ hits: h, vel, ...r }) => (h === undefined ? r : { ...r, v: hits(String(h), vel ?? 0.85) }));
+  .transform(({ hits: h, vel, new: nw, ...r }) => ({
+    ...r,
+    ...(h === undefined ? {} : { v: hits(String(h), vel ?? 0.85) }),
+    ...(nw ? { nw: nw.split(",").map(Number) } : {}),
+  }));
 const preset = z.strictObject({
   name: text,
   bpm: z.number(),
@@ -36,6 +41,19 @@ const grid = z
     presets: z.array(preset).min(2).optional(),
   })
   .refine((g) => !!g.rows !== !!g.presets, "give a grid either rows or presets");
+/* what a pattern should hold when a lesson starts: its tracks as a grid (one tab per bar when it has
+   several), what else changed in its sounds, and the other patterns the course has used so far */
+const pattern = z
+  .strictObject({
+    slot: z.string().regex(/^[A-H]\d\d$/) /* "B01" */,
+    bpm: z.number(),
+    swing: z.number().min(50).max(75).optional(),
+    rows: z.array(row).min(1).optional() /* a one-bar pattern */,
+    bars: z.array(z.array(row).min(1)).min(2).optional() /* or one set of rows per bar */,
+    notes: z.array(text).optional() /* what the grid can't show: sounds, swing, menus */,
+    others: z.array(text).optional() /* the other patterns, "B02: ..." */,
+  })
+  .refine((p) => !!p.rows !== !!p.bars, "give a pattern either rows or bars");
 
 const step = z
   .strictObject({
@@ -43,11 +61,15 @@ const step = z
       .string()
       .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/)
       .refine((s) => s !== "intro", "intro is the lesson's own first step") /* saved ticks use it: never change it */,
-    k: z.enum(["learn", "play", "check"]).optional() /* the step's kind; play when left out */,
+    k: z
+      .enum(["ready", "learn", "play", "check"])
+      .optional() /* the step's kind; play when left out. ready: where the pattern should be before you start */,
     t: text /* what it says; [KEY] draws a key cap */,
     hl: z.string().optional() /* controls to light: "p:play h:func t:level" (press, hold, turn) */,
     hear: text.optional() /* what to listen for */,
-    fig: z.union([text, z.strictObject({ grid })]).optional() /* a drawing by name, or a playable grid */,
+    fig: z
+      .union([text, z.strictObject({ grid }), z.strictObject({ pattern })])
+      .optional() /* a drawing by name, a playable grid, or the pattern as it should be */,
     q: z.array(text).min(2).optional() /* a Check question's answers, the right one starting with ! */,
     a: text.optional() /* why that answer is right */,
     more: z
@@ -55,7 +77,8 @@ const step = z
       .optional() /* a link to one of the instrument's reference tabs */,
   })
   .refine((s) => !s.q || s.q.filter((o) => o.startsWith("!")).length === 1, "mark exactly one answer right with !")
-  .refine((s) => !s.q || s.a, "a question needs its explanation, a");
+  .refine((s) => !s.q || s.a, "a question needs its explanation, a")
+  .refine((s) => (s.k === "ready") === !!(s.fig && s.fig.pattern), "a ready step shows the pattern, fig: { pattern }");
 
 export const lessonSchema = z
   .strictObject({
