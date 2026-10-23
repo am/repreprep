@@ -13,12 +13,14 @@ Thanks for helping. Fixes to lessons, corrections against the real instruments a
 
 - One idea per lesson. Each lesson has an intro, Learn steps (the idea, with our own drawings or a playable grid), Play steps (click-by-click on the device) and Check steps (multiple choice).
 - Write Play steps as short separate sentences. Each sentence becomes a bullet.
-- Each lesson is a YAML file in `src/content/lessons/<instrument>/`. Steps are listed under `steps:` with `id` (a short name such as `set-decay`, unique in the lesson), `k` (learn, play or check), `t` (the text), `hl` (keys to light up), `fig` (a drawing's name, or a playable `grid` whose rows give `hits: "1,5,9,13"`), and for Check steps `q` (the options, the right one starting with `!`) and `a` (why). `src/course/schema.js` lists every field.
+- Each lesson is a YAML file in `src/content/lessons/<instrument>/`. Steps are listed under `steps:` with `id` (written for you, see below), `k` (learn, play or check), `t` (the text), `hl` (keys to light up), `fig` (a drawing's name, or a playable `grid` whose rows give `hits: "1,5,9,13"`), and for Check steps `q` (the options, the right one starting with `!`) and `a` (why). `src/course/schema.js` lists every field.
 - Write keys as `[NAME]`, for example `[FUNC]` or `[TRIG 5]`. They render as keycaps.
 - Button combinations must match the instrument's official manual. Say which page or section you checked in your pull request.
 - Everything lives inside the lessons: no links to videos or other sites. The one exception is songs, which name the artist and link to the original track on Spotify.
 - Don't mention future lessons in a lesson's text.
-- Keep lesson ids (`w05`, `s01`) and step ids unchanged, even when you rewrite a step's text. People's saved progress is stored by them.
+- Keep lesson ids (`w05`, `s01`) unchanged. People's saved progress is stored by them and by step ids.
+- Don't write step ids yourself. Add a step without an `id` and run `npm run ids`: it gives each new step an id no step of that lesson has ever had, and records it in `src/content/step-ids.yaml`, the register of every id each lesson has used. Taking a step out moves its id to `retired` there, so it's never given out again. Commit the register with your lesson. `npm run check` (and so every pull request) fails if a step has no id, an id isn't in the register, or an id the main branch has was dropped or reused.
+- Never change a step's id, even when you rewrite its text, and never edit the register by hand.
 - Steps can be added anywhere, removed or reordered: give a new step a new id. A removed step's ticks are simply ignored.
 
 ## What's new
