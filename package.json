@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "description": "Rep Rep Rep: hands-on lessons for the Model:Cycles, MicroFreak and Ableton Live",
+  "description": "Rep Rep Rep: hands-on lessons for the Model:Cycles, MicroFreak and Ableton Move",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
