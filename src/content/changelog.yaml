@@ -9,6 +9,7 @@
   title: Version numbers and What's new
   site:
     - The site now has a version number, shown at the bottom of every page, and this page lists what changed in each version.
+    - A bell at the top of every page gets a dot when there's a version you haven't read about yet. Opening this page clears it.
     - When a lesson you've started changes, it shows a note saying what's new, until you mark it as read.
 
 - id: 0.1.0

@@ -74,7 +74,10 @@ export function moveSteps(state, moves, version) {
 }
 /* a lesson counts as yours once you've ticked any of its steps (opening it alone doesn't count) */
 export const started = (s, id) => !!(s && (s.done[id] || Object.keys(s.steps).some((k) => k.startsWith(id + ":"))));
-/* the updates to tell you about: newer than when you started using the site and than the last one you
-   marked as read on this lesson */
-export const unseen = (updates, since, seen) =>
-  (updates || []).filter((u) => cmpVersion(u.v, since || FIRST_VERSION) > 0 && (!seen || cmpVersion(u.v, seen) > 0));
+/* a release is news to you when it came after you started using the site and after the last version you saw
+   on What's new; while the site's own version is, the header's What's new icon shows a dot */
+export const isNew = (v, since, read) =>
+  cmpVersion(v, since || FIRST_VERSION) > 0 && (!read || cmpVersion(v, read) > 0);
+/* the updates to tell you about on a lesson: newer than when you started using the site and than the last one
+   you marked as read on it */
+export const unseen = (updates, since, seen) => (updates || []).filter((u) => isNew(u.v, since, seen));

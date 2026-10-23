@@ -1,9 +1,11 @@
 ---
 // The header on every page. On the home page it keeps only the theme switch and the progress (or account)
 // link, since the page itself is the logo and the instrument picker. On phones everything but the logo folds
-// into a menu opened by a knob; on wider screens the menu is just the rest of the header.
+// into a menu opened by a knob; on wider screens the menu is just the rest of the header. The What's new icon
+// stays outside the menu, so its unread dot shows on phones too.
 import Logo from "./Logo.astro";
 import ThemeSwitch from "./ThemeSwitch.astro";
+import NewsLink from "./NewsLink.astro";
 import { INSTRUMENTS } from "../../course/index.js";
 import { SIGN_IN } from "astro:env/client";
 interface Props {
@@ -16,6 +18,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
 
 {home ? (
   <header class="top bare">
+    <NewsLink />
     <ThemeSwitch />
     <a class="acct" href="/account" id="acct">
       {acct}
@@ -67,6 +70,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
         </a>
       )}
     </div>
+    <NewsLink />
   </header>
 )}
 
@@ -187,6 +191,11 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     }
     .knob {
       display: block;
+      order: 2;
+      margin-left: var(--s3);
+    }
+    .top :global(.news) {
+      margin-left: auto;
     }
     .hmenu {
       display: none;
@@ -261,6 +270,8 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
      A band of page color behind it, fading out at its bottom, keeps scrolling content from running into it
      (a border-image outset paints the whole width without catching clicks or adding page width). */
   .top.bare {
+    display: flex;
+    gap: var(--s3);
     position: fixed;
     z-index: 10;
     top: max(var(--s4), env(safe-area-inset-top));

@@ -3,9 +3,10 @@
    part of your progress with onProgress, which runs on every page view and again whenever progress changes.
    Same shape as the single-file app, so old progress files load as they are:
    {inst:{cycles:{lesson, steps:{"w05:3":true}, done:{w05:ts}, notes:{w05:"…"}, active:{w05:3}, seen:{w05:"0.3.0"}}},
-    focus, stepW, updatedAt, since, ver}
+    focus, stepW, updatedAt, since, ver, read}
    since is the site's version when this progress began (lesson updates older than that aren't news to you),
-   ver the version its step numbers follow; seen holds, per lesson, the version whose update note you closed. */
+   ver the version its step numbers follow, read the version you last saw on What's new; seen holds, per
+   lesson, the version whose update note you closed. */
 import { SIGN_IN } from "astro:env/client";
 import { FIRST_VERSION, moveSteps } from "../course/shared/updates.js";
 /* the account calls (src/actions), loaded only when sign-in is on */

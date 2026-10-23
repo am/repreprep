@@ -13,6 +13,7 @@ import {
   moveSteps,
   started,
   unseen,
+  isNew,
 } from "../../src/course/shared/updates.js";
 import { COURSES, RELEASES } from "../../src/course/files.js";
 
@@ -115,6 +116,14 @@ test("a note shows only on lessons you started, for updates newer than your star
   );
   assert.deepEqual(unseen(ups, "0.2.0", "0.4.0"), []);
   assert.deepEqual(unseen(undefined, "0.1.0"), []);
+});
+
+test("a release is news after you started and after the version you last saw on What's new", () => {
+  assert.ok(isNew("0.3.0", "0.2.0", undefined));
+  assert.ok(isNew("0.3.0", undefined, undefined));
+  assert.ok(!isNew("0.3.0", "0.3.0", undefined));
+  assert.ok(!isNew("0.3.0", "0.2.0", "0.3.0"));
+  assert.ok(isNew("0.4.0", "0.2.0", "0.3.0"));
 });
 
 test("the changelog: package.json has its newest version, versions are unique and dates run with them", () => {

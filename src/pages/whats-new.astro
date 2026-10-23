@@ -1,6 +1,8 @@
 ---
 // What's new: every release from the changelog (src/content/changelog.yaml), newest first, with what changed
 // on the site and in which lessons. A lesson you've started shows its updates as a note on the lesson too.
+// Opening this page clears the dot on the header's What's new icon; the releases that were new to you are
+// tagged New (updates.js).
 import Base from "../layouts/Base.astro";
 import { releases } from "../course/changelog.js";
 import { courses } from "../course/content.js";
@@ -26,9 +28,15 @@ const day = (d: string) =>
       The site is on version {rel[0].id}. When a lesson you've started changes, it shows a note saying what's new.
     </p>
     {rel.map((r) => (
-      <section class="rel" id={`v${r.id}`}>
+      <section class="rel" id={`v${r.id}`} data-release={r.id}>
         <h3>
-          <span class="rv">Version {r.id}</span> {r.title}
+          <span class="rv">
+            Version {r.id}{" "}
+            <span class="new" data-rel-new hidden>
+              New
+            </span>
+          </span>{" "}
+          {r.title}
         </h3>
         <p class="msg">{day(r.date)}</p>
         {r.site && (
@@ -78,6 +86,16 @@ const day = (d: string) =>
     text-transform: uppercase;
     color: var(--muted);
     margin-bottom: var(--s1);
+  }
+  .new {
+    margin-left: var(--s2);
+    padding: 0 var(--s2);
+    border-radius: var(--r-pill);
+    background: var(--led);
+    color: var(--bg);
+  }
+  .new[hidden] {
+    display: none;
   }
   .rel ul {
     margin: var(--s3) 0 0;
