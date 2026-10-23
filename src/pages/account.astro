@@ -50,8 +50,9 @@ import { SIGN_IN } from "astro:env/client";
     )}
     <Card title="Back up or move your progress">
       <p class="t-body">
-        Download a copy of your progress, or load one. A <code>progress.json</code> from the old local version of the
-        course works too.
+        Download a copy of your progress, or load one, for example to move it to another device. Loading a file adds it
+        to the progress already in this browser, so nothing done here is lost. A <code>progress.json</code> from the old
+        local version of the course works too.
       </p>
       <div class="row">
         <button class="btn" data-export>
@@ -95,7 +96,7 @@ import { SIGN_IN } from "astro:env/client";
 
 <script>
   /* download, load and delete your progress; with sign-in on, who you are and your account */
-  import { onProgress, flush, update, adopt, state, account, LS_KEY } from "../client/progress.js";
+  import { onProgress, flush, update, combine, state, account, LS_KEY } from "../client/progress.js";
   import { esc } from "../course/shared/html.js";
   import { SIGN_IN } from "astro:env/client";
 
@@ -174,10 +175,10 @@ import { SIGN_IN } from "astro:env/client";
     try {
       const s = JSON.parse(await file.text());
       if (!s || typeof s.inst !== "object") throw new Error("not a progress file");
-      adopt(s);
+      combine(s);
       update();
       const n = Object.values(state.inst).reduce((a, v) => a + Object.keys(v.steps || {}).length, 0);
-      if (msg) msg.textContent = `Loaded. ${n} ticked steps.`;
+      if (msg) msg.textContent = `Loaded and combined. ${n} ticked steps.`;
     } catch (e) {
       if (msg) msg.textContent = "That file isn't a Rep Rep Rep progress file.";
     }
