@@ -63,7 +63,7 @@ steps:
           - { n: T5 Tone, s: bass, hits: "" }
           - { n: T6 Chord, s: keys, hits: "" }
         notes:
-          - "Swing at about 58% on every track."
+          - "Swing at about 58% on every track. Swing only delays the even steps, so the kicks and the snares on 5 and 13 stay on the grid, and the quiet hats and the ghost snare lean late."
           - "T2 and T3 have VDEP at 127, so the short squares really play quietly."
           - "The ghost snare on [TRIG 12] is nudged a little late."
         others:
