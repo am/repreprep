@@ -43,8 +43,8 @@ steps:
     hear: Small moves at the edges of sections make each change feel deliberate.
   - id: play-roll-hand
     k: play
-    t: "Play a roll by hand: press [FUNC] + [RETRIG] on T2, set RTE to 1/32 and A.ON to OFF, and press [BACK]. In the last beat before a new section, hold [RETRIG] and hold [T2]. Let go on the 1."
-    hl: h:func p:retrig t:level p:back h:t2
+    t: "Play a roll by hand: select [T2], press [FUNC] + [RETRIG], set RTE to 1/32 and A.ON to OFF, and press [BACK]. In the last beat before a new section, hold [RETRIG] and hold [T2]. Let go on the 1."
+    hl: h:func p:retrig t:level p:back h:t2 h:track p:t2
     hear: "A snare roll you play live. Press the pad harder for a louder roll: T2's VDEP is up, so the repeats follow how hard you press."
   - id: break-b08-make-temporary
     k: play

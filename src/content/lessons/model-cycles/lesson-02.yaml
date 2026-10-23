@@ -106,7 +106,7 @@ steps:
     hear: Everything hits together on beat 3. The empty downbeat makes it float.
   - id: still-b02-turn-one
     k: play
-    t: "Still on B02, turn the one drop into steppers: on T1, add kicks on [TRIG 1], [TRIG 5] and [TRIG 13]. Then go back to B01 and listen to your own beat again."
+    t: "Still on B02, turn the one drop into steppers: select [T1] and add kicks on [TRIG 1], [TRIG 5] and [TRIG 13]. Then go back to B01 and listen to your own beat again."
     hl: h:track p:t1 p:s1 p:s5 p:s13 h:pattern p:s1
     hear: Same tempo, three different worlds. Your B01 beat sits between them.
   - id: one-drop-where-does

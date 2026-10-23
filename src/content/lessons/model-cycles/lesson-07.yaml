@@ -88,7 +88,7 @@ steps:
     hear: A small, odd tick drifting on its 12-step loop and coming and going with its chance.
   - id: borrow-sound-preset-lock
     k: play
-    t: "Borrow a sound with a preset lock: still on T4, hold [TRIG 10] and press [MACHINES] to open the PRESET menu. Browse with [LEVEL/DATA], press [T4] to hear each one, and press [LEVEL/DATA] to lock a small, strange sound to that step."
+    t: "Borrow a sound with a preset lock: still on [T4], hold [TRIG 10] and press [MACHINES] to open the PRESET menu. Browse with [LEVEL/DATA], press [T4] to hear each one, and press [LEVEL/DATA] to lock a small, strange sound to that step."
     hl: h:s10 p:machines t:level p:t4 p:level
     hear: Once round each 12-step loop, T4 plays a different sound. [MACHINES] lights when you hold that trig.
   - id: save-kit

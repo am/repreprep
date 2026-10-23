@@ -75,12 +75,12 @@ steps:
     hear: An empty one-bar pattern with your six sounds.
   - id: play-chosen-track-tap
     k: play
-    t: "Play your chosen track and tap its tempo: hold [FUNC] and tap [TEMPO] on the beat. Tempo is stored per pattern, so B01 keeps 90. Press [RECORD] and place kicks (T1), snares (T2) and hats (T3) where you hear them."
+    t: "Play your chosen track and tap its tempo: hold [FUNC] and tap [TEMPO] on the beat. Tempo is stored per pattern, so B01 keeps 90. Press [RECORD] and place kicks ([T1]), snares ([T2]) and hats ([T3]) where you hear them."
     hl: h:func p:tempo p:record h:track p:t1 p:t2 p:t3
     hear: "It won't sound like the record, and that's fine: you're copying where the hits sit, not the sounds."
   - id: add-bass-rhythm-t5
     k: play
-    t: "Add the bass rhythm on T5 with a single note. Press [RECORD] to leave, then play your skeleton and the song one after the other, and write on your sheet what's missing: a sound, the groove, or a part. Save B10."
+    t: "Add the bass rhythm on [T5] with a single note. Press [RECORD] to leave, then play your skeleton and the song one after the other, and write on your sheet what's missing: a sound, the groove, or a part. Save B10."
     hl: h:track p:t5 p:record h:func p:settings
     hear: Four parts are usually enough to recognise a track. That's its skeleton.
   - id: go-b01-hold-press
@@ -90,7 +90,7 @@ steps:
     hear: If a fourth part keeps grabbing you, it's too loud or too busy.
   - id: balance
     k: play
-    t: "Balance: select each track and turn its [LEVEL/DATA] down low. Bring T1 up until the kick feels solid: that's your anchor. Then bring up bass, snare, chords, hats and perc one at a time, each until it's clear but doesn't shout."
+    t: "Balance: select each track and turn its [LEVEL/DATA] down low. Bring [T1] up until the kick feels solid: that's your anchor. Then bring up bass, snare, chords, hats and perc one at a time, each until it's clear but doesn't shout."
     hl: h:track p:t1 t:level p:t5 p:t2 p:t6 p:t3 p:t4
     hear: Building up from quiet gives a better balance than turning things down from loud.
   - id: pan-pairs

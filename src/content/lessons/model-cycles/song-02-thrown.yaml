@@ -59,8 +59,8 @@ steps:
     hear: "Tap [T6]: a short, plucked chord."
   - id: sequence
     k: play
-    t: "Sequence it: on T6, place trigs on [TRIG 1], [TRIG 3], [TRIG 4], [TRIG 7], [TRIG 9], [TRIG 11], [TRIG 12] and [TRIG 15]. Press [PLAY]."
-    hl: p:s1 p:s3 p:s4 p:s7 p:s9 p:s11 p:s12 p:s15 p:play
+    t: "Sequence it: select [T6] and place trigs on [TRIG 1], [TRIG 3], [TRIG 4], [TRIG 7], [TRIG 9], [TRIG 11], [TRIG 12] and [TRIG 15]. Press [PLAY]."
+    hl: p:s1 p:s3 p:s4 p:s7 p:s9 p:s11 p:s12 p:s15 p:play h:track p:t6
     hear: A rolling chord rhythm, the same one as in the grid.
   - id: make-move
     k: play
@@ -74,7 +74,7 @@ steps:
     hear: "A slow melody over a busy pluck: two speeds working together."
   - id: add-beat
     k: play
-    t: "Add the beat: on T1, kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. On T3, hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15]. Save: hold [FUNC] and long-press [SETTINGS]."
+    t: "Add the beat: select [T1] and place kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. Select [T3] and place hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15]. Save: hold [FUNC] and long-press [SETTINGS]."
     hl: h:track p:t1 p:t3 h:func p:settings
   - id: how-did-kiasmos-get
     k: check

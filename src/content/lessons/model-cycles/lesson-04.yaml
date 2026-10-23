@@ -76,8 +76,8 @@ steps:
     hear: A small pickup at the end of bar 2.
   - id: make-bar-4-c
     k: play
-    t: "Make bar 4 the C: press [PAGE] until the fourth light is on, and on T2 add snares on [TRIG 14], [TRIG 15] and [TRIG 16] at low velocity."
-    hl: p:page p:s14 p:s15 p:s16
+    t: "Make bar 4 the C: press [PAGE] until the fourth light is on, select [T2] and add snares on [TRIG 14], [TRIG 15] and [TRIG 16] at low velocity."
+    hl: p:page p:s14 p:s15 p:s16 h:track p:t2
     hear: A little roll that leads back to the top.
   - id: turn-second-time-through
     k: play
