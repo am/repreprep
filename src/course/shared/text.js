@@ -105,6 +105,12 @@ export function stepParts(st) {
   return ss.length < 2 ? { lead, para: body } : { lead, items: ss };
 }
 
+/* light the page the step is on (1 to 4); panels without page lights are left as they are */
+export function withPage(svg, page = 1) {
+  let i = 0;
+  return svg.replace(/class="pageled(?: on)?"/g, () => `class="pageled${++i === page ? " on" : ""}"`);
+}
+
 /* light the controls a step uses on the panel drawing (press / hold / turn), or mark one as selected */
 export function withHl(svg, hl, sel) {
   const h = parseHl(hl);

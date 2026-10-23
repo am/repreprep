@@ -111,3 +111,19 @@ test("reference pages: panel guide for every control, machines, shortcuts", () =
   assert.equal(count(page(`/${I.slug}/machines`), /<section class="band">/g), I.machines.length + 1);
   assert.equal(count(page(`/${I.slug}/shortcuts`), /<tr>/g), I.shortcuts.length);
 });
+
+test("player: the panel lights the page a step is on, and later steps keep it", () => {
+  const L = I.lessons.find((l) => l.id === "w04");
+  const lit = (act) => {
+    const leds = [...player(L, act).matchAll(/class="pageled( on)?"/g)];
+    assert.equal(leds.length, 4, `step ${act}`);
+    return leds.findIndex((m) => m[1]) + 1;
+  };
+  const at = (id) => L.steps.findIndex((s) => s.id === id);
+  assert.equal(lit(at("make-b01-four-bars")), 1);
+  assert.equal(lit(at("make-bar-2-b")), 2);
+  assert.equal(lit(at("make-bar-4-c")), 4);
+  assert.equal(lit(at("empty-before-fill")), 4);
+  assert.equal(lit(at("add-fill-play-hand")), 1);
+  assert.equal(lit(at("make-t4-drift")), 1);
+});

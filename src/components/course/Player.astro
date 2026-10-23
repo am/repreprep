@@ -23,6 +23,8 @@ const n = L.steps.length,
 const ch = act === n;
 const st = ch ? { k: "challenge" } : L.steps[act];
 const k = st.k || "play";
+// the page light: the last page a step up to this one set
+const page = L.steps.slice(0, act + 1).reduce((p: number, s: any) => s.page || p, 1);
 const end = act === total - 1;
 const nx = nextLesson(I, L);
 const nextHref = end ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
@@ -90,7 +92,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
           <Figure I={I} fig={st.fig} id={`${L.id}:${act}`} />
         </div>
       ) : (
-        <PanelDrawing I={I} hl={st.hl} />
+        <PanelDrawing I={I} hl={st.hl} page={page} />
       )}
     </div>
     <div

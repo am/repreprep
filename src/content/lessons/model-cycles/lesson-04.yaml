@@ -73,11 +73,13 @@ steps:
     k: play
     t: "Make bar 2 the B: press [RECORD], press [PAGE] until the 2:4 light is on, select [T2] and add a quiet snare on [TRIG 16] (hold it, set VEL to about 30)."
     hl: p:record p:page h:track p:t2 p:s16 t:level
+    page: 2
     hear: A small pickup at the end of bar 2.
   - id: make-bar-4-c
     k: play
     t: "Make bar 4 the C: press [PAGE] until the 4:4 light is on, select [T2] and add snares on [TRIG 14], [TRIG 15] and [TRIG 16] at low velocity."
     hl: p:page p:s14 p:s15 p:s16 h:track p:t2
+    page: 4
     hear: A little roll that leads back to the top.
   - id: turn-second-time-through
     k: play
@@ -86,7 +88,7 @@ steps:
     hear: Bar 4 keeps one snare on 16. Bar 8 plays all three.
   - id: empty-before-fill
     k: play
-    t: "An empty before the fill: select [T1], hold [TRIG 9] and [TRIG 11] and turn [CHANCE] until the screen shows 1:2. These two kicks now play only in bar 4."
+    t: "An empty before the fill: still on page 4:4, select [T1], hold [TRIG 9] and [TRIG 11] and turn [CHANCE] until the screen shows 1:2. These two kicks now play only in bar 4."
     hl: h:track p:t1 h:s9 h:s11 t:chance
     hear: "Bar 8 drops its kicks and plays the snares: an empty plus a fill."
   - id: roll-into-bar-8
@@ -96,8 +98,9 @@ steps:
     hear: "Every eighth bar the snare rises in a fast roll into bar 1. The fade is a velocity curve, so it works because T2's VDEP is at 127 from lesson 3."
   - id: add-fill-play-hand
     k: play
-    t: "Add a fill you play by hand: select [T3], add an extra hat on [TRIG 1] of page 1:4, hold it and turn [CHANCE] to FILL. Press [RECORD] to listen, and hold [PAGE] whenever you want the fill."
-    hl: h:track p:t3 p:s1 h:s1 t:chance p:record h:page
+    t: "Add a fill you play by hand: press [PAGE] until the 1:4 light is on, select [T3], add an extra hat on [TRIG 1], hold it and turn [CHANCE] to FILL. Press [RECORD] to listen, and hold [PAGE] whenever you want the fill."
+    hl: p:page h:track p:t3 p:s1 h:s1 t:chance p:record h:page
+    page: 1
     hear: The extra hit only plays while [PAGE] is held.
   - id: make-t4-drift
     k: play

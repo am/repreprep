@@ -66,6 +66,7 @@ const step = z
     t: text /* what it says; [KEY] draws a key cap */,
     hl: z.string().optional() /* controls to light: "p:play h:func t:level" (press, hold, turn) */,
     hear: text.optional() /* what to listen for */,
+    page: z.number().int().min(1).max(4).optional() /* the page light lit on the panel (1 = 1:4); later steps keep it until one sets another */,
     fig: z
       .union([text, z.strictObject({ grid }), z.strictObject({ pattern })])
       .optional() /* a drawing by name, a playable grid, or the pattern as it should be */,
