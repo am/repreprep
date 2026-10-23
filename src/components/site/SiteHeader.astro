@@ -1,9 +1,9 @@
 ---
-// The header on every page. On the home page it keeps only the theme switch and the progress (or account)
-// link, since the page itself is the logo and the instrument picker. On phones everything but the logo folds
-// into a menu opened by a knob; on wider screens the menu is just the rest of the header. The What's new bell
-// sits in the controls pill, just before the theme switch, on every page; on phones it is in the menu, and the
-// knob shows the bell's unread dot too.
+// The header on every page. On the home page it keeps only the What's new bell, the theme switch and the
+// progress (or account) link, since the page itself is the logo and the instrument picker. On phones
+// everything but the logo folds into a menu opened by a knob, and the knob shows the bell's unread dot too;
+// on wider screens the menu is just the rest of the header. The controls pill is always bell, step count,
+// theme switch.
 import Logo from "./Logo.astro";
 import ThemeSwitch from "./ThemeSwitch.astro";
 import NewsLink from "./NewsLink.astro";
@@ -59,14 +59,14 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
         )}
       </nav>
       <hr class="hsep" />
-      {/* one pill: the step count (a link to the progress page: back up, load, reset) with the theme switch nested in it */}
+      {/* one pill: the What's new bell, the step count (a link to the progress page: back up, load, reset) with the theme switch nested in it */}
       <div class="ctrls">
+        <NewsLink />
         {inst?.ready && (
           <a class="meter" href="/account" title="Your progress: back up, load or reset" id="meterTxt">
             0 of 0 reps
           </a>
         )}
-        <NewsLink />
         <ThemeSwitch />
       </div>
       {(SIGN_IN || !inst?.ready) && (
@@ -144,7 +144,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     color: var(--muted);
     text-decoration: none;
     white-space: nowrap;
-    padding: 0 var(--s1) 0 var(--s3);
+    padding: 0 var(--s1);
   }
   .meter:hover {
     color: var(--fg);
