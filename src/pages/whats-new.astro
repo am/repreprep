@@ -1,0 +1,93 @@
+---
+// What's new: every release from the changelog (src/content/changelog.yaml), newest first, with what changed
+// on the site and in which lessons. A lesson you've started shows its updates as a note on the lesson too.
+import Base from "../layouts/Base.astro";
+import { releases } from "../course/changelog.js";
+import { courses } from "../course/content.js";
+import { lessonLabel } from "../course/index.js";
+
+const rel = await releases();
+const cs = await courses();
+/* "model-cycles/w08" -> the lesson, with its instrument's name */
+const lessonOf = (ref: string) => {
+  const [slug, id] = ref.split("/");
+  const I = cs.find((x) => x.slug === slug);
+  const L = I?.lessons.find((l: any) => l.id === id);
+  return L && { I, L };
+};
+const day = (d: string) =>
+  new Date(d + "T12:00:00Z").toLocaleDateString("en-GB", { day: "numeric", month: "long", year: "numeric" });
+---
+
+<Base title="What's new" description="What changed in each version of Rep Rep Rep: the site and its lessons.">
+  <div class="page" id="whats-new">
+    <h2>What's new</h2>
+    <p class="msg">
+      The site is on version {rel[0].id}. When a lesson you've started changes, it shows a note saying what's new.
+    </p>
+    {rel.map((r) => (
+      <section class="rel" id={`v${r.id}`}>
+        <h3>
+          <span class="rv">Version {r.id}</span> {r.title}
+        </h3>
+        <p class="msg">{day(r.date)}</p>
+        {r.site && (
+          <ul>
+            {r.site.map((t) => (
+              <li>{t}</li>
+            ))}
+          </ul>
+        )}
+        {r.lessons && (
+          <ul class="rl">
+            {r.lessons.map((c) => {
+              const x = lessonOf(c.lesson);
+              return (
+                <li>
+                  {x && (
+                    <a href={x.L.path}>
+                      {x.I.name} {lessonLabel(x.L).toLowerCase()} · {x.L.title}
+                    </a>
+                  )}
+                  {": "}
+                  {c.what}
+                </li>
+              );
+            })}
+          </ul>
+        )}
+      </section>
+    ))}
+  </div>
+</Base>
+
+<style>
+  .rel {
+    margin-top: var(--s6);
+    padding-top: var(--s4);
+    border-top: 1px solid var(--line);
+  }
+  .rel h3 {
+    margin: 0 0 var(--s1);
+  }
+  .rv {
+    display: block;
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: var(--ls-key);
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: var(--s1);
+  }
+  .rel ul {
+    margin: var(--s3) 0 0;
+    padding-left: 1.2em;
+    display: grid;
+    gap: var(--s2);
+  }
+  .rl a {
+    color: var(--fg);
+    font-weight: var(--fw-bold);
+    text-underline-offset: 0.1875rem;
+  }
+</style>

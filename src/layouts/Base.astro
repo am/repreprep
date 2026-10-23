@@ -5,6 +5,9 @@ import { Font } from "astro:assets";
 import SiteHeader from "../components/site/SiteHeader.astro";
 import SectionTabs from "../components/site/SectionTabs.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
+import { INSTRUMENTS } from "../course/index.js";
+import { releases } from "../course/changelog.js";
+import { lessonUpdates, stepMoves } from "../course/shared/updates.js";
 
 interface Props {
   title?: string;
@@ -34,6 +37,12 @@ const full = fullTitle ?? (title ? `${title} · Rep Rep Rep` : "Rep Rep Rep");
 const sizes = inst?.ready
   ? JSON.stringify(Object.fromEntries(inst.lessons.map((l: any) => [l.id, l.steps.length])))
   : undefined;
+// the site's version, the steps each release added (so saved ticks can follow them), and what changed in
+// this instrument's lessons (for the update notes)
+const rel = await releases();
+const version = rel[0].id;
+const moves = JSON.stringify(stepMoves(rel, Object.fromEntries(INSTRUMENTS.map((x) => [x.slug, x.key]))));
+const updates = inst?.ready ? JSON.stringify(lessonUpdates(rel, inst.slug)) : undefined;
 // built pages are files like /model-cycles.html and /index.html, but they are served as /model-cycles and /
 const canonical = new URL(canonicalPath ?? (Astro.url.pathname.replace(/(\/index)?\.html$/, "") || "/"), Astro.site);
 const image = new URL("/og-image.png", Astro.site);
@@ -109,7 +118,7 @@ const image = new URL("/og-image.png", Astro.site);
     </script>
     <ClientRouter fallback="swap" />
   </head>
-  <body data-inst={inst?.key} data-sizes={sizes}>
+  <body data-inst={inst?.key} data-sizes={sizes} data-version={version} data-moves={moves} data-updates={updates}>
     <div class="wrap">
       <SiteHeader inst={inst} home={home} />
       {inst?.ready && <SectionTabs inst={inst} tab={tab} />}
@@ -117,7 +126,7 @@ const image = new URL("/og-image.png", Astro.site);
         <slot />
       </main>
     </div>
-    <SiteFooter />
+    <SiteFooter version={version} />
     <script is:inline>
       window.__rrrLayout();
     </script>

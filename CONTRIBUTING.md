@@ -18,7 +18,17 @@ Thanks for helping. Fixes to lessons, corrections against the real instruments a
 - Button combinations must match the instrument's official manual. Say which page or section you checked in your pull request.
 - Everything lives inside the lessons: no links to videos or other sites. The one exception is songs, which name the artist and link to the original track on Spotify.
 - Don't mention future lessons in a lesson's text.
-- Keep lesson ids (`w05`, `s01`) and the order of existing steps unchanged. People's saved progress is stored by them.
+- Keep lesson ids (`w05`, `s01`) unchanged, and don't remove or reorder existing steps. People's saved progress is stored by them.
+- New steps can go anywhere in a lesson. List their positions under `added` in the changelog (below), so saved ticks move along with their steps.
+
+## What's new
+
+Every change people would notice goes in `src/content/changelog.yaml`, newest release at the top, and the same version goes in `package.json` (the tests check both). The site shows the list on `/whats-new` and the version in the footer.
+
+- `site:` lists changes to the site, one sentence each.
+- `lessons:` lists changes to lessons, as `lesson: model-cycles/w08` plus `what:`, one sentence saying what's new for someone who already did the lesson. People who had started that lesson see it as a note on the lesson until they mark it as read.
+- When a change adds steps, `added:` lists their positions in the new lesson (the intro is 0).
+- A small fix can join the release it will ship with. Use a new minor version (0.3.0 after 0.2.0) for new lessons or features, and a patch version (0.3.1) for fixes.
 
 ## Licensing of contributions
 

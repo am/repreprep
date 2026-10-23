@@ -2,8 +2,12 @@
    in it is also saved to your account. Pages arrive already built, and each component's script fills in its
    part of your progress with onProgress, which runs on every page view and again whenever progress changes.
    Same shape as the single-file app, so old progress files load as they are:
-   {inst:{cycles:{lesson, steps:{"w05:3":true}, done:{w05:ts}, notes:{w05:"…"}, active:{w05:3}}}, focus, stepW, updatedAt} */
+   {inst:{cycles:{lesson, steps:{"w05:3":true}, done:{w05:ts}, notes:{w05:"…"}, active:{w05:3}, seen:{w05:"0.3.0"}}},
+    focus, stepW, updatedAt, since, ver}
+   since is the site's version when this progress began (lesson updates older than that aren't news to you),
+   ver the version its step numbers follow; seen holds, per lesson, the version whose update note you closed. */
 import { SIGN_IN } from "astro:env/client";
+import { FIRST_VERSION, moveSteps } from "../course/shared/updates.js";
 /* the account calls (src/actions), loaded only when sign-in is on */
 const server = () => import("astro:actions");
 
@@ -17,7 +21,7 @@ const saveLocal = () => {
 };
 /* a progress object from the account or a file: drop old app fields, bring old step numbers up to date */
 export const adopt = (s) => {
-  state = Object.assign(fresh(), migrate(clean(s)));
+  state = catchUp(Object.assign(fresh(), migrate(clean(s))));
 };
 export function ist(k) {
   return state.inst[k] || (state.inst[k] = { lesson: null, steps: {}, done: {}, notes: {}, active: {} });
@@ -47,14 +51,31 @@ function migrate(st) {
   st.introSteps = 1;
   return st;
 }
+/* progress from an older version of the site: its step numbers follow the steps that releases since then
+   added (the moves come with the page, see Base.astro) */
+function catchUp(st) {
+  const b = document.body.dataset;
+  if (!b.version) return st;
+  st.since ||= FIRST_VERSION;
+  try {
+    moveSteps(st, JSON.parse(b.moves || "[]"), b.version);
+  } catch (e) {}
+  return st;
+}
 const clean = (st) => {
   const { instrument, tab, ...rest } = st;
   return rest;
 };
 try {
   const s = JSON.parse(localStorage.getItem(LS_KEY) || "null");
-  if (s && s.inst) state = Object.assign(state, migrate(s));
+  if (s && s.inst) {
+    const was = s.ver;
+    state = catchUp(Object.assign(state, migrate(s)));
+    if (state.ver !== was) saveLocal();
+  }
 } catch (e) {}
+/* new here: today's lesson updates are already in the lessons you'll open */
+if (!state.since) state.since = state.ver = document.body.dataset.version;
 
 /* steps per lesson, from the page, so progress can be counted without loading the whole course */
 export const sizes = () => {

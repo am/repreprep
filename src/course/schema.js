@@ -67,3 +67,23 @@ export const lessonSchema = z
     challenge: text.optional(),
   })
   .refine((l) => !!l.song !== (l.number !== undefined), "a lesson has a number, a song study has a song");
+
+/* One release in the changelog (src/content/changelog.yaml): its version, the day it went live, a title, what
+   changed on the site, and what changed in which lessons. A lesson change names the lesson as
+   "<instrument slug>/<lesson id>" and, when it adds steps, their positions in the new lesson (the intro is 0),
+   so saved ticks move along with the steps they belong to. */
+export const releaseSchema = z.strictObject({
+  id: z.string().regex(/^\d+\.\d+\.\d+$/) /* the version, "0.3.0" */,
+  date: z.string().regex(/^\d{4}-\d\d-\d\d$/),
+  title: text,
+  site: z.array(text).optional(),
+  lessons: z
+    .array(
+      z.strictObject({
+        lesson: z.string().regex(/^[a-z0-9-]+\/[ws]\d\d$/),
+        what: text,
+        added: z.array(z.number().int().min(1)).min(1).optional(),
+      })
+    )
+    .optional(),
+});

@@ -9,6 +9,7 @@ import HearNote from "./HearNote.astro";
 import Keys from "./Keys.astro";
 import Figure from "./Figure.astro";
 import PanelDrawing from "./PanelDrawing.astro";
+import UpdateNote from "./UpdateNote.astro";
 import { KIND, keyCap } from "../../course/shared/text.js";
 import { lessonLabel, stepPath, nextLesson } from "../../course/index.js";
 interface Props {
@@ -102,6 +103,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       title="Drag to resize · double-click to reset"
     ></div>
     <div class="pstep" id="now">
+      <UpdateNote L={L} />
       <div class="h">
         <span class={`kind k-${k}`}>{KIND[k]}</span>
         {ch && " · optional"}
