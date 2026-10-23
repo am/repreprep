@@ -23,7 +23,7 @@ Thanks for helping. Fixes to lessons, corrections against the real instruments a
 
 ## What's new
 
-Every change people would notice goes in `src/content/changelog.yaml`, newest release at the top, and the same version goes in `package.json` (the tests check both). The site shows the list on `/whats-new`, the version in the footer, and a dot on the bell in the header for anyone who hasn't opened `/whats-new` since a new version came out.
+Every change people would notice goes in `src/content/changelog.yaml`, newest release at the top, and the same version goes in `package.json` (the tests check both). The site shows the list on `/whats-new`, the version in the footer, and a dot on the bell in the header (and on the menu knob on phones) for anyone who hasn't opened `/whats-new` since a new version came out.
 
 - `site:` lists changes to the site, one sentence each.
 - `lessons:` lists changes to lessons, as `lesson: model-cycles/w08` plus `what:`, one sentence saying what's new for someone who already did the lesson. People who had started that lesson see it as a note on the lesson until they mark it as read.

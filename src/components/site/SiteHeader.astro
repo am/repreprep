@@ -1,8 +1,9 @@
 ---
 // The header on every page. On the home page it keeps only the theme switch and the progress (or account)
 // link, since the page itself is the logo and the instrument picker. On phones everything but the logo folds
-// into a menu opened by a knob; on wider screens the menu is just the rest of the header. The What's new icon
-// stays outside the menu, so its unread dot shows on phones too.
+// into a menu opened by a knob; on wider screens the menu is just the rest of the header. The What's new bell
+// sits in the controls pill, just before the theme switch, on every page; on phones it is in the menu, and the
+// knob shows the bell's unread dot too.
 import Logo from "./Logo.astro";
 import ThemeSwitch from "./ThemeSwitch.astro";
 import NewsLink from "./NewsLink.astro";
@@ -18,8 +19,10 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
 
 {home ? (
   <header class="top bare">
-    <NewsLink />
-    <ThemeSwitch />
+    <div class="ctrls">
+      <NewsLink />
+      <ThemeSwitch />
+    </div>
     <a class="acct" href="/account" id="acct">
       {acct}
     </a>
@@ -38,6 +41,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
           <line class="kn-mark" x1="22" y1="22" x2="22" y2="8.4" />
         </g>
       </svg>
+      <span class="kn-dot" data-news-dot hidden></span>
     </button>
     <div class="hmenu" id="hmenu">
       <nav class="instr" aria-label="Instrument">
@@ -62,6 +66,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
             0 of 0 reps
           </a>
         )}
+        <NewsLink />
         <ThemeSwitch />
       </div>
       {(SIGN_IN || !inst?.ready) && (
@@ -70,7 +75,6 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
         </a>
       )}
     </div>
-    <NewsLink />
   </header>
 )}
 
@@ -172,6 +176,24 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     stroke-width: 2.8;
     stroke-linecap: butt;
   }
+  /* the bell's unread dot, repeated on the knob while the menu is closed */
+  .knob {
+    position: relative;
+  }
+  .kn-dot {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--led);
+    box-shadow: 0 0 0 2px var(--bg);
+  }
+  .kn-dot[hidden],
+  .top.open .kn-dot {
+    display: none;
+  }
   .top.open .knob svg {
     transform: rotate(135deg);
   }
@@ -191,11 +213,6 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     }
     .knob {
       display: block;
-      order: 2;
-      margin-left: var(--s3);
-    }
-    .top :global(.news) {
-      margin-left: auto;
     }
     .hmenu {
       display: none;
@@ -270,8 +287,6 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
      A band of page color behind it, fading out at its bottom, keeps scrolling content from running into it
      (a border-image outset paints the whole width without catching clicks or adding page width). */
   .top.bare {
-    display: flex;
-    gap: var(--s3);
     position: fixed;
     z-index: 10;
     top: max(var(--s4), env(safe-area-inset-top));

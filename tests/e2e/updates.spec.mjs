@@ -27,7 +27,7 @@ const state = (cycles, extra = {}) => ({
 test("new visitors start on today's version and see no update notes", async ({ page }) => {
   await page.goto(`${I.lessons[0].path}`);
   await expect(page.locator("[data-upd-note]")).toBeHidden();
-  await expect(page.locator(".top [data-news-dot]")).toBeHidden();
+  await expect(page.locator(".news [data-news-dot]")).toBeHidden();
   await page.locator(".navrow .btn.primary").click();
   const p = await progress(page);
   expect(p.since).toBe(version);
@@ -38,18 +38,31 @@ test("the header's What's new icon shows a dot until you open What's new", async
   test.skip(RELEASES.length < 2, "only one release so far");
   await setProgress(page, state({}, { ver: RELEASES[1].id, since: RELEASES[1].id }));
   await page.goto(`/${I.slug}`);
-  await expect(page.locator(".top [data-news-dot]")).toBeVisible();
+  await expect(page.locator(".news [data-news-dot]")).toBeVisible();
   await page.goto("/");
-  await expect(page.locator(".top [data-news-dot]")).toBeVisible();
+  await expect(page.locator(".news [data-news-dot]")).toBeVisible();
   await page.goto("/whats-new");
-  await expect(page.locator(".top [data-news-dot]")).toBeHidden();
+  await expect(page.locator(".news [data-news-dot]")).toBeHidden();
   await expect(page.locator(`[data-release="${version}"] [data-rel-new]`)).toBeVisible();
   await expect(page.locator(`[data-release="${RELEASES[1].id}"] [data-rel-new]`)).toBeHidden();
   expect((await progress(page)).read).toBe(version);
   await page.goto(`/${I.slug}`);
-  await expect(page.locator(".top [data-news-dot]")).toBeHidden();
+  await expect(page.locator(".news [data-news-dot]")).toBeHidden();
   await page.goto("/whats-new");
   await expect(page.locator(`[data-release="${version}"] [data-rel-new]`)).toBeHidden();
+});
+
+test("phone: the bell is in the header menu, and the knob shows its dot @phone", async ({ page }) => {
+  test.skip(RELEASES.length < 2, "only one release so far");
+  await setProgress(page, state({}, { ver: RELEASES[1].id, since: RELEASES[1].id }));
+  await page.goto(`/${I.slug}`);
+  await expect(page.locator(".news")).toBeHidden();
+  await expect(page.locator(".knob [data-news-dot]")).toBeVisible();
+  await page.locator("[data-menu]").click();
+  await expect(page.locator(".news [data-news-dot]")).toBeVisible();
+  await page.locator(".news").click();
+  await expect(page).toHaveURL(/whats-new/);
+  await expect(page.locator(".knob [data-news-dot]")).toBeHidden();
 });
 
 test("a started lesson that changed shows what's new until you mark it read", async ({ page }) => {

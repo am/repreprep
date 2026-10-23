@@ -12,20 +12,20 @@
 </a>
 
 <style>
+  /* sized and colored like the theme switch's buttons, which sit right after it in the same pill */
   .news {
     position: relative;
     display: grid;
     place-items: center;
     flex: none;
-    width: 1.75rem;
-    height: 1.75rem;
-    border: 1px solid var(--line);
+    width: 1.625rem;
+    height: 1.375rem;
+    margin-left: 2px;
     border-radius: var(--r-pill);
-    color: var(--muted);
+    color: var(--faint);
   }
   .news:hover {
     color: var(--fg);
-    border-color: var(--faint);
   }
   .news svg {
     width: 0.875rem;
@@ -36,13 +36,13 @@
     stroke-linejoin: round;
     stroke-linecap: round;
   }
-  /* unread: a dot in the accent color on the icon's corner, with a ring of page color around it */
+  /* unread: a dot in the accent color on the bell's shoulder, with a ring of page color around it */
   .dot {
     position: absolute;
-    top: -0.125rem;
-    right: -0.125rem;
-    width: 0.5rem;
-    height: 0.5rem;
+    top: 0.0625rem;
+    right: 0.25rem;
+    width: 0.4375rem;
+    height: 0.4375rem;
     border-radius: 50%;
     background: var(--led);
     box-shadow: 0 0 0 2px var(--bg);
