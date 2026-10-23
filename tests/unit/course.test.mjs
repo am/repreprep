@@ -194,7 +194,6 @@ test("a Get ready step shows the pattern as a playable grid: new steps outlined,
   const html = renderFig(I, fig, "w99:1");
   assert.match(html, /<div class="gt">B01<\/div>/);
   assert.equal(count(html, /class="cell on\s+nw/g), 1);
-  assert.match(html, /Added last lesson/);
   assert.match(html, /<small>swing 58%<\/small>/);
   assert.match(html, /translateX\(30%\)/);
   assert.equal(fig.pattern.rows[0].off[8], 0.3);

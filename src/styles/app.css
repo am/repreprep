@@ -808,22 +808,6 @@ svg.fig {
 .pmap .gp {
   --gw: inherit;
 }
-.pmap-key {
-  margin: 0 var(--s2) var(--s3);
-  display: flex;
-  align-items: center;
-  gap: var(--s2);
-  color: var(--muted);
-  font-size: 0.9em;
-}
-.pmap-nw {
-  width: 0.9em;
-  height: 1.1em;
-  border-radius: var(--r-xs);
-  outline: 2px solid var(--fg);
-  outline-offset: -2px;
-  background: var(--surface);
-}
 .gctl {
   display: flex;
   flex-wrap: wrap;
