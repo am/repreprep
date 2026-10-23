@@ -6,7 +6,6 @@
 import { MODEL_CYCLES } from "./model-cycles/index.js";
 import { esc } from "./shared/html.js";
 import { renderGrid } from "./shared/grid.js";
-import { keyify } from "./shared/text.js";
 
 export const INSTRUMENTS = [
   MODEL_CYCLES,
@@ -76,15 +75,14 @@ export function renderFig(I, f, id) {
 }
 
 /* a Get ready step's map: the pattern as the lesson expects to find it, as a grid you can play (a tab per
-   bar), then what the grid can't show. Outlined squares were added in the last lesson. */
+   bar), with each track's swing under its name. Outlined squares were added in the last lesson. */
 function renderPattern(I, P, host) {
+  const sw = (rows) => (P.swing ? rows.map((r) => ({ ...r, sw: P.swing })) : rows);
   const G = { title: P.slot, bpm: P.bpm, edit: false };
-  if (P.rows) Object.assign(G, { rows: P.rows, swing: P.swing });
-  else G.presets = P.bars.map((rows, i) => ({ name: `Bar ${i + 1}`, bpm: P.bpm, swing: P.swing, rows }));
-  const list = (h, xs) =>
-    xs && xs.length ? `<h4>${h}</h4><ul>${xs.map((x) => `<li>${keyify(I, x, "")}</li>`).join("")}</ul>` : "";
+  if (P.rows) Object.assign(G, { rows: sw(P.rows), swing: P.swing });
+  else G.presets = P.bars.map((rows, i) => ({ name: `Bar ${i + 1}`, bpm: P.bpm, swing: P.swing, rows: sw(rows) }));
   const nw = [P.rows || [], ...(P.bars || [])].flat().some((r) => r.nw);
-  return `<div class="pmap">${host(G)}<div class="pmap-notes">${
+  return `<div class="pmap">${host(G)}${
     nw ? `<p class="pmap-key"><span class="pmap-nw" aria-hidden="true"></span> Added last lesson</p>` : ""
-  }${list("Settings", P.notes)}${list("Other patterns", P.others)}</div></div>`;
+  }</div>`;
 }

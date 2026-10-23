@@ -14,13 +14,13 @@ export function renderGrid(G, id, playing = false) {
   const rows = P.rows
     .map(
       (r, ri) =>
-        `<div class="rl">${esc(r.n)}${r.len && r.len < n ? `<small>${r.len} steps</small>` : ""}</div>` +
+        `<div class="rl">${esc(r.n)}${r.len && r.len < n ? `<small>${r.len} steps</small>` : ""}${r.sw ? `<small>swing ${r.sw}%</small>` : ""}</div>` +
         Array.from({ length: n }, (_, i) => {
           const v = r.v[i] || 0;
           const out = r.len && i >= r.len;
           const off = (r.off && r.off[i]) || 0;
           const nw = r.nw && r.nw.includes(i + 1);
-          return `<button class="cell ${v ? "on" : ""} ${out ? "out" : ""} ${nw ? "nw" : ""} ${i % 4 === 0 ? "bt" : ""}" data-g="${id}" data-r="${ri}" data-i="${i}" ${out ? "disabled" : ""} aria-label="${esc(r.n)} step ${i + 1}${v ? " on" : ""}${nw ? ", new" : ""}" style="--c:${ROWC[r.s]};--v:${v}"><i${off ? ` style="transform:translateX(${off * 100}%)"` : ""}></i></button>`;
+          return `<button class="cell ${v ? "on" : ""} ${out ? "out" : ""} ${nw ? "nw" : ""} ${i % 4 === 0 ? "bt" : ""}" data-g="${id}" data-r="${ri}" data-i="${i}" ${out ? "disabled" : ""} aria-label="${esc(r.n)} step ${i + 1}${v ? " on" : ""}${nw ? ", new" : ""}${off ? ", nudged late" : ""}" style="--c:${ROWC[r.s]};--v:${v}"><i${off ? ` style="transform:translateX(${off * 100}%)"` : ""}></i></button>`;
         }).join("")
     )
     .join("");

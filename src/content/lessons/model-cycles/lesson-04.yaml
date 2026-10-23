@@ -52,7 +52,7 @@ steps:
         swing: 58
         rows:
           - { n: T1 Kick, s: kick, hits: "1,9,11" }
-          - { n: T2 Snare, s: snare, hits: "5,12:.2,13", new: "12" }
+          - { n: T2 Snare, s: snare, hits: "5,12:.2,13", new: "12", nudge: "12:.3" }
           - {
               n: T3 Hats,
               s: hat,
@@ -62,12 +62,6 @@ steps:
           - { n: T4 Perc, s: perc, hits: "" }
           - { n: T5 Tone, s: bass, hits: "" }
           - { n: T6 Chord, s: keys, hits: "" }
-        notes:
-          - "Swing 58% (all tracks)."
-          - "VDEP 127 on T2 and T3."
-          - "Ghost snare on 12 nudged late."
-        others:
-          - "B02: steppers."
     t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] + [PATTERN] to reload your last save."
     hl: h:pattern p:t2 p:s1 h:func
   - id: make-b01-four-bars

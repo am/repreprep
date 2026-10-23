@@ -180,14 +180,12 @@ test("songs: every song has a Spotify track and is linked from quotes", () => {
   assert.match(html, /title="Open Air, La Femme d'Argent in the Spotify app"/);
 });
 
-test("a Get ready step shows the pattern as a playable grid, new steps outlined, and the notes", () => {
+test("a Get ready step shows the pattern as a playable grid: new steps outlined, nudges, swing per track", () => {
   const P = {
     slot: "B01",
     bpm: 90,
     swing: 58,
-    rows: [{ n: "T1 Kick", s: "kick", hits: "1,9", new: "9" }],
-    notes: ["Swing on [TRIG 12]."],
-    others: ["B02: steppers."],
+    rows: [{ n: "T1 Kick", s: "kick", hits: "1,9", new: "9", nudge: "9:.3" }],
   };
   const st = { id: "get-ready", k: "ready", t: "Go to B01.", fig: { pattern: P } };
   const L = lessonSchema.parse({ id: "w99", number: 99, unit: "u", title: "t", goal: "g", concepts: [], steps: [st] });
@@ -197,7 +195,9 @@ test("a Get ready step shows the pattern as a playable grid, new steps outlined,
   assert.match(html, /<div class="gt">B01<\/div>/);
   assert.equal(count(html, /class="cell on\s+nw/g), 1);
   assert.match(html, /Added last lesson/);
-  assert.match(html, /<h4>Other patterns<\/h4>/);
+  assert.match(html, /<small>swing 58%<\/small>/);
+  assert.match(html, /translateX\(30%\)/);
+  assert.equal(fig.pattern.rows[0].off[8], 0.3);
   assert.match(html, /data-spec=/);
   const bars = { ...fig.pattern, rows: undefined, bars: [fig.pattern.rows, fig.pattern.rows] };
   assert.equal(count(renderFig(I, { pattern: bars }, "x"), /data-gpre=/g), 2);

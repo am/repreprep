@@ -17,12 +17,14 @@ const row = z
     len: z.number().int().min(1).max(16).optional() /* a shorter loop than 16 steps */,
     p: z.array(z.number()).length(16).optional() /* a MIDI note per step */,
     new: z.string().optional() /* steps added in the last lesson, "2,4,6", drawn outlined */,
+    nudge: z.string().optional() /* steps played off the grid, "12:.3" = a third of a step late */,
   })
   .refine((r) => (r.hits !== undefined) !== (r.v !== undefined), "give a row either hits or v")
-  .transform(({ hits: h, vel, new: nw, ...r }) => ({
+  .transform(({ hits: h, vel, new: nw, nudge, ...r }) => ({
     ...r,
     ...(h === undefined ? {} : { v: hits(String(h), vel ?? 0.85) }),
     ...(nw ? { nw: nw.split(",").map(Number) } : {}),
+    ...(nudge ? { off: hits(nudge, 0) } : {}),
   }));
 const preset = z.strictObject({
   name: text,
@@ -41,17 +43,14 @@ const grid = z
     presets: z.array(preset).min(2).optional(),
   })
   .refine((g) => !!g.rows !== !!g.presets, "give a grid either rows or presets");
-/* what a pattern should hold when a lesson starts: its tracks as a grid (one tab per bar when it has
-   several), what else changed in its sounds, and the other patterns the course has used so far */
+/* what a pattern should hold when a lesson starts: its tracks as a grid, one tab per bar when it has several */
 const pattern = z
   .strictObject({
     slot: z.string().regex(/^[A-H]\d\d$/) /* "B01" */,
     bpm: z.number(),
-    swing: z.number().min(50).max(75).optional(),
+    swing: z.number().min(50).max(75).optional() /* on every track, shown under each track name */,
     rows: z.array(row).min(1).optional() /* a one-bar pattern */,
     bars: z.array(z.array(row).min(1)).min(2).optional() /* or one set of rows per bar */,
-    notes: z.array(text).optional() /* what the grid can't show: sounds, swing, menus */,
-    others: z.array(text).optional() /* the other patterns, "B02: ..." */,
   })
   .refine((p) => !!p.rows !== !!p.bars, "give a pattern either rows or bars");
 
