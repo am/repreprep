@@ -72,9 +72,8 @@ export function moveSteps(state, moves, version) {
   state.ver = version;
   return state;
 }
-/* a lesson counts as yours once you've opened or ticked any of it */
-export const started = (s, id) =>
-  !!(s && (s.done[id] || s.active[id] !== undefined || Object.keys(s.steps).some((k) => k.startsWith(id + ":"))));
+/* a lesson counts as yours once you've ticked any of its steps (opening it alone doesn't count) */
+export const started = (s, id) => !!(s && (s.done[id] || Object.keys(s.steps).some((k) => k.startsWith(id + ":"))));
 /* the updates to tell you about: newer than when you started using the site and than the last one you
    marked as read on this lesson */
 export const unseen = (updates, since, seen) =>

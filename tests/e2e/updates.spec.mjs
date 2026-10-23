@@ -54,12 +54,20 @@ test("a started lesson that changed shows what's new until you mark it read", as
   await expect(page.locator("[data-upd-note]")).toBeHidden();
   await page.goto(L.path);
   await expect(page.locator("[data-upd-note]")).toBeHidden();
+  /* opening it counts as reading today's changes, so they don't show up once you start it */
+  expect((await progress(page)).inst.cycles.seen[L.id]).toBe(version);
+  await page.locator(".navrow .btn.primary").click();
+  await expect(page.locator("[data-upd-note]")).toBeHidden();
 });
 
 test("a changed lesson you never opened gets no note", async ({ page }) => {
   test.skip(!L, "no release has changed a lesson yet");
   await setProgress(page, state({ steps: { [`${other.id}:0`]: true } }));
   await page.goto(L.path);
+  await expect(page.locator("[data-upd-note]")).toBeHidden();
+  /* opening it counts as reading today's changes, so they don't show up once you start it */
+  expect((await progress(page)).inst.cycles.seen[L.id]).toBe(version);
+  await page.locator(".navrow .btn.primary").click();
   await expect(page.locator("[data-upd-note]")).toBeHidden();
 });
 

@@ -97,7 +97,8 @@ test("a note shows only on lessons you started, for updates newer than your star
   const s = { steps: { "w08:0": true }, done: {}, active: {} };
   assert.ok(started(s, "w08"));
   assert.ok(!started(s, "w05"));
-  assert.ok(started({ steps: {}, done: {}, active: { w05: 0 } }, "w05"));
+  assert.ok(!started({ steps: {}, done: {}, active: { w05: 0 } }, "w05"));
+  assert.ok(started({ steps: {}, done: { w05: 1 }, active: {} }, "w05"));
   const ups = [{ v: "0.4.0" }, { v: "0.3.0" }, { v: "0.2.0" }];
   assert.deepEqual(
     unseen(ups, undefined, undefined).map((u) => u.v),
