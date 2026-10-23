@@ -14,7 +14,7 @@ concepts:
       - The same pattern feels heavy at 70 BPM and urgent at 130. Dub sits around 60–80, downtempo and trip hop around 80–105, house around 120–128, psytrance around 140. Your track for this course lives at 90 BPM.
   - h: Your track for the whole course
     p:
-      - Every lesson adds something to one piece of music in pattern B01. This lesson sets its tempo and track layout, and each lesson after it adds a part until you perform and record the whole piece. Your factory demos in bank A stay untouched.
+      - Every lesson adds something to one piece of music in pattern B01, in a project of its own. This lesson makes the project and sets the track's tempo and layout, and each lesson after it picks up B01 where the last one left it, until you perform and record the whole piece. The factory demos stay safe in their own project.
 steps:
   - id: music-sits-steady-pulse
     k: learn
@@ -36,10 +36,23 @@ steps:
     k: learn
     fig: tempo
     t: Tempo, in beats per minute, decides how a groove feels. Each style has a home range. Your track for this course sits at 90 BPM, between dub and downtempo, where Bonobo, Air and Burial's slower moments live.
+  - id: where-music-lives
+    k: learn
+    fig: storage
+    t: "Your music lives in a project. A project holds six banks, A to F, one per pad, and each bank holds 16 patterns, one per trig key. A pattern is one loop: six tracks with their sounds and trigs. Your track for this course is B01, bank B, pattern 1, and every lesson picks it up where the last one left it."
   - id: plug-headphones-speakers-press
     k: play
     t: Plug in headphones or speakers, then press and hold [MAIN VOLUME] to switch on. Keep the volume low and turn it up gently.
     hl: p:mainvol t:mainvol
+  - id: make-course-project
+    k: play
+    t: "Make a project just for this course: press [SETTINGS], open PROJECT, turn [LEVEL/DATA] to NEW at the top of the list and press [LEVEL/DATA]. The new project is empty. It replaces the project you were in, so if you changed that one and want to keep it, save it first."
+    hl: p:settings t:level
+  - id: save-course-project
+    k: play
+    t: "Save it once, so every lesson can save into it: still in PROJECT, turn [LEVEL/DATA] to an empty ----- slot at the bottom of the list, press [LEVEL/DATA], choose SAVE and name it (hold [FUNC] and turn [LEVEL/DATA] to change a letter). Press [LEVEL/DATA] to confirm."
+    hl: p:settings t:level h:func
+    hear: From now on this is your course project. If you ever go to another project, load this one again from the same PROJECT menu with LOAD.
   - id: go-track-s-home
     k: play
     t: "Go to your track's home: hold [PATTERN], press [T2] (bank B), then press [TRIG 1]. You're on pattern B01. Everything in this course is built here."
@@ -81,9 +94,9 @@ steps:
     hear: "Same four kicks: sleepy at 70, pushing at 120."
   - id: save-work
     k: play
-    t: "Save your work: press [SETTINGS] and open PROJECT. Pick an empty ----- slot with [LEVEL/DATA], choose SAVE and name it. Then hold [FUNC] and long-press [SETTINGS] to save the pattern."
-    hl: p:settings t:level h:func
-    hear: The project step is needed only once. From now on, switch off by holding [MAIN VOLUME], never by pulling the plug.
+    t: "Save your work: hold [FUNC] and long-press [SETTINGS] to save the pattern into your course project. Every lesson ends this way."
+    hl: h:func p:settings
+    hear: Switch off by holding [MAIN VOLUME], never by pulling the plug.
     more:
       text: How the Model:Cycles saves your work
       to: saving
