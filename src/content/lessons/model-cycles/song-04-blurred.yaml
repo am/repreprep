@@ -15,10 +15,12 @@ concepts:
     p:
       - When each chord sits a little higher than the last, the music feels like it's lifting. Keeping the beat steady while the chords rise is a simple, strong way to build tension.
 steps:
-  - k: learn
+  - id: snare-role
+    k: learn
     fig: snaresrc
     t: "The snare is a role: the hit on beats 2 and 4. In Blurred, that hit is Ólafur Arnalds striking the piano. Anything short and sharp can take the job."
-  - k: learn
+  - id: switch-sound-2-4
+    k: learn
     fig:
       grid:
         title: Same beat, different snare
@@ -49,7 +51,8 @@ steps:
               - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.5 }
     t: Switch the sound on 2 and 4 while it plays. The groove stays the same and only the character changes.
     hear: Every version still has a backbeat. The job is the same and the feel is different.
-  - k: learn
+  - id: four-minor-chords-each
+    k: learn
     fig:
       grid:
         title: Chords that climb
@@ -62,33 +65,41 @@ steps:
           - { n: Knock, s: perc, hits: "5,13", vel: 0.7 }
     t: Four minor chords, each a little higher than the last (0, 3, 5 and 7 semitones above the first). An example of the idea, not the song's own chords.
     hear: By the last chord you want to fall back to the first. That pull is what a rising progression gives you.
-  - k: play
+  - id: go-study-s-own
+    k: play
     t: "Go to this study's own pattern: hold [PATTERN], press [T3] (bank C), then press [TRIG 4]. If anything plays there, clear it with [FUNC] + [PLAY]. Press [TEMPO], set 122 BPM with [LEVEL/DATA], and press [BACK]."
     hl: h:pattern p:t3 p:s4 p:tempo t:level p:back
     hear: C04 on the screen, at 122 BPM.
-  - k: play
+  - id: set-machines-study-needs
+    k: play
     t: "Set the machines this study needs, the same layout as your course track: T1 KICK, T3 METAL, T4 PERC, T6 CHORD. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
     hl: h:track p:machines t:level p:back
-  - k: play
+  - id: make-piano-body-snare
+    k: play
     t: "Make a piano-body snare: press [RECORD], select [T4] (PERC). Turn [PITCH] down a little, [DECAY] to about 40 and [COLOR] up until it sounds like knocking on wood. Place it on [TRIG 5] and [TRIG 13]."
     hl: p:record h:track p:t4 t:pitch t:decay t:color p:s5 p:s13
     hear: A dull, woody knock where the snare usually is.
-  - k: play
+  - id: add-beat-around
+    k: play
     t: "Add the beat around it: on T1, kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. On T3, hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15]. Press [PLAY]."
     hl: h:track p:t1 p:t3 p:play
     hear: Same groove as always, with a new voice on the backbeat.
-  - k: play
+  - id: add-chords
+    k: play
     t: "Add the chords: select [T6] (CHORD), turn [SHAPE] to minor and [DECAY] to about 100. Place chords on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]."
     hl: h:track p:t6 t:shape t:decay p:s1 p:s5 p:s9 p:s13
     hear: The same chord four times. Next, make it climb.
-  - k: play
+  - id: make-climb
+    k: play
     t: "Make it climb: on [TRIG 5], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones up. On [TRIG 9], 5 up. On [TRIG 13], 7 up."
     hl: h:s5 p:level t:level h:s9 h:s13
     hear: Each chord a step higher than the last, then back down at the top of the bar.
-  - k: play
+  - id: save
+    k: play
     t: "Save: press [RECORD] to leave grid recording, then hold [FUNC] and long-press [SETTINGS]."
     hl: p:record h:func p:settings
-  - k: check
+  - id: what-made-snare-sound
+    k: check
     t: What made the snare sound in Blurred?
     q:
       - A classic drum machine snare

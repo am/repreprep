@@ -13,13 +13,13 @@ Thanks for helping. Fixes to lessons, corrections against the real instruments a
 
 - One idea per lesson. Each lesson has an intro, Learn steps (the idea, with our own drawings or a playable grid), Play steps (click-by-click on the device) and Check steps (multiple choice).
 - Write Play steps as short separate sentences. Each sentence becomes a bullet.
-- Each lesson is a YAML file in `src/content/lessons/<instrument>/`. Steps are listed under `steps:` with `k` (learn, play or check), `t` (the text), `hl` (keys to light up), `fig` (a drawing's name, or a playable `grid` whose rows give `hits: "1,5,9,13"`), and for Check steps `q` (the options, the right one starting with `!`) and `a` (why). `src/course/schema.js` lists every field.
+- Each lesson is a YAML file in `src/content/lessons/<instrument>/`. Steps are listed under `steps:` with `id` (a short name such as `set-decay`, unique in the lesson), `k` (learn, play or check), `t` (the text), `hl` (keys to light up), `fig` (a drawing's name, or a playable `grid` whose rows give `hits: "1,5,9,13"`), and for Check steps `q` (the options, the right one starting with `!`) and `a` (why). `src/course/schema.js` lists every field.
 - Write keys as `[NAME]`, for example `[FUNC]` or `[TRIG 5]`. They render as keycaps.
 - Button combinations must match the instrument's official manual. Say which page or section you checked in your pull request.
 - Everything lives inside the lessons: no links to videos or other sites. The one exception is songs, which name the artist and link to the original track on Spotify.
 - Don't mention future lessons in a lesson's text.
-- Keep lesson ids (`w05`, `s01`) unchanged, and don't remove or reorder existing steps. People's saved progress is stored by them.
-- New steps can go anywhere in a lesson. List their positions under `added` in the changelog (below), so saved ticks move along with their steps.
+- Keep lesson ids (`w05`, `s01`) and step ids unchanged, even when you rewrite a step's text. People's saved progress is stored by them.
+- Steps can be added anywhere, removed or reordered: give a new step a new id. A removed step's ticks are simply ignored.
 
 ## What's new
 
@@ -27,7 +27,6 @@ Every change people would notice goes in `src/content/changelog.yaml`, newest re
 
 - `site:` lists changes to the site, one sentence each.
 - `lessons:` lists changes to lessons, as `lesson: model-cycles/w08` plus `what:`, one sentence saying what's new for someone who already did the lesson. People who had started that lesson see it as a note on the lesson until they mark it as read.
-- When a change adds steps, `added:` lists their positions in the new lesson (the intro is 0).
 - A small fix can join the release it will ship with. Use a new minor version (0.3.0 after 0.2.0) for new lessons or features, and a patch version (0.3.1) for fixes.
 
 ## Licensing of contributions

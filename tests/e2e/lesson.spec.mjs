@@ -1,5 +1,5 @@
 // The lesson player: moving through steps, ticks, finishing, notes, quizzes, the panel and the grids.
-import { test, expect, progress } from "./fixtures.mjs";
+import { test, expect, progress, tick } from "./fixtures.mjs";
 import { COURSES } from "../../src/course/files.js";
 
 const [I] = COURSES;
@@ -17,7 +17,7 @@ test("Start and Next tick steps and move through the lesson", async ({ page }) =
   await page.locator(".navrow .btn.primary").click();
   await expect(page).toHaveURL(`${L1.path}/2`);
   const p = await progress(page);
-  expect(p.inst.cycles.steps).toEqual({ [`${L1.id}:0`]: true, [`${L1.id}:1`]: true });
+  expect(p.inst.cycles.steps).toEqual({ [tick(L1, 0)]: true, [tick(L1, 1)]: true });
   expect(p.inst.cycles.active[L1.id]).toBe(2);
   expect(p.inst.cycles.lesson).toBe(L1.id);
   await expect(page.locator("#meterTxt")).toHaveText(`2 of ${I.lessons.reduce((a, l) => a + steps(l), 0)} reps`);
@@ -44,8 +44,8 @@ test("the last step leads to the optional challenge, and Finish opens the next l
   await page.locator(".navrow .btn.primary").click();
   await expect(page).toHaveURL(L2.path);
   const p = await progress(page);
-  expect(p.inst.cycles.steps[`${L1.id}:${last}`]).toBe(true);
-  expect(p.inst.cycles.steps[`${L1.id}:${steps(L1)}`]).toBeUndefined(); /* the challenge is never a rep */
+  expect(p.inst.cycles.steps[tick(L1, last)]).toBe(true);
+  expect(Object.keys(p.inst.cycles.steps).length).toBe(1); /* the challenge is never a rep */
 });
 
 test("ticking every step marks the lesson done", async ({ page }) => {

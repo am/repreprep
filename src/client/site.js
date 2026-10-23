@@ -1,6 +1,6 @@
 /* The parts of every page: the header's step count, account link and knob menu, the theme switch, the
    footer's note on where your progress is saved, and the notes on lessons that changed (updates.js). Loaded by Base.astro at the end of the page. */
-import { onProgress, here, sizes, account, setSync, syncMsg } from "./progress.js";
+import { onProgress, here, stepIds, ticked, account, setSync, syncMsg } from "./progress.js";
 import { SIGN_IN } from "astro:env/client";
 import "./updates.js";
 
@@ -13,9 +13,9 @@ onProgress(() => {
   if (!s || !mt) return;
   let t = 0,
     d = 0;
-  Object.entries(sizes()).forEach(([id, n]) => {
-    t += n;
-    for (let i = 0; i < n; i++) if (s.steps[id + ":" + i]) d++;
+  Object.entries(stepIds()).forEach(([id, ids]) => {
+    t += ids.length;
+    d += ticked(s, id, ids);
   });
   mt.textContent = `${d} of ${t} reps`;
 });

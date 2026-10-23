@@ -1,6 +1,6 @@
 /* Versions and lesson updates, from the changelog (src/content/changelog.yaml). The same code runs at build
-   time, for the pages, and in the browser, for the update notes on lessons and for moving saved ticks when a
-   release adds steps to a lesson. A release lists the lessons it changed as "<instrument slug>/<lesson id>". */
+   time, for the pages, and in the browser, for the What's new dot and the update notes on lessons. A release
+   lists the lessons it changed as "<instrument slug>/<lesson id>". */
 
 /* the version saved progress is taken to be from when it doesn't say: the last one before the changelog */
 export const FIRST_VERSION = "0.1.0";
@@ -24,53 +24,6 @@ export function lessonUpdates(releases, slug) {
     })
   );
   return out;
-}
-/* what the browser needs to bring old progress up to date: the steps each release added, by progress key
-   and lesson, oldest release first: [{v, add: {cycles: {w08: [5, 6]}}}] */
-export function stepMoves(releases, keyOf) {
-  return newestFirst(releases)
-    .reverse()
-    .map((r) => {
-      const add = {};
-      (r.lessons || []).forEach((c) => {
-        if (!c.added) return;
-        const [s, id] = c.lesson.split("/");
-        const k = keyOf[s];
-        if (k) (add[k] ||= {})[id] = [...c.added].sort((a, b) => a - b);
-      });
-      return { v: r.id, add };
-    })
-    .filter((m) => Object.keys(m.add).length);
-}
-/* where an old step lands after steps were added at these positions (counted in the new lesson) */
-export function movedIndex(i, added) {
-  let n = i;
-  for (const a of added) if (a <= n) n++;
-  return n;
-}
-/* moves the ticks and the open step of every release newer than the progress's version, then marks the
-   progress as up to date */
-export function moveSteps(state, moves, version) {
-  const from = state.ver || FIRST_VERSION;
-  moves
-    .filter((m) => cmpVersion(m.v, from) > 0 && cmpVersion(m.v, version) <= 0)
-    .forEach((m) =>
-      Object.entries(m.add).forEach(([k, lessons]) => {
-        const s = state.inst && state.inst[k];
-        if (!s) return;
-        Object.entries(lessons).forEach(([id, added]) => {
-          const steps = {};
-          Object.entries(s.steps || {}).forEach(([key, on]) => {
-            const [lid, i] = key.split(":");
-            steps[lid === id ? `${lid}:${movedIndex(+i, added)}` : key] = on;
-          });
-          s.steps = steps;
-          if (s.active && s.active[id] !== undefined) s.active[id] = movedIndex(+s.active[id], added);
-        });
-      })
-    );
-  state.ver = version;
-  return state;
 }
 /* a lesson counts as yours once you've ticked any of its steps (opening it alone doesn't count) */
 export const started = (s, id) => !!(s && (s.done[id] || Object.keys(s.steps).some((k) => k.startsWith(id + ":"))));

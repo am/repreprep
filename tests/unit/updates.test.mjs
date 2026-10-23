@@ -1,5 +1,6 @@
 // Versions and lesson updates (src/course/shared/updates.js), and the changelog itself
-// (src/content/changelog.yaml): it matches package.json and only names lessons and steps that exist.
+// (src/content/changelog.yaml): it matches package.json and only names lessons that exist. Also step ids, and
+// turning progress saved with numbered steps into them (src/course/shared/numbered-steps.js).
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
@@ -8,13 +9,11 @@ import {
   cmpVersion,
   newestFirst,
   lessonUpdates,
-  stepMoves,
-  movedIndex,
-  moveSteps,
   started,
   unseen,
   isNew,
 } from "../../src/course/shared/updates.js";
+import { NUMBERED_STEPS, numbersToIds } from "../../src/course/shared/numbered-steps.js";
 import { COURSES, RELEASES } from "../../src/course/files.js";
 
 const rel = (id, lessons) => ({ id, date: "2026-10-23", title: id, lessons });
@@ -45,53 +44,33 @@ test("lesson updates are grouped by lesson, newest first, for one instrument", (
   });
 });
 
-test("step moves list the added steps by progress key, oldest release first", () => {
-  const rs = [
-    rel("0.4.0", [{ lesson: "model-cycles/w08", what: "x", added: [9, 3] }]),
-    rel("0.3.0", [{ lesson: "model-cycles/w05", what: "y", added: [2] }]),
-    rel("0.2.0", [{ lesson: "model-cycles/w01", what: "no steps added" }]),
-  ];
-  assert.deepEqual(stepMoves(rs, { "model-cycles": "cycles" }), [
-    { v: "0.3.0", add: { cycles: { w05: [2] } } },
-    { v: "0.4.0", add: { cycles: { w08: [3, 9] } } },
-  ]);
-});
-
-test("an old step moves past every step added at or before it", () => {
-  assert.deepEqual(
-    [0, 1, 2, 3].map((i) => movedIndex(i, [2])),
-    [0, 1, 3, 4]
-  );
-  assert.deepEqual(
-    [0, 1, 2, 3].map((i) => movedIndex(i, [2, 3])),
-    [0, 1, 4, 5]
-  );
-  assert.deepEqual(
-    [0, 1, 2].map((i) => movedIndex(i, [5])),
-    [0, 1, 2]
-  );
-});
-
-test("saved ticks and the open step follow the steps a newer release added", () => {
-  const moves = [
-    { v: "0.2.0", add: { cycles: { w08: [1] } } },
-    { v: "0.3.0", add: { cycles: { w08: [3] } } },
-  ];
+test("progress saved with numbered steps gets step ids once, and ticks on removed steps are dropped", () => {
+  const table = { cycles: { w01: ["intro", "kick", "snare"] } };
   const s = {
-    ver: "0.2.0",
-    inst: { cycles: { steps: { "w08:0": true, "w08:2": true, "w08:3": true, "w05:3": true }, active: { w08: 3 } } },
+    inst: { cycles: { steps: { "w01:0": true, "w01:2": true, "w01:7": true, "w09:1": true }, active: { w01: 2 } } },
   };
-  moveSteps(s, moves, "0.3.0");
-  assert.deepEqual(s.inst.cycles.steps, { "w08:0": true, "w08:2": true, "w08:4": true, "w05:3": true });
-  assert.equal(s.inst.cycles.active.w08, 4);
-  assert.equal(s.ver, "0.3.0");
-  /* already up to date: nothing moves again */
-  moveSteps(s, moves, "0.3.0");
-  assert.deepEqual(s.inst.cycles.steps, { "w08:0": true, "w08:2": true, "w08:4": true, "w05:3": true });
-  /* progress that doesn't say its version is from before the changelog, so every release applies */
-  const old = { inst: { cycles: { steps: { "w08:1": true }, active: {} } } };
-  moveSteps(old, moves, "0.3.0");
-  assert.deepEqual(old.inst.cycles.steps, { "w08:2": true });
+  numbersToIds(s, table);
+  assert.deepEqual(s.inst.cycles.steps, { "w01:intro": true, "w01:snare": true });
+  assert.equal(s.inst.cycles.active.w01, 2);
+  assert.equal(s.stepIds, 1);
+  /* already converted: left alone, even where a step id looks like a number */
+  s.inst.cycles.steps["w01:2"] = true;
+  numbersToIds(s, table);
+  assert.ok(s.inst.cycles.steps["w01:2"]);
+});
+
+test("every step has an id, and the numbered steps of old progress name lessons that exist", () => {
+  for (const I of COURSES) {
+    for (const L of I.lessons) {
+      assert.equal(L.steps[0].id, "intro");
+      assert.equal(new Set(L.steps.map((st) => st.id)).size, L.steps.length, `${L.id} has two steps with one id`);
+    }
+    for (const id of Object.keys(NUMBERED_STEPS[I.key] || {}))
+      assert.ok(
+        I.lessons.some((L) => L.id === id),
+        `numbered-steps.js names ${id}`
+      );
+  }
 });
 
 test("a note shows only on lessons you started, for updates newer than your start and your last read", () => {
@@ -134,12 +113,11 @@ test("the changelog: package.json has its newest version, versions are unique an
   assert.equal(RELEASES.at(-1).id, FIRST_VERSION);
 });
 
-test("the changelog only names lessons and steps that exist", () => {
+test("the changelog only names lessons that exist", () => {
   for (const r of RELEASES)
     for (const c of r.lessons || []) {
       const [slug, id] = c.lesson.split("/");
       const L = COURSES.find((I) => I.slug === slug)?.lessons.find((l) => l.id === id);
       assert.ok(L, `${r.id}: no lesson ${c.lesson}`);
-      for (const a of c.added || []) assert.ok(a < L.steps.length, `${r.id}: ${c.lesson} has no step ${a}`);
     }
 });

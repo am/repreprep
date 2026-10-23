@@ -23,19 +23,19 @@ const { l, class: cls, current = false } = Astro.props;
 
 <script>
   /* each lesson's progress dot, and its link pointing at the step you were on */
-  import { onProgress, here, sizes, lessonPct, stepHref } from "../../client/progress.js";
+  import { onProgress, here, stepIds, lessonPct, stepHref, resumeAt } from "../../client/progress.js";
   onProgress(() => {
     const s = here();
     if (!s) return;
-    const sz = sizes();
+    const ids = stepIds();
     document.querySelectorAll("[data-prog]").forEach((el) => {
       const id = el.dataset.prog;
-      const p = lessonPct(s, id, sz[id] || 0);
+      const p = lessonPct(s, id, ids[id] || []);
       el.className = "s " + (s.done[id] || p === 1 ? "full" : p > 0 ? "part" : "");
       el.style.setProperty("--p", Math.round(p * 100) + "%");
     });
     document.querySelectorAll("a[data-lesson][data-path]").forEach((a) => {
-      a.href = stepHref(a.dataset.path, s.active[a.dataset.lesson] || 0);
+      a.href = stepHref(a.dataset.path, resumeAt(s, a.dataset.lesson));
     });
   });
 </script>

@@ -19,10 +19,12 @@ concepts:
     p:
       - In CHROMATIC mode, the default, the 16 trig keys play 16 semitones and [TRIG 9] is the root of the active track's sound. The Model:Cycles won't keep you in a scale, so you learn which keys belong to it.
 steps:
-  - k: learn
+  - id: western-music-uses-12
+    k: learn
     fig: u3keys
     t: "Western music uses 12 notes. Every key on a piano is one semitone from its neighbour, black keys included. Twelve semitones up you reach the same letter again, an octave higher: it sounds like the same note, only brighter."
-  - k: learn
+  - id: scale-choice-notes-12
+    k: learn
     fig:
       grid:
         title: Three scales on A
@@ -65,42 +67,52 @@ steps:
                 }
     t: "A scale is a choice of notes from the 12. Play the three versions: same root, same rhythm, different notes. Listen closely to the third note of major and minor."
     hear: Major sounds open and bright, minor darker. The pentatonic has gaps, which is why it sounds so easy.
-  - k: learn
+  - id: model
+    k: learn
     fig: u3trigmap
     t: "On the Model:Cycles the trig keys are a small keyboard: one semitone per key, [TRIG 9] the root. There's no scale lock, so this map shows which keys belong to the minor scale and to the minor pentatonic. Keep it next to you this lesson."
-  - k: play
+  - id: go-b01-hold-press
+    k: play
     t: Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]) and make sure [RECORD] is off. Select [T5] and turn [DECAY] to about 60. Press [TRIG 9], then [TRIG 1] to [TRIG 16] left to right.
     hl: h:pattern p:t2 p:s1 h:track p:t5 t:decay p:s9
     hear: "[TRIG 9] is the root. Left to right, each key is one semitone higher: this is CHROMATIC mode."
-  - k: play
+  - id: hear-octave
+    k: play
     t: "Hear an octave: press [TRIG 2], then [TRIG 14]. Then [TRIG 4] and [TRIG 16]. Each pair is 12 keys apart."
     hl: p:s2 p:s14 p:s4 p:s16
     hear: The second note sounds like the first, only higher. Same note, an octave up.
-  - k: play
+  - id: play-minor-scale-map
+    k: play
     t: "Play the minor scale from the map: [TRIG 4], [TRIG 5], [TRIG 7], [TRIG 9], [TRIG 11], [TRIG 12], [TRIG 14], [TRIG 16]. Then slip [TRIG 10] or [TRIG 13] into the middle of it."
     hl: p:s4 p:s5 p:s7 p:s9 p:s11 p:s12 p:s14 p:s16
     hear: The lit keys belong together. [TRIG 10] and [TRIG 13] sound like a wrong turn.
-  - k: play
+  - id: hear-what-makes-minor
+    k: play
     t: "Hear what makes minor: press [TRIG 9], [TRIG 12] and [TRIG 16] one after the other (root, minor 3rd, 5th). Then [TRIG 9], [TRIG 13], [TRIG 16]."
     hl: p:s9 p:s12 p:s16 p:s13
     hear: First dark, then bright. One key, the 3rd, decides the mood.
-  - k: play
+  - id: press-improvise-over-beat
+    k: play
     t: "Press [PLAY] and improvise over your beat on the pentatonic keys only: [TRIG 2], [TRIG 4], [TRIG 7], [TRIG 9], [TRIG 12], [TRIG 14], [TRIG 16]. Try ending each idea on [TRIG 9]."
     hl: p:play p:s2 p:s4 p:s7 p:s9 p:s12 p:s14 p:s16
     hear: Nothing clashes. Ending on [TRIG 9] sounds like coming home.
-  - k: play
+  - id: give-t5-one-bar
+    k: play
     t: "Give T5 a one-bar loop: hold [FUNC] and press [PAGE] (SCALE menu). MOD is already TRACK, so press [T5], set its LEN to 16 with [LEVEL/DATA], and press [BACK]."
     hl: h:func p:page p:t5 t:level p:back
     hear: T5 will repeat every bar while the rest of B01 runs its four bars.
-  - k: play
+  - id: press-t5-place-notes
+    k: play
     t: Press [RECORD] and, on T5, place notes on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 11]. On [TRIG 4], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones up. On [TRIG 7], 7 up. On [TRIG 11], 5 up.
     hl: p:record p:s1 p:s4 p:s7 p:s11 h:s4 p:level t:level h:s7 h:s11
     hear: "Root, minor 3rd, 5th, then down a step to the 4th: four pentatonic notes."
-  - k: play
+  - id: press-leave-grid-recording
+    k: play
     t: "Press [RECORD] to leave grid recording and listen with the beat. Turn T5's [REVERB SEND] up a little. Save: hold [FUNC] and long-press [SETTINGS]."
     hl: p:record t:reverb h:func p:settings
     hear: "A four-note riff over your beat. It can't sound wrong: every note is in the scale."
-  - k: check
+  - id: root-which-key-plays
+    k: check
     t: "[TRIG 9] is your root. Which key plays the minor 3rd, the note that makes it sound minor?"
     q:
       - "[TRIG 10]"

@@ -49,7 +49,7 @@ test("every page has a title, a description and no leftover undefined/NaN", () =
 
 test("lesson pages carry what the browser script needs", () => {
   const html = pages.get("/model-cycles/lessons/05/3");
-  assert.match(html, /<body data-inst="cycles" data-sizes="\{[^"]*w05[^"]*\}"/);
+  assert.match(html, /<body data-inst="cycles" data-steps="\{[^"]*w05[^"]*\}"/);
   assert.match(html, /<section class="player" id="player"[^>]*data-lesson="w05" data-step="3"/);
   assert.match(html, /data-notebox="w05"/);
   assert.match(html, /<span[^>]*id="sync"/);

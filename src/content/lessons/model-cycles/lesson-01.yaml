@@ -16,10 +16,12 @@ concepts:
     p:
       - Every lesson adds something to one piece of music in pattern B01. This lesson sets its tempo and track layout, and each lesson after it adds a part until you perform and record the whole piece. Your factory demos in bank A stay untouched.
 steps:
-  - k: learn
+  - id: music-sits-steady-pulse
+    k: learn
     fig: pulse
     t: "Music sits on a steady pulse, the beat: the thing you tap your foot to. Beats come in groups of four called bars. The first beat of each bar, the downbeat, feels strongest, which is why it's drawn bigger."
-  - k: learn
+  - id: each-beat-splits-four
+    k: learn
     fig:
       grid:
         title: One bar, 16 steps
@@ -30,51 +32,63 @@ steps:
           - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.6 }
     t: 'Each beat splits into four sixteenths: "1 e & a". That makes 16 steps per bar, exactly the 16 trig keys on the Model:Cycles. The beats land on keys 1, 5, 9 and 13. Press Play and count along: "one e and a, two e and a…".'
     hear: The kick lands on every number you say, the hat on every "and".
-  - k: learn
+  - id: tempo-beats-per-minute
+    k: learn
     fig: tempo
     t: Tempo, in beats per minute, decides how a groove feels. Each style has a home range. Your track for this course sits at 90 BPM, between dub and downtempo, where Bonobo, Air and Burial's slower moments live.
-  - k: play
+  - id: plug-headphones-speakers-press
+    k: play
     t: Plug in headphones or speakers, then press and hold [MAIN VOLUME] to switch on. Keep the volume low and turn it up gently.
     hl: p:mainvol t:mainvol
-  - k: play
+  - id: go-track-s-home
+    k: play
     t: "Go to your track's home: hold [PATTERN], press [T2] (bank B), then press [TRIG 1]. You're on pattern B01. Everything in this course is built here."
     hl: h:pattern p:t2 p:s1
     hear: B01 on the screen.
-  - k: play
+  - id: tap-each-pad-each
+    k: play
     t: Tap each pad [T1] to [T6]. Each plays its track's sound and makes that track active (its pad turns red).
     hl: p:t1 p:t2 p:t3 p:t4 p:t5 p:t6
     hear: "Six different sounds. Hit the pads harder and softer: they respond to how hard you play."
-  - k: play
+  - id: set-up-track-layout
+    k: play
     t: "Set up the track layout you'll use all course: T1 KICK, T2 SNARE, T3 METAL (hats), T4 PERC, T5 TONE (bass), T6 CHORD (chords). For each one, hold [TRACK] and press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
     hl: h:track p:t1 p:machines t:level p:back
     hear: Same layout every lesson, so your hands learn where things are.
-  - k: play
+  - id: set-tempo
+    k: play
     t: "Set the tempo: press [TEMPO], turn [LEVEL/DATA] to 90 BPM, then press [BACK]."
     hl: p:tempo t:level p:back
-  - k: play
+  - id: switch-metronome
+    k: play
     t: 'Switch on the metronome: hold [FUNC] and press [GATE] for about a second. Press [PLAY] and count "1 e & a, 2 e & a…" over the clicks. Press [STOP].'
     hl: h:func p:gate p:play
     hear: The high click is the downbeat, the 1 of each bar.
-  - k: play
+  - id: put-kick-every-beat
+    k: play
     t: "Put a kick on every beat: press [RECORD] so it lights (grid recording), select [T1], then press [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. Press [PLAY]."
     hl: p:record h:track p:t1 p:s1 p:s5 p:s9 p:s13 p:play
     hear: "Four on the floor: a kick on each beat, lined up with the click."
-  - k: play
+  - id: press-leave-grid-recording
+    k: play
     t: Press [RECORD] to leave grid recording. While it plays, tap [T3] on every "&", halfway between kicks. Then try tapping on every "e" and "a".
     hl: p:record p:t3
     hear: 'The "&"s are easy to find. The e''s and a''s are quick and slippery: that''s where groove will live.'
-  - k: play
+  - id: feel-tempo-change
+    k: play
     t: "Feel tempo change: set [TEMPO] to 70, then to 120, listening to the same kick. Set it back to 90. Turn the metronome off (hold [FUNC] + [GATE])."
     hl: p:tempo t:level h:func p:gate
     hear: "Same four kicks: sleepy at 70, pushing at 120."
-  - k: play
+  - id: save-work
+    k: play
     t: "Save your work: press [SETTINGS] and open PROJECT. Pick an empty ----- slot with [LEVEL/DATA], choose SAVE and name it. Then hold [FUNC] and long-press [SETTINGS] to save the pattern."
     hl: p:settings t:level h:func
     hear: The project step is needed only once. From now on, switch off by holding [MAIN VOLUME], never by pulling the plug.
     more:
       text: How the Model:Cycles saves your work
       to: saving
-  - k: check
+  - id: which-trig-keys-four
+    k: check
     t: Which trig keys are the four beats of a bar?
     q:
       - "!1, 5, 9, 13"

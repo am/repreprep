@@ -120,7 +120,7 @@ const { I, L } = Astro.props;
         return;
       }
       s.done[c.id] = Date.now();
-      for (let i = 0; i < c.n; i++) s.steps[c.id + ":" + i] = true;
+      c.ids.forEach((x) => (s.steps[c.id + ":" + x] = true));
       goNextLesson(s, c);
     },
     true
