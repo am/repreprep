@@ -19,48 +19,60 @@ concepts:
     p:
       - "Listen back away from where you made it: on a walk, on a phone, in the car. Write down three fixes, make them, record again. After three to five rounds, call it finished and start the next one."
 steps:
-  - k: learn
+  - id: performance-arrangement-played-hand
+    k: learn
     fig: u4perf
     t: A performance is the arrangement played by hand. Each pattern loops until you cue the next, so you decide how long each section lasts. Plan your moves before you press record.
-  - k: learn
+  - id: setup
+    k: learn
     fig: u4rec
     t: "The setup: two cables from MAIN OUT L and R on the back of the Model:Cycles into two inputs of your audio interface. A recording app on your computer listens to those inputs and records what you play."
-  - k: learn
+  - id: finishing-loop-not-moment
+    k: learn
     fig: u4finish
     t: Finishing is a loop, not a moment. Record, listen away from the studio, write three fixes, fix and save, then record again. Small rounds finish more music than one perfect attempt.
-  - k: play
+  - id: rehearse-cues
+    k: play
     t: "Rehearse the cues: go to B05 and press [PLAY]. In the last bar of each section, hold [PATTERN] and press the next pattern's trig key. The new pattern flashes on the screen and starts when the current one ends."
     hl: h:pattern p:s5 p:play p:s6 p:s7 p:s8 p:s9
     hear: Clean switches on the bar line. A section loops until you cue the next, so stay as long as it feels right.
-  - k: play
+  - id: add-mutes-fills
+    k: play
     t: "Add mutes and fills: in an A, mute the hats ([FUNC] + [T3]) for its last bar and unmute them on the 1 of the B. Going into a new section, hold [PAGE] through the first beat to play lesson 4's FILL hat."
     hl: h:func p:t3 h:page
     hear: Small moves at the edges of sections make each change feel deliberate.
-  - k: play
+  - id: break-b08-make-temporary
+    k: play
     t: "In the break (B08), make a temporary save: hold [FUNC] and briefly press [SETTINGS]. Hold [TRACK] and turn [REVERB SEND] up: every track pours into the room. Then hold [FUNC] and press [PATTERN] to snap back."
     hl: h:func p:settings h:track t:reverb p:pattern
     hear: A wash of reverb over the whole break, then the dry groove exactly as it was.
-  - k: play
+  - id: end
+    k: play
     t: "End it: in the outro (B09), select [T3] and slowly turn [CHANCE] down so the hats thin out, then mute tracks one by one ([FUNC] + pad) until only the chords ring. Press [STOP]. Afterwards, unmute every track."
     hl: h:track p:t3 t:chance h:func p:t2 p:t4 p:stop
     hear: The song comes apart gently instead of just stopping. Reverb and delay ring on after [STOP].
-  - k: play
+  - id: connect
+    k: play
     t: 'Connect: with everything switched off, run two 1/4" jack cables from MAIN OUT L and R to inputs 1 and 2 of your audio interface. Switch on. In your recording app, pick the audio interface as the input, using inputs 1 and 2 as a stereo pair.'
     hl: p:mainvol
     hear: "Play B07: the app's input meter moves with the beat."
-  - k: play
+  - id: set-level
+    k: play
     t: "Set the level: play B07, your loudest section, and turn [MAIN VOLUME] until the app's meter peaks comfortably below the top, never in the red. Leave [MAIN VOLUME] there for the whole take. Press [STOP]."
     hl: p:play t:mainvol p:stop
     hear: Peaks with room to spare. A take that clips can't be fixed later.
-  - k: play
+  - id: record
+    k: play
     t: "Record: go to B05, start recording in the app, wait a bar, and press [PLAY]. Perform your plan for 3 to 5 minutes, letting A and B loop two or three times each. Don't stop for mistakes. After the outro, press [STOP], let the tails ring out, then stop the recording."
     hl: h:pattern p:s5 p:play p:stop
     hear: "One continuous take. A slip in a live take is part of it: keep going."
-  - k: play
+  - id: start-finishing-loop
+    k: play
     t: "Start the finishing loop: listen back once without stopping, then again away from the studio. Write three fixes, make them in the patterns, save each one (hold [FUNC], long-press [SETTINGS]), and record a new take another day."
     hl: h:func p:settings
     hear: Each round the song gets a little clearer. After a few rounds, let it go and start the next.
-  - k: check
+  - id: mute-kick-break-cue
+    k: check
     t: You mute the kick ([FUNC] + [T1]) in the break, then cue the B. What happens to the kick?
     q:
       - It comes back by itself in the B

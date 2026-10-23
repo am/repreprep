@@ -18,10 +18,12 @@ concepts:
     p:
       - Your six track sounds together are a kit. The Model:Cycles can save the whole kit, and a preset lock lets a single step borrow a different sound.
 steps:
-  - k: learn
+  - id: three-layers-one-hit
+    k: learn
     fig: u2layers
     t: "Three layers, one hit: a short, bright top for the attack, a body for weight and pitch, and a tail for length. Played together, the ear hears one drum."
-  - k: learn
+  - id: switch-through-three-versions
+    k: learn
     fig:
       grid:
         title: One snare, three layers
@@ -55,41 +57,51 @@ steps:
               - { n: Hat, s: hat, hits: "3,7,11,15", vel: 0.4 }
     t: Switch through the three versions while it plays. Each row is one layer on the same two steps. An example of the idea, built from this page's simple sounds.
     hear: With all three, it stops sounding like three sounds and becomes one fuller snare.
-  - k: learn
+  - id: think-kit-palette
+    k: learn
     fig: u2palette
     t: "Think of your kit as a palette: each sound owns its own spot, low or high, short or long. A new sound fits best in an empty spot. Leave room for the bass and chords you'll add later."
-  - k: play
+  - id: play-b01-soft-snare
+    k: play
     t: "Play B01. Your soft snare from lesson 5 is the body. Give it a tail: select [T2] and turn [DECAY] up a little, until each backbeat lingers."
     hl: p:play h:track p:t2 t:decay
     hear: A longer, softer hit.
-  - k: play
+  - id: add-top-layer-t3
+    k: play
     t: "Add a top layer on T3: press [RECORD], select [T3], make sure the first page light is on, and press [TRIG 5] and [TRIG 13] so a hat plays with each snare."
     hl: p:record h:track p:t3 p:s5 p:s13
     hear: The snare gets an edge, but your dark hat is the wrong colour for it. Shape it next.
-  - k: play
+  - id: shape-top
+    k: play
     t: "Shape the top: hold [TRIG 5] and turn [DECAY] right down, then [PITCH] and [SHAPE] up. Do the same on [TRIG 13]. Hold both, press [LEVEL/DATA] until VEL shows, and set about 50."
     hl: h:s5 t:decay t:pitch t:shape h:s13 p:level t:level
     hear: "A tiny bright tick that only adds edge. Listen to the snare: it should sound like one drum."
-  - k: play
+  - id: copy-layer-every-bar
+    k: play
     t: "Copy the layer to every bar: hold [TRIG 5] and [TRIG 13] and press [RECORD]. Press [PAGE] for page 2, hold [TRIG 5] and press [STOP] to paste. Repeat on pages 3 and 4."
     hl: h:s5 h:s13 p:record p:page p:stop
     hear: Every backbeat has its top now, locks included.
-  - k: play
+  - id: make-found-sound-t4
+    k: play
     t: "Make a found sound on T4: select [T4], hold [FUNC] and turn [PITCH] up an octave, turn [DECAY] short and [COLOR] up until it sounds like a lighter's wheel or a click, not a drum."
     hl: h:track p:t4 h:func t:pitch t:decay t:color
     hear: A small, odd tick drifting on its 12-step loop and coming and going with its chance.
-  - k: play
+  - id: borrow-sound-preset-lock
+    k: play
     t: "Borrow a sound with a preset lock: still on T4, hold [TRIG 10] and press [MACHINES] to open the PRESET menu. Browse with [LEVEL/DATA], press [T4] to hear each one, and press [LEVEL/DATA] to lock a small, strange sound to that step."
     hl: h:s10 p:machines t:level p:t4 p:level
     hear: Once round each 12-step loop, T4 plays a different sound. [MACHINES] lights when you hold that trig.
-  - k: play
+  - id: save-kit
+    k: play
     t: "Save the kit: press [RECORD] to leave grid recording. Press [FUNC] + [MACHINES], then [FUNC] to open the save menu. Choose SAVE KIT and press [LEVEL/DATA]. Name it (hold [FUNC] and turn [LEVEL/DATA] to change a letter), press [LEVEL/DATA] and choose YES."
     hl: p:record h:func p:machines t:level p:level
     hear: Your six sounds are now a kit you can load in other projects.
-  - k: play
+  - id: save-pattern-too
+    k: play
     t: "Save the pattern too: hold [FUNC] and long-press [SETTINGS]."
     hl: h:func p:settings
-  - k: check
+  - id: layered-snare-what-job
+    k: check
     t: In your layered snare, what job does the short T3 hit do?
     q:
       - Adds weight and low end

@@ -18,13 +18,16 @@ concepts:
     p:
       - Keep strong hits exactly on time and let some weak hits arrive a hair late. Everything late sounds sloppy; only the weak ones late sounds relaxed. Burial placed drums by eye in a wave editor with no grid at all.
 steps:
-  - k: learn
+  - id: not-all-16-steps
+    k: learn
     fig: hierarchy
     t: Not all 16 steps are equal. Beats are strongest, the "&"s are medium, the e's and a's are weakest. The difference between a stiff loop and a groove is mostly what happens on those weak, short steps.
-  - k: learn
+  - id: swing-pushes-only-weak
+    k: learn
     fig: swing
     t: Swing pushes only the weak sixteenths a little later, so each pair of steps becomes long-short. At 50% it's straight. Around 60% it's lazy. At 67% it turns into a shuffle. The strong steps never move.
-  - k: learn
+  - id: beat-sixteenth-hats-press
+    k: learn
     fig:
       grid:
         title: Hear swing
@@ -36,7 +39,8 @@ steps:
           - { n: Hat, s: hat, hits: "1:0.5,2,3:0.7,4,5:0.5,6,7:0.7,8,9:0.5,10,11:0.7,12,13:0.5,14,15:0.7,16", vel: 0.3 }
     t: Your beat with sixteenth hats. Press Play and slowly move the swing slider from 50% to 70%. Stop where it makes you want to nod.
     hear: Somewhere around 56–62% the hats start to roll instead of tick.
-  - k: learn
+  - id: height-each-square-shows
+    k: learn
     fig:
       grid:
         title: Flat versus alive
@@ -75,41 +79,51 @@ steps:
                 }
     t: The height of each square shows how hard it's hit (velocity). Switch between the three versions. Nothing changed in where the hits are, only how hard they are.
     hear: Ghost notes are barely audible, but take them away and the beat goes flat.
-  - k: learn
+  - id: last-ingredient-timing-keep
+    k: learn
     fig: nudge
     t: The last ingredient is timing. Keep kick and snare exactly on the grid, and let a few quiet hits arrive a touch late. The Model:Cycles calls this nudge.
-  - k: play
+  - id: start-b01-beat-saved
+    k: play
     t: "Start from B01, the beat you saved in lesson 2: Kick on [TRIG 1], [TRIG 9] and [TRIG 11]. Snare on [TRIG 5] and [TRIG 13]. Hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15]. Go to it (hold [PATTERN], press [T2], press [TRIG 1]) and press [PLAY]. Select [T3], the hats, and turn [SWING] to about 60%."
     hl: h:pattern p:t2 p:s1 p:play h:track p:t3 t:swing
     hear: 'Nothing yet: your hats are only on the "&"s, and swing moves the even steps. Swing needs weak-step hits to work on.'
-  - k: play
+  - id: give-sixteenth-hats
+    k: play
     t: "Give it sixteenth hats: press [RECORD] and, on T3, place hats on every even key, [TRIG 2] through [TRIG 16]."
     hl: p:record p:s2 p:s4 p:s6 p:s8 p:s10 p:s12 p:s14 p:s16
     hear: Now the swing rolls. Turn [SWING] between 50 and 65 to find your spot.
-  - k: play
+  - id: first-make-velocity-change
+    k: play
     t: First make velocity change the volume. With T3 selected, press [FUNC] + [BACK] to open the PAD menu, turn [LEVEL/DATA] to VDEP and set it to 127, then press [BACK]. If VDEP is 0, velocity does nothing you can hear.
     hl: h:func p:back t:level
     hear: No change yet. This only lets the next step be heard.
-  - k: play
+  - id: make-between-hats-quiet
+    k: play
     t: Make the in-between hats quiet. Keep [RECORD] lit. Hold [TRIG 2], [TRIG 4], [TRIG 6] and [TRIG 8] together, press [LEVEL/DATA] until VEL shows on the screen, and turn it down to about 30. Do the same for [TRIG 10] to [TRIG 16].
     hl: p:record h:s2 h:s4 h:s6 h:s8 p:level t:level
     hear: 'The "&" hats now lead, and the quiet ones just shimmer behind them. Still flat? Hold the same keys and turn [VOLUME + DIST] down instead: that locks a lower volume on those steps.'
-  - k: play
+  - id: add-ghost-note
+    k: play
     t: "Add a ghost note: select [T2] and set its VDEP to 127 the same way ([FUNC] + [BACK]). Place a snare on [TRIG 12], then hold it, press [LEVEL/DATA] until VEL shows, and turn it down to about 25."
     hl: h:track p:t2 p:s12 h:s12 t:level
     hear: A tiny extra snare just before the backbeat on 4. Felt more than heard.
-  - k: play
+  - id: nudge-ghost-note-late
+    k: play
     t: "Nudge the ghost note late: hold [TRIG 12] and turn [SWING] a little to the right. On a held trig the SWING knob moves that one step in time."
     hl: h:s12 t:swing
     hear: It drags behind slightly, like a drummer leaning back.
-  - k: play
+  - id: swing-everything-together
+    k: play
     t: "Swing everything together: press [RECORD] to leave grid recording, hold [TRACK] and turn [SWING] to about 58%. Mute the hats ([FUNC] + [T3]) and unmute them to compare."
     hl: p:record h:track t:swing h:func p:t3
     hear: Kick and snare stay on their beats because swing only moves even steps.
-  - k: play
+  - id: save-pattern
+    k: play
     t: "Save the pattern: hold [FUNC] and long-press [SETTINGS]."
     hl: h:func p:settings
-  - k: check
+  - id: which-hits-does-swing
+    k: check
     t: Which hits does swing push late?
     q:
       - Every hit, a little

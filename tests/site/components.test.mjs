@@ -23,7 +23,8 @@ test("player: dots, Back and Next on every step of every lesson", () => {
         where = `${L.id} step ${act}`;
       assert.equal(count(html, /<a [^>]*data-step="\d+"/g), total, where);
       assert.equal(count(html, /<a [^>]*data-step="\d+" aria-current="true"/g), 1, where);
-      assert.match(html, new RegExp(`data-lesson="${L.id}" data-step="${act}" data-steps="${n}"`), where);
+      const ids = L.steps.map((st) => st.id).join(" ");
+      assert.match(html, new RegExp(`data-lesson="${L.id}" data-step="${act}" data-step-ids="${ids}"`), where);
       if (act === 0)
         assert.match(html, /<button class="btn" disabled aria-label="Previous step">Back<\/button>/, where);
       else assert.match(html, new RegExp(`href="${stepPath(L, act - 1)}" data-nav="-1"`), where);

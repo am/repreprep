@@ -38,7 +38,8 @@ const slugify = (s) =>
 
 /* An instrument with its lessons, ready for the pages: lessons in course order (song studies last), each
    opening with an intro step (what you will learn, what to listen to) and with its address and short name.
-   Step ids stay the old ones (lesson id + ":" + index, intro = 0), so saved progress keeps working.
+   Saved ticks are "<lesson id>:<step id>" ("w04:make-b01-four-bars", "w04:intro"), so steps can be added,
+   removed or moved without touching anyone's progress; step addresses are numbered (intro = 0).
    The lesson data comes from src/content/lessons: content.js reads it for the pages, files.js for scripts and tests. */
 export function withLessons(I, data) {
   const lessons = structuredClone(data).sort(
@@ -47,6 +48,7 @@ export function withLessons(I, data) {
   const songs = lessons.filter((l) => l.song);
   lessons.forEach((L) => {
     L.steps.unshift({
+      id: "intro",
       intro: true,
       k: "intro",
       hl: "",

@@ -1,5 +1,10 @@
 ---
-// The footer on every page. The browser script writes where your progress is saved into #sync.
+// The footer on every page: the site's version and its What's new page, and the About links. The browser
+// script writes where your progress is saved into #sync.
+interface Props {
+  version: string;
+}
+const { version } = Astro.props;
 ---
 
 <footer class="foot">
@@ -14,6 +19,9 @@
     <section>
       <h2 class="t-label">About</h2>
       <ul>
+        <li>
+          <a href="/whats-new">What's new</a> <span class="ver">· version {version}</span>
+        </li>
         <li>
           <a href="/privacy">Privacy</a>
         </li>
@@ -73,6 +81,11 @@
   }
   .foot a:hover {
     text-decoration-color: currentColor;
+  }
+  .foot .ver {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--faint);
   }
   .foot-brand {
     margin-bottom: var(--s2);

@@ -15,10 +15,12 @@ concepts:
     p:
       - One note at a time is a melody. The same sound at three pitches at once is a chord. A note, another 3 semitones above it and another 7 above the first make a minor chord.
 steps:
-  - k: learn
+  - id: ms-20-they-used
+    k: learn
     fig: stack
     t: The MS-20 they used plays one note at a time. To get chords, they recorded the same pluck again and again at different notes and layered the recordings.
-  - k: learn
+  - id: same-rhythm-first-single
+    k: learn
     fig:
       grid:
         title: One pluck, then three
@@ -41,33 +43,41 @@ steps:
               - { n: Kick, s: kick, hits: "1,5,9,13" }
     t: The same rhythm, first as single notes, then stacked three high. Nothing new was written, only copied at other pitches. An example of the idea, not the song's own rhythm.
     hear: Stacked, the line turns into harmony.
-  - k: play
+  - id: go-study-s-own
+    k: play
     t: "Go to this study's own pattern: hold [PATTERN], press [T3] (bank C), then press [TRIG 2]. If anything plays there, clear it with [FUNC] + [PLAY]. Press [TEMPO], set 120 BPM with [LEVEL/DATA], and press [BACK]."
     hl: h:pattern p:t3 p:s2 p:tempo t:level p:back
     hear: C02 on the screen, at 120 BPM.
-  - k: play
+  - id: set-machines-study-needs
+    k: play
     t: "Set the machines this study needs, the same layout as your course track: T1 KICK, T3 METAL, T5 TONE, T6 CHORD. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
     hl: h:track p:machines t:level p:back
-  - k: play
+  - id: make-pluck
+    k: play
     t: "Make a pluck: press [RECORD], select [T6], turn [SHAPE] to minor and [DECAY] down to about 20. The CHORD machine does the stacking for you: its voices play the same sound at different pitches."
     hl: p:record h:track p:t6 t:shape t:decay
     hear: "Tap [T6]: a short, plucked chord."
-  - k: play
+  - id: sequence
+    k: play
     t: "Sequence it: on T6, place trigs on [TRIG 1], [TRIG 3], [TRIG 4], [TRIG 7], [TRIG 9], [TRIG 11], [TRIG 12] and [TRIG 15]. Press [PLAY]."
     hl: p:s1 p:s3 p:s4 p:s7 p:s9 p:s11 p:s12 p:s15 p:play
     hear: A rolling chord rhythm, the same one as in the grid.
-  - k: play
+  - id: make-move
+    k: play
     t: "Make it move: on [TRIG 9], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 2 semitones down. Do the same on [TRIG 11], [TRIG 12] and [TRIG 15]."
     hl: h:s9 p:level t:level h:s11 h:s12 h:s15
     hear: "The second half of the bar steps down: two chords from one sound."
-  - k: play
+  - id: add-bell-top
+    k: play
     t: "Add a bell on top: select [T5] (TONE), turn [COLOR] up until it sounds like a bell and [DECAY] to about 70. Place notes on [TRIG 1] and [TRIG 9]. On [TRIG 9], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones up."
     hl: h:track p:t5 t:color t:decay p:s1 p:s9 h:s9 t:level
     hear: "A slow melody over a busy pluck: two speeds working together."
-  - k: play
+  - id: add-beat
+    k: play
     t: "Add the beat: on T1, kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. On T3, hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15]. Save: hold [FUNC] and long-press [SETTINGS]."
     hl: h:track p:t1 p:t3 h:func p:settings
-  - k: check
+  - id: how-did-kiasmos-get
+    k: check
     t: How did Kiasmos get chords out of the MS-20 in Thrown?
     q:
       - "!They recorded the same pluck many times at different notes"

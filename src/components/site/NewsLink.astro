@@ -1,0 +1,53 @@
+---
+// The What's new icon in the header. updates.js shows its dot while the site has a version you haven't
+// seen on the What's new page.
+---
+
+<a class="news" href="/whats-new" title="What's new" aria-label="What's new" data-news>
+  <svg viewBox="0 0 16 16" aria-hidden="true">
+    <path d="M4 6.5a4 4 0 0 1 8 0v3l1.5 2h-11l1.5-2z" />
+    <path d="M6.5 13.5a1.5 1.5 0 0 0 3 0" />
+  </svg>
+  <span class="dot" data-news-dot hidden></span>
+</a>
+
+<style>
+  /* sized and colored like the theme switch's buttons, at the left end of the header's controls pill */
+  .news {
+    position: relative;
+    display: grid;
+    place-items: center;
+    flex: none;
+    width: 1.625rem;
+    height: 1.375rem;
+    margin-left: var(--s1);
+    border-radius: var(--r-pill);
+    color: var(--faint);
+  }
+  .news:hover {
+    color: var(--fg);
+  }
+  .news svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.4;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+  }
+  /* unread: a dot in the accent color on the bell's shoulder, with a ring of page color around it */
+  .dot {
+    position: absolute;
+    top: 0.0625rem;
+    right: 0.25rem;
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-radius: 50%;
+    background: var(--led);
+    box-shadow: 0 0 0 2px var(--bg);
+  }
+  .dot[hidden] {
+    display: none;
+  }
+</style>

@@ -18,7 +18,8 @@ concepts:
     p:
       - "Small changes on single steps, a bit longer here, a touch lower there, keep a loop from sounding copied and pasted. On Elektron machines these are parameter locks: hold a step and turn a knob."
 steps:
-  - k: learn
+  - id: classic-techno-frame-122
+    k: learn
     fig:
       grid:
         title: The techno frame
@@ -30,7 +31,8 @@ steps:
           - { n: Shaker, s: shaker, hits: "2,4:0.4,6,8:0.4,10,12:0.4,14,16:0.4", vel: 0.3 }
     t: "The classic techno frame at 122 BPM: a kick on every beat, an open hat in between, a clap on 2 and 4. Press Play."
     hear: The open hat between the kicks is what pushes it forward.
-  - k: learn
+  - id: kiasmos-swapped-electronic-hats
+    k: learn
     fig:
       grid:
         title: Machine hats or found sounds
@@ -53,33 +55,41 @@ steps:
               - { n: Perc, s: perc, hits: "6,14:0.25", vel: 0.3 }
     t: Kiasmos swapped electronic hats for things like finger snaps and a lighter's wheel. Compare a clean hat with a mix of small found-sound hits. An example of the idea, not the song's own beat.
     hear: The found sounds feel more like a room and less like a machine.
-  - k: learn
+  - id: micro-edits
+    k: learn
     fig: plock
     t: "Micro edits: the same sound on every step, but some steps get their own small change. Hold a step and turn a knob, and only that step changes. Elektron calls this a parameter lock."
-  - k: play
+  - id: go-study-s-own
+    k: play
     t: "Go to this study's own pattern: hold [PATTERN], press [T3] (bank C), then press [TRIG 3]. If anything plays there, clear it with [FUNC] + [PLAY]. Press [TEMPO], set 122 BPM with [LEVEL/DATA], and press [BACK]."
     hl: h:pattern p:t3 p:s3 p:tempo t:level p:back
     hear: C03 on the screen, at 122 BPM.
-  - k: play
+  - id: set-machines-study-needs
+    k: play
     t: "Set the machines this study needs, the same layout as your course track: T1 KICK, T2 SNARE, T3 METAL, T4 PERC. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
     hl: h:track p:machines t:level p:back
-  - k: play
+  - id: lay-frame
+    k: play
     t: "Lay the frame: press [RECORD]. On T1, kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. On T2, a snare on [TRIG 5] and [TRIG 13]. On T3, hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15], with [DECAY] turned up so they ring open. Press [PLAY]."
     hl: p:record h:track p:t1 p:t2 p:t3 t:decay p:play
     hear: The techno frame from the grid.
-  - k: play
+  - id: make-found-sound-tick
+    k: play
     t: "Make a found-sound tick: select [T4] (PERC), turn [PITCH] right up and [DECAY] down until it clicks like wood. Place it on every even trig, [TRIG 2] to [TRIG 16]."
     hl: h:track p:t4 t:pitch t:decay p:s2 p:s4 p:s6 p:s8 p:s10 p:s12 p:s14 p:s16
     hear: A small, woody tick filling the gaps, more object than drum.
-  - k: play
+  - id: micro-edits-2
+    k: play
     t: "Micro edits: hold [TRIG 6] and turn [DECAY] up a little. Hold [TRIG 10] and turn [PITCH] down a little. Hold [TRIG 14] and turn [DECAY] down a little."
     hl: h:s6 t:decay h:s10 t:pitch h:s14
     hear: Three ticks now sound slightly different. Their keys flash quickly to show the locks.
-  - k: play
+  - id: jam-over
+    k: play
     t: "Jam over it: press [RECORD] to leave grid recording, select [T4] and slowly ride [DECAY] and [COLOR] while it plays. Save: hold [FUNC] and long-press [SETTINGS]."
     hl: p:record h:track p:t4 t:decay t:color h:func p:settings
     hear: The groove stays steady while the small sounds keep changing.
-  - k: check
+  - id: how-do-kiasmos-often
+    k: check
     t: How do Kiasmos often start a track?
     q:
       - "!From a beat on a drum machine"

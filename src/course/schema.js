@@ -39,6 +39,10 @@ const grid = z
 
 const step = z
   .strictObject({
+    id: z
+      .string()
+      .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/)
+      .refine((s) => s !== "intro", "intro is the lesson's own first step") /* saved ticks use it: never change it */,
     k: z.enum(["learn", "play", "check"]).optional() /* the step's kind; play when left out */,
     t: text /* what it says; [KEY] draws a key cap */,
     hl: z.string().optional() /* controls to light: "p:play h:func t:level" (press, hold, turn) */,
@@ -66,4 +70,23 @@ export const lessonSchema = z
     steps: z.array(step).min(1),
     challenge: text.optional(),
   })
-  .refine((l) => !!l.song !== (l.number !== undefined), "a lesson has a number, a song study has a song");
+  .refine((l) => !!l.song !== (l.number !== undefined), "a lesson has a number, a song study has a song")
+  .refine((l) => new Set(l.steps.map((s) => s.id)).size === l.steps.length, "two steps share an id");
+
+/* One release in the changelog (src/content/changelog.yaml): its version, the day it went live, a title, what
+   changed on the site, and what changed in which lessons. A lesson change names the lesson as
+   "<instrument slug>/<lesson id>". */
+export const releaseSchema = z.strictObject({
+  id: z.string().regex(/^\d+\.\d+\.\d+$/) /* the version, "0.3.0" */,
+  date: z.string().regex(/^\d{4}-\d\d-\d\d$/),
+  title: text,
+  site: z.array(text).optional(),
+  lessons: z
+    .array(
+      z.strictObject({
+        lesson: z.string().regex(/^[a-z0-9-]+\/[ws]\d\d$/),
+        what: text,
+      })
+    )
+    .optional(),
+});

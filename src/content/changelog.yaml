@@ -1,0 +1,21 @@
+# What's new, newest release first. Shown on /whats-new, and each lesson change shows as a note on that
+# lesson for people who had already started it. When a pull request changes the site or a lesson, add a
+# release here (or add to the one it will ship in) and set the same version in package.json.
+# Fields are listed in releaseSchema (src/course/schema.js).
+
+- id: 0.2.0
+  date: "2026-10-23"
+  title: Version numbers and What's new
+  site:
+    - The site now has a version number, shown at the bottom of every page, and this page lists what changed in each version.
+    - A bell at the top of every page gets a dot when there's a version you haven't read about yet. Opening this page clears it.
+    - When a lesson you've started changes, it shows a note saying what's new, until you mark it as read.
+    - Your ticks are now kept by step rather than by position, so lessons can gain, lose or reorder steps without mixing up your progress.
+
+- id: 0.1.0
+  date: "2026-10-23"
+  title: The course so far
+  site:
+    - Sixteen Model:Cycles lessons in four parts (Rhythm, Sound, Notes and harmony, Space and arrangement) and four song studies.
+    - Your progress is saved in this browser, and you can download it or load it on another device from the Progress page.
+    - Reference pages for the Model:Cycles panel, its machines, its shortcuts and how it saves your work.

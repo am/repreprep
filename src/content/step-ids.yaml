@@ -1,0 +1,299 @@
+# Every step id each lesson has ever used. Written by `npm run ids`, never by hand: saved progress is
+# stored by step id, so an id stays in "used" while its step exists and moves to "retired" when the step is
+# taken out, and no id is ever given out twice. See scripts/step-ids.mjs.
+s01:
+  used:
+    - looped-keeps-one-thing
+    - switch-through-three-versions
+    - when-chords-sit-low
+    - go-study-s-own
+    - set-machines-study-needs
+    - make-piano-chords
+    - give-figure-drawing
+    - add-beat
+    - add-light-bass
+    - play-build
+    - what-did-kiasmos-keep
+  retired: []
+s02:
+  used:
+    - ms-20-they-used
+    - same-rhythm-first-single
+    - go-study-s-own
+    - set-machines-study-needs
+    - make-pluck
+    - sequence
+    - make-move
+    - add-bell-top
+    - add-beat
+    - how-did-kiasmos-get
+  retired: []
+s03:
+  used:
+    - classic-techno-frame-122
+    - kiasmos-swapped-electronic-hats
+    - micro-edits
+    - go-study-s-own
+    - set-machines-study-needs
+    - lay-frame
+    - make-found-sound-tick
+    - micro-edits-2
+    - jam-over
+    - how-do-kiasmos-often
+  retired: []
+s04:
+  used:
+    - snare-role
+    - switch-sound-2-4
+    - four-minor-chords-each
+    - go-study-s-own
+    - set-machines-study-needs
+    - make-piano-body-snare
+    - add-beat-around
+    - add-chords
+    - make-climb
+    - save
+    - what-made-snare-sound
+  retired: []
+w01:
+  used:
+    - music-sits-steady-pulse
+    - each-beat-splits-four
+    - tempo-beats-per-minute
+    - plug-headphones-speakers-press
+    - go-track-s-home
+    - tap-each-pad-each
+    - set-up-track-layout
+    - set-tempo
+    - switch-metronome
+    - put-kick-every-beat
+    - press-leave-grid-recording
+    - feel-tempo-change
+    - save-work
+    - which-trig-keys-four
+  retired: []
+w02:
+  used:
+    - every-drum-beat-has
+    - here-s-spine-most
+    - five-patterns-lot-music
+    - go-b01-hold-press
+    - select-place-snare-beats
+    - select-place-hats-s
+    - hear-each-job-taking
+    - save-b01-hold-long
+    - b02-build-one-drop
+    - still-b02-turn-one
+    - one-drop-where-does
+  retired: []
+w03:
+  used:
+    - not-all-16-steps
+    - swing-pushes-only-weak
+    - beat-sixteenth-hats-press
+    - height-each-square-shows
+    - last-ingredient-timing-keep
+    - start-b01-beat-saved
+    - give-sixteenth-hats
+    - first-make-velocity-change
+    - make-between-hats-quiet
+    - add-ghost-note
+    - nudge-ghost-note-late
+    - swing-everything-together
+    - save-pattern
+    - which-hits-does-swing
+  retired: []
+w04:
+  used:
+    - loop-one-bar-music
+    - trig-conditions-let-step
+    - perc-loop-12-steps
+    - make-b01-four-bars
+    - make-bar-2-b
+    - make-bar-4-c
+    - turn-second-time-through
+    - add-fill-play-hand
+    - make-t4-drift
+    - let-breathe
+    - pattern-4-bars-long
+  retired: []
+w05:
+  used:
+    - every-sound-has-four
+    - envelope-sound-s-shape
+    - model
+    - three-knobs-decide-if
+    - go-b01-hold-press
+    - make-round
+    - tune-lengthen
+    - hear-sustain
+    - hear-loudness-against-timbre
+    - soften-snare
+    - write-two-words-new
+    - turned-sweep-down-kick
+  retired: []
+w06:
+  used:
+    - every-sound-stack-tones
+    - low-pass-filter-darkens
+    - fm-plain-words
+    - four-macros-mean-something
+    - let-pattern-changes-wait
+    - make-twin
+    - brighten-b04-s-hats
+    - brighten-rest-b04
+    - now-dark-one
+    - darken-perc-too
+    - compare
+    - want-hats-darker-which
+  retired: []
+w07:
+  used:
+    - three-layers-one-hit
+    - switch-through-three-versions
+    - think-kit-palette
+    - play-b01-soft-snare
+    - add-top-layer-t3
+    - shape-top
+    - copy-layer-every-bar
+    - make-found-sound-t4
+    - borrow-sound-preset-lock
+    - save-kit
+    - save-pattern-too
+    - layered-snare-what-job
+  retired: []
+w08:
+  used:
+    - lfo-slow-wave-turns
+    - here-lfo-moves-hats
+    - lfo-setup-decides-how
+    - env-waveform-runs-once
+    - play-b01-select-dusty
+    - set-rate
+    - pick-shape
+    - give-perc-slow-drift
+    - hear-rst
+    - still-lfo-setup-try
+    - try-slow-attack-b04
+    - press-check-fix-off
+    - hats-move-lfo-decay
+  retired: []
+w09:
+  used:
+    - western-music-uses-12
+    - scale-choice-notes-12
+    - model
+    - go-b01-hold-press
+    - hear-octave
+    - play-minor-scale-map
+    - hear-what-makes-minor
+    - press-improvise-over-beat
+    - give-t5-one-bar
+    - press-t5-place-notes
+    - press-leave-grid-recording
+    - root-which-key-plays
+  retired: []
+w10:
+  used:
+    - bassline-has-three-jobs
+    - same-bassline-built-one
+    - bassline-ll-build-every
+    - keep-last-lesson-s
+    - press-select-clear-trigs
+    - make-bass
+    - lock-kick
+    - make-octave-jump
+    - spread-over-four-bars
+    - change-roots
+    - add-approach-note
+    - bass-plays-f-d
+  retired: []
+w11:
+  used:
+    - chord-formula-counted-semitones
+    - hear-each-formula-same
+    - chords-move-progressions-written
+    - play-three-progressions-watch
+    - go-b01-press-select
+    - tap-together-if-they
+    - open-scale-menu-press
+    - follow-bass
+    - fix-bar-2-major
+    - shape-voicing
+    - taste-dorian
+    - press-leave-grid-recording
+    - which-semitone-formula-minor
+  retired: []
+w12:
+  used:
+    - melody-line-steps-leaps
+    - melodies-talk-phrases-question
+    - hear
+    - go-b01-press-select
+    - make-single-note
+    - copy
+    - shape-question
+    - answer
+    - make-answer-wait
+    - let-question-vary
+    - press-leave-grid-recording
+    - bar-2-plays-c
+  retired: []
+w13:
+  used:
+    - reverb-sound-space-dry
+    - each-track-has
+    - throw-sends-one-hit
+    - play-b01-low-set
+    - set-echo
+    - place-parts-near-far
+    - throw
+    - room-shot
+    - ride-feedback
+    - try-32-quarter-note
+    - dub-mix-which-parts
+  retired: []
+w14:
+  used:
+    - use-sheet-whenever-study
+    - two-versions-one-groove
+    - picture-mix-stage-louder
+    - copy-b01-b10-sketchpad
+    - go-b10-hold-press
+    - play-chosen-track-tap
+    - add-bass-rhythm-t5
+    - go-b01-hold-press
+    - balance
+    - pan-pairs
+    - four-parts-all-grab
+  retired: []
+w15:
+  used:
+    - energy-curve-song
+    - five-sections-sketch-switch
+    - lesson-s-plan
+    - get-b01-ready-hand
+    - copy-b01-five-slots
+    - intro-2
+    - step
+    - break
+    - outro
+    - chain
+    - listen-every-change-where
+    - about-how-many-changes
+  retired: []
+w16:
+  used:
+    - performance-arrangement-played-hand
+    - setup
+    - finishing-loop-not-moment
+    - rehearse-cues
+    - add-mutes-fills
+    - break-b08-make-temporary
+    - end
+    - connect
+    - set-level
+    - record
+    - start-finishing-loop
+    - mute-kick-break-cue
+  retired: []

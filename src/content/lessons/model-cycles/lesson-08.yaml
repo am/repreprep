@@ -18,10 +18,12 @@ concepts:
     p:
       - "With WAV set to ENV, the LFO runs once from the start of each note and stops. Aim it at the volume with negative depth and the sound fades in: a slow attack."
 steps:
-  - k: learn
+  - id: lfo-slow-wave-turns
+    k: learn
     fig: u2lfo
     t: An LFO is a slow wave that turns a knob for you. Depth is how far the knob moves, rate how fast, and the waveform how it gets there. The Model:Cycles offers seven waveforms.
-  - k: learn
+  - id: here-lfo-moves-hats
+    k: learn
     fig:
       grid:
         title: An LFO on the hats' volume
@@ -71,45 +73,56 @@ steps:
                 }
     t: Here an LFO moves the hats' volume, shown as the height of each hit. The same 16 hats, four kinds of movement. Play each one.
     hear: The triangle breathes once a bar. Random sounds like an unsteady hand.
-  - k: learn
+  - id: lfo-setup-decides-how
+    k: learn
     fig: u2reset
     t: LFO SETUP decides how the wave meets your notes. RST OFF lets it run freely, so each hit lands somewhere different on the wave. RST ON restarts it on every note. FDE fades the movement in or out; SPH sets where it starts.
-  - k: learn
+  - id: env-waveform-runs-once
+    k: learn
     fig: u2attack
     t: "The ENV waveform runs once per note, like an envelope. Point it at the volume with depth -64 and it pulls the volume down at the start, then lets go: the sound fades in. GATE keeps it held while it does."
-  - k: play
+  - id: play-b01-select-dusty
+    k: play
     t: Play B01 and select your dusty hats (hold [TRACK], press [T3]). Hold [LFO] and turn [DECAY] a little to the right. That makes DECAY the LFO's destination, and turning further sets the depth.
     hl: p:play h:track p:t3 h:lfo t:decay
     hear: "The hats start to breathe: some short, some longer."
-  - k: play
+  - id: set-rate
+    k: play
     t: "Set the rate: turn [LFO SPEED] to 16, one of the values that lock to the beat. Try 8 and 32 too, then a negative value, which runs the wave backwards. Keep the one you like."
     hl: t:lfospd
     hear: Higher values move faster. Pick a speed that feels like breathing, not wobbling.
-  - k: play
+  - id: pick-shape
+    k: play
     t: "Pick the shape: press [LFO] to open the LFO menu. DST now shows DECAY and DEP your depth. Use [LEVEL/DATA] to try each WAV, including random with a small DEP. Press [BACK] when you've chosen."
     hl: p:lfo t:level p:back
     hear: Triangle and sine glide, square flips between two lengths, random sounds like a human hand.
-  - k: play
+  - id: give-perc-slow-drift
+    k: play
     t: "Give the perc a slow drift: select [T4], hold [LFO] and turn [COLOR] a little. Turn [LFO SPEED] down to a small positive value, like 2, so it changes slowly. If it's still too fast, press [LFO] and set MUL lower."
     hl: h:track p:t4 h:lfo t:color t:lfospd p:lfo t:level
     hear: The found tick slowly changes colour from bar to bar.
-  - k: play
+  - id: hear-rst
+    k: play
     t: "Hear RST: select [T3] again and press [FUNC] + [LFO] to open LFO SETUP. Set RST to ON with [LEVEL/DATA] and listen, then set it back to OFF."
     hl: h:track p:t3 h:func p:lfo t:level
     hear: "ON: every hat gets the same slice of the wave and the movement disappears. OFF: it flows across the hats again."
-  - k: play
+  - id: still-lfo-setup-try
+    k: play
     t: "Still in LFO SETUP, try FDE at -30 (fade in) and +30 (fade out), and with RST ON try SPH at 0 and 64. Set FDE back to 0 and RST to OFF, press [BACK], then save B01: hold [FUNC] and long-press [SETTINGS]."
     hl: t:level p:back h:func p:settings
     hear: Small changes, but now you know every setting on the LFO page. These setup settings can't be locked to a step.
-  - k: play
+  - id: try-slow-attack-b04
+    k: play
     t: "Try the slow attack on B04, your bright copy: hold [PATTERN], press [TRIG 4]. Select [T6] (CHORD), press [RECORD] and place a chord on [TRIG 1]. Hold it, press [LEVEL/DATA] until LEN shows, and set 8. Press [GATE] so it lights."
     hl: h:pattern p:s4 h:track p:t6 p:record p:s1 p:level t:level p:gate
     hear: A chord that holds for half a bar, then fades out.
-  - k: play
+  - id: press-check-fix-off
+    k: play
     t: Press [FUNC] + [BACK], check FIX is OFF, and press [BACK]. Press [LFO] and set WAV to ENV, MUL to X1, DST to DIST and DEP to -64. Turn [LFO SPEED] to set how slowly it fades in.
     hl: h:func p:back p:lfo t:level t:lfospd
     hear: "The chord swells in instead of starting at once: a slow attack made from an LFO."
-  - k: check
+  - id: hats-move-lfo-decay
+    k: check
     t: Your hats move with an LFO on DECAY. You set RST to ON and the movement disappears. Why?
     q:
       - DEP went back to 0

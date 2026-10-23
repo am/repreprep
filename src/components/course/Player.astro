@@ -9,6 +9,7 @@ import HearNote from "./HearNote.astro";
 import Keys from "./Keys.astro";
 import Figure from "./Figure.astro";
 import PanelDrawing from "./PanelDrawing.astro";
+import UpdateNote from "./UpdateNote.astro";
 import { KIND, keyCap } from "../../course/shared/text.js";
 import { lessonLabel, stepPath, nextLesson } from "../../course/index.js";
 interface Props {
@@ -35,7 +36,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   data-inst={I.key}
   data-lesson={L.id}
   data-step={act}
-  data-steps={n}
+  data-step-ids={L.steps.map((s: any) => s.id).join(" ")}
   data-next={nx?.id}
   data-next-path={nx?.path}
 >
@@ -102,6 +103,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       title="Drag to resize · double-click to reset"
     ></div>
     <div class="pstep" id="now">
+      <UpdateNote L={L} />
       <div class="h">
         <span class={`kind k-${k}`}>{KIND[k]}</span>
         {ch && " · optional"}
@@ -172,7 +174,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   /* Marks where you are, saves ticks as you move on, and runs the player's controls: the step panel's
      width, the full-window switch, the lesson picker, arrow keys, and clicking a control on the panel. */
   import { onProgress, persist, refresh, ist, state } from "../../client/progress.js";
-  import { player, curLesson, markAllDone, goNextLesson } from "../../client/lesson.js";
+  import { player, curLesson, markAllDone, goNextLesson, stepKey } from "../../client/lesson.js";
   import { CYCLES_CONTROLS, iconSvg } from "../../course/model-cycles/controls.js";
   import { keyify } from "../../course/shared/text.js";
   import { esc } from "../../course/shared/html.js";
@@ -200,7 +202,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     }
     document
       .querySelectorAll(".dots [data-step]")
-      .forEach((a) => a.classList.toggle("done", !!s.steps[c.id + ":" + a.dataset.step]));
+      .forEach((a) => a.classList.toggle("done", !!s.steps[stepKey(c, +a.dataset.step)]));
     const mx = $("[data-max]");
     if (mx) {
       const l = state.focus ? "Exit full window (Esc)" : "Maximize";
@@ -309,7 +311,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       if (!c) return;
       const s = ist(c.k);
       if (c.act < c.n) {
-        s.steps[c.id + ":" + c.act] = true;
+        s.steps[stepKey(c, c.act)] = true;
         markAllDone(s, c);
       } /* the optional challenge is never a rep */
       if (nav.hasAttribute("data-end")) {

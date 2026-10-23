@@ -1,10 +1,10 @@
 // Progress across the site: the course map, Continue, old progress files, and the progress page.
-import { test, expect, progress, setProgress, LS_KEY } from "./fixtures.mjs";
+import { test, expect, progress, setProgress, LS_KEY, tick } from "./fixtures.mjs";
 import { COURSES } from "../../src/course/files.js";
 
 const [I] = COURSES;
 const [L1, L2] = I.lessons;
-const ticks = (L, n) => Object.fromEntries([...Array(n).keys()].map((i) => [`${L.id}:${i}`, true]));
+const ticks = (L, n) => Object.fromEntries([...Array(n).keys()].map((i) => [tick(L, i), true]));
 const state = (cycles, extra = {}) => ({
   updatedAt: 1,
   introSteps: 1,
@@ -40,7 +40,9 @@ test("with no progress the course home offers lesson 1", async ({ page }) => {
   await expect(page.locator("#meterTxt")).toHaveText(/^0 of \d+ reps$/);
 });
 
-test("progress saved before lessons had an intro step moves every step by one", async ({ page }) => {
+test("progress saved before lessons had an intro step moves every step by one, then gets step ids", async ({
+  page,
+}) => {
   await setProgress(page, {
     updatedAt: 1,
     inst: {
@@ -63,6 +65,7 @@ test("progress saved before lessons had an intro step moves every step by one", 
   await expect(page).toHaveURL(`${L1.path}/4`);
   const p = await progress(page);
   expect(p.introSteps).toBe(1);
+  expect(p.stepIds).toBe(1);
   expect(p.inst.cycles.steps).toEqual(ticks(L1, 4));
   await page.goto(`${L1.path}/3`);
   await expect(page.locator(`[data-notebox="${L1.id}"] .nb-text`)).toHaveText("old");
@@ -78,7 +81,7 @@ test("progress page: download, load and delete", async ({ page }, info) => {
   const saved = JSON.parse(await (await import("node:fs/promises")).readFile(await dl.path(), "utf8"));
   expect(saved.inst.cycles.steps).toEqual(ticks(L1, 2));
 
-  /* an old progress.json (no intro steps, old fields) loads and is moved by one step */
+  /* an old progress.json (no intro steps, old fields, numbered steps) loads, moved by one step and with step ids */
   const file = info.outputPath("old-progress.json");
   await (
     await import("node:fs/promises")
@@ -93,7 +96,7 @@ test("progress page: download, load and delete", async ({ page }, info) => {
   await page.locator("[data-import]").setInputFiles(file);
   await expect(page.locator("[data-import-msg]")).toHaveText("Loaded. 2 ticked steps.");
   let p = await progress(page);
-  expect(p.inst.cycles.steps).toEqual({ [`${L2.id}:0`]: true, [`${L2.id}:1`]: true });
+  expect(p.inst.cycles.steps).toEqual(ticks(L2, 2));
   expect(p.instrument).toBeUndefined();
 
   await page
@@ -103,7 +106,7 @@ test("progress page: download, load and delete", async ({ page }, info) => {
 
   page.once("dialog", (d) => d.dismiss());
   await page.locator("[data-clear]").click();
-  expect((await progress(page)).inst.cycles.steps).toEqual({ [`${L2.id}:0`]: true, [`${L2.id}:1`]: true });
+  expect((await progress(page)).inst.cycles.steps).toEqual(ticks(L2, 2));
   page.once("dialog", (d) => d.accept());
   await page.locator("[data-clear]").click();
   await expect(page.locator("[data-clear-msg]")).toHaveText("Progress deleted.");
@@ -116,5 +119,5 @@ test("a broken progress entry doesn't break the site", async ({ page }) => {
   await page.goto(L1.path);
   await page.locator(".navrow .btn.primary").click();
   await expect(page).toHaveURL(`${L1.path}/1`);
-  expect((await progress(page)).inst.cycles.steps).toEqual({ [`${L1.id}:0`]: true });
+  expect((await progress(page)).inst.cycles.steps).toEqual(ticks(L1, 1));
 });

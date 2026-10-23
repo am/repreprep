@@ -43,7 +43,7 @@ test("instruments: only the ready ones have lessons", () => {
 });
 
 test("lesson schema: grid hits become 16 velocities, mistakes are caught", () => {
-  const step = (fig) => ({ k: "play", t: "Play it.", fig });
+  const step = (fig, id = "play-it") => ({ id, k: "play", t: "Play it.", fig });
   const lesson = (steps, more = {}) => ({
     id: "w99",
     number: 99,
@@ -71,7 +71,11 @@ test("lesson schema: grid hits become 16 velocities, mistakes are caught", () =>
   bad(lesson([step()], { typo: 1 })); /* unknown field */
   bad(lesson([step({ grid: { bpm: 90, rows: [{ n: "K", s: "nope", hits: "1" }] } })])); /* unknown sound */
   bad(lesson([step({ grid: { bpm: 90, rows: [{ n: "K", s: "kick" }] } })])); /* no hits */
-  bad(lesson([{ k: "check", t: "Which?", q: ["a", "b"], a: "a" }])); /* no right answer */
+  bad(lesson([{ id: "which", k: "check", t: "Which?", q: ["a", "b"], a: "a" }])); /* no right answer */
+  bad(lesson([{ k: "play", t: "Play it." }])); /* no step id */
+  bad(lesson([step(undefined, "Play it")])); /* a step id is lowercase words joined by - */
+  bad(lesson([step(undefined, "intro")])); /* the intro's id */
+  bad(lesson([step(), step()])); /* two steps with one id */
   bad(lesson([step()], { song: true })); /* a song study has no number */
   bad(lesson([step()], { id: "x1" }));
 });

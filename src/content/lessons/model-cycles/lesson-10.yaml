@@ -18,10 +18,12 @@ concepts:
     p:
       - With GATE on, a note holds for its trig length (LEN) before it decays. With GATE off, LEN is ignored and only DECAY sets how long it rings.
 steps:
-  - k: learn
+  - id: bassline-has-three-jobs
+    k: learn
     fig: u3bassjobs
     t: "A bassline has three jobs. It hits with the kick, so the low end lands as one. It plays the root, which tells your ear what the chord is. And it moves a little: an octave up, or a note that walks into the next one."
-  - k: learn
+  - id: same-bassline-built-one
+    k: learn
     fig:
       grid:
         title: Building a bassline
@@ -73,42 +75,52 @@ steps:
                 }
     t: "The same bassline, built one move at a time over your beat. Play the versions in order: each adds one idea. Then try the last one."
     hear: The octave and the approach note give it life. Too many notes, and the kick has nowhere to land.
-  - k: learn
+  - id: bassline-ll-build-every
+    k: learn
     fig: u3bassmap
     t: "This is the bassline you'll build. Every bar has the same rhythm, but the root changes: A, then F, D and E. Each root can carry its own chord, so the bass already tells the story."
-  - k: play
+  - id: keep-last-lesson-s
+    k: play
     t: "Keep last lesson's riff: with [RECORD] off, hold [PATTERN] + [TRIG 1] and press [RECORD]. Then hold [PATTERN] + [TRIG 11] and press and hold [STOP] until the countdown finishes. Stay on B01."
     hl: h:pattern p:s1 p:record p:s11 h:stop
     hear: B11 keeps the riff. B01 is where the bass goes.
-  - k: play
+  - id: press-select-clear-trigs
+    k: play
     t: Press [RECORD], select [T5] and clear its trigs with [FUNC] + [PLAY]. Open the SCALE menu ([FUNC] + [PAGE]), check that T5's LEN is still 16, and press [BACK].
     hl: p:record h:track p:t5 h:func p:play p:page p:back
     hear: T5 is silent and one bar long, ready for the bass.
-  - k: play
+  - id: make-bass
+    k: play
     t: "Make it a bass: hold [FUNC] and turn [PITCH] to -24 (two octaves down). Turn [SHAPE] down for a round, soft tone and [DECAY] to about 70. Press [GATE] so it lights: notes now hold for their length."
     hl: h:func t:pitch t:shape t:decay p:gate
     hear: "Tap [T5]: a deep, round note. If it vanishes on small speakers, use -12."
-  - k: play
+  - id: lock-kick
+    k: play
     t: "Lock it to the kick: place bass notes on [TRIG 1], [TRIG 11] and [TRIG 15]. Make the first one long: hold [TRIG 1], press [LEVEL/DATA] until LEN shows, and turn it up to about 6."
     hl: p:s1 p:s11 p:s15 h:s1 p:level t:level
     hear: A long root on the 1 and a push with the kick on 11.
-  - k: play
+  - id: make-octave-jump
+    k: play
     t: "Make [TRIG 15] the octave jump: hold it, hold [FUNC] too, and turn [PITCH] up to -12, one octave above the other notes."
     hl: h:s15 h:func t:pitch
     hear: A little hop at the end of the bar that pulls you back to the 1.
-  - k: play
+  - id: spread-over-four-bars
+    k: play
     t: "Spread it over four bars: open the SCALE menu ([FUNC] + [PAGE]), press [T5], set LEN to 64 and press [BACK]. The trigs on page 1 are copied onto pages 2, 3 and 4."
     hl: h:func p:page p:t5 t:level p:back
     hear: The same bar four times, for now.
-  - k: play
+  - id: change-roots
+    k: play
     t: "Change the roots: press [PAGE] for page 2, hold [TRIG 1], [TRIG 11] and [TRIG 15] together, press [LEVEL/DATA] until NOTE shows, and turn 4 semitones down. Page 3: 7 down. Page 4: 5 down."
     hl: p:page h:s1 h:s11 h:s15 p:level t:level
     hear: A, F, D, E. You can almost hear chords that aren't there yet.
-  - k: play
+  - id: add-approach-note
+    k: play
     t: "Add the approach note: on page 4, place a note on [TRIG 16], then hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 2 semitones down, to G. Press [RECORD], listen, and save (hold [FUNC], long-press [SETTINGS])."
     hl: p:page p:s16 h:s16 p:level t:level p:record h:func p:settings
     hear: "E, then G, then A at the top of the loop: the bass leans into its own beginning."
-  - k: check
+  - id: bass-plays-f-d
+    k: check
     t: Your bass plays A, F, D and E, one root per bar. Which job is that?
     q:
       - Rhythm

@@ -1,9 +1,12 @@
 ---
-// The header on every page. On the home page it keeps only the theme switch and the progress (or account)
-// link, since the page itself is the logo and the instrument picker. On phones everything but the logo folds
-// into a menu opened by a knob; on wider screens the menu is just the rest of the header.
+// The header on every page. On the home page it keeps only the What's new bell, the theme switch and the
+// progress (or account) link, since the page itself is the logo and the instrument picker. On phones
+// everything but the logo folds into a menu opened by a knob, and the knob shows the bell's unread dot too;
+// on wider screens the menu is just the rest of the header. The controls pill is always bell, step count,
+// theme switch.
 import Logo from "./Logo.astro";
 import ThemeSwitch from "./ThemeSwitch.astro";
+import NewsLink from "./NewsLink.astro";
 import { INSTRUMENTS } from "../../course/index.js";
 import { SIGN_IN } from "astro:env/client";
 interface Props {
@@ -11,15 +14,22 @@ interface Props {
   home?: boolean;
 }
 const { inst, home } = Astro.props;
-const acct = SIGN_IN ? "Sign in" : "Progress";
+const acct = "Sign in"; /* only shown while sign-in is on; site.js puts your name in once you're signed in */
 ---
 
+{/* one pill, the same on every page: the What's new bell, the step count on a course's pages (a link to the
+    progress page: back up, load, reset) and the theme switch */}
 {home ? (
   <header class="top bare">
-    <ThemeSwitch />
-    <a class="acct" href="/account" id="acct">
-      {acct}
-    </a>
+    <div class="ctrls">
+      <NewsLink />
+      <ThemeSwitch />
+    </div>
+    {SIGN_IN && (
+      <a class="acct" href="/account" id="acct">
+        {acct}
+      </a>
+    )}
   </header>
 ) : (
   <header class="top">
@@ -35,6 +45,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
           <line class="kn-mark" x1="22" y1="22" x2="22" y2="8.4" />
         </g>
       </svg>
+      <span class="kn-dot" data-news-dot hidden></span>
     </button>
     <div class="hmenu" id="hmenu">
       <nav class="instr" aria-label="Instrument">
@@ -52,8 +63,8 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
         )}
       </nav>
       <hr class="hsep" />
-      {/* one pill: the step count (a link to the progress page: back up, load, reset) with the theme switch nested in it */}
       <div class="ctrls">
+        <NewsLink />
         {inst?.ready && (
           <a class="meter" href="/account" title="Your progress: back up, load or reset" id="meterTxt">
             0 of 0 reps
@@ -61,7 +72,7 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
         )}
         <ThemeSwitch />
       </div>
-      {(SIGN_IN || !inst?.ready) && (
+      {SIGN_IN && (
         <a class="acct" href="/account" id="acct">
           {acct}
         </a>
@@ -118,28 +129,49 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     opacity: 0.8;
     margin-left: var(--s1);
   }
+  /* the pill is filled with the text color, so the bell and the step count read in the page's color; the
+     theme switch keeps the page's own color at its right end */
   .ctrls {
     margin-left: auto;
     display: inline-flex;
     align-items: center;
     gap: var(--s2);
-    border: 1px solid var(--line);
+    border: 1px solid var(--fg);
     border-radius: var(--r-pill);
+    background: var(--fg);
   }
   /* the theme pill shares the outer pill's height and right edge: their borders overlap */
   .ctrls :global(.theme) {
     margin: -1px -1px -1px 0;
+    border-color: var(--fg);
+    background: var(--bg);
+  }
+  .ctrls :global(.news) {
+    color: var(--bg);
+  }
+  .ctrls :global(.news:hover) {
+    opacity: 0.7;
+  }
+  .ctrls :global(.news .dot) {
+    box-shadow: 0 0 0 2px var(--fg);
   }
   .meter {
     font-family: var(--mono);
-    font-size: var(--fs-s);
-    color: var(--muted);
+    font-size: var(--fs-xs);
+    color: var(--bg);
     text-decoration: none;
     white-space: nowrap;
     padding: 0 var(--s1) 0 var(--s3);
   }
+  /* a thin line between the bell and the step count, only where there is a step count */
+  .ctrls :global(.news) + .meter {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    border-left: 1px solid var(--bg);
+  }
   .meter:hover {
-    color: var(--fg);
+    opacity: 0.7;
   }
   /* header menu: on wide screens the menu is simply the rest of the header row */
   .knob {
@@ -167,6 +199,24 @@ const acct = SIGN_IN ? "Sign in" : "Progress";
     stroke: var(--bg);
     stroke-width: 2.8;
     stroke-linecap: butt;
+  }
+  /* the bell's unread dot, repeated on the knob while the menu is closed */
+  .knob {
+    position: relative;
+  }
+  .kn-dot {
+    position: absolute;
+    top: 0.25rem;
+    right: 0.25rem;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-radius: 50%;
+    background: var(--led);
+    box-shadow: 0 0 0 2px var(--bg);
+  }
+  .kn-dot[hidden],
+  .top.open .kn-dot {
+    display: none;
   }
   .top.open .knob svg {
     transform: rotate(135deg);
