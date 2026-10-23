@@ -129,22 +129,38 @@ const acct = "Sign in"; /* only shown while sign-in is on; site.js puts your nam
     opacity: 0.8;
     margin-left: var(--s1);
   }
+  /* the pill is filled with the text color, so the bell and the step count read in the page's color; the
+     theme switch keeps the page's own color at its right end */
   .ctrls {
     margin-left: auto;
     display: inline-flex;
     align-items: center;
     gap: var(--s2);
-    border: 1px solid var(--line);
+    border: 1px solid var(--fg);
     border-radius: var(--r-pill);
+    background: var(--fg);
   }
   /* the theme pill shares the outer pill's height and right edge: their borders overlap */
   .ctrls :global(.theme) {
     margin: -1px -1px -1px 0;
+    border-color: var(--fg);
+    background: var(--bg);
+  }
+  .ctrls :global(.news) {
+    color: var(--bg);
+  }
+  .ctrls :global(.news:hover) {
+    opacity: 0.7;
+  }
+  .ctrls :global(.news .dot) {
+    box-shadow: 0 0 0 2px var(--fg);
   }
   .meter {
     font-family: var(--mono);
     font-size: var(--fs-xs);
-    color: var(--muted);
+    letter-spacing: var(--ls-key);
+    text-transform: uppercase;
+    color: var(--bg);
     text-decoration: none;
     white-space: nowrap;
     padding: 0 var(--s1) 0 var(--s3);
@@ -154,10 +170,10 @@ const acct = "Sign in"; /* only shown while sign-in is on; site.js puts your nam
     align-self: stretch;
     display: flex;
     align-items: center;
-    border-left: 1px solid var(--line);
+    border-left: 1px solid var(--bg);
   }
   .meter:hover {
-    color: var(--fg);
+    opacity: 0.7;
   }
   /* header menu: on wide screens the menu is simply the rest of the header row */
   .knob {
