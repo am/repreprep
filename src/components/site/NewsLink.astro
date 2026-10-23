@@ -12,17 +12,15 @@
 </a>
 
 <style>
-  /* its own small pill at the left end of the header's controls pill, the way the theme switch sits at the
-     right end: its border overlaps the outer one, and its icon is colored like the theme buttons */
+  /* sized and colored like the theme switch's buttons, at the left end of the header's controls pill */
   .news {
     position: relative;
     display: grid;
     place-items: center;
     flex: none;
-    width: 2.125rem;
-    height: calc(1.375rem + 6px);
-    margin: -1px 0 -1px -1px;
-    border: 1px solid var(--line);
+    width: 1.625rem;
+    height: 1.375rem;
+    margin-left: var(--s1);
     border-radius: var(--r-pill);
     color: var(--faint);
   }
@@ -41,8 +39,8 @@
   /* unread: a dot in the accent color on the bell's shoulder, with a ring of page color around it */
   .dot {
     position: absolute;
-    top: 0.25rem;
-    right: 0.5rem;
+    top: 0.0625rem;
+    right: 0.25rem;
     width: 0.4375rem;
     height: 0.4375rem;
     border-radius: 50%;
