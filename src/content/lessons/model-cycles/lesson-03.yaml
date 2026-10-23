@@ -95,7 +95,7 @@ steps:
     hear: Now the swing rolls. Turn [SWING] between 50 and 65 to find your spot.
   - id: first-make-velocity-change
     k: play
-    t: First make velocity change the volume. With T3 selected, press [FUNC] + [BACK] to open the PAD menu, turn [LEVEL/DATA] to VDEP and set it to 127, then press [BACK]. If VDEP is 0, velocity does nothing you can hear.
+    t: First make velocity change the volume. With T3 selected, press [FUNC] + [BACK] to open the PAD menu, turn [LEVEL/DATA] to VDEP and set it to 127, then press [BACK]. If VDEP is 0, velocity doesn't change the volume.
     hl: h:func p:back t:level
     hear: No change yet. This only lets the next step be heard.
   - id: make-between-hats-quiet

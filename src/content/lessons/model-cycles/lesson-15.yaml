@@ -17,6 +17,9 @@ concepts:
   - h: Transitions
     p:
       - "Signal a change before it happens: take something out in the last bar, add a fill, or throw one hit into the delay. A part that keeps playing across the change carries the listener with you."
+  - h: "A part that plays itself"
+    p:
+      - "In 1956 Bebe and Louis Barron scored the film Forbidden Planet with electronic circuits they built, each with its own behaviour. Synthesists later made self-playing patches in its spirit, where random values choose what each note does. A slow random LFO gives your intro some of that: it changes a little every few bars, with no one touching it."
 steps:
   - id: energy-curve-song
     k: learn
@@ -89,6 +92,9 @@ steps:
     k: learn
     fig: u4map
     t: "This lesson's plan: copy B01 into B05 to B09, then clear tracks in each copy. B07 stays whole as the peak. The chords play in every section: that's the thread that keeps it one song."
+  - id: intro-has-room-something
+    k: learn
+    t: "An intro has room for something that plays itself. A random LFO picks a new value each cycle. Give two parts random LFOs at different speeds and they drift against each other, so the intro never repeats exactly, even though nothing in the pattern changes."
   - id: get-b01-ready-hand
     k: play
     t: "Get B01 ready to hand over: go to B01, open the SCALE menu ([FUNC] + [PAGE]), set CHG to 64 and press [BACK]. In TRACK mode a pattern otherwise never ends, so the next one would never start. Save: hold [FUNC], long-press [SETTINGS]."
@@ -104,6 +110,11 @@ steps:
     t: "Intro: press [STOP], go to B05 (hold [PATTERN], press [TRIG 5]) and press [RECORD]. Select [T1] and press [FUNC] + [PLAY] to clear its trigs. Do the same on T2, T4 and T5. Press [RECORD] to leave, play it, and save."
     hl: p:stop h:pattern p:s5 p:record h:track p:t1 h:func p:play p:t2 p:t4 p:t5 p:settings
     hear: "Only hats and chords: the idea of the song, waiting for the beat."
+  - id: let-intro-play-itself
+    k: play
+    t: "Let the intro play itself: still in B05, select [T6]. Hold [LFO] and turn [COLOR] a little to the right. Press [LFO], set WAV to RND and MUL to X1, and turn [LFO SPEED] to 32. Then select [T3], hold [LFO], turn [DECAY] a little, set WAV to RND and [LFO SPEED] to 24. Save."
+    hl: h:track p:t6 h:lfo t:color p:lfo t:level t:lfospd p:t3 t:decay h:func p:settings
+    hear: "Every few bars the chord voicing shifts, and the hats grow longer and shorter on their own clock. The intro now changes while you listen."
   - id: step
     k: play
     t: "A: go to B06, press [RECORD] and clear T4. Press [RECORD] to leave. Select [T3] and turn [CHANCE] to about 60%, then select [T6] and turn its [REVERB SEND] down a little. Save. Leave B07 as it is: it's your peak."
@@ -119,6 +130,11 @@ steps:
     t: "Outro: go to B09 and clear T1 and T5. On T6, turn [DECAY] up so the last chords ring longer. Save."
     hl: h:pattern p:s9 p:record h:track p:t1 p:t5 h:func p:play p:t6 t:decay p:settings
     hear: Kick and bass leave first. The song drifts out on the sounds it started with.
+  - id: end-where-began
+    k: play
+    t: "End where you began: in B09, give [T6] the same random LFO on [COLOR] as in the intro (hold [LFO], turn [COLOR], then WAV RND, MUL X1, [LFO SPEED] 32). Save."
+    hl: h:track p:t6 h:lfo t:color p:lfo t:level t:lfospd h:func p:settings
+    hear: "The outro drifts like the intro, so the song closes the way it opened."
   - id: chain
     k: play
     t: "Chain it: with the sequencer stopped, hold [PATTERN], then press and hold [TRIG 5]. Keep it held and press [TRIG 6], [TRIG 7], [TRIG 6], [TRIG 7], [TRIG 8], [TRIG 7] and [TRIG 9] in that order. Let go and press [PLAY]."

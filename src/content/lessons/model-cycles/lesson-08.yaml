@@ -17,6 +17,9 @@ concepts:
   - h: An LFO as an envelope
     p:
       - "With WAV set to ENV, the LFO runs once from the start of each note and stops. Aim it at the volume with negative depth and the sound fades in: a slow attack."
+  - h: "Three speeds"
+    p:
+      - "The same LFO does different jobs at different speeds. Over several bars it changes the music: a part fades in and out. Over one note it shapes the sound, like an envelope. Faster than you can count, hundreds of times a second, it changes the tone itself: that's frequency modulation, the idea behind the FM in lesson 6."
 steps:
   - id: lfo-slow-wave-turns
     k: learn
@@ -81,6 +84,9 @@ steps:
     k: learn
     fig: u2attack
     t: "The ENV waveform runs once per note, like an envelope. Point it at the volume with depth -64 and it pulls the volume down at the start, then lets go: the sound fades in. GATE keeps it held while it does."
+  - id: one-lfo-three-speeds
+    k: learn
+    t: "One LFO, three speeds. [LFO SPEED] and MUL set its rate together: at MUL X1, SPEED 32 takes four bars for one cycle; at MUL 2K the same SPEED is hundreds of cycles a second. A good habit is to keep [LFO SPEED] near the middle and choose the range with MUL."
   - id: play-b01-select-dusty
     k: play
     t: Play B01 and select your dusty hats (hold [TRACK], press [T3]). Hold [LFO] and turn [DECAY] a little to the right. That makes DECAY the LFO's destination, and turning further sets the depth.
@@ -121,6 +127,21 @@ steps:
     t: Press [FUNC] + [BACK], check FIX is OFF, and press [BACK]. Press [LFO] and set WAV to ENV, MUL to X1, DST to DIST and DEP to -64. Turn [LFO SPEED] to set how slowly it fades in.
     hl: h:func p:back p:lfo t:level t:lfospd
     hear: "The chord swells in instead of starting at once: a slow attack made from an LFO."
+  - id: slow-over-bars
+    k: play
+    t: "Slow, over bars: still in B04, select [T1]. Hold [LFO] and turn [VOLUME + DIST] a little to the left. Press [LFO], set WAV to TRI and MUL to X1, then turn [LFO SPEED] to 32."
+    hl: h:track p:t1 h:lfo t:vol p:lfo t:level t:lfospd
+    hear: "Over four bars the kick fades out and comes back. The loop is the same, but the music changes on its own."
+  - id: medium-over-one-note
+    k: play
+    t: "Medium, over one note: select [T5]. Press [LFO], set WAV to ENV, DST to PITCH and DEP to about +20, then turn [LFO SPEED] to 32. Play [T5] a few times, then set DEP to -20 and play it again."
+    hl: h:track p:t5 p:lfo t:level t:lfospd p:t5
+    hear: "Positive depth starts each note high and drops it into tune, like a tom. Negative depth starts it low and bends it up."
+  - id: fast-inside-tone
+    k: play
+    t: "Fast, inside the tone: still on T5, set WAV to TRI, DEP to about +5 and MUL to 2K. Hold [T5] and slowly turn [LFO SPEED]. Then set DEP back to 0. These changes stay in B04, so your song in B01 is untouched."
+    hl: p:lfo t:level h:t5 t:lfospd
+    hear: "The wobble turns into a new tone: brighter, metallic, sometimes out of tune. That's frequency modulation, made by hand."
   - id: hats-move-lfo-decay
     k: check
     t: Your hats move with an LFO on DECAY. You set RST to ON and the movement disappears. Why?
