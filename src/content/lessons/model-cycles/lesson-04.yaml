@@ -81,9 +81,14 @@ steps:
     hear: A little roll that leads back to the top.
   - id: turn-second-time-through
     k: play
-    t: "Turn the second time through bar 4 into bar 8, the D: still on page 4, hold [TRIG 14], [TRIG 15] and [TRIG 16] and turn [CHANCE] until the screen shows 2:2. Then select [T1], hold the kicks on [TRIG 9] and [TRIG 11], and set them to 1:2."
-    hl: h:s14 h:s15 h:s16 t:chance h:track p:t1 h:s9 h:s11
-    hear: "Bar 4 now has its kicks and no roll. Bar 8 drops the kicks and plays the roll: an empty plus a fill."
+    t: "Bar 8, the D: your 4-bar pattern plays twice in an 8-bar phrase, so bar 8 is the second time through page 4. Still on page 4, hold [TRIG 14] and [TRIG 15] and turn [CHANCE] until the screen shows 2:2. These two snares now play only in bar 8."
+    hl: h:s14 h:s15 t:chance
+    hear: Bar 4 keeps one snare on 16. Bar 8 plays all three.
+  - id: empty-before-fill
+    k: play
+    t: "An empty before the fill: select [T1], hold [TRIG 9] and [TRIG 11] and turn [CHANCE] until the screen shows 1:2. These two kicks now play only in bar 4."
+    hl: h:track p:t1 h:s9 h:s11 t:chance
+    hear: "Bar 8 drops its kicks and plays the snares: an empty plus a fill."
   - id: roll-into-bar-8
     k: play
     t: "Turn bar 8's snares into a roll: still on page 4, select [T2], hold [TRIG 14] and press [RETRIG] to open TRIG REPEAT. Keep holding it. With [LEVEL/DATA] set it ON, RTE to 1/32, LEN to 3/16 (three steps) and FDE to about 100. Let go of [TRIG 14]."

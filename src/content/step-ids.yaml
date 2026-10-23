@@ -122,6 +122,7 @@ w04:
     - roll-one-trig
     - roll-into-bar-8
     - get-ready
+    - empty-before-fill
   retired: []
 w05:
   used:
