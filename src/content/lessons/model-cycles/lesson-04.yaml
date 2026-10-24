@@ -93,7 +93,7 @@ steps:
     hear: "Bar 8 drops its kicks and plays the snares: an empty plus a fill."
   - id: roll-into-bar-8
     k: play
-    t: "Turn bar 8's snares into a roll: still on page 4:4, select [T2], hold [TRIG 14] and press [RETRIG] to open TRIG REPEAT. Keep holding it. With [LEVEL/DATA] set it ON, RTE to 1/32, LEN to 3 (three steps, so the fade lasts to the end of the bar) and FDE to about 100. Let go of [TRIG 14]."
+    t: "Turn bar 8's snares into a roll: still on page 4:4, select [T2], hold [TRIG 14] and press [RETRIG] to open TRIG REPEAT. Keep holding it. With [LEVEL/DATA] set it ON, RTE to 1/32, LEN to 3.00 (three steps, so the fade lasts to the end of the bar) and FDE to about 100. Let go of [TRIG 14]."
     hl: h:track p:t2 h:s14 p:retrig t:level
     hear: "Every eighth bar the snare rises in a fast roll into bar 1. The fade is a velocity curve, so it works because T2's VDEP is at 127 from lesson 3."
   - id: add-fill-play-hand

@@ -13,7 +13,7 @@
     - lesson: model-cycles/w01
       what: The lesson now opens by making a project just for the course, with a drawing of how projects, banks and patterns fit together. You save the project once at the start, so the last step only saves the pattern.
     - lesson: model-cycles/w04
-      what: A Get ready step before the first Play step shows what B01 should hold from lesson 3, as a grid you can play, and how to get back to it. Bar 8 is set up in two shorter steps, and bar 4 keeps one snare on 16 so it still differs from bars 1 to 3. Pages are named 1:4 to 4:4, like the page lights, and the panel lights the page each step is on. The roll's LEN is 3 steps, as the screen shows it.
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 3, as a grid you can play, and how to get back to it. Bar 8 is set up in two shorter steps, and bar 4 keeps one snare on 16 so it still differs from bars 1 to 3. Pages are named 1:4 to 4:4, like the page lights, and the panel lights the page each step is on. The roll's LEN is 3.00 (three steps), as the screen shows it.
 
 - id: 0.3.0
   date: "2026-10-23"
