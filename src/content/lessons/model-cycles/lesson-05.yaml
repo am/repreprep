@@ -109,8 +109,8 @@ steps:
     hear: First just louder, then rougher. Distortion adds harmonics, which changes the timbre too.
   - id: soften-snare
     k: play
-    t: "Soften the snare: unmute it ([FUNC] + [T2]) and select [T2]. Turn [SHAPE] down to soften its noise and [COLOR] down for a more tonal body. Hold [FUNC] and turn [PITCH] down 2 semitones. Set [DECAY] so it sounds like a soft brush, not a crack."
-    hl: h:func p:t2 h:track p:t2 t:shape t:color h:func t:pitch t:decay
+    t: "Soften the snare: unmute it ([FUNC] + [T2]) and select [T2]. Turn [SHAPE] down to soften its noise. Leave [COLOR] at 0: it adds clangy, metallic overtones, so 0 keeps the body tonal. Hold [FUNC] and turn [PITCH] down 2 semitones. Set [DECAY] so it sounds like a soft brush, not a crack."
+    hl: h:func p:t2 h:track p:t2 t:shape h:func t:pitch t:decay
     hear: A woody, muted snare. Your ghost note on [TRIG 12] softens with it.
   - id: make-harder-hits-ring
     k: play

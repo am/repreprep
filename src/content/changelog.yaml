@@ -3,6 +3,13 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.5.2
+  date: "2026-10-24"
+  title: Snare shaping fix
+  lessons:
+    - lesson: model-cycles/w05
+      what: Soften the snare no longer asks you to turn COLOR down. On the snare COLOR adds metallic overtones and starts at 0, so you leave it there.
+
 - id: 0.5.1
   date: "2026-10-24"
   title: Clear a lesson's progress
