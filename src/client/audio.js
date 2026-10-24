@@ -97,6 +97,17 @@ export function gridStop() {
 }
 const gridState = (id) => gridPreset(GRIDS[id]);
 /* on each page: pick up the grids' specs, and redraw any grid you already edited */
+
+/* a trig condition on pass n (0 = the first time round): A:B plays on pass A of every B, FILL only while
+   fill is held (never here), X% by chance */
+function condTrue(c, n) {
+  if (!c) return true;
+  if (c === "FILL") return false;
+  const ab = c.match(/^(\d):(\d)$/);
+  if (ab) return n % +ab[2] === +ab[1] - 1;
+  return Math.random() * 100 < parseFloat(c);
+}
+
 export function mountGrids() {
   document.querySelectorAll(".gridhost[data-grid]").forEach((host) => {
     const id = host.dataset.grid;
@@ -130,7 +141,7 @@ function gridPlay(id) {
         const len = r.len || 16;
         const i = k % len;
         const v = r.v[i];
-        if (!v) return;
+        if (!v || !condTrue(r.cd && r.cd[i], Math.floor(k / len))) return;
         let t = run.next + (i % 2 ? (sw * pair) / 2 : 0) + ((r.off && r.off[i]) || 0) * sx;
         (VOICES[r.s] || VOICES.perc)(Math.max(t, AC.currentTime), v, (r.p && r.p[i]) || r.note);
       });

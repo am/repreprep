@@ -88,6 +88,7 @@ w02:
     - b02-build-one-drop
     - still-b02-turn-one
     - one-drop-where-does
+    - get-ready
   retired: []
 w03:
   used:
@@ -105,6 +106,7 @@ w03:
     - swing-everything-together
     - save-pattern
     - which-hits-does-swing
+    - get-ready
   retired: []
 w04:
   used:
@@ -140,6 +142,7 @@ w05:
     - turned-sweep-down-kick
     - velocity-move-second-knob
     - make-harder-hits-ring
+    - get-ready
   retired: []
 w06:
   used:
@@ -155,6 +158,7 @@ w06:
     - darken-perc-too
     - compare
     - want-hats-darker-which
+    - get-ready
   retired: []
 w07:
   used:
@@ -170,6 +174,7 @@ w07:
     - save-kit
     - save-pattern-too
     - layered-snare-what-job
+    - get-ready
   retired: []
 w08:
   used:
@@ -190,6 +195,7 @@ w08:
     - slow-over-bars
     - medium-over-one-note
     - fast-inside-tone
+    - get-ready
   retired: []
 w09:
   used:
@@ -205,6 +211,7 @@ w09:
     - press-t5-place-notes
     - press-leave-grid-recording
     - root-which-key-plays
+    - get-ready
   retired: []
 w10:
   used:
@@ -220,6 +227,7 @@ w10:
     - change-roots
     - add-approach-note
     - bass-plays-f-d
+    - get-ready
   retired: []
 w11:
   used:
@@ -236,6 +244,7 @@ w11:
     - taste-dorian
     - press-leave-grid-recording
     - which-semitone-formula-minor
+    - get-ready
   retired: []
 w12:
   used:
@@ -251,6 +260,7 @@ w12:
     - let-question-vary
     - press-leave-grid-recording
     - bar-2-plays-c
+    - get-ready
   retired: []
 w13:
   used:
@@ -268,6 +278,7 @@ w13:
     - retrig-setup-sets-how
     - strummed-chord
     - blur
+    - get-ready
   retired: []
 w14:
   used:
@@ -282,6 +293,7 @@ w14:
     - balance
     - pan-pairs
     - four-parts-all-grab
+    - get-ready
   retired: []
 w15:
   used:
@@ -300,6 +312,7 @@ w15:
     - intro-has-room-something
     - let-intro-play-itself
     - end-where-began
+    - get-ready
   retired: []
 w16:
   used:
@@ -316,4 +329,5 @@ w16:
     - start-finishing-loop
     - mute-kick-break-cue
     - play-roll-hand
+    - get-ready
   retired: []

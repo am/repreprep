@@ -31,6 +31,56 @@ steps:
     k: learn
     fig: u4finish
     t: Finishing is a loop, not a moment. Record, listen away from the studio, write three fixes, fix and save, then record again. Small rounds finish more music than one perfect attempt.
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B05
+        bpm: 90
+        swing: 58
+        slots:
+          - slot: B05
+            rows:
+              - { n: T1 Kick, s: kick, hits: "" }
+              - { n: T2 Snare, s: snare, hits: "" }
+              - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+              - { n: T4 Perc, s: perc, hits: "" }
+              - { n: T5 Tone, s: bass, hits: "" }
+              - { n: T6 Chord, s: keys, hits: "1" }
+          - slot: B06
+            rows:
+              - { n: T1 Kick, s: kick, hits: "1,9,11" }
+              - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+              - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+              - { n: T4 Perc, s: perc, hits: "" }
+              - { n: T5 Tone, s: bass, hits: "1,11,15" }
+              - { n: T6 Chord, s: keys, hits: "1" }
+          - slot: B07
+            rows:
+              - { n: T1 Kick, s: kick, hits: "1,9,11" }
+              - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+              - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+              - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+              - { n: T5 Tone, s: bass, hits: "1,11,15" }
+              - { n: T6 Chord, s: keys, hits: "1" }
+          - slot: B08
+            rows:
+              - { n: T1 Kick, s: kick, hits: "" }
+              - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+              - { n: T3 Hats, s: hat, hits: "" }
+              - { n: T4 Perc, s: perc, hits: "" }
+              - { n: T5 Tone, s: bass, hits: "1,11,15" }
+              - { n: T6 Chord, s: keys, hits: "1" }
+          - slot: B09
+            rows:
+              - { n: T1 Kick, s: kick, hits: "" }
+              - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+              - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+              - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+              - { n: T5 Tone, s: bass, hits: "" }
+              - { n: T6 Chord, s: keys, hits: "1" }
+    t: "Your sections are B05 to B09, and each should match its tab. If one doesn't, go to it (hold [PATTERN], press [T2], press its trig key), then hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 h:func
   - id: rehearse-cues
     k: play
     t: "Rehearse the cues: go to B05 and press [PLAY]. In the last bar of each section, hold [PATTERN] and press the next pattern's trig key. The new pattern flashes on the screen and starts when the current one ends."

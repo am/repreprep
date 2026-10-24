@@ -61,6 +61,46 @@ steps:
     k: learn
     fig: u2palette
     t: "Think of your kit as a palette: each sound owns its own spot, low or high, short or long. A new sound fits best in an empty spot. Leave room for the bass and chords you'll add later."
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        bars:
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13,16:.24", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11", cond: { 9: "1:2", 11: "1:2" } }
+            - {
+                n: T2 Snare,
+                s: snare,
+                hits: "5,9,11,12:.2,13,14:.3,15:.3,16:.3",
+                nudge: "12:.3",
+                cond: { 9: FILL, 11: FILL, 14: "2:2", 15: "2:2" },
+              }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
   - id: play-b01-soft-snare
     k: play
     t: "Play B01. Your soft snare from lesson 5 is the body. Give it a tail: select [T2] and turn [DECAY] up a little, until each backbeat lingers."
@@ -68,8 +108,9 @@ steps:
     hear: A longer, softer hit.
   - id: add-top-layer-t3
     k: play
-    t: "Add a top layer on T3: press [RECORD], select [T3], make sure the first page light is on, and press [TRIG 5] and [TRIG 13] so a hat plays with each snare."
-    hl: p:record h:track p:t3 p:s5 p:s13
+    t: "Add a top layer on T3: press [RECORD], select [T3], press [PAGE] until the 1:4 light is on, and press [TRIG 5] and [TRIG 13] so a hat plays with each snare."
+    hl: p:page p:record h:track p:t3 p:s5 p:s13
+    page: 1
     hear: The snare gets an edge, but your dark hat is the wrong colour for it. Shape it next.
   - id: shape-top
     k: play
@@ -78,8 +119,9 @@ steps:
     hear: "A tiny bright tick that only adds edge. Listen to the snare: it should sound like one drum."
   - id: copy-layer-every-bar
     k: play
-    t: "Copy the layer to every bar: hold [TRIG 5] and [TRIG 13] and press [RECORD]. Press [PAGE] for page 2, hold [TRIG 5] and press [STOP] to paste. Repeat on pages 3 and 4."
+    t: "Copy the layer to every bar: hold [TRIG 5] and [TRIG 13] and press [RECORD]. Press [PAGE] until the 2:4 light is on, hold [TRIG 5] and press [STOP] to paste. Repeat on 3:4 and 4:4."
     hl: h:s5 h:s13 p:record p:page p:stop
+    page: 4
     hear: Every backbeat has its top now, locks included.
   - id: make-found-sound-t4
     k: play
