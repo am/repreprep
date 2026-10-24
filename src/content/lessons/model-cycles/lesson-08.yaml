@@ -87,6 +87,66 @@ steps:
   - id: one-lfo-three-speeds
     k: learn
     t: "One LFO, three speeds. [LFO SPEED] and MUL set its rate together: at MUL X1, SPEED 32 takes four bars for one cycle; at MUL 2K the same SPEED is hundreds of cycles a second. A good habit is to keep [LFO SPEED] near the middle and choose the range with MUL."
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        bars:
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - {
+                n: T3 Hats,
+                s: hat,
+                hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24",
+                new: "5,13",
+              }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13,16:.24", nudge: "12:.3" }
+            - {
+                n: T3 Hats,
+                s: hat,
+                hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24",
+                new: "5,13",
+              }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - {
+                n: T3 Hats,
+                s: hat,
+                hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24",
+                new: "5,13",
+              }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11", cond: { 9: "1:2", 11: "1:2" } }
+            - {
+                n: T2 Snare,
+                s: snare,
+                hits: "5,9,11,12:.2,13,14:.3,15:.3,16:.3",
+                nudge: "12:.3",
+                cond: { 9: FILL, 11: FILL, 14: "2:2", 15: "2:2" },
+              }
+            - {
+                n: T3 Hats,
+                s: hat,
+                hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24",
+                new: "5,13",
+              }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
   - id: play-b01-select-dusty
     k: play
     t: Play B01 and select your dusty hats (hold [TRACK], press [T3]). Hold [LFO] and turn [DECAY] a little to the right. That makes DECAY the LFO's destination, and turning further sets the depth.
@@ -139,7 +199,7 @@ steps:
     hear: "Positive depth starts each note high and drops it into tune, like a tom. Negative depth starts it low and bends it up."
   - id: fast-inside-tone
     k: play
-    t: "Fast, inside the tone: still on T5, set WAV to TRI, DEP to about +5 and MUL to 2K. Hold [T5] and slowly turn [LFO SPEED]. Then set DEP back to 0. These changes stay in B04, so your song in B01 is untouched."
+    t: "Fast, inside the tone: still on [T5], set WAV to TRI, DEP to about +5 and MUL to 2K. Hold [T5] and slowly turn [LFO SPEED]. Then set DEP back to 0. These changes stay in B04, so your song in B01 is untouched."
     hl: p:lfo t:level h:t5 t:lfospd
     hear: "The wobble turns into a new tone: brighter, metallic, sometimes out of tune. That's frequency modulation, made by hand."
   - id: hats-move-lfo-decay

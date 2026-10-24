@@ -33,6 +33,46 @@ steps:
   - id: retrig-setup-sets-how
     k: learn
     t: "RETRIG SETUP ([FUNC] + [RETRIG]) sets how a pad repeats when you play it. RTE is the rate: 1/16 is one hit per step, 1/32 two. A.ON (always on) makes the pad repeat every time you press it, with no need to hold [RETRIG]."
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        bars:
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15" }
+            - { n: T6 Chord, s: keys, hits: "1" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13,16:.24", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15" }
+            - { n: T6 Chord, s: keys, hits: "1,9,11,13,15", cond: { 15: "50%" }, new: "9,11,13,15" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15" }
+            - { n: T6 Chord, s: keys, hits: "1" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11", cond: { 9: "1:2", 11: "1:2" } }
+            - {
+                n: T2 Snare,
+                s: snare,
+                hits: "5,9,11,12:.2,13,14:.3,15:.3,16:.3",
+                nudge: "12:.3",
+                cond: { 9: FILL, 11: FILL, 14: "2:2", 15: "2:2" },
+              }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15,16" }
+            - { n: T6 Chord, s: keys, hits: "1,9,11,13,15", cond: { 15: "2:2" }, new: "9,11,13,15" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
   - id: play-b01-low-set
     k: play
     t: "Play B01 with [MAIN VOLUME] low. Set the shared room: turn [REVERB SIZE] to about 90. Then hold [FUNC] and turn [REVERB SIZE] to set REV TONE to about +20, which trims the lows from the reverb so it doesn't cloud the kick."
@@ -45,18 +85,20 @@ steps:
     hear: "At 90 BPM a dotted eighth is half a second: echoes that land between the beats."
   - id: place-parts-near-far
     k: play
-    t: Place parts near and far. Select [T1] and turn [REVERB SEND] and [DELAY SEND] fully left to OFF. Do the same on T2 and T5. Then set [REVERB SEND] to about 30 on T3 and about 70 on T6.
+    t: Place parts near and far. Select [T1] and turn [REVERB SEND] and [DELAY SEND] fully left to OFF. Do the same on [T2] and [T5]. Then select [T3] and set [REVERB SEND] to about 30, and select [T6] and set it to about 70.
     hl: h:track p:t1 t:reverb t:delay p:t2 p:t5 p:t3 p:t6
     hear: Kick, snare and bass up front and solid, hats a step back, chords floating behind.
   - id: throw
     k: play
-    t: "A throw: press [RECORD], press [PAGE] until the fourth light is on, and select [T2]. Hold [TRIG 13] and turn [DELAY SEND] to about 100."
+    t: "A throw: press [RECORD], press [PAGE] until the 4:4 light is on, and select [T2]. Hold [TRIG 13] and turn [DELAY SEND] to about 100."
     hl: p:record p:page h:track p:t2 h:s13 t:delay
+    page: 4
     hear: "Once every four bars the last snare echoes away on its own. Its key flashes: it holds a lock."
   - id: room-shot
     k: play
-    t: "A room shot: press [PAGE] until the second light is on, hold [TRIG 5] and turn [REVERB SEND] to about 110. Press [RECORD] to leave grid recording."
+    t: "A room shot: press [PAGE] until the 2:4 light is on, hold [TRIG 5] and turn [REVERB SEND] to about 110. Press [RECORD] to leave grid recording."
     hl: p:page h:s5 t:reverb p:record
+    page: 2
     hear: One snare in bar 2 blooms into a big room, then the dry beat is straight back.
   - id: ride-feedback
     k: play
@@ -75,7 +117,7 @@ steps:
     hear: "The chord repeats fast while you hold the pad: choppy with a short decay, smoother with a long one."
   - id: blur
     k: play
-    t: "Blur it: turn [DELAY SEND] and [REVERB SEND] up to about 80 on T6 and hold [T6] again. Then press [LFO], set WAV to RND, DST to the delay send, MUL to 1K and DEP to about 40, and play it once more."
+    t: "Blur it: turn [DELAY SEND] and [REVERB SEND] up to about 80 on [T6] and hold [T6] again. Then press [LFO], set WAV to RND, DST to the delay send, MUL to 1K and DEP to about 40, and play it once more."
     hl: t:delay t:reverb h:t6 p:lfo t:level
     hear: "The repeats melt into a shimmer. With the fast random LFO on the send, each echo carries a little buzz of its own."
   - id: dub-mix-which-parts

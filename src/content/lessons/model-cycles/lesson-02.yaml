@@ -74,10 +74,25 @@ steps:
               - { n: Shaker, s: shaker, hits: "6,14", vel: 0.4 }
     t: "Five patterns a lot of music grows from. Switch between them and play each one. Look at where the kick sits compared with the snare: that relationship is most of a style's identity."
     hear: The one drop floats because beat 1 is empty. Steppers pushes because the kick never stops.
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        rows:
+          - { n: T1 Kick, s: kick, hits: "1,5,9,13", new: "1,5,9,13" }
+          - { n: T2 Snare, s: snare, hits: "" }
+          - { n: T3 Hats, s: hat, hits: "" }
+          - { n: T4 Perc, s: perc, hits: "" }
+          - { n: T5 Tone, s: bass, hits: "" }
+          - { n: T6 Chord, s: keys, hits: "" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
   - id: go-b01-hold-press
     k: play
-    t: Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). Press [RECORD], select [T1] and remove the kicks on [TRIG 5] and [TRIG 13] by pressing them. Add one on [TRIG 11]. Press [PLAY].
-    hl: h:pattern p:record h:track p:t1 p:s5 p:s13 p:s11 p:play
+    t: Press [RECORD], select [T1] and remove the kicks on [TRIG 5] and [TRIG 13] by pressing them. Add one on [TRIG 11]. Press [PLAY].
+    hl: p:record h:track p:t1 p:s5 p:s13 p:s11 p:play
     hear: "Your kick now sits on 1, 9 and 11: a relaxed, rolling bounce."
   - id: select-place-snare-beats
     k: play
@@ -106,7 +121,7 @@ steps:
     hear: Everything hits together on beat 3. The empty downbeat makes it float.
   - id: still-b02-turn-one
     k: play
-    t: "Still on B02, turn the one drop into steppers: on T1, add kicks on [TRIG 1], [TRIG 5] and [TRIG 13]. Then go back to B01 and listen to your own beat again."
+    t: "Still on B02, turn the one drop into steppers: select [T1] and add kicks on [TRIG 1], [TRIG 5] and [TRIG 13]. Then go back to B01 and listen to your own beat again."
     hl: h:track p:t1 p:s1 p:s5 p:s13 h:pattern p:s1
     hear: Same tempo, three different worlds. Your B01 beat sits between them.
   - id: one-drop-where-does

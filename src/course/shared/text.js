@@ -3,7 +3,14 @@ import { songLink } from "./songs.js";
 
 /* Step text: [KEY] becomes a keycap (coloured by the step's hl), quoted song titles become Spotify links,
    and Play steps are split into one bullet per sentence. */
-export const KIND = { intro: "Intro", learn: "Learn", play: "Play", check: "Check", challenge: "Challenge" };
+export const KIND = {
+  intro: "Intro",
+  ready: "Get ready",
+  learn: "Learn",
+  play: "Play",
+  check: "Check",
+  challenge: "Challenge",
+};
 export function parseHl(s) {
   const r = { press: [], hold: [], turn: [] };
   (s || "")
@@ -96,6 +103,12 @@ export function stepParts(st) {
   if (st.k === "learn" || st.k === "check")
     return ss.length < 2 ? { lead, first: body, rest: "" } : { lead, first: ss[0], rest: ss.slice(1).join(" ") };
   return ss.length < 2 ? { lead, para: body } : { lead, items: ss };
+}
+
+/* light the page the step is on (1 to 4); panels without page lights are left as they are */
+export function withPage(svg, page = 1) {
+  let i = 0;
+  return svg.replace(/class="pageled(?: on)?"/g, () => `class="pageled${++i === page ? " on" : ""}"`);
 }
 
 /* light the controls a step uses on the panel drawing (press / hold / turn), or mark one as selected */

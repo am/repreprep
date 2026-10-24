@@ -313,6 +313,9 @@ a.song {
   text-underline-offset: 0.1875rem;
   white-space: nowrap;
 }
+.cell .cd::after {
+  content: attr(data-cd);
+}
 a.song:hover {
   color: var(--done);
 }
@@ -794,6 +797,28 @@ svg.fig {
 .gp .btn {
   font-size: 1em;
 }
+.cell.nw {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
+}
+.cell .cd {
+  position: absolute;
+  inset: auto 0 0.25rem;
+  font: var(--fw-semibold) 0.5rem/1 var(--panel);
+  white-space: nowrap;
+  color: var(--fg);
+  text-align: center;
+}
+/* a Get ready step's map: the playable grid with room under it for what the grid can't show */
+.pmap {
+  --gw: max(min(100cqi - 16px, 22rem), min(100cqi - 16px, (100cqh - 300px) / (var(--rows, 6) * 1.25) * 16 + 90px));
+  width: var(--gw);
+  margin: auto;
+  font-size: clamp(13px, calc(var(--gw) / 48), 22px);
+}
+.pmap .gp {
+  --gw: inherit;
+}
 .gctl {
   display: flex;
   flex-wrap: wrap;
@@ -840,6 +865,17 @@ svg.fig {
   }
 }
 @media (max-width: 660px) {
+  /* the map's track names take three lines, so its cells fill the row instead of keeping their shape */
+  .pmap .cell {
+    aspect-ratio: auto;
+  }
+  .cell .cd {
+    font-size: 0.4375rem;
+    letter-spacing: -0.03em;
+  }
+  .cell .cd::after {
+    content: attr(data-sm);
+  }
   .gg {
     gap: 2px;
     grid-template-columns: 2.875rem repeat(var(--n), minmax(0, 1fr));

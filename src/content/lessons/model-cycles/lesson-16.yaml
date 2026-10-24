@@ -31,6 +31,56 @@ steps:
     k: learn
     fig: u4finish
     t: Finishing is a loop, not a moment. Record, listen away from the studio, write three fixes, fix and save, then record again. Small rounds finish more music than one perfect attempt.
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B05
+        bpm: 90
+        swing: 58
+        slots:
+          - slot: B05
+            rows:
+              - { n: T1 Kick, s: kick, hits: "" }
+              - { n: T2 Snare, s: snare, hits: "" }
+              - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+              - { n: T4 Perc, s: perc, hits: "" }
+              - { n: T5 Tone, s: bass, hits: "" }
+              - { n: T6 Chord, s: keys, hits: "1" }
+          - slot: B06
+            rows:
+              - { n: T1 Kick, s: kick, hits: "1,9,11" }
+              - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+              - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+              - { n: T4 Perc, s: perc, hits: "" }
+              - { n: T5 Tone, s: bass, hits: "1,11,15" }
+              - { n: T6 Chord, s: keys, hits: "1" }
+          - slot: B07
+            rows:
+              - { n: T1 Kick, s: kick, hits: "1,9,11" }
+              - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+              - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+              - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+              - { n: T5 Tone, s: bass, hits: "1,11,15" }
+              - { n: T6 Chord, s: keys, hits: "1" }
+          - slot: B08
+            rows:
+              - { n: T1 Kick, s: kick, hits: "" }
+              - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+              - { n: T3 Hats, s: hat, hits: "" }
+              - { n: T4 Perc, s: perc, hits: "" }
+              - { n: T5 Tone, s: bass, hits: "1,11,15" }
+              - { n: T6 Chord, s: keys, hits: "1" }
+          - slot: B09
+            rows:
+              - { n: T1 Kick, s: kick, hits: "" }
+              - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+              - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+              - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+              - { n: T5 Tone, s: bass, hits: "" }
+              - { n: T6 Chord, s: keys, hits: "1" }
+    t: "Your sections are B05 to B09, and each should match its tab. If one doesn't, go to it (hold [PATTERN], press [T2], press its trig key), then hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 h:func
   - id: rehearse-cues
     k: play
     t: "Rehearse the cues: go to B05 and press [PLAY]. In the last bar of each section, hold [PATTERN] and press the next pattern's trig key. The new pattern flashes on the screen and starts when the current one ends."
@@ -38,13 +88,13 @@ steps:
     hear: Clean switches on the bar line. A section loops until you cue the next, so stay as long as it feels right.
   - id: add-mutes-fills
     k: play
-    t: "Add mutes and fills: in an A, mute the hats ([FUNC] + [T3]) for its last bar and unmute them on the 1 of the B. Going into a new section, hold [PAGE] through the first beat to play lesson 4's FILL hat."
+    t: "Add mutes and fills: in an A, mute the hats ([FUNC] + [T3]) for its last bar and unmute them on the 1 of the B. Going into a new section, hold [PAGE] through the last bar to play lesson 4's FILL snares."
     hl: h:func p:t3 h:page
     hear: Small moves at the edges of sections make each change feel deliberate.
   - id: play-roll-hand
     k: play
-    t: "Play a roll by hand: press [FUNC] + [RETRIG] on T2, set RTE to 1/32 and A.ON to OFF, and press [BACK]. In the last beat before a new section, hold [RETRIG] and hold [T2]. Let go on the 1."
-    hl: h:func p:retrig t:level p:back h:t2
+    t: "Play a roll by hand: select [T2], press [FUNC] + [RETRIG], set RTE to 1/32 and A.ON to OFF, and press [BACK]. In the last beat before a new section, hold [RETRIG] and hold [T2]. Let go on the 1."
+    hl: h:func p:retrig t:level p:back h:t2 h:track p:t2
     hear: "A snare roll you play live. Press the pad harder for a louder roll: T2's VDEP is up, so the repeats follow how hard you press."
   - id: break-b08-make-temporary
     k: play

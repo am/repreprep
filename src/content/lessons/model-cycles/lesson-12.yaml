@@ -70,10 +70,51 @@ steps:
                 }
     t: "Hear it: three notes asked, then answered. Then the version that never lands, and a sequence, where the motif repeats from a higher note."
     hear: Ending on the root feels like a full stop. Ending anywhere else feels like a comma.
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        bars:
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15" }
+            - { n: T6 Chord, s: keys, hits: "1", new: "1" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13,16:.24", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15" }
+            - { n: T6 Chord, s: keys, hits: "1", new: "1" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15" }
+            - { n: T6 Chord, s: keys, hits: "1", new: "1" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11", cond: { 9: "1:2", 11: "1:2" } }
+            - {
+                n: T2 Snare,
+                s: snare,
+                hits: "5,9,11,12:.2,13,14:.3,15:.3,16:.3",
+                nudge: "12:.3",
+                cond: { 9: FILL, 11: FILL, 14: "2:2", 15: "2:2" },
+              }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15,16" }
+            - { n: T6 Chord, s: keys, hits: "1", new: "1" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
   - id: go-b01-press-select
     k: play
-    t: "Go to B01, press [RECORD] and select [T6]. Press [PAGE] for page 2 and place a note on [TRIG 9]: the melody's first note."
+    t: "Press [RECORD] and select [T6]. Press [PAGE] until the 2:4 light is on and place a note on [TRIG 9]: the melody's first note."
     hl: p:record h:track p:t6 p:page p:s9
+    page: 2
     hear: "The chord in bar 2 now stops halfway: a track plays one sound at a time."
   - id: make-single-note
     k: play
@@ -92,18 +133,20 @@ steps:
     hear: "It ends on B, the 2nd, and hangs in the air: a question."
   - id: answer
     k: play
-    t: "Answer it: hold [TRIG 9], [TRIG 11] and [TRIG 13] and press [RECORD]. Press [PAGE] for page 4, hold [TRIG 9] and press [STOP]. Then copy [TRIG 9] to [TRIG 15] the same way."
+    t: "Answer it: hold [TRIG 9], [TRIG 11] and [TRIG 13] and press [RECORD]. Press [PAGE] until the 4:4 light is on, hold [TRIG 9] and press [STOP]. Then copy [TRIG 9] to [TRIG 15] the same way."
     hl: h:s9 h:s11 h:s13 p:record p:page p:stop h:s15
+    page: 4
     hear: "Bar 4 plays A, C, B and then A again: the answer lands home."
   - id: make-answer-wait
     k: play
-    t: "Make the answer wait: on page 4, hold [TRIG 15] and turn [CHANCE] until the screen shows 2:2. It now lands home only every second time round."
+    t: "Make the answer wait: still on page 4:4, hold [TRIG 15] and turn [CHANCE] until the screen shows 2:2. It now lands home only every second time round."
     hl: h:s15 t:chance
     hear: "Bars 1–4 ask twice, bars 5–8 finally answer: an 8-bar phrase from a 4-bar pattern."
   - id: let-question-vary
     k: play
-    t: "Let the question vary: on page 2, copy [TRIG 13] to [TRIG 15]. On [TRIG 15], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones higher, to D. Then hold it and turn [CHANCE] to 50%."
+    t: "Let the question vary: press [PAGE] until the 2:4 light is on, copy [TRIG 13] to [TRIG 15]. On [TRIG 15], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones higher, to D. Then hold it and turn [CHANCE] to 50%."
     hl: p:page h:s13 p:record h:s15 p:stop p:level t:level t:chance
+    page: 2
     hear: Sometimes the question climbs one step further. It never plays quite the same way twice.
   - id: press-leave-grid-recording
     k: play
@@ -120,4 +163,4 @@ steps:
       - It uses a leap
     a: Ending on the root sounds like a full stop. Ending on B, the 2nd, sounds like a comma. That's question and answer.
     hear: Ask away from home, answer on the root.
-challenge: Hum a four-note answer of your own over the loop, then find it on the pentatonic keys ([TRIG 2], [TRIG 4], [TRIG 7], [TRIG 9], [TRIG 12], [TRIG 14], [TRIG 16]). Put it on page 4 in place of A, C, B, A, and keep the last note on the root.
+challenge: Hum a four-note answer of your own over the loop, then find it on the pentatonic keys ([TRIG 2], [TRIG 4], [TRIG 7], [TRIG 9], [TRIG 12], [TRIG 14], [TRIG 16]). Put it on page 4:4 in place of A, C, B, A, and keep the last note on the root.

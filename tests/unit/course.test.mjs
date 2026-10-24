@@ -179,3 +179,64 @@ test("songs: every song has a Spotify track and is linked from quotes", () => {
   assert.equal(count(html, /class="song"/g), 2);
   assert.match(html, /title="Open Air, La Femme d'Argent in the Spotify app"/);
 });
+
+test("a Get ready step shows the pattern as a playable grid: new steps outlined, nudges, swing per track", () => {
+  const P = {
+    slot: "B01",
+    bpm: 90,
+    swing: 58,
+    rows: [{ n: "T1 Kick", s: "kick", hits: "1,9", new: "9", nudge: "9:.3" }],
+  };
+  const st = { id: "get-ready", k: "ready", t: "Go to B01.", fig: { pattern: P } };
+  const L = lessonSchema.parse({ id: "w99", number: 99, unit: "u", title: "t", goal: "g", concepts: [], steps: [st] });
+  const fig = L.steps[0].fig;
+  assert.deepEqual(fig.pattern.rows[0].nw, [9]);
+  const html = renderFig(I, fig, "w99:1");
+  assert.match(html, /<div class="gt">B01<\/div>/);
+  assert.equal(count(html, /class="cell on\s+nw/g), 1);
+  assert.match(html, /<small>swing 58%<\/small>/);
+  assert.match(html, /translateX\(30%\)/);
+  assert.equal(fig.pattern.rows[0].off[8], 0.3);
+  assert.match(html, /data-spec=/);
+  const bars = { ...fig.pattern, rows: undefined, bars: [fig.pattern.rows, fig.pattern.rows] };
+  const two = renderFig(I, { pattern: bars }, "x");
+  assert.equal(count(two, /data-gpre=/g), 2);
+  assert.match(two, />1:2<\/button>.*>2:2<\/button>/s, "tabs are named like the page lights");
+  const slots = {
+    ...bars,
+    bars: undefined,
+    slots: [
+      { slot: "B05", rows: fig.pattern.rows },
+      { slot: "B09", rows: fig.pattern.rows },
+    ],
+  };
+  const five = renderFig(I, { pattern: slots }, "y");
+  assert.match(five, /<div class="gt">B05 to B09<\/div>/);
+  assert.match(five, />B05<\/button>.*>B09<\/button>/s, "a tab per pattern");
+  assert.throws(() => lessonSchema.parse({ ...L, steps: [{ ...st, fig: undefined }] }), /ready step/);
+});
+
+test("trig conditions are written on their steps, FILL as F on phones", () => {
+  const P = {
+    slot: "B01",
+    bpm: 90,
+    rows: [{ n: "T2 Snare", s: "snare", hits: "9,14", cond: { 9: "FILL", 14: "2:2", 3: "1:2" } }],
+  };
+  const st = { id: "get-ready", k: "ready", t: "Go to B01.", fig: { pattern: P } };
+  const L = lessonSchema.parse({ id: "w99", number: 99, unit: "u", title: "t", goal: "g", concepts: [], steps: [st] });
+  const html = renderFig(I, L.steps[0].fig, "w99:1");
+  assert.match(html, /<b class="cd" data-cd="FILL" data-sm="F"><\/b>/);
+  assert.match(html, /<b class="cd" data-cd="2:2" data-sm="2:2"><\/b>/);
+  assert.equal(count(html, /class="cd"/g), 2, "a condition on an empty step is not drawn");
+  assert.match(html, /step 14 on, 2:2"/);
+  const bad = { ...P, rows: [{ ...P.rows[0], cond: { 9: "SOMETIMES" } }] };
+  assert.throws(() => lessonSchema.parse({ ...L, steps: [{ ...st, fig: { pattern: bad } }] }));
+});
+
+test("every Get ready step comes before the lesson's first Play step", () => {
+  for (const L of I.lessons) {
+    const r = L.steps.findIndex((s) => s.k === "ready");
+    if (r < 0) continue;
+    assert.ok(r < L.steps.findIndex((s) => (s.k || "play") === "play"), L.id);
+  }
+});

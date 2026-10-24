@@ -81,7 +81,7 @@ steps:
     hear: A dull, woody knock where the snare usually is.
   - id: add-beat-around
     k: play
-    t: "Add the beat around it: on T1, kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. On T3, hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15]. Press [PLAY]."
+    t: "Add the beat around it: select [T1] and place kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. Select [T3] and place hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15]. Press [PLAY]."
     hl: h:track p:t1 p:t3 p:play
     hear: Same groove as always, with a new voice on the backbeat.
   - id: add-chords

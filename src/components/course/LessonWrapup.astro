@@ -53,9 +53,8 @@ const { I, L } = Astro.props;
     <a class="btn" href={`/${I.slug}`}>
       All lessons
     </a>
-    <span class="stamp" hidden></span>
     <button
-      class="btn clear"
+      class="btn danger"
       data-clear={L.id}
       data-path={L.path}
       title={`Untick every step of this ${L.song ? "study" : "lesson"} and start it again from the intro`}
@@ -63,6 +62,7 @@ const { I, L } = Astro.props;
     >
       Clear progress
     </button>
+    <span class="stamp" hidden></span>
   </div>
 </section>
 
@@ -251,9 +251,6 @@ const { I, L } = Astro.props;
     flex-wrap: wrap;
     gap: var(--s3);
     align-items: center;
-  }
-  .finish .clear {
-    margin-left: auto;
   }
   .finish .stamp {
     font-family: var(--mono);

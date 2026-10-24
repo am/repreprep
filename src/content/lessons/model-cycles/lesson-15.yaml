@@ -95,10 +95,50 @@ steps:
   - id: intro-has-room-something
     k: learn
     t: "An intro has room for something that plays itself. A random LFO picks a new value each cycle. Give two parts random LFOs at different speeds and they drift against each other, so the intro never repeats exactly, even though nothing in the pattern changes."
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        bars:
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15" }
+            - { n: T6 Chord, s: keys, hits: "1" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13,16:.24", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15" }
+            - { n: T6 Chord, s: keys, hits: "1,9,11,13,15", cond: { 15: "50%" } }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15" }
+            - { n: T6 Chord, s: keys, hits: "1" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11", cond: { 9: "1:2", 11: "1:2" } }
+            - {
+                n: T2 Snare,
+                s: snare,
+                hits: "5,9,11,12:.2,13,14:.3,15:.3,16:.3",
+                nudge: "12:.3",
+                cond: { 9: FILL, 11: FILL, 14: "2:2", 15: "2:2" },
+              }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,11,15,16" }
+            - { n: T6 Chord, s: keys, hits: "1,9,11,13,15", cond: { 15: "2:2" } }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
   - id: get-b01-ready-hand
     k: play
-    t: "Get B01 ready to hand over: go to B01, open the SCALE menu ([FUNC] + [PAGE]), set CHG to 64 and press [BACK]. In TRACK mode a pattern otherwise never ends, so the next one would never start. Save: hold [FUNC], long-press [SETTINGS]."
-    hl: h:pattern p:s1 h:func p:page t:level p:back p:settings
+    t: "Get B01 ready to hand over: open the SCALE menu ([FUNC] + [PAGE]), set CHG to 64 and press [BACK]. In TRACK mode a pattern otherwise never ends, so the next one would never start. Save: hold [FUNC], long-press [SETTINGS]."
+    hl: h:func p:page t:level p:back p:settings
     hear: No change in sound. B01 can now hand over to another pattern every 4 bars.
   - id: copy-b01-five-slots
     k: play
@@ -107,7 +147,7 @@ steps:
     hear: "Press [PATTERN]: keys 5 to 9 now light up, because those slots hold data."
   - id: intro-2
     k: play
-    t: "Intro: press [STOP], go to B05 (hold [PATTERN], press [TRIG 5]) and press [RECORD]. Select [T1] and press [FUNC] + [PLAY] to clear its trigs. Do the same on T2, T4 and T5. Press [RECORD] to leave, play it, and save."
+    t: "Intro: press [STOP], go to B05 (hold [PATTERN], press [TRIG 5]) and press [RECORD]. Select [T1] and press [FUNC] + [PLAY] to clear its trigs. Do the same on [T2], [T4] and [T5]. Press [RECORD] to leave, play it, and save."
     hl: p:stop h:pattern p:s5 p:record h:track p:t1 h:func p:play p:t2 p:t4 p:t5 p:settings
     hear: "Only hats and chords: the idea of the song, waiting for the beat."
   - id: let-intro-play-itself
@@ -117,17 +157,17 @@ steps:
     hear: "Every few bars the chord voicing shifts, and the hats grow longer and shorter on their own clock. The intro now changes while you listen."
   - id: step
     k: play
-    t: "A: go to B06, press [RECORD] and clear T4. Press [RECORD] to leave. Select [T3] and turn [CHANCE] to about 60%, then select [T6] and turn its [REVERB SEND] down a little. Save. Leave B07 as it is: it's your peak."
+    t: "A: go to B06, press [RECORD] and clear [T4]. Press [RECORD] to leave. Select [T3] and turn [CHANCE] to about 60%, then select [T6] and turn its [REVERB SEND] down a little. Save. Leave B07 as it is: it's your peak."
     hl: h:pattern p:s6 p:record h:track p:t4 h:func p:play p:t3 t:chance p:t6 t:reverb p:settings
     hear: "Three small changes: one step below the full loop."
   - id: break
     k: play
-    t: "Break: go to B08 and clear T1, T3 and T4 the same way. Then turn [REVERB SIZE] up to about 115. Each pattern keeps its own effect settings, so only the break gets the big room. Save."
+    t: "Break: go to B08 and clear [T1], [T3] and [T4] the same way. Then turn [REVERB SIZE] up to about 115. Each pattern keeps its own effect settings, so only the break gets the big room. Save."
     hl: h:pattern p:s8 p:record h:track p:t1 p:t3 p:t4 h:func p:play t:revsize p:settings
     hear: "Snare, bass and chords in a huge space: the floor drops out."
   - id: outro
     k: play
-    t: "Outro: go to B09 and clear T1 and T5. On T6, turn [DECAY] up so the last chords ring longer. Save."
+    t: "Outro: go to B09 and clear [T1] and [T5]. Select [T6] and turn [DECAY] up so the last chords ring longer. Save."
     hl: h:pattern p:s9 p:record h:track p:t1 p:t5 h:func p:play p:t6 t:decay p:settings
     hear: Kick and bass leave first. The song drifts out on the sounds it started with.
   - id: end-where-began
@@ -142,8 +182,9 @@ steps:
     hear: "Intro, A, B, A, B, break, B, outro: about 85 seconds, then it loops."
   - id: listen-every-change-where
     k: play
-    t: Listen to every change. Where one feels too sudden, go to the pattern before it, press [RECORD], press [PAGE] until the fourth light is on, and remove a few hats on T3 so the last bar thins out. Save. Picking a pattern loses the chain, so build it again to listen.
+    t: Listen to every change. Where one feels too sudden, go to the pattern before it, press [RECORD], press [PAGE] until the 4:4 light is on, and remove a few hats on [T3] so the last bar thins out. Save. Picking a pattern loses the chain, so build it again to listen.
     hl: p:record p:page h:track p:t3 h:func p:settings
+    page: 4
     hear: A small gap before a change makes the next section land harder.
   - id: about-how-many-changes
     k: check
