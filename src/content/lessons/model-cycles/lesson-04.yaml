@@ -109,7 +109,7 @@ steps:
     hear: A 12-step loop sliding across your 16-step bar, just like the drawing.
   - id: let-breathe
     k: play
-    t: "Let it breathe: press [RECORD] to leave grid recording, select [T4] and turn [CHANCE] down to about 70%. Then save the pattern (hold [FUNC], long-press [SETTINGS])."
+    t: "Let it breathe: press [RECORD] to leave grid recording, select [T4] and turn [CHANCE] down to about 30%, so only a few of the perc hits play. Then save the pattern (hold [FUNC], long-press [SETTINGS])."
     hl: p:record h:track p:t4 t:chance h:func p:settings
     hear: "Listen to eight bars without touching anything: it never quite repeats."
   - id: pattern-4-bars-long
