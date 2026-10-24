@@ -62,7 +62,7 @@ steps:
           - { n: T4 Perc, s: perc, hits: "" }
           - { n: T5 Tone, s: bass, hits: "" }
           - { n: T6 Chord, s: keys, hits: "" }
-    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] + [PATTERN] to reload your last save."
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
     hl: h:pattern p:t2 p:s1 h:func
   - id: make-b01-four-bars
     k: play
