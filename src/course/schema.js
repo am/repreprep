@@ -18,13 +18,17 @@ const row = z
     p: z.array(z.number()).length(16).optional() /* a MIDI note per step */,
     new: z.string().optional() /* steps added in the last lesson, "2,4,6", drawn outlined */,
     nudge: z.string().optional() /* steps played off the grid, "12:.3" = a third of a step late */,
+    cond: z
+      .record(z.string().regex(/^([1-9]|1[0-6])$/), z.string().regex(/^([1-8]:[1-8]|FILL|\d{1,2}%)$/))
+      .optional() /* trig conditions, { 14: "2:2", 9: FILL }, written in the step */,
   })
   .refine((r) => (r.hits !== undefined) !== (r.v !== undefined), "give a row either hits or v")
-  .transform(({ hits: h, vel, new: nw, nudge, ...r }) => ({
+  .transform(({ hits: h, vel, new: nw, nudge, cond, ...r }) => ({
     ...r,
     ...(h === undefined ? {} : { v: hits(String(h), vel ?? 0.85) }),
     ...(nw ? { nw: nw.split(",").map(Number) } : {}),
     ...(nudge ? { off: hits(nudge, 0) } : {}),
+    ...(cond ? { cd: Array.from({ length: 16 }, (_, i) => cond[i + 1] || "") } : {}),
   }));
 const preset = z.strictObject({
   name: text,

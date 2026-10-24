@@ -41,10 +41,51 @@ steps:
   - id: velocity-move-second-knob
     k: learn
     t: "Velocity can move a second knob. In the PAD menu ([FUNC] + [BACK]), FIX sets whether the pads play at one fixed velocity. VDEP sets how much velocity changes the volume. DST picks one more destination for velocity, and DDEP how far it moves it, up or down."
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        bars:
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12, new: "1,4,7,10" }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13,16:.24", nudge: "12:.3", new: "16" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12, new: "1,4,7,10" }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12, new: "1,4,7,10" }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11", cond: { 9: "1:2", 11: "1:2" }, new: "9,11" }
+            - {
+                n: T2 Snare,
+                s: snare,
+                hits: "5,9,11,12:.2,13,14:.3,15:.3,16:.3",
+                nudge: "12:.3",
+                cond: { 9: FILL, 11: FILL, 14: "2:2", 15: "2:2" },
+                new: "9,11,14,15,16",
+              }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12, new: "1,4,7,10" }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
   - id: go-b01-hold-press
     k: play
-    t: Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]) and press [PLAY]. Select the kick (hold [TRACK], press [T1]) and tap [T1] a few times. Describe the stock kick in two words.
-    hl: h:pattern p:t2 p:s1 p:play h:track p:t1
+    t: Press [PLAY]. Select the kick (hold [TRACK], press [T1]) and tap [T1] a few times. Describe the stock kick in two words.
+    hl: p:play h:track p:t1
     hear: "Stock kicks are usually punchy and clicky: good in a club, loud for night music."
   - id: make-round
     k: play
