@@ -75,6 +75,38 @@ test("Complete marks the lesson done and opens the next; clicking Completed undo
   expect(p.inst.cycles.done[L1.id]).toBeUndefined();
 });
 
+test("Clear progress unticks the lesson, un-finishes it and keeps the notes", async ({ page }) => {
+  await page.goto(L1.path);
+  await expect(page.locator("[data-clear]")).toBeHidden();
+  await page.locator(".navrow .btn.primary").click();
+  await page.locator(".navrow .btn.primary").click();
+  await expect(page).toHaveURL(`${L1.path}/2`);
+  await page.evaluate((id) => {
+    const s = JSON.parse(localStorage.getItem("repreprep-progress-v1"));
+    s.inst.cycles.notes[id] = "keep me";
+    s.inst.cycles.done[id] = Date.now();
+    localStorage.setItem("repreprep-progress-v1", JSON.stringify(s));
+  }, L1.id);
+  await page.reload();
+  await expect(page.locator("[data-finish]")).toHaveText("Completed");
+  const clear = page.locator("[data-clear]");
+  await expect(clear).toBeVisible();
+  page.once("dialog", (d) => d.dismiss());
+  await clear.click();
+  let p = await progress(page);
+  expect(p.inst.cycles.done[L1.id]).toBeTruthy();
+  page.once("dialog", (d) => d.accept());
+  await clear.click();
+  await expect(page).toHaveURL(L1.path);
+  await expect(page.locator("[data-finish]")).toHaveText("Complete");
+  await expect(clear).toBeHidden();
+  p = await progress(page);
+  expect(Object.keys(p.inst.cycles.steps).filter((k) => k.startsWith(L1.id + ":"))).toEqual([]);
+  expect(p.inst.cycles.done[L1.id]).toBeUndefined();
+  expect(p.inst.cycles.active[L1.id] || 0).toBe(0);
+  expect(p.inst.cycles.notes[L1.id]).toBe("keep me");
+});
+
 test("notes: add, save, edit, cancel", async ({ page }) => {
   await page.goto(L1.path);
   const box = page.locator(`[data-notebox="${L1.id}"]`);
