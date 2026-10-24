@@ -109,9 +109,9 @@ steps:
     hear: First just louder, then rougher. Distortion adds harmonics, which changes the timbre too.
   - id: soften-snare
     k: play
-    t: "Soften the snare: unmute it ([FUNC] + [T2]) and select [T2]. Turn [SHAPE] down to soften its noise. Leave [COLOR] at 0: it adds clangy, metallic overtones, so 0 keeps the body tonal. Hold [FUNC] and turn [PITCH] down 2 semitones. Set [DECAY] so it sounds like a soft brush, not a crack."
-    hl: h:func p:t2 h:track p:t2 t:shape h:func t:pitch t:decay
-    hear: A woody, muted snare. Your ghost note on [TRIG 12] softens with it.
+    t: "Soften the snare: unmute it ([FUNC] + [T2]) and select [T2]. If [PUNCH] is lit, press it to switch it off. Turn [SWEEP] and [CONTOUR] to 0: they make the crack at the start of each hit. Turn [SHAPE] down to about 30 to soften its noise, and leave [COLOR] at 0, since it adds clangy, metallic overtones. Hold [FUNC] and turn [PITCH] down 2 semitones. Turn [DECAY] down to about 30."
+    hl: h:func p:t2 h:track p:t2 p:punch t:sweep t:contour t:shape h:func t:pitch t:decay
+    hear: A dry, woody snare with no crack at the start. Your ghost note on [TRIG 12] softens with it.
   - id: make-harder-hits-ring
     k: play
     t: "Make harder hits ring longer: with [T2] selected, press [FUNC] + [BACK] to open the PAD menu. Leave FIX and VDEP as they are. Turn [LEVEL/DATA] to DST and set it to DECAY, then set DDEP to about +30. Press [BACK]."

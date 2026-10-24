@@ -8,7 +8,7 @@
   title: Snare shaping fix
   lessons:
     - lesson: model-cycles/w05
-      what: Soften the snare no longer asks you to turn COLOR down. On the snare COLOR adds metallic overtones and starts at 0, so you leave it there.
+      what: Soften the snare now gives a value for each knob. PUNCH off, SWEEP and CONTOUR at 0 to take the crack off each hit, SHAPE about 30, COLOR left at 0, and DECAY about 30 for a dry snare.
 
 - id: 0.5.1
   date: "2026-10-24"
