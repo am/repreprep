@@ -1,5 +1,5 @@
 ---
-// Under the player: your notes (read, then Edit to write) and finishing the lesson. The steps and the
+// Under the player: your notes (read, then Edit to write), finishing the lesson and clearing its progress. The steps and the
 // challenge live in the player, so they aren't repeated here.
 import { lessonLabel } from "../../course/index.js";
 interface Props {
@@ -53,13 +53,23 @@ const { I, L } = Astro.props;
     <a class="btn" href={`/${I.slug}`}>
       All lessons
     </a>
+    <button
+      class="btn danger"
+      data-clear={L.id}
+      data-path={L.path}
+      title={`Untick every step of this ${L.song ? "study" : "lesson"} and start it again from the intro`}
+      hidden
+    >
+      Clear progress
+    </button>
     <span class="stamp" hidden></span>
   </div>
 </section>
 
 <script>
-  /* Complete (and undoing it), and the notes box: read mode by default; Edit opens it, and only Save keeps what you typed */
+  /* Complete (and undoing it), Clear progress, and the notes box: read mode by default; Edit opens it, and only Save keeps what you typed */
   import { onProgress, persist, refresh, ist } from "../../client/progress.js";
+  import { navigate } from "astro:transitions/client";
   import { curLesson, goNextLesson } from "../../client/lesson.js";
 
   function showNote(s, id, saved) {
@@ -103,7 +113,35 @@ const { I, L } = Astro.props;
       stamp.hidden = !done;
       if (done) stamp.textContent = "Done on " + new Date(done).toLocaleDateString();
     }
+    const cb = document.querySelector("[data-clear]");
+    if (cb) cb.hidden = !started(s, c);
     showNote(s, c.id);
+  });
+
+  /* any ticked step, a finished lesson or a place in it past the intro */
+  const started = (s, c) =>
+    !!s.done[c.id] || +s.active[c.id] > 0 || Object.keys(s.steps).some((k) => k.startsWith(c.id + ":"));
+
+  /* Clear progress: unticks the lesson's steps, un-finishes it and starts it again from the intro. Notes stay. */
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-clear]"),
+      c = b && curLesson();
+    if (!c) return;
+    if (
+      !confirm(
+        "Clear your progress on this lesson? Your ticked steps go and it starts again from the intro. Your notes stay."
+      )
+    )
+      return;
+    const s = ist(c.k);
+    Object.keys(s.steps).forEach((k) => {
+      if (k.startsWith(c.id + ":")) delete s.steps[k];
+    });
+    delete s.done[c.id];
+    delete s.active[c.id];
+    persist();
+    if (c.act) navigate(b.dataset.path);
+    else refresh();
   });
 
   document.addEventListener(
