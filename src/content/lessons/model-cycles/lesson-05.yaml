@@ -114,12 +114,12 @@ steps:
     hear: A dry, woody snare with no crack at the start. Your ghost note on [TRIG 12] softens with it.
   - id: make-harder-hits-ring
     k: play
-    t: "Make harder hits ring longer: with [T2] selected, press [FUNC] + [BACK] to open the PAD menu. Leave FIX and VDEP as they are. Turn [LEVEL/DATA] to DST and set it to DECAY, then set DDEP to about +30. Press [BACK]."
-    hl: h:func p:back t:level
+    t: "Make harder hits ring longer: with [T2] selected, press [FUNC] + [BACK] to open the PAD menu. Leave FIX and VDEP as they are. Turn [LEVEL/DATA] to DST. With DST open for editing, turn the [DECAY] knob: DST jumps to DECAY. Then turn [LEVEL/DATA] to DDEP and set it to about +30. Press [BACK]."
+    hl: h:func p:back t:level t:decay
     hear: "The backbeat snares ring a little longer, and the quiet ghost note on [TRIG 12] stays short and tight, like a real snare played softly."
   - id: write-two-words-new
     k: play
-    t: "Unmute the other tracks ([FUNC] + [T3] to [T6]). Write two words for your new kick and two for your snare (round, soft, woody, dull…). Then save: hold [FUNC] and long-press [SETTINGS]."
+    t: "Unmute the other tracks ([FUNC] + [T3] to [T6]). Listen to the whole beat. In the Notes box under the lesson, press Edit and write two words for your new kick and two for your snare (round, soft, woody, dull…), then press Save. Then save the pattern: hold [FUNC] and long-press [SETTINGS]."
     hl: h:func p:t3 p:t4 p:t5 p:t6 p:settings
     hear: Same beat as lesson 4, but it now sounds like late at night.
   - id: turned-sweep-down-kick
@@ -131,5 +131,5 @@ steps:
       - How loud it is
       - How late it plays
     a: On the KICK machine, SWEEP sets the depth and time of the pitch sweep. A big, fast drop sounds punchy; a small one sounds round. DECAY is the knob for how long it rings.
-    hear: Shape the envelope first (DECAY, GATE), then the colour (the four macros).
+    hear: "Shape the envelope first with [DECAY] and [GATE], then the colour with the four machine knobs: [COLOR], [SHAPE], [SWEEP] and [CONTOUR]."
 challenge: "Pick a sound from a track you love and describe it in four words: one each for its pitch, loudness, timbre and envelope. Try to get T1 or T2 close to it."
