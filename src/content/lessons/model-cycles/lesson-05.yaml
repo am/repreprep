@@ -132,4 +132,4 @@ steps:
       - How late it plays
     a: On the KICK machine, SWEEP sets the depth and time of the pitch sweep. A big, fast drop sounds punchy; a small one sounds round. DECAY is the knob for how long it rings.
     hear: "Shape the envelope first with [DECAY] and [GATE], then the colour with the four machine knobs: [COLOR], [SHAPE], [SWEEP] and [CONTOUR]."
-challenge: "Pick a sound from a track you love and describe it in four words: one each for its pitch, loudness, timbre and envelope. Try to get T1 or T2 close to it."
+challenge: "Pick a sound from a track you love and describe it in four words: one each for its pitch, loudness, timbre and envelope. Work on a copy so B01 stays ready for the next lesson: hold [PATTERN] + [TRIG 1] and press [RECORD], then hold [PATTERN] + [TRIG 3] and press and hold [STOP] until the countdown finishes. Go to B03 (hold [PATTERN], press [TRIG 3]). Try to get [T1] or [T2] close to it there."

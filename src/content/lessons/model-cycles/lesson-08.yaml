@@ -212,4 +212,4 @@ steps:
       - The LFO speed doubled
     a: RST ON restarts the wave each time a note is trigged. With a hat on every step, each one starts from the same point and gets the same movement. RST OFF lets the wave run freely across them.
     hear: "An LFO is a hand on a knob: choose which knob, how far, how fast, and how it moves."
-challenge: "Lock the LFO to one step: press [RECORD], press [LFO] to open the LFO menu, hold one hat's trig and use [LEVEL/DATA] to give only that step a much bigger DEP."
+challenge: "Work on a copy so B01 stays ready for the next lesson: hold [PATTERN] + [TRIG 1] and press [RECORD], then hold [PATTERN] + [TRIG 3] and press and hold [STOP] until the countdown finishes. Go to B03 (hold [PATTERN], press [TRIG 3]). Lock the LFO to one step: press [RECORD], press [LFO] to open the LFO menu, hold one hat's trig and use [LEVEL/DATA] to give only that step a much bigger DEP."
