@@ -84,8 +84,8 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: go-b01-hold-press
     k: play
-    t: Press [PLAY]. Select the kick (hold [TRACK], press [T1]) and tap [T1] a few times. Describe the stock kick in two words.
-    hl: p:play h:track p:t1
+    t: Press [PLAY]. Mute the other tracks ([FUNC] + [T2] to [T6]) so only the kick plays. Select the kick (hold [TRACK], press [T1]) and tap [T1] a few times. Describe the stock kick in two words.
+    hl: p:play h:func p:t2 p:t3 p:t4 p:t5 p:t6 h:track p:t1
     hear: "Stock kicks are usually punchy and clicky: good in a club, loud for night music."
   - id: make-round
     k: play
@@ -109,8 +109,8 @@ steps:
     hear: First just louder, then rougher. Distortion adds harmonics, which changes the timbre too.
   - id: soften-snare
     k: play
-    t: "Soften the snare: select [T2]. Turn [SHAPE] down to soften its noise and [COLOR] down for a more tonal body. Hold [FUNC] and turn [PITCH] down 2 semitones. Set [DECAY] so it sounds like a soft brush, not a crack."
-    hl: h:track p:t2 t:shape t:color h:func t:pitch t:decay
+    t: "Soften the snare: unmute it ([FUNC] + [T2]) and select [T2]. Turn [SHAPE] down to soften its noise and [COLOR] down for a more tonal body. Hold [FUNC] and turn [PITCH] down 2 semitones. Set [DECAY] so it sounds like a soft brush, not a crack."
+    hl: h:func p:t2 h:track p:t2 t:shape t:color h:func t:pitch t:decay
     hear: A woody, muted snare. Your ghost note on [TRIG 12] softens with it.
   - id: make-harder-hits-ring
     k: play
@@ -119,8 +119,8 @@ steps:
     hear: "The backbeat snares ring a little longer, and the quiet ghost note on [TRIG 12] stays short and tight, like a real snare played softly."
   - id: write-two-words-new
     k: play
-    t: "Write two words for your new kick and two for your snare (round, soft, woody, dull…). Then save: hold [FUNC] and long-press [SETTINGS]."
-    hl: h:func p:settings
+    t: "Unmute the other tracks ([FUNC] + [T3] to [T6]). Write two words for your new kick and two for your snare (round, soft, woody, dull…). Then save: hold [FUNC] and long-press [SETTINGS]."
+    hl: h:func p:t3 p:t4 p:t5 p:t6 p:settings
     hear: Same beat as lesson 4, but it now sounds like late at night.
   - id: turned-sweep-down-kick
     k: check
