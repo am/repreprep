@@ -179,3 +179,34 @@ test("songs: every song has a Spotify track and is linked from quotes", () => {
   assert.equal(count(html, /class="song"/g), 2);
   assert.match(html, /title="Open Air, La Femme d'Argent in the Spotify app"/);
 });
+
+test("a Get ready step shows the pattern as a playable grid: new steps outlined, nudges, swing per track", () => {
+  const P = {
+    slot: "B01",
+    bpm: 90,
+    swing: 58,
+    rows: [{ n: "T1 Kick", s: "kick", hits: "1,9", new: "9", nudge: "9:.3" }],
+  };
+  const st = { id: "get-ready", k: "ready", t: "Go to B01.", fig: { pattern: P } };
+  const L = lessonSchema.parse({ id: "w99", number: 99, unit: "u", title: "t", goal: "g", concepts: [], steps: [st] });
+  const fig = L.steps[0].fig;
+  assert.deepEqual(fig.pattern.rows[0].nw, [9]);
+  const html = renderFig(I, fig, "w99:1");
+  assert.match(html, /<div class="gt">B01<\/div>/);
+  assert.equal(count(html, /class="cell on\s+nw/g), 1);
+  assert.match(html, /<small>swing 58%<\/small>/);
+  assert.match(html, /translateX\(30%\)/);
+  assert.equal(fig.pattern.rows[0].off[8], 0.3);
+  assert.match(html, /data-spec=/);
+  const bars = { ...fig.pattern, rows: undefined, bars: [fig.pattern.rows, fig.pattern.rows] };
+  assert.equal(count(renderFig(I, { pattern: bars }, "x"), /data-gpre=/g), 2);
+  assert.throws(() => lessonSchema.parse({ ...L, steps: [{ ...st, fig: undefined }] }), /ready step/);
+});
+
+test("every Get ready step comes before the lesson's first Play step", () => {
+  for (const L of I.lessons) {
+    const r = L.steps.findIndex((s) => s.k === "ready");
+    if (r < 0) continue;
+    assert.ok(r < L.steps.findIndex((s) => (s.k || "play") === "play"), L.id);
+  }
+});

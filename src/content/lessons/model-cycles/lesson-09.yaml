@@ -103,13 +103,13 @@ steps:
     hear: T5 will repeat every bar while the rest of B01 runs its four bars.
   - id: press-t5-place-notes
     k: play
-    t: Press [RECORD] and, on T5, place notes on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 11]. On [TRIG 4], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones up. On [TRIG 7], 7 up. On [TRIG 11], 5 up.
-    hl: p:record p:s1 p:s4 p:s7 p:s11 h:s4 p:level t:level h:s7 h:s11
+    t: Press [RECORD], select [T5] and place notes on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 11]. On [TRIG 4], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones up. On [TRIG 7], 7 up. On [TRIG 11], 5 up.
+    hl: p:record p:s1 p:s4 p:s7 p:s11 h:s4 p:level t:level h:s7 h:s11 h:track p:t5
     hear: "Root, minor 3rd, 5th, then down a step to the 4th: four pentatonic notes."
   - id: press-leave-grid-recording
     k: play
-    t: "Press [RECORD] to leave grid recording and listen with the beat. Turn T5's [REVERB SEND] up a little. Save: hold [FUNC] and long-press [SETTINGS]."
-    hl: p:record t:reverb h:func p:settings
+    t: "Press [RECORD] to leave grid recording and listen with the beat. Select [T5] and turn its [REVERB SEND] up a little. Save: hold [FUNC] and long-press [SETTINGS]."
+    hl: p:record t:reverb h:func p:settings h:track p:t5
     hear: "A four-note riff over your beat. It can't sound wrong: every note is in the scale."
   - id: root-which-key-plays
     k: check

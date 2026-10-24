@@ -53,7 +53,7 @@ steps:
     hear: Crisp, glassy hats, the kind that cut through a club.
   - id: brighten-rest-b04
     k: play
-    t: "Brighten the rest of B04: on T1 turn [CONTOUR] up for click, on T2 turn [SHAPE] up for more crack, and on T4 turn [SHAPE] and [COLOR] up."
+    t: "Brighten the rest of B04: select [T1] and turn [CONTOUR] up for click, select [T2] and turn [SHAPE] up for more crack, then select [T4] and turn [SHAPE] and [COLOR] up."
     hl: h:track p:t1 t:contour p:t2 t:shape p:t4 t:color
     hear: The same beat, now hard and shiny.
   - id: now-dark-one

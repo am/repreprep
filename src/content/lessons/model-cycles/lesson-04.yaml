@@ -43,44 +43,73 @@ steps:
   - id: roll-one-trig
     k: learn
     t: "A roll from one trig: TRIG REPEAT plays a trig again and again at a rate you choose. RTE sets how fast, LEN how long the velocity curve lasts, and FDE fades the repeats in or out. Fading in gives the classic rising roll."
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        rows:
+          - { n: T1 Kick, s: kick, hits: "1,9,11" }
+          - { n: T2 Snare, s: snare, hits: "5,12:.2,13", new: "12", nudge: "12:.3" }
+          - {
+              n: T3 Hats,
+              s: hat,
+              hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24",
+              new: "2,4,6,8,10,12,14,16",
+            }
+          - { n: T4 Perc, s: perc, hits: "" }
+          - { n: T5 Tone, s: bass, hits: "" }
+          - { n: T6 Chord, s: keys, hits: "" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
   - id: make-b01-four-bars
     k: play
-    t: "Make B01 four bars long: hold [FUNC] and press [PAGE] to open the SCALE menu, set LEN to 64 with [LEVEL/DATA], then press [BACK]. Your bar is copied onto pages 2, 3 and 4."
+    t: "Make B01 four bars long: hold [FUNC] and press [PAGE] to open the SCALE menu, set LEN to 64 with [LEVEL/DATA], then press [BACK]. Your bar is copied onto pages 2:4, 3:4 and 4:4."
     hl: h:func p:page t:level p:back
-    hear: Still sounds the same, but now it's 4 bars, A A A A. The four page lights show where you are.
+    hear: Still sounds the same, but now it's 4 bars, A A A A. The four page lights, 1:4 to 4:4, show where you are.
   - id: make-bar-2-b
     k: play
-    t: "Make bar 2 the B: press [RECORD], press [PAGE] until the second page light is on, select [T2] and add a quiet snare on [TRIG 16] (hold it, set VEL to about 30)."
+    t: "Make bar 2 the B: press [RECORD], press [PAGE] until the 2:4 light is on, select [T2] and add a quiet snare on [TRIG 16] (hold it, set VEL to about 30)."
     hl: p:record p:page h:track p:t2 p:s16 t:level
+    page: 2
     hear: A small pickup at the end of bar 2.
   - id: make-bar-4-c
     k: play
-    t: "Make bar 4 the C: press [PAGE] until the fourth light is on, and on T2 add snares on [TRIG 14], [TRIG 15] and [TRIG 16] at low velocity."
-    hl: p:page p:s14 p:s15 p:s16
+    t: "Make bar 4 the C: press [PAGE] until the 4:4 light is on, select [T2] and add snares on [TRIG 14], [TRIG 15] and [TRIG 16] at low velocity."
+    hl: p:page p:s14 p:s15 p:s16 h:track p:t2
+    page: 4
     hear: A little roll that leads back to the top.
   - id: turn-second-time-through
     k: play
-    t: "Turn the second time through bar 4 into bar 8, the D: still on page 4, hold [TRIG 14], [TRIG 15] and [TRIG 16] and turn [CHANCE] until the screen shows 2:2. Then select [T1], hold the kicks on [TRIG 9] and [TRIG 11], and set them to 1:2."
-    hl: h:s14 h:s15 h:s16 t:chance h:track p:t1 h:s9 h:s11
-    hear: "Bar 4 now has its kicks and no roll. Bar 8 drops the kicks and plays the roll: an empty plus a fill."
+    t: "Bar 8 is the D of A B A D: your 4-bar pattern plays twice in an 8-bar phrase, so bar 8 is the second time through page 4:4. Still on page 4:4, hold [TRIG 14] and [TRIG 15] and turn [CHANCE] until the screen shows 2:2. These two snares now play only in bar 8."
+    hl: h:s14 h:s15 t:chance
+    hear: Bar 4 keeps one snare on 16. Bar 8 plays all three.
+  - id: empty-before-fill
+    k: play
+    t: "An empty before the fill: still on page 4:4, select [T1], hold [TRIG 9] and [TRIG 11] and turn [CHANCE] until the screen shows 1:2. These two kicks now play only in bar 4."
+    hl: h:track p:t1 h:s9 h:s11 t:chance
+    hear: "Bar 8 drops its kicks and plays the snares: an empty plus a fill."
   - id: roll-into-bar-8
     k: play
-    t: "Turn bar 8's snares into a roll: still on page 4, select [T2], hold [TRIG 14] and press [RETRIG] to open TRIG REPEAT. Keep holding it. With [LEVEL/DATA] set it ON, RTE to 1/32, LEN to 3/16 (three steps) and FDE to about 100. Let go of [TRIG 14]."
+    t: "Turn bar 8's snares into a roll: still on page 4:4, select [T2], hold [TRIG 14] and press [RETRIG] to open TRIG REPEAT. Keep holding it. With [LEVEL/DATA] set it ON, RTE to 1/32, LEN to 3.00 (three steps, so the fade lasts to the end of the bar) and FDE to about 100. Let go of [TRIG 14]."
     hl: h:track p:t2 h:s14 p:retrig t:level
     hear: "Every eighth bar the snare rises in a fast roll into bar 1. The fade is a velocity curve, so it works because T2's VDEP is at 127 from lesson 3."
   - id: add-fill-play-hand
     k: play
-    t: "Add a fill you play by hand: select [T3], add an extra hat on [TRIG 1] of page 1, hold it and turn [CHANCE] to FILL. Press [RECORD] to listen, and hold [PAGE] whenever you want the fill."
-    hl: h:track p:t3 p:s1 h:s1 t:chance p:record h:page
-    hear: The extra hit only plays while [PAGE] is held.
+    t: "Add a fill you play by hand: still on page 4:4, select [T2] and add snares on [TRIG 9] and [TRIG 11]. Hold both and turn [CHANCE] until the screen shows FILL. Press [RECORD] to leave grid recording. Now hold [PAGE] while bar 8 plays, and let go when bar 1 starts."
+    hl: h:track p:t2 h:s9 h:s11 t:chance p:record h:page
+    hear: "Without [PAGE] the two snares stay silent. Held, they fill the gap the kicks left in bar 8 and run into the roll."
   - id: make-t4-drift
     k: play
-    t: "Make T4 drift: open the SCALE menu ([FUNC] + [PAGE]), set MOD to TRACK, select [T4] and set its LEN to 12, then [BACK]. Press [RECORD], select [T4] and place perc on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 10]."
+    t: "Make T4 drift: open the SCALE menu ([FUNC] + [PAGE]), set MOD to TRACK, select [T4] and set its LEN to 12, then [BACK]. Press [RECORD], press [PAGE] until the 1:4 light is on, select [T4] and place perc on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 10]."
     hl: h:func p:page t:level p:t4 p:back p:record p:s1 p:s4 p:s7 p:s10
+    page: 1
     hear: A 12-step loop sliding across your 16-step bar, just like the drawing.
   - id: let-breathe
     k: play
-    t: "Let it breathe: press [RECORD] to leave grid recording, select [T4] and turn [CHANCE] down to about 70%. Then save the pattern (hold [FUNC], long-press [SETTINGS])."
+    t: "Let it breathe: press [RECORD] to leave grid recording, select [T4] and turn [CHANCE] down to about 30%, so only a few of the perc hits play. Then save the pattern (hold [FUNC], long-press [SETTINGS])."
     hl: p:record h:track p:t4 t:chance h:func p:settings
     hear: "Listen to eight bars without touching anything: it never quite repeats."
   - id: pattern-4-bars-long

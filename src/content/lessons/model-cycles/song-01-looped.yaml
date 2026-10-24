@@ -97,12 +97,12 @@ steps:
     hear: "Tap [T6]: one dark, low chord."
   - id: give-figure-drawing
     k: play
-    t: "Give it the figure from the drawing: on T6, place chords on [TRIG 1], [TRIG 7] and [TRIG 11]. Press [PLAY]."
-    hl: p:s1 p:s7 p:s11 p:play
+    t: "Give it the figure from the drawing: select [T6] and place chords on [TRIG 1], [TRIG 7] and [TRIG 11]. Press [PLAY]."
+    hl: p:s1 p:s7 p:s11 p:play h:track p:t6
     hear: A short, off-balance chord figure. This is the whole idea of your loop.
   - id: add-beat
     k: play
-    t: "Add the beat: on T1, kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. On T3, hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15] with [DECAY] turned up so they ring open. On T2, a snare on [TRIG 5] and [TRIG 13]."
+    t: "Add the beat: select [T1] and place kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. Select [T3] and place hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15] with [DECAY] turned up so they ring open. Select [T2] and place a snare on [TRIG 5] and [TRIG 13]."
     hl: h:track p:t1 p:s1 p:s5 p:s9 p:s13 p:t3 t:decay p:t2
     hear: A club beat around your chords.
   - id: add-light-bass
@@ -112,7 +112,7 @@ steps:
     hear: Just two low notes. The chords already fill the middle.
   - id: play-build
     k: play
-    t: "Play the build: press [RECORD] to leave grid recording, then mute T1, T2, T3 and T5 ([FUNC] + each pad) so only the chords play. Every 8 bars, unmute one more track. Save when you're done: hold [FUNC] and long-press [SETTINGS]."
+    t: "Play the build: press [RECORD] to leave grid recording, then mute [T1], [T2], [T3] and [T5] ([FUNC] + each pad) so only the chords play. Every 8 bars, unmute one more track. Save when you're done: hold [FUNC] and long-press [SETTINGS]."
     hl: p:record h:func p:t1 p:t2 p:t3 p:t5 p:settings
     hear: The loop never changes, but the energy keeps climbing.
   - id: what-did-kiasmos-keep

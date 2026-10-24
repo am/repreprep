@@ -90,13 +90,13 @@ steps:
     hear: 'Nothing yet: your hats are only on the "&"s, and swing moves the even steps. Swing needs weak-step hits to work on.'
   - id: give-sixteenth-hats
     k: play
-    t: "Give it sixteenth hats: press [RECORD] and, on T3, place hats on every even key, [TRIG 2] through [TRIG 16]."
-    hl: p:record p:s2 p:s4 p:s6 p:s8 p:s10 p:s12 p:s14 p:s16
+    t: "Give it sixteenth hats: press [RECORD], select [T3] and place hats on every even key, [TRIG 2] through [TRIG 16]."
+    hl: p:record p:s2 p:s4 p:s6 p:s8 p:s10 p:s12 p:s14 p:s16 h:track p:t3
     hear: Now the swing rolls. Turn [SWING] between 50 and 65 to find your spot.
   - id: first-make-velocity-change
     k: play
-    t: First make velocity change the volume. With T3 selected, press [FUNC] + [BACK] to open the PAD menu, turn [LEVEL/DATA] to VDEP and set it to 127, then press [BACK]. If VDEP is 0, velocity doesn't change the volume.
-    hl: h:func p:back t:level
+    t: First make velocity change the volume. Select [T3], then press [FUNC] + [BACK] to open the PAD menu, turn [LEVEL/DATA] to VDEP and set it to 127, then press [BACK]. If VDEP is 0, velocity doesn't change the volume.
+    hl: h:func p:back t:level h:track p:t3
     hear: No change yet. This only lets the next step be heard.
   - id: make-between-hats-quiet
     k: play

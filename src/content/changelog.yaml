@@ -3,6 +3,20 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.4.0
+  date: "2026-10-23"
+  title: A project for the course, and where each lesson starts
+  site:
+    - Every lesson's intro says which lesson it builds on.
+    - Steps that use a track say which pad to select, and light it on the panel, instead of only naming the track (lessons 2, 3, 4, 6, 7, 8, 9, 13, 14, 15, 16 and the song studies).
+  lessons:
+    - lesson: model-cycles/w01
+      what: The lesson now opens by making a project just for the course, with a drawing of how projects, banks and patterns fit together. You save the project once at the start, so the last step only saves the pattern.
+    - lesson: model-cycles/w04
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 3, as a grid you can play, and how to get back to it. Bar 8 is set up in two shorter steps, and bar 4 keeps one snare on 16 so it still differs from bars 1 to 3. Pages are named 1:4 to 4:4, like the page lights, and the panel lights the page each step is on. The roll's LEN is 3.00 (three steps), as the screen shows it. The hand-played fill is now two snares in bar 8, where the kicks drop out, instead of one hat at the start of bar 1. T4's chance is 30%, so its repeated perc hits stay sparse.
+    - lesson: model-cycles/w16
+      what: The fill you hold [PAGE] for is now lesson 4's two snares in the last bar.
+
 - id: 0.3.0
   date: "2026-10-23"
   title: Rolls, velocity and the three speeds of an LFO

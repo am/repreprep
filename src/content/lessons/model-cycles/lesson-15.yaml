@@ -107,7 +107,7 @@ steps:
     hear: "Press [PATTERN]: keys 5 to 9 now light up, because those slots hold data."
   - id: intro-2
     k: play
-    t: "Intro: press [STOP], go to B05 (hold [PATTERN], press [TRIG 5]) and press [RECORD]. Select [T1] and press [FUNC] + [PLAY] to clear its trigs. Do the same on T2, T4 and T5. Press [RECORD] to leave, play it, and save."
+    t: "Intro: press [STOP], go to B05 (hold [PATTERN], press [TRIG 5]) and press [RECORD]. Select [T1] and press [FUNC] + [PLAY] to clear its trigs. Do the same on [T2], [T4] and [T5]. Press [RECORD] to leave, play it, and save."
     hl: p:stop h:pattern p:s5 p:record h:track p:t1 h:func p:play p:t2 p:t4 p:t5 p:settings
     hear: "Only hats and chords: the idea of the song, waiting for the beat."
   - id: let-intro-play-itself
@@ -117,17 +117,17 @@ steps:
     hear: "Every few bars the chord voicing shifts, and the hats grow longer and shorter on their own clock. The intro now changes while you listen."
   - id: step
     k: play
-    t: "A: go to B06, press [RECORD] and clear T4. Press [RECORD] to leave. Select [T3] and turn [CHANCE] to about 60%, then select [T6] and turn its [REVERB SEND] down a little. Save. Leave B07 as it is: it's your peak."
+    t: "A: go to B06, press [RECORD] and clear [T4]. Press [RECORD] to leave. Select [T3] and turn [CHANCE] to about 60%, then select [T6] and turn its [REVERB SEND] down a little. Save. Leave B07 as it is: it's your peak."
     hl: h:pattern p:s6 p:record h:track p:t4 h:func p:play p:t3 t:chance p:t6 t:reverb p:settings
     hear: "Three small changes: one step below the full loop."
   - id: break
     k: play
-    t: "Break: go to B08 and clear T1, T3 and T4 the same way. Then turn [REVERB SIZE] up to about 115. Each pattern keeps its own effect settings, so only the break gets the big room. Save."
+    t: "Break: go to B08 and clear [T1], [T3] and [T4] the same way. Then turn [REVERB SIZE] up to about 115. Each pattern keeps its own effect settings, so only the break gets the big room. Save."
     hl: h:pattern p:s8 p:record h:track p:t1 p:t3 p:t4 h:func p:play t:revsize p:settings
     hear: "Snare, bass and chords in a huge space: the floor drops out."
   - id: outro
     k: play
-    t: "Outro: go to B09 and clear T1 and T5. On T6, turn [DECAY] up so the last chords ring longer. Save."
+    t: "Outro: go to B09 and clear [T1] and [T5]. Select [T6] and turn [DECAY] up so the last chords ring longer. Save."
     hl: h:pattern p:s9 p:record h:track p:t1 p:t5 h:func p:play p:t6 t:decay p:settings
     hear: Kick and bass leave first. The song drifts out on the sounds it started with.
   - id: end-where-began
@@ -142,7 +142,7 @@ steps:
     hear: "Intro, A, B, A, B, break, B, outro: about 85 seconds, then it loops."
   - id: listen-every-change-where
     k: play
-    t: Listen to every change. Where one feels too sudden, go to the pattern before it, press [RECORD], press [PAGE] until the fourth light is on, and remove a few hats on T3 so the last bar thins out. Save. Picking a pattern loses the chain, so build it again to listen.
+    t: Listen to every change. Where one feels too sudden, go to the pattern before it, press [RECORD], press [PAGE] until the fourth light is on, and remove a few hats on [T3] so the last bar thins out. Save. Picking a pattern loses the chain, so build it again to listen.
     hl: p:record p:page h:track p:t3 h:func p:settings
     hear: A small gap before a change makes the next section land harder.
   - id: about-how-many-changes

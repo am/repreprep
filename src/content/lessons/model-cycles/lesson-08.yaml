@@ -139,7 +139,7 @@ steps:
     hear: "Positive depth starts each note high and drops it into tune, like a tom. Negative depth starts it low and bends it up."
   - id: fast-inside-tone
     k: play
-    t: "Fast, inside the tone: still on T5, set WAV to TRI, DEP to about +5 and MUL to 2K. Hold [T5] and slowly turn [LFO SPEED]. Then set DEP back to 0. These changes stay in B04, so your song in B01 is untouched."
+    t: "Fast, inside the tone: still on [T5], set WAV to TRI, DEP to about +5 and MUL to 2K. Hold [T5] and slowly turn [LFO SPEED]. Then set DEP back to 0. These changes stay in B04, so your song in B01 is untouched."
     hl: p:lfo t:level h:t5 t:lfospd
     hear: "The wobble turns into a new tone: brighter, metallic, sometimes out of tune. That's frequency modulation, made by hand."
   - id: hats-move-lfo-decay

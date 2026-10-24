@@ -794,6 +794,20 @@ svg.fig {
 .gp .btn {
   font-size: 1em;
 }
+.cell.nw {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
+}
+/* a Get ready step's map: the playable grid with room under it for what the grid can't show */
+.pmap {
+  --gw: max(min(100cqi - 16px, 22rem), min(100cqi - 16px, (100cqh - 300px) / (var(--rows, 6) * 1.25) * 16 + 90px));
+  width: var(--gw);
+  margin: auto;
+  font-size: clamp(13px, calc(var(--gw) / 48), 22px);
+}
+.pmap .gp {
+  --gw: inherit;
+}
 .gctl {
   display: flex;
   flex-wrap: wrap;
