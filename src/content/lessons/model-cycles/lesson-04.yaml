@@ -98,14 +98,14 @@ steps:
     hear: "Every eighth bar the snare rises in a fast roll into bar 1. The fade is a velocity curve, so it works because T2's VDEP is at 127 from lesson 3."
   - id: add-fill-play-hand
     k: play
-    t: "Add a fill you play by hand: press [PAGE] until the 1:4 light is on, select [T3], add an extra hat on [TRIG 1], hold it and turn [CHANCE] to FILL. Press [RECORD] to listen, and hold [PAGE] whenever you want the fill."
-    hl: p:page h:track p:t3 p:s1 h:s1 t:chance p:record h:page
-    page: 1
-    hear: The extra hit only plays while [PAGE] is held.
+    t: "Add a fill you play by hand: still on page 4:4, select [T2] and add snares on [TRIG 9] and [TRIG 11]. Hold both and turn [CHANCE] until the screen shows FILL. Press [RECORD] to leave grid recording. Now hold [PAGE] while bar 8 plays, and let go when bar 1 starts."
+    hl: h:track p:t2 h:s9 h:s11 t:chance p:record h:page
+    hear: "Without [PAGE] the two snares stay silent. Held, they fill the gap the kicks left in bar 8 and run into the roll."
   - id: make-t4-drift
     k: play
-    t: "Make T4 drift: open the SCALE menu ([FUNC] + [PAGE]), set MOD to TRACK, select [T4] and set its LEN to 12, then [BACK]. Press [RECORD], select [T4] and place perc on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 10]."
+    t: "Make T4 drift: open the SCALE menu ([FUNC] + [PAGE]), set MOD to TRACK, select [T4] and set its LEN to 12, then [BACK]. Press [RECORD], press [PAGE] until the 1:4 light is on, select [T4] and place perc on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 10]."
     hl: h:func p:page t:level p:t4 p:back p:record p:s1 p:s4 p:s7 p:s10
+    page: 1
     hear: A 12-step loop sliding across your 16-step bar, just like the drawing.
   - id: let-breathe
     k: play

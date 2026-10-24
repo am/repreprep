@@ -124,6 +124,7 @@ test("player: the panel lights the page a step is on, and later steps keep it", 
   assert.equal(lit(at("make-bar-2-b")), 2);
   assert.equal(lit(at("make-bar-4-c")), 4);
   assert.equal(lit(at("empty-before-fill")), 4);
-  assert.equal(lit(at("add-fill-play-hand")), 1);
+  assert.equal(lit(at("roll-into-bar-8")), 4);
+  assert.equal(lit(at("add-fill-play-hand")), 4);
   assert.equal(lit(at("make-t4-drift")), 1);
 });
