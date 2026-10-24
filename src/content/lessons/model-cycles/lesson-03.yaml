@@ -83,10 +83,25 @@ steps:
     k: learn
     fig: nudge
     t: The last ingredient is timing. Keep kick and snare exactly on the grid, and let a few quiet hits arrive a touch late. The Model:Cycles calls this nudge.
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        rows:
+          - { n: T1 Kick, s: kick, hits: "1,9,11", new: "11" }
+          - { n: T2 Snare, s: snare, hits: "5,13", new: "5,13" }
+          - { n: T3 Hats, s: hat, hits: "3,7,11,15", new: "3,7,11,15" }
+          - { n: T4 Perc, s: perc, hits: "" }
+          - { n: T5 Tone, s: bass, hits: "" }
+          - { n: T6 Chord, s: keys, hits: "" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
   - id: start-b01-beat-saved
     k: play
-    t: "Start from B01, the beat you saved in lesson 2: Kick on [TRIG 1], [TRIG 9] and [TRIG 11]. Snare on [TRIG 5] and [TRIG 13]. Hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15]. Go to it (hold [PATTERN], press [T2], press [TRIG 1]) and press [PLAY]. Select [T3], the hats, and turn [SWING] to about 60%."
-    hl: h:pattern p:t2 p:s1 p:play h:track p:t3 t:swing
+    t: "Press [PLAY]. Select [T3], the hats, and turn [SWING] to about 60%."
+    hl: p:play h:track p:t3 t:swing
     hear: 'Nothing yet: your hats are only on the "&"s, and swing moves the even steps. Swing needs weak-step hits to work on.'
   - id: give-sixteenth-hats
     k: play

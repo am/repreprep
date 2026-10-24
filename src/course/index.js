@@ -75,11 +75,12 @@ export function renderFig(I, f, id) {
 }
 
 /* a Get ready step's map: the pattern as the lesson expects to find it, as a grid you can play (a tab per
-   page, named like the page lights), with each track's swing under its name and the steps the last lesson added outlined. */
+   page, named like the page lights, or per pattern), with each track's swing under its name and the steps the last lesson added outlined. */
 function renderPattern(I, P, host) {
   const sw = (rows) => (P.swing ? rows.map((r) => ({ ...r, sw: P.swing })) : rows);
-  const G = { title: P.slot, bpm: P.bpm, edit: false };
+  const G = { title: P.slots ? `${P.slots[0].slot} to ${P.slots.at(-1).slot}` : P.slot, bpm: P.bpm, edit: false };
   if (P.rows) Object.assign(G, { rows: sw(P.rows), swing: P.swing });
+  else if (P.slots) G.presets = P.slots.map((s) => ({ name: s.slot, bpm: P.bpm, swing: P.swing, rows: sw(s.rows) }));
   else
     G.presets = P.bars.map((rows, i) => ({
       name: `${i + 1}:${P.bars.length}`,

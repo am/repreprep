@@ -202,6 +202,17 @@ test("a Get ready step shows the pattern as a playable grid: new steps outlined,
   const two = renderFig(I, { pattern: bars }, "x");
   assert.equal(count(two, /data-gpre=/g), 2);
   assert.match(two, />1:2<\/button>.*>2:2<\/button>/s, "tabs are named like the page lights");
+  const slots = {
+    ...bars,
+    bars: undefined,
+    slots: [
+      { slot: "B05", rows: fig.pattern.rows },
+      { slot: "B09", rows: fig.pattern.rows },
+    ],
+  };
+  const five = renderFig(I, { pattern: slots }, "y");
+  assert.match(five, /<div class="gt">B05 to B09<\/div>/);
+  assert.match(five, />B05<\/button>.*>B09<\/button>/s, "a tab per pattern");
   assert.throws(() => lessonSchema.parse({ ...L, steps: [{ ...st, fig: undefined }] }), /ready step/);
 });
 

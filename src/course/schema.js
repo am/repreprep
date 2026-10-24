@@ -54,9 +54,13 @@ const pattern = z
     bpm: z.number(),
     swing: z.number().min(50).max(75).optional() /* on every track, shown under each track name */,
     rows: z.array(row).min(1).optional() /* a one-bar pattern */,
-    bars: z.array(z.array(row).min(1)).min(2).optional() /* or one set of rows per bar */,
+    bars: z.array(z.array(row).min(1)).min(2).optional() /* or one set of rows per page */,
+    slots: z
+      .array(z.strictObject({ slot: z.string().regex(/^[A-H]\d\d$/), rows: z.array(row).min(1) }))
+      .min(2)
+      .optional() /* or several patterns, from slot on, each as its first page */,
   })
-  .refine((p) => !!p.rows !== !!p.bars, "give a pattern either rows or bars");
+  .refine((p) => [p.rows, p.bars, p.slots].filter(Boolean).length === 1, "give a pattern rows, bars or slots");
 
 const step = z
   .strictObject({

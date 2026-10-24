@@ -3,6 +3,41 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.5.0
+  date: "2026-10-24"
+  title: Where every lesson starts
+  site:
+    - Get ready maps have a tab per page, named 1:4 to 4:4 like the page lights, and show trig conditions (1:2, 2:2, FILL) on their steps. On phones the map fits the screen.
+  lessons:
+    - lesson: model-cycles/w02
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 1, and how to get back to it.
+    - lesson: model-cycles/w03
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 2, and how to get back to it.
+    - lesson: model-cycles/w05
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 4, and how to get back to it.
+    - lesson: model-cycles/w06
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 5, and how to get back to it.
+    - lesson: model-cycles/w07
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 6, and how to get back to it. Pages are named 2:4, 3:4 and 4:4, like the page lights, and the panel lights the page each step is on.
+    - lesson: model-cycles/w08
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 7, and how to get back to it.
+    - lesson: model-cycles/w09
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 8, and how to get back to it.
+    - lesson: model-cycles/w10
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 9, and how to get back to it. Pages are named 2:4, 3:4 and 4:4, like the page lights, and the panel lights the page each step is on.
+    - lesson: model-cycles/w11
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 10, and how to get back to it. Pages are named 2:4, 3:4 and 4:4, like the page lights, and the panel lights the page each step is on.
+    - lesson: model-cycles/w12
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 11, and how to get back to it. Pages are named 2:4, 3:4 and 4:4, like the page lights, and the panel lights the page each step is on.
+    - lesson: model-cycles/w13
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 12, and how to get back to it. Pages are named 2:4, 3:4 and 4:4, like the page lights, and the panel lights the page each step is on.
+    - lesson: model-cycles/w14
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 13, and how to get back to it.
+    - lesson: model-cycles/w15
+      what: A Get ready step before the first Play step shows what B01 should hold from lesson 14, and how to get back to it. Pages are named 2:4, 3:4 and 4:4, like the page lights, and the panel lights the page each step is on.
+    - lesson: model-cycles/w16
+      what: A Get ready step shows your five sections, B05 to B09, as lesson 15 left them, a tab each.
+
 - id: 0.4.0
   date: "2026-10-23"
   title: A project for the course, and where each lesson starts

@@ -79,6 +79,46 @@ steps:
     k: learn
     fig: u3bassmap
     t: "This is the bassline you'll build. Every bar has the same rhythm, but the root changes: A, then F, D and E. Each root can carry its own chord, so the bass already tells the story."
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        bars:
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,4,7,11", new: "1,4,7,11" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13,16:.24", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,4,7,11", new: "1,4,7,11" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,4,7,11", new: "1,4,7,11" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11", cond: { 9: "1:2", 11: "1:2" } }
+            - {
+                n: T2 Snare,
+                s: snare,
+                hits: "5,9,11,12:.2,13,14:.3,15:.3,16:.3",
+                nudge: "12:.3",
+                cond: { 9: FILL, 11: FILL, 14: "2:2", 15: "2:2" },
+              }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "1,4,7,11", new: "1,4,7,11" }
+            - { n: T6 Chord, s: keys, hits: "" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
   - id: keep-last-lesson-s
     k: play
     t: "Keep last lesson's riff: with [RECORD] off, hold [PATTERN] + [TRIG 1] and press [RECORD]. Then hold [PATTERN] + [TRIG 11] and press and hold [STOP] until the countdown finishes. Stay on B01."
@@ -106,17 +146,18 @@ steps:
     hear: A little hop at the end of the bar that pulls you back to the 1.
   - id: spread-over-four-bars
     k: play
-    t: "Spread it over four bars: open the SCALE menu ([FUNC] + [PAGE]), press [T5], set LEN to 64 and press [BACK]. The trigs on page 1 are copied onto pages 2, 3 and 4."
+    t: "Spread it over four bars: open the SCALE menu ([FUNC] + [PAGE]), press [T5], set LEN to 64 and press [BACK]. The trigs on page 1 are copied onto pages 2:4, 3:4 and 4:4."
     hl: h:func p:page p:t5 t:level p:back
     hear: The same bar four times, for now.
   - id: change-roots
     k: play
-    t: "Change the roots: press [PAGE] for page 2, hold [TRIG 1], [TRIG 11] and [TRIG 15] together, press [LEVEL/DATA] until NOTE shows, and turn 4 semitones down. Page 3: 7 down. Page 4: 5 down."
+    t: "Change the roots: press [PAGE] until the 2:4 light is on, hold [TRIG 1], [TRIG 11] and [TRIG 15] together, press [LEVEL/DATA] until NOTE shows, and turn 4 semitones down. On 3:4: 7 down. On 4:4: 5 down."
     hl: p:page h:s1 h:s11 h:s15 p:level t:level
+    page: 4
     hear: A, F, D, E. You can almost hear chords that aren't there yet.
   - id: add-approach-note
     k: play
-    t: "Add the approach note: on page 4, place a note on [TRIG 16], then hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 2 semitones down, to G. Press [RECORD], listen, and save (hold [FUNC], long-press [SETTINGS])."
+    t: "Add the approach note: still on page 4:4, place a note on [TRIG 16], then hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 2 semitones down, to G. Press [RECORD], listen, and save (hold [FUNC], long-press [SETTINGS])."
     hl: p:page p:s16 h:s16 p:level t:level p:record h:func p:settings
     hear: "E, then G, then A at the top of the loop: the bass leans into its own beginning."
   - id: bass-plays-f-d
@@ -129,4 +170,4 @@ steps:
       - Leaving space
     a: Playing the root of each chord is the harmony job. It tells your ear which chord you're on, even before any chords are playing.
     hear: Bass on the root, with the kick. Then add one move at a time.
-challenge: "Make bar 4's approach note come and go: on page 4, hold [TRIG 16] in grid recording and turn [CHANCE] to 1:2. Listen to eight bars. Does the loop feel longer?"
+challenge: "Make bar 4's approach note come and go: on page 4:4, hold [TRIG 16] in grid recording and turn [CHANCE] to 1:2. Listen to eight bars. Does the loop feel longer?"
