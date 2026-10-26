@@ -93,6 +93,19 @@ test("under the player: notes box and Complete button for the lesson", () => {
   assert.match(html, /href="\/model-cycles">All lessons</);
 });
 
+test("a Get ready step links its lesson's start project, and under the lesson its finished one", () => {
+  for (const L of I.lessons.filter((L) => L.number)) {
+    const files = I.projects(L.number);
+    const ready = L.steps.findIndex((s) => s.k === "ready");
+    if (ready >= 0)
+      assert.match(player(L, ready), new RegExp(`href="${reEsc(files.start)}" download data-project="start"`));
+    const done = below(L).match(/data-project="done"/g) ?? [];
+    assert.equal(done.length, files.done ? 1 : 0, `lesson ${L.number}`);
+  }
+  // song studies clear their own pattern: nothing to load
+  for (const L of I.lessons.filter((L) => L.song)) assert.doesNotMatch(page(L.path), /data-project=/);
+});
+
 test("course map: every lesson once, grouped by unit, song studies last", () => {
   const html = page(`/${I.slug}`);
   for (const L of I.lessons)

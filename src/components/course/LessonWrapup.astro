@@ -7,6 +7,7 @@ interface Props {
   L: any;
 }
 const { I, L } = Astro.props;
+const done = L.song ? undefined : I.projects?.(L.number).done;
 ---
 
 <section class="wrapup stack" aria-label="After the lesson">
@@ -64,6 +65,15 @@ const { I, L } = Astro.props;
     </button>
     <span class="stamp" hidden></span>
   </div>
+  {done && (
+    <p class="t-note project">
+      The finished lesson as a project file:{" "}
+      <a href={done} download data-project="done">
+        lesson {L.number} done
+      </a>{" "}
+      (<a href={`/${I.slug}/saving#lesson-projects`}>how to load it</a>)
+    </p>
+  )}
 </section>
 
 <script>
@@ -256,5 +266,17 @@ const { I, L } = Astro.props;
     font-family: var(--mono);
     font-size: var(--fs-s);
     color: var(--done);
+  }
+  .project {
+    margin: 0;
+  }
+  .project a {
+    color: inherit;
+    text-decoration-color: var(--led);
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.1875rem;
+  }
+  .project a:hover {
+    color: var(--led);
   }
 </style>
