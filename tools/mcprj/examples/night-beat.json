@@ -1,0 +1,77 @@
+{
+  "$schema": "../spec.schema.json",
+  "name": "NIGHT",
+  "tempo": 96,
+  "patterns": {
+    "A01": {
+      "title": "NIGHT BEAT",
+      "fx": {
+        "REVERB SIZE": 90
+      },
+      "tracks": {
+        "1": {
+          "machine": "KICK",
+          "steps": "x...x...x...x..."
+        },
+        "2": {
+          "machine": "SNARE",
+          "params": {
+            "DECAY": 30,
+            "REVERB": 50
+          },
+          "steps": "....x.......x...",
+          "trigs": {
+            "16": {
+              "velocity": 50,
+              "condition": "50%"
+            }
+          }
+        },
+        "3": {
+          "machine": "METAL",
+          "params": {
+            "DECAY": 10
+          },
+          "swing": 58,
+          "steps": "x.x.x.x.x.x.x.x.",
+          "trigs": {
+            "3": {
+              "velocity": 60
+            },
+            "7": {
+              "velocity": 60
+            },
+            "15": {
+              "retrig": {
+                "rate": "1/32",
+                "length": 1
+              }
+            }
+          }
+        },
+        "6": {
+          "machine": "CHORD",
+          "steps": "x...............",
+          "trigs": {
+            "1": {
+              "note": "D5",
+              "length": 8,
+              "locks": {
+                "SHAPE": 40
+              }
+            }
+          }
+        }
+      }
+    },
+    "A02": {
+      "title": "BREAK",
+      "length": 32,
+      "tracks": {
+        "1": {
+          "steps": "x...x...x...x... x.x.x.x.xxxxxxxx"
+        }
+      }
+    }
+  }
+}

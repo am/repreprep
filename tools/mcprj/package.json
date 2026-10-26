@@ -1,0 +1,22 @@
+{
+  "name": "mcprj",
+  "version": "0.1.0",
+  "description": "Read and write Elektron Model:Cycles project files (.mcprj)",
+  "type": "module",
+  "license": "MIT",
+  "bin": {
+    "mcprj": "bin/mcprj.mjs"
+  },
+  "exports": "./src/index.mjs",
+  "files": [
+    "bin",
+    "src",
+    "template",
+    "spec.schema.json",
+    "README.md",
+    "FORMAT.md"
+  ],
+  "engines": {
+    "node": ">=22.2"
+  }
+}

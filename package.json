@@ -16,7 +16,8 @@
     "format:check": "prettier --check .",
     "test": "npm run format:check && npm run check && node --test 'tests/unit/*.test.mjs' && astro build && node --test 'tests/site/*.test.mjs' 'tests/server/*.test.mjs' && playwright test",
     "test:unit": "node --test 'tests/unit/*.test.mjs'",
-    "compare": "node scripts/compare.mjs"
+    "compare": "node scripts/compare.mjs",
+    "mcprj": "node tools/mcprj/bin/mcprj.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.4.0",
