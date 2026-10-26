@@ -28,6 +28,8 @@ const page = L.steps.slice(0, act + 1).reduce((p: number, s: any) => s.page || p
 const end = act === total - 1;
 const nx = nextLesson(I, L);
 const nextHref = end ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
+// a Get ready step offers the lesson's starting point as a project file
+const start = k === "ready" && !L.song ? I.projects?.(L.number).start : undefined;
 const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN", "turn");
 ---
 
@@ -133,6 +135,15 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
           {st.more && (
             <p class="more">
               <a href={`/${I.slug}/${st.more.to}`}>{st.more.text}</a>
+            </p>
+          )}
+          {start && (
+            <p class="more">
+              Or load it:{" "}
+              <a href={start} download data-project="start">
+                lesson {L.number} start
+              </a>{" "}
+              (<a href={`/${I.slug}/saving#lesson-projects`}>how</a>)
             </p>
           )}
         </Fragment>

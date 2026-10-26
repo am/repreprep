@@ -23,6 +23,7 @@ import {
   FX,
   RETRIG_RATES,
   PARAMS,
+  SETTINGS,
 } from "../../tools/mcprj/src/index.mjs";
 import { readZip } from "../../tools/mcprj/src/zip.mjs";
 import { decodeBlock, encodeBlock } from "../../tools/mcprj/src/lz4.mjs";
@@ -194,6 +195,30 @@ test("build makes the project a spec describes", () => {
   assert.deepEqual(a02.locks(), [{ track: 3, param: "COLOR", steps: { 5: 12 } }]);
   assert.equal(project.pattern("B01").length, 32);
   assert.ok(project.pattern("A01").isEmpty());
+});
+
+test("build sets TRACK scale, a track's own length and its CHANCE, and names the kit after the pattern", () => {
+  // as in an export of a pattern where SCALE MOD was set to TRACK, T4 LEN to 12 and T4's CHANCE to 30%
+  const project = Project.parse(
+    build({
+      patterns: { B01: { title: "PHRASE", length: 64, scale: "TRACK", tracks: { 4: { length: 12, chance: 30 } } } },
+    }).toBytes(new Date(2026, 0, 1))
+  );
+  const b01 = project.pattern("B01");
+  assert.equal(b01.scale, "TRACK");
+  assert.equal(b01.kit.name, "PHRASE");
+  assert.equal(b01.tracks[3].stepCount, 12);
+  assert.equal(b01.tracks[3].chance, 30);
+  assert.equal(b01.tracks[0].chance, 100);
+  assert.equal(project.pattern("A01").scale, "PATTERN");
+  assert.equal(b01.raw[b01.base + SETTINGS + 25], 1);
+  assert.equal(b01.raw[b01.tracks[3].base + 719], 30);
+});
+
+test("a project written with a date gives the same bytes every time", () => {
+  const spec = { patterns: { A01: { tracks: { 1: { steps: "x" } } } } };
+  const when = new Date(2026, 0, 1);
+  assert.deepEqual(build(spec).toBytes(when), build(spec).toBytes(when));
 });
 
 test("build clears a pattern of the base before writing it", () => {

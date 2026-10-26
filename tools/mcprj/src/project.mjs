@@ -17,6 +17,7 @@ export const PROJECT_BASE = KIT_BASE + 96 * KIT_SIZE;
 export const RAW_SIZE = 2163716; // project settings run to the end
 
 export const MACHINES = ["KICK", "SNARE", "METAL", "PERC", "TONE", "CHORD"];
+export const SCALES = ["PATTERN", "TRACK"];
 export const SPEEDS = ["2x", "3/2x", "1x", "3/4x", "1/2x", "1/4x", "1/8x"];
 /** Sound words; the same numbers name the parameter of a lock lane. */
 export const PARAMS = {
@@ -225,6 +226,13 @@ export class Track extends View {
   set stepCount(n) {
     this.set8(DEFAULTS + 10, n);
   }
+  /** the track's CHANCE (turned with no trig held), in percent: 100 by default */
+  get chance() {
+    return this.u8(DEFAULTS + 15);
+  }
+  set chance(v) {
+    this.set8(DEFAULTS + 15, v);
+  }
   /** 0-30 above 50%: 8 = 58% */
   get swing() {
     return this.u8(DEFAULTS + 14);
@@ -259,7 +267,9 @@ export class Track extends View {
   toJSON() {
     const steps = [];
     for (let s = 0; s < 64; s++) if (!this.isDefault(s)) steps.push(this.stepJSON(s));
-    return { length: this.stepCount, swing: 50 + this.swing, steps };
+    const d = { length: this.stepCount, swing: 50 + this.swing };
+    if (this.chance !== 100) d.chance = this.chance;
+    return { ...d, steps };
   }
 }
 
@@ -375,6 +385,15 @@ export class Pattern extends View {
     this.set16(SETTINGS + 20, n);
     for (const t of this.tracks) t.stepCount = n;
   }
+  /** SCALE menu MOD: PATTERN, or TRACK when each track has its own length */
+  get scale() {
+    return SCALES[this.u8(SETTINGS + 25)] ?? this.u8(SETTINGS + 25);
+  }
+  set scale(m) {
+    const v = SCALES.indexOf(m);
+    if (v < 0) throw new Error(`unknown scale mode ${m}; known: ${SCALES.join(", ")}`);
+    this.set8(SETTINGS + 25, v);
+  }
   get speed() {
     return SPEEDS[this.u8(SETTINGS + 26)];
   }
@@ -431,6 +450,7 @@ export class Pattern extends View {
       title: this.title,
       tempo: this.tempo,
       length: this.length,
+      scale: this.scale,
       speed: this.speed,
       tracks,
       locks: this.locks(),
@@ -455,14 +475,17 @@ export class Project {
     const { header, raw } = unpack(files.get(manifest.Payload));
     return new Project(manifest, header, raw);
   }
-  /** -> bytes of a .mcprj file the unit (through Elektron Transfer) accepts */
-  toBytes() {
+  /** -> bytes of a .mcprj file the unit (through Elektron Transfer) accepts; `when` dates the ZIP entries */
+  toBytes(when = new Date()) {
     // the unit writes the manifest with CRLF and two-space indents
     const manifest = JSON.stringify(this.manifest, null, 2).replace(/\n/g, "\r\n");
-    return writeZip([
-      ["manifest.json", new TextEncoder().encode(manifest)],
-      [this.manifest.Payload, pack(this.header, this.raw)],
-    ]);
+    return writeZip(
+      [
+        ["manifest.json", new TextEncoder().encode(manifest)],
+        [this.manifest.Payload, pack(this.header, this.raw)],
+      ],
+      when
+    );
   }
   get name() {
     return new View(this.raw, 0).text(8, 16);

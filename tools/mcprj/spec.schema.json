@@ -90,6 +90,10 @@
         "speed": {
           "enum": ["2x", "3/2x", "1x", "3/4x", "1/2x", "1/4x", "1/8x"]
         },
+        "scale": {
+          "enum": ["PATTERN", "TRACK"],
+          "description": "SCALE menu MOD: TRACK lets each track have its own length. PATTERN when left out."
+        },
         "fx": {
           "type": "object",
           "additionalProperties": false,
@@ -199,6 +203,12 @@
           "minimum": 1,
           "maximum": 64,
           "description": "The track's own step count; the pattern's when left out."
+        },
+        "chance": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 100,
+          "description": "The track's CHANCE in percent (turned with no trig held), 100 by default."
         },
         "steps": {
           "type": "string",
