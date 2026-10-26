@@ -4,7 +4,13 @@ Read and write Elektron Model:Cycles project files (`.mcprj`, what Elektron Tran
 
 ## Install
 
-From this folder:
+With Homebrew (macOS or Linux; installs Node too if needed):
+
+```sh
+brew install am/tap/mcprj
+```
+
+Or with npm, from this folder:
 
 ```sh
 npm install -g .     # puts `mcprj` on your PATH
