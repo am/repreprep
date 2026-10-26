@@ -12,6 +12,7 @@
     "bin",
     "src",
     "template",
+    "spec.schema.json",
     "README.md",
     "FORMAT.md"
   ],

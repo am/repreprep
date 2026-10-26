@@ -39,7 +39,7 @@ A01 NIGHT BEAT  96 BPM  16 steps  1x
 
 ## Spec files
 
-`build` reads a JSON file like [examples/night-beat.json](examples/night-beat.json). Every pattern it names is cleared first, so the pattern holds only what the spec says; with `--base`, the patterns it doesn't name stay as they were.
+`build` reads a JSON file like [examples/night-beat.json](examples/night-beat.json). [spec.schema.json](spec.schema.json) is its JSON Schema: `build` checks every spec against it first and lists each field that doesn't fit (a misspelt field, a value out of range, an unknown condition) instead of ignoring it. Point `"$schema"` at it, as the example does, and editors like VS Code complete field names and flag mistakes while you type. Every pattern it names is cleared first, so the pattern holds only what the spec says; with `--base`, the patterns it doesn't name stay as they were.
 
 ```json
 {
@@ -89,7 +89,7 @@ a01.setLock(1, "DECAY", 5, 20); // track and step count from 1
 writeFileSync("SONG2.mcprj", project.toBytes());
 ```
 
-`build(spec, base)` and `emptyProject()` do what the `build` and `new` commands do.
+`build(spec, base)` and `emptyProject()` do what the `build` and `new` commands do; `validate(spec)` returns the list of problems `build` would report.
 
 ## Tests
 

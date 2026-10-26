@@ -1,0 +1,435 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/am/repreprep/tree/main/tools/mcprj/spec.schema.json",
+  "title": "mcprj build spec",
+  "description": "A Model:Cycles project for `mcprj build`. Every pattern named here is cleared first, so it holds only what the spec says.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "$schema": {
+      "type": "string"
+    },
+    "name": {
+      "type": "string",
+      "pattern": "^[\\x20-\\x7e]{1,15}$",
+      "description": "Project name, up to 15 ASCII characters; also the file's name on the unit."
+    },
+    "tempo": {
+      "$ref": "#/$defs/tempo"
+    },
+    "activePattern": {
+      "$ref": "#/$defs/patternName",
+      "description": "The pattern the unit opens on. The first pattern in the spec when left out."
+    },
+    "muted": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/trackNumber"
+      },
+      "uniqueItems": true,
+      "description": "Muted tracks (mutes belong to the project, not to a pattern)."
+    },
+    "patterns": {
+      "type": "object",
+      "propertyNames": {
+        "$ref": "#/$defs/patternName"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/pattern"
+      }
+    }
+  },
+  "$defs": {
+    "patternName": {
+      "type": "string",
+      "pattern": "^[A-F](0[1-9]|1[0-6])$",
+      "description": "A01 to F16."
+    },
+    "trackNumber": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 6
+    },
+    "tempo": {
+      "type": "number",
+      "minimum": 30,
+      "maximum": 300,
+      "description": "BPM."
+    },
+    "raw": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 127,
+      "description": "Raw value 0-127, as stored (not always the number on screen)."
+    },
+    "steps": {
+      "type": "number",
+      "minimum": 0.125,
+      "maximum": 128,
+      "description": "In steps: 0.125 to 2 by 1/16, to 4 by 0.125, to 8 by 0.25, to 16 by 0.5, to 32 by 1, to 64 by 2, to 128 by 4."
+    },
+    "pattern": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "title": {
+          "type": "string",
+          "pattern": "^[\\x20-\\x7e]{0,15}$",
+          "description": "Pattern name (PATTERN > RENAME on the unit)."
+        },
+        "tempo": {
+          "$ref": "#/$defs/tempo",
+          "description": "BPM; the project's tempo when left out."
+        },
+        "length": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64,
+          "description": "Steps; 16, or the longest track's steps, when left out."
+        },
+        "speed": {
+          "enum": ["2x", "3/2x", "1x", "3/4x", "1/2x", "1/4x", "1/8x"]
+        },
+        "fx": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "DELAY TIME": {
+              "$ref": "#/$defs/raw"
+            },
+            "DELAY FEEDBACK": {
+              "$ref": "#/$defs/raw"
+            },
+            "REVERB SIZE": {
+              "$ref": "#/$defs/raw"
+            },
+            "REVERB TONE": {
+              "$ref": "#/$defs/raw"
+            }
+          }
+        },
+        "tracks": {
+          "type": "object",
+          "propertyNames": {
+            "enum": ["1", "2", "3", "4", "5", "6"]
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/track"
+          }
+        }
+      }
+    },
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "machine": {
+          "enum": ["KICK", "SNARE", "METAL", "PERC", "TONE", "CHORD"],
+          "description": "Starts the track from that machine's factory sound."
+        },
+        "params": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "LFO SPEED": {
+              "$ref": "#/$defs/raw"
+            },
+            "LFO MULT": {
+              "$ref": "#/$defs/raw"
+            },
+            "LFO DEST": {
+              "$ref": "#/$defs/raw"
+            },
+            "LFO WAVE": {
+              "$ref": "#/$defs/raw"
+            },
+            "LFO DEPTH": {
+              "$ref": "#/$defs/raw"
+            },
+            "PITCH": {
+              "$ref": "#/$defs/raw"
+            },
+            "COLOR": {
+              "$ref": "#/$defs/raw"
+            },
+            "SHAPE": {
+              "$ref": "#/$defs/raw"
+            },
+            "SWEEP": {
+              "$ref": "#/$defs/raw"
+            },
+            "CONTOUR": {
+              "$ref": "#/$defs/raw"
+            },
+            "DECAY": {
+              "$ref": "#/$defs/raw"
+            },
+            "VOLUME+DIST": {
+              "$ref": "#/$defs/raw"
+            },
+            "DELAY": {
+              "$ref": "#/$defs/raw"
+            },
+            "REVERB": {
+              "$ref": "#/$defs/raw"
+            }
+          },
+          "description": "Knob values; PITCH, LFO SPEED and LFO DEPTH are 64 at the centre."
+        },
+        "level": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 127,
+          "description": "Track level, 100 by default."
+        },
+        "vdep": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 127,
+          "description": "PAD menu VDEP, 127 by default."
+        },
+        "swing": {
+          "type": "integer",
+          "minimum": 50,
+          "maximum": 80,
+          "description": "Percent."
+        },
+        "length": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 64,
+          "description": "The track's own step count; the pattern's when left out."
+        },
+        "steps": {
+          "type": "string",
+          "pattern": "^[\\s|]*([^\\s|][\\s|]*){0,64}$",
+          "description": "One character per step: '.' is no trig, anything else a trig. Spaces and '|' are ignored. Up to 64 steps."
+        },
+        "trigs": {
+          "type": "object",
+          "propertyNames": {
+            "pattern": "^([1-9]|[1-5][0-9]|6[0-4])$",
+            "description": "Steps 1 to 64."
+          },
+          "additionalProperties": {
+            "$ref": "#/$defs/trig"
+          },
+          "description": "Settings for single steps, keyed 1 to 64. Each one is a trig unless it says \"trig\": false."
+        }
+      }
+    },
+    "trig": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "trig": {
+          "type": "boolean",
+          "description": "false keeps the settings without a trig."
+        },
+        "velocity": {
+          "$ref": "#/$defs/raw"
+        },
+        "note": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^[A-G]#?-?\\d+$"
+            },
+            {
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 127
+            }
+          ],
+          "description": "\"G5\" or a MIDI note number; C5 = 60."
+        },
+        "length": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/steps"
+            },
+            {
+              "const": "INF"
+            }
+          ]
+        },
+        "micro": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 23,
+          "description": "Micro timing, 0 = on the grid, 23 = latest."
+        },
+        "condition": {
+          "enum": [
+            "FILL",
+            "!FILL",
+            "PRE",
+            "!PRE",
+            "NEI",
+            "!NEI",
+            "1ST",
+            "!1ST",
+            "1%",
+            "2%",
+            "4%",
+            "6%",
+            "9%",
+            "13%",
+            "19%",
+            "25%",
+            "33%",
+            "41%",
+            "50%",
+            "59%",
+            "67%",
+            "75%",
+            "81%",
+            "87%",
+            "91%",
+            "94%",
+            "96%",
+            "98%",
+            "99%",
+            "1:2",
+            "2:2",
+            "1:3",
+            "2:3",
+            "3:3",
+            "1:4",
+            "2:4",
+            "3:4",
+            "4:4",
+            "1:5",
+            "2:5",
+            "3:5",
+            "4:5",
+            "5:5",
+            "1:6",
+            "2:6",
+            "3:6",
+            "4:6",
+            "5:6",
+            "6:6",
+            "1:7",
+            "2:7",
+            "3:7",
+            "4:7",
+            "5:7",
+            "6:7",
+            "7:7",
+            "1:8",
+            "2:8",
+            "3:8",
+            "4:8",
+            "5:8",
+            "6:8",
+            "7:8",
+            "8:8"
+          ]
+        },
+        "retrig": {
+          "oneOf": [
+            {
+              "const": true
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "rate": {
+                  "enum": [
+                    "1/1",
+                    "1/2",
+                    "1/3",
+                    "1/4",
+                    "1/5",
+                    "1/6",
+                    "1/8",
+                    "1/10",
+                    "1/12",
+                    "1/16",
+                    "1/20",
+                    "1/24",
+                    "1/32",
+                    "1/40",
+                    "1/48",
+                    "1/64",
+                    "1/80"
+                  ],
+                  "default": "1/16"
+                },
+                "length": {
+                  "oneOf": [
+                    {
+                      "$ref": "#/$defs/steps"
+                    },
+                    {
+                      "const": "INF"
+                    }
+                  ],
+                  "default": 4
+                },
+                "fade": {
+                  "$ref": "#/$defs/raw",
+                  "default": 0
+                }
+              }
+            }
+          ]
+        },
+        "locks": {
+          "type": "object",
+          "additionalProperties": false,
+          "properties": {
+            "LFO SPEED": {
+              "$ref": "#/$defs/raw"
+            },
+            "LFO MULT": {
+              "$ref": "#/$defs/raw"
+            },
+            "LFO DEST": {
+              "$ref": "#/$defs/raw"
+            },
+            "LFO WAVE": {
+              "$ref": "#/$defs/raw"
+            },
+            "LFO DEPTH": {
+              "$ref": "#/$defs/raw"
+            },
+            "MACHINE": {
+              "$ref": "#/$defs/raw"
+            },
+            "PITCH": {
+              "$ref": "#/$defs/raw"
+            },
+            "COLOR": {
+              "$ref": "#/$defs/raw"
+            },
+            "SHAPE": {
+              "$ref": "#/$defs/raw"
+            },
+            "SWEEP": {
+              "$ref": "#/$defs/raw"
+            },
+            "CONTOUR": {
+              "$ref": "#/$defs/raw"
+            },
+            "DECAY": {
+              "$ref": "#/$defs/raw"
+            },
+            "VOLUME+DIST": {
+              "$ref": "#/$defs/raw"
+            },
+            "DELAY": {
+              "$ref": "#/$defs/raw"
+            },
+            "REVERB": {
+              "$ref": "#/$defs/raw"
+            }
+          },
+          "description": "Parameter locks on this step."
+        }
+      }
+    }
+  }
+}

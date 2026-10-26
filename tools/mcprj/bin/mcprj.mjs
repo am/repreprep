@@ -2,7 +2,7 @@
 // mcprj: read and write Elektron Model:Cycles project files. Run with no arguments for help.
 import { readFileSync, writeFileSync } from "node:fs";
 import { parseArgs } from "node:util";
-import { Project, build, emptyProject, unpack } from "../src/index.mjs";
+import { Project, SCHEMA, build, emptyProject, unpack } from "../src/index.mjs";
 import { readZip } from "../src/zip.mjs";
 
 const HELP = `mcprj: read and write Elektron Model:Cycles project files (.mcprj)
@@ -14,6 +14,7 @@ const HELP = `mcprj: read and write Elektron Model:Cycles project files (.mcprj)
   mcprj build <spec.json> -o <out.mcprj> [--base <file.mcprj>]
                                            make a project from a JSON spec (see README.md)
   mcprj new <NAME> -o <out.mcprj>          an empty project
+  mcprj schema                             print the JSON Schema that specs are checked against
 
 Send a file to the unit with Elektron Transfer.`;
 
@@ -87,6 +88,8 @@ if (opts.help || !command) {
   const project = emptyProject();
   project.name = need(file, "project name");
   save(project, need(opts.out, "-o <out.mcprj>"));
+} else if (command === "schema") {
+  console.log(JSON.stringify(SCHEMA, null, 2));
 } else {
   fail(`unknown command ${command}\n\n${HELP}`);
 }

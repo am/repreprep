@@ -15,6 +15,14 @@ import {
   noteNumber,
   patternIndex,
   patternName,
+  validate,
+  SCHEMA,
+  MACHINES,
+  CONDITIONS,
+  SPEEDS,
+  FX,
+  RETRIG_RATES,
+  PARAMS,
 } from "../../tools/mcprj/src/index.mjs";
 import { readZip } from "../../tools/mcprj/src/zip.mjs";
 import { decodeBlock, encodeBlock } from "../../tools/mcprj/src/lz4.mjs";
@@ -196,13 +204,53 @@ test("build clears a pattern of the base before writing it", () => {
   assert.equal(MAP1.pattern("A12").locks().length, 1, "the base is not changed");
 });
 
-test("build names the pattern and field it can't use", () => {
-  assert.throws(() => build({ patterns: { A01: { tracks: { 1: { machine: "BASS" } } } } }), /A01 T1: unknown machine/);
-  assert.throws(
-    () => build({ patterns: { A01: { tracks: { 2: { trigs: { 1: { condition: "SOMETIMES" } } } } } } }),
-    /A01 T2/
+test("build lists every part of a spec that doesn't fit the schema", () => {
+  const spec = {
+    nmae: "TYPO",
+    patterns: {
+      Z01: {},
+      A01: { tracks: { 1: { machine: "BASS", trigs: { 65: {}, 2: { condition: "SOMETIMES", velocity: 200 } } } } },
+    },
+  };
+  const problems = validate(spec);
+  assert.deepEqual(
+    problems.map((p) => p.split(":")[0]),
+    [
+      "spec.nmae",
+      "spec.patterns.Z01",
+      "spec.patterns.A01.tracks.1.machine",
+      "spec.patterns.A01.tracks.1.trigs.2.condition",
+      "spec.patterns.A01.tracks.1.trigs.2.velocity",
+      "spec.patterns.A01.tracks.1.trigs.65",
+    ]
   );
-  assert.throws(() => build({ patterns: { Z01: {} } }), /bad pattern/);
+  assert.match(problems[0], /unknown field; known: \$schema, name, tempo/);
+  assert.match(problems[1], /the name "Z01" doesn't fit: A01 to F16/);
+  assert.match(problems[2], /"BASS" is not one of KICK, SNARE/);
+  assert.throws(() => build(spec), /doesn't fit spec\.schema\.json:\n {2}spec\.nmae/);
+});
+
+test("the schema accepts the example and every name the tool knows", () => {
+  const example = JSON.parse(readFileSync(new URL("../../tools/mcprj/examples/night-beat.json", import.meta.url)));
+  assert.deepEqual(validate(example), []);
+  const d = SCHEMA.$defs;
+  assert.deepEqual(d.track.properties.machine.enum, MACHINES);
+  assert.deepEqual(d.trig.properties.condition.enum, CONDITIONS);
+  assert.deepEqual(d.pattern.properties.speed.enum, SPEEDS);
+  assert.deepEqual(Object.keys(d.pattern.properties.fx.properties), FX);
+  assert.deepEqual(d.trig.properties.retrig.oneOf[1].properties.rate.enum, RETRIG_RATES);
+  assert.deepEqual(Object.keys(d.trig.properties.locks.properties), Object.values(PARAMS));
+  assert.deepEqual(
+    Object.keys(d.track.properties.params.properties),
+    Object.values(PARAMS).filter((p) => p !== "MACHINE")
+  );
+  const steps = new RegExp(d.track.properties.steps.pattern);
+  assert.ok(steps.test("x...x... | x...x..."));
+  assert.ok(!steps.test("x".repeat(65)));
+  for (const note of ["G5", "C#4", 60]) assert.deepEqual(validate(note, d.trig.properties.note), []);
+  for (const length of [0.125, 10, "INF"]) assert.deepEqual(validate(length, d.trig.properties.length), []);
+  assert.equal(validate(true, d.trig.properties.retrig).length, 0);
+  assert.equal(validate({ rate: "1/7" }, d.trig.properties.retrig).length, 1);
 });
 
 test("the command line tool reads what it builds", () => {

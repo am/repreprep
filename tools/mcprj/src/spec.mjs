@@ -1,6 +1,7 @@
 // Build a project from a JSON description. See README.md for the format.
 import { readFileSync } from "node:fs";
 import { MACHINES, Project, patternIndex } from "./project.mjs";
+import { validate } from "./schema.mjs";
 
 export const TEMPLATE = new URL("../template/empty.mcprj", import.meta.url);
 
@@ -10,8 +11,11 @@ export const emptyProject = () => Project.parse(readFileSync(TEMPLATE));
 /**
  * Apply `spec` to a copy of `base` (the empty project when left out). Every
  * pattern the spec names is cleared first, so it holds only what the spec says.
+ * Throws, listing every problem, when the spec doesn't fit spec.schema.json.
  */
 export function build(spec, base = emptyProject()) {
+  const problems = validate(spec);
+  if (problems.length) throw new Error(`the spec doesn't fit spec.schema.json:\n  ${problems.join("\n  ")}`);
   const project = Project.parse(base.toBytes());
   const clean = emptyProject();
   if (spec.name) project.name = spec.name;
