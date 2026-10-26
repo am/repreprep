@@ -3,6 +3,37 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.5.2
+  date: "2026-10-24"
+  title: Clearer steps in lesson 5, challenges on a copy
+  lessons:
+    - lesson: model-cycles/w05
+      what: Soften the snare now gives a value for each knob. PUNCH off, SWEEP and CONTOUR at 0 to take the crack off each hit, SHAPE about 30, COLOR left at 0, and DECAY about 30 for a dry snare. Setting velocity to DECAY now says to turn the DECAY knob to pick it, the two-words step says to write them in the Notes box, and the last tip names the knobs it means. The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w01
+      what: The challenge reminds you to set the tempo back to 90 BPM after tapping, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w03
+      what: The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w04
+      what: The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w06
+      what: The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w07
+      what: The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w08
+      what: The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w10
+      what: The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w11
+      what: The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w12
+      what: The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w13
+      what: The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w14
+      what: The challenge now has you copy B01 to B03 and work there, so B01 stays ready for the next lesson.
+    - lesson: model-cycles/w15
+      what: The challenge has you change a copy of a section in B03, so your chain stays as it is.
+
 - id: 0.5.1
   date: "2026-10-24"
   title: Clear a lesson's progress
