@@ -99,6 +99,36 @@ const TRACKS: [string, number[]][] = [
       </Band>
     ))}
   </div>
+
+  {I.projects && (
+    <Fragment>
+      <h3 class="sec t-label" id="lesson-projects">
+        Lesson projects
+      </h3>
+      <div class="bands">
+        <Band eyebrow="From a lesson" title="Project files">
+          <p class="t-body">
+            Each lesson’s Get ready step offers the course project as it should be when the lesson starts, and the end
+            of each lesson offers it finished. Load one when your pattern doesn’t match the map, or to hear where a
+            lesson ends up.
+          </p>
+        </Band>
+        <Band eyebrow="On your computer" title="Send it">
+          <p class="t-body">
+            Connect the {I.name} over USB, open Elektron’s Transfer app and send the .mcprj file to the unit’s projects.
+          </p>
+        </Band>
+        <Band eyebrow="On the unit" title="Load it">
+          <p class="t-body">
+            <Keys
+              I={I}
+              text="Save your own project first. Press [SETTINGS], open PROJECT, turn [LEVEL/DATA] to the project you sent (LESSON 5 START, say), press [LEVEL/DATA] and choose LOAD. From then on your saves go into that project."
+            />
+          </p>
+        </Band>
+      </div>
+    </Fragment>
+  )}
 </Base>
 
 <style>

@@ -20,25 +20,25 @@ Mapped by diffing exports from one unit (firmware 1.13 with Modded Cycles, Produ
 
 ## Pattern (14,848 bytes)
 
-`+0` u32 header, `+4` six tracks × 722, then 80 lock lanes × 130, then settings at `+10404`:
+`+0` u32 header, `+4` six tracks × 722, then 80 lock lanes × 130, then settings at `+14736`:
 
-- settings +0: pattern name (16, from PATTERN > RENAME), +18 u16 tempo × 120 (93 BPM = 11160), +20 u16 length, +22 u16 (16, unknown), +26 speed index (0 = 2x, 2 = 1x; the others assumed in the unit's menu order), +28 pattern index.
+- settings +0: pattern name (16, from PATTERN > RENAME), +18 u16 tempo × 120 (93 BPM = 11160), +20 u16 length, +22 u16 (16, unknown), +24 (0xFF, unknown; CHG?), +25 SCALE menu MOD (0 = PATTERN, 1 = TRACK; seen in an ordinary project with one track at its own length), +26 speed index (0 = 2x, 2 = 1x; the others assumed in the unit's menu order), +28 pattern index.
 
 ### Track (722 bytes), 64 steps per lane
 
-| Offset | What                                                                                                                                                                                                                           |
-| ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
-| 0      | u16 flags per step: 0x0001 trig, 0x0280 set with every trig (cleared when the trig is removed), 0x8000 retrig, 0x0010 set by default on even steps (unknown)                                                                   |
-| 128    | note: 0x3C untouched, 0xFF trig uses the track note, else MIDI note (67 = G5 on screen, so 60 = C5)                                                                                                                            |
-| 192    | velocity (0xFF = track default 100)                                                                                                                                                                                            |
-| 320    | micro timing (0 default, 23 = latest)                                                                                                                                                                                          |
-| 256    | trig length code (0xFF = track default): 0–29 0.125–1.94 in 1/16 steps, 30–45 2–3.875 by 0.125, 46–61 4–7.75 by 0.25, 62–77 8–15.5 by 0.5, 78–93 16–31, 94–109 32–62 by 2, 110–126 64–128 by 4, 127 INF (10.0 = 66, confirmed) |
-| 384    | trig condition: 0xFF none, 0 FILL, 1 !FILL, 2 PRE, 3 !PRE?, 4 NEI?, 5 !NEI?, 6 1ST, 7 !1ST?, 8–28 chance (15 = 25%), 29 = 1:2, 30 = 2:2, then A:B in order?                                                                    |
-| 448    | 0xFF default, unknown                                                                                                                                                                                                          |
-| 512    | retrig length, same code as trig length (default 46 = 4.0; 8.0 = 62 shows as 1/2)                                                                                                                                              |
-| 576    | retrig rate (9 = 1/16 default, 12 = 1/32)                                                                                                                                                                                      |
-| 640    | retrig velocity fade (0 default, 127 max)                                                                                                                                                                                      |
-| 704    | track defaults: +1 retrig length, +2 retrig rate, +3 fade, +4 note 60, +5 velocity 100, +6 trig length 14 (= 1.0), +10 track length, +14 swing (0–30, 30 = max)                                                                |
+| Offset | What                                                                                                                                                                                                                                                                          |
+| ------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| 0      | u16 flags per step: 0x0001 trig, 0x0280 set with every trig (cleared when the trig is removed), 0x8000 retrig, 0x0010 set by default on even steps (unknown)                                                                                                                  |
+| 128    | note: 0x3C untouched, 0xFF trig uses the track note, else MIDI note (67 = G5 on screen, so 60 = C5)                                                                                                                                                                           |
+| 192    | velocity (0xFF = track default 100)                                                                                                                                                                                                                                           |
+| 320    | micro timing (0 default, 23 = latest)                                                                                                                                                                                                                                         |
+| 256    | trig length code (0xFF = track default): 0–29 0.125–1.94 in 1/16 steps, 30–45 2–3.875 by 0.125, 46–61 4–7.75 by 0.25, 62–77 8–15.5 by 0.5, 78–93 16–31, 94–109 32–62 by 2, 110–126 64–128 by 4, 127 INF (10.0 = 66, confirmed)                                                |
+| 384    | trig condition: 0xFF none, 0 FILL, 1 !FILL, 2 PRE, 3 !PRE?, 4 NEI?, 5 !NEI?, 6 1ST, 7 !1ST?, 8–28 chance (15 = 25%), 29 = 1:2, 30 = 2:2, then A:B in order?                                                                                                                   |
+| 448    | 0xFF default, unknown                                                                                                                                                                                                                                                         |
+| 512    | retrig length, same code as trig length (default 46 = 4.0; 8.0 = 62 shows as 1/2)                                                                                                                                                                                             |
+| 576    | retrig rate (9 = 1/16 default, 12 = 1/32)                                                                                                                                                                                                                                     |
+| 640    | retrig velocity fade (0 default, 127 max)                                                                                                                                                                                                                                     |
+| 704    | track defaults: +1 retrig length, +2 retrig rate, +3 fade, +4 note 60, +5 velocity 100, +6 trig length 14 (= 1.0), +10 track length, +14 swing (0–30, 30 = max), +15 the track's CHANCE in percent (100 default; 30 seen after turning CHANCE to about 30% with no trig held) |
 
 ### Lock lane (130 bytes)
 

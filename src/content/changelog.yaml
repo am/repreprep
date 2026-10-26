@@ -3,6 +3,12 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.7.0
+  date: "2026-11-08"
+  title: Lesson projects to load
+  site:
+    - Every Model:Cycles lesson's Get ready step offers the course project as it should be when the lesson starts, as a file to send to the unit with Elektron's Transfer app, and the end of every lesson offers the finished project. The Saving page explains how to load one.
+
 - id: 0.6.3
   date: "2026-11-07"
   title: Key combos as big as the step text
