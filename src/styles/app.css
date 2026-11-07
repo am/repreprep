@@ -390,6 +390,22 @@ a.song svg {
     stroke-dashoffset: 16;
   }
 }
+/* a held Finish keeps playing: the button beats on the quarters, the step dots run like a playhead */
+.btn.fin-beat {
+  animation: fin-beat 0.3s ease-out;
+}
+@keyframes fin-beat {
+  30% {
+    transform: scale(1.05);
+    box-shadow: 0 0 0 6px var(--done-soft);
+  }
+}
+.player .dots a.fin-head.fin-head::before {
+  transform: scale(1.8);
+  background: var(--led);
+  border-color: var(--led);
+  transition: transform 0.05s;
+}
 /* the step dots light up one by one, left to right, and the step card and reps count glow green */
 .dots.fin-sweep a::before {
   animation: fin-dot 0.5s calc(var(--i, 0) * 35ms) ease-out both;

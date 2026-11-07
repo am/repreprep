@@ -60,7 +60,7 @@ test("the last step leads to the optional challenge; Finish ticks, marks the les
   await expect(page).toHaveURL(L2.path);
 });
 
-test("holding Finish fills it before it ticks", async ({ page }) => {
+test("holding Finish fills it, ticks, then keeps playing until you let go", async ({ page }) => {
   await page.goto(`${L1.path}/${steps(L1)}`);
   const fin = page.locator("[data-end]");
   const box = await fin.boundingBox();
@@ -70,6 +70,12 @@ test("holding Finish fills it before it ticks", async ({ page }) => {
   await expect(fin).toHaveClass(/fin-filling/);
   await expect(fin).toHaveText("Finish");
   await expect(fin).toHaveText("Done"); /* the fill ends while still held */
+  /* still held: the jam plays on, the step dots run like a playhead, and the page stays */
+  await expect(page.locator(".dots a.fin-head")).toHaveCount(1);
+  await page.waitForTimeout(2500);
+  await expect(page).toHaveURL(`${L1.path}/${steps(L1)}`);
+  /* letting go, even off the button, opens the done screen */
+  await page.mouse.move(5, 5);
   await page.mouse.up();
   await expect(page).toHaveURL(`${L1.path}/done`);
 });
