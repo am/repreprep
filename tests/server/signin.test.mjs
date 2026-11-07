@@ -43,7 +43,7 @@ test("progress is saved to the account and read back", async () => {
   await c.action("account.delete"); /* start from an empty account */
   await signIn(c);
   assert.deepEqual((await c.action("progress.load")).data, { data: null, updatedAt: 0 });
-  assert.deepEqual((await c.action("progress.save", progress(1234))).data, { updatedAt: 1234 });
+  assert.deepEqual((await c.action("progress.save", progress(1234))).data, { ...progress(1234), updatedAt: 1234 });
   assert.deepEqual((await c.action("progress.load")).data, { ...progress(1234), updatedAt: 1234 });
   assert.equal(
     (
@@ -61,8 +61,44 @@ test("progress is saved to the account and read back", async () => {
   assert.equal((await c.action("progress.save", progress(1), { origin: null })).status, 403);
 });
 
+test("saves from two devices are combined, removals included", async () => {
+  const c = client(w.origin);
+  await signIn(c);
+  await c.action("account.delete");
+  await signIn(c);
+  const cycles = (steps, notes = {}) => ({ lesson: null, steps, done: {}, notes, active: {} });
+  /* the phone ticks a step of lesson 1 and writes a note */
+  await c.action("progress.save", {
+    data: {
+      updatedAt: 10,
+      stamps: { "cycles/steps/w01:0": 10, "cycles/notes/w01": 10 },
+      inst: { cycles: cycles({ "w01:0": true }, { w01: "phone" }) },
+    },
+  });
+  /* the laptop, which never saw that, ticks a step of lesson 2 later */
+  const r = await c.action("progress.save", {
+    data: { updatedAt: 20, stamps: { "cycles/steps/w02:0": 20 }, inst: { cycles: cycles({ "w02:0": true }) } },
+  });
+  assert.deepEqual(r.data.data.inst.cycles.steps, { "w01:0": true, "w02:0": true });
+  assert.deepEqual(r.data.data.inst.cycles.notes, { w01: "phone" });
+  /* the laptop deletes the note after that: the removal wins over the older note */
+  await c.action("progress.save", {
+    data: {
+      updatedAt: 30,
+      stamps: { "cycles/steps/w02:0": 20, "cycles/notes/w01": 30 },
+      inst: { cycles: cycles({ "w02:0": true }) },
+    },
+  });
+  const { data } = (await c.action("progress.load")).data;
+  assert.deepEqual(data.inst.cycles.steps, { "w01:0": true, "w02:0": true });
+  assert.deepEqual(data.inst.cycles.notes, {});
+  assert.equal(data.updatedAt, 30);
+});
+
 test("the account download has everything kept about you", async () => {
   const c = client(w.origin);
+  await signIn(c);
+  await c.action("account.delete"); /* start from an empty account */
   await signIn(c);
   await c.action("progress.save", progress(99));
   await c.req("/api/contact", {

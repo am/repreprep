@@ -5,6 +5,7 @@ import { defineAction, ActionError } from "astro:actions";
 import { z } from "astro/zod";
 import { db } from "../lib/db.js";
 import { providers, endSession } from "../lib/auth.js";
+import { merge } from "../lib/merge-progress.js";
 
 const MAX_BYTES = 512 * 1024;
 function signedIn({ locals }) {
@@ -60,19 +61,23 @@ export const server = {
       input: z.object({ data: z.looseObject({ inst: z.record(z.string(), z.unknown()) }) }),
       handler: async ({ data }, ctx) => {
         const user = signedIn(ctx);
-        const json = JSON.stringify(data);
+        if (JSON.stringify(data).length > MAX_BYTES)
+          throw new ActionError({ code: "CONTENT_TOO_LARGE", message: "Progress is too large" });
+        /* combined with what the account already has, so a save from one device never drops another's */
+        const d = await db();
+        const row = await d.prepare("SELECT data FROM progress WHERE user_id=?").bind(user.id).first();
+        const both = merge(row && JSON.parse(row.data), data);
+        const json = JSON.stringify(both);
         if (json.length > MAX_BYTES)
           throw new ActionError({ code: "CONTENT_TOO_LARGE", message: "Progress is too large" });
-        const updatedAt = Number(data.updatedAt) || Date.now();
-        await (
-          await db()
-        )
+        const updatedAt = Number(both.updatedAt) || Date.now();
+        await d
           .prepare(
             "INSERT INTO progress (user_id,data,updated_at) VALUES (?,?,?) ON CONFLICT(user_id) DO UPDATE SET data=excluded.data, updated_at=excluded.updated_at"
           )
           .bind(user.id, json, updatedAt)
           .run();
-        return { updatedAt };
+        return { updatedAt, data: both };
       },
     }),
   },

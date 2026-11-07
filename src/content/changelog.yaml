@@ -3,6 +3,15 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.6.2
+  date: "2026-11-07"
+  title: Progress on more than one device
+  site:
+    - Loading a progress file now adds it to the progress in this browser instead of replacing it, so ticks and notes you made here stay.
+    - With the site open in two tabs, a step you tick in one shows in the other, and the tabs no longer overwrite each other's ticks.
+    - Deleting a note or all your progress stays deleted when you combine it with an older copy.
+    - The site asks your browser to keep its saved progress, so Safari is less likely to clear it after a week away.
+
 - id: 0.6.1
   date: "2026-11-07"
   title: Finishing a lesson
