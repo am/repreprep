@@ -1,4 +1,5 @@
-import { CYCLES_CONTROLS, iconSvg, drawCycles } from "./controls.js";
+import { CYCLES_CONTROLS, drawCycles } from "./controls.js";
+import { iconSvg } from "./icons.js";
 import { FIGS } from "./figures/index.js";
 import { CYCLES_MACHINES, CYCLES_SHORTCUTS, CYCLES_SAVING } from "./reference.js";
 

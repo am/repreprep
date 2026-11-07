@@ -288,10 +288,12 @@ h3 {
   white-space: nowrap;
   margin: 0 1px;
 }
+/* an icon key: the cap shows only the icon, like the key on the unit */
 .k .ico {
-  width: 1.05em;
-  height: 1.05em;
-  vertical-align: -0.16em;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.24em;
+  margin-right: 0;
 }
 .k.press {
   border-color: var(--act-press);
@@ -435,7 +437,7 @@ html.focus body {
 .keyico {
   fill: none;
   stroke: var(--dev-keyprint);
-  stroke-width: 1.5;
+  stroke-width: 2;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
@@ -588,7 +590,7 @@ html.focus body {
   vertical-align: -0.22em;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.8;
+  stroke-width: 2.2;
   stroke-linejoin: round;
   stroke-linecap: round;
   margin-right: 0.1875rem;
