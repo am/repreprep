@@ -24,6 +24,14 @@
     - lesson: model-cycles/s03
       what: The first beat step opens with "Lay down the basic beat".
 
+- id: 0.5.2
+  date: "2026-11-07"
+  title: Key icons like the real keys
+  site:
+    - The ten Model:Cycles keys printed with an icon (MACHINES, PUNCH, GATE, LFO, BACK, SETTINGS, TEMPO, RECORD, PLAY and STOP) are redrawn from a photo of the unit, on the panel drawing and in the key names in step text.
+    - In step text, a key printed with an icon now shows only its icon, like the key on the unit, followed by its name, such as [RECORD] and [PLAY].
+    - On the panel drawing, the ring that marks a knob, key or pad no longer runs into its label.
+
 - id: 0.5.1
   date: "2026-10-24"
   title: Clear a lesson's progress
