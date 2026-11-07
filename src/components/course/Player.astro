@@ -171,7 +171,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
                   All lessons
                 </a>
               )}
-              <a class="btn primary" href={nx ? nx.path : `/${I.slug}`} data-nav="1" data-end>
+              <a class="btn primary" href={nx ? nx.path : `/${I.slug}`} data-nav="1" data-end draggable="false">
                 {nx ? "Next lesson" : "All lessons"}
               </a>
             </Fragment>
@@ -372,8 +372,12 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       c = b && curLesson();
     if (c) pressFinish(b, () => finished(c), nextLessonHref(ist(c.k), c, b));
   });
+  /* nor drags the link away, which would end the press */
   document.addEventListener("contextmenu", (e) => {
     if (e.target.closest("[data-end]")) e.preventDefault();
+  });
+  document.addEventListener("dragstart", (e) => {
+    if (e.target.closest && e.target.closest("[data-end]")) e.preventDefault();
   });
 
   document.addEventListener("keydown", (e) => {

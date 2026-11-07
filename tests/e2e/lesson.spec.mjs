@@ -76,9 +76,32 @@ test("holding Next lesson fills it, ticks, then keeps playing until you let go",
   await page.waitForTimeout(2500);
   await expect(page).toHaveURL(`${L1.path}/done`);
   expect((await progress(page)).inst.cycles.done[L1.id]).toBeTruthy(); /* done, even when you came straight here */
-  /* letting go, even off the button, opens the next lesson */
-  await page.mouse.move(5, 5);
+  /* letting go on the button opens the next lesson */
   await page.mouse.up();
+  await expect(page).toHaveURL(L2.path);
+});
+
+test("letting go of Next lesson outside it cancels, while filling or while the jam plays", async ({ page }) => {
+  await page.goto(`${L1.path}/done`);
+  const go = page.locator("[data-end]");
+  const box = await go.boundingBox();
+  const press = async (ms) => {
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.waitForTimeout(ms);
+    await page.mouse.move(5, 5);
+    await expect(go).toHaveClass(/fin-out/); /* dimmed: letting go here cancels */
+    await page.mouse.up();
+    await page.waitForTimeout(800);
+    await expect(page).toHaveURL(`${L1.path}/done`);
+    await expect(go).toHaveText("Next lesson");
+    await expect(go).not.toHaveClass(/fin-/);
+    await expect(page.locator(".dots a.fin-head")).toHaveCount(0);
+  };
+  await press(300); /* while it fills */
+  await press(1800); /* after the tick, while the jam plays */
+  /* and it still works afterwards */
+  await go.click();
   await expect(page).toHaveURL(L2.path);
 });
 

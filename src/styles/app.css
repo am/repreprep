@@ -382,6 +382,11 @@ a.song svg {
     stroke-dashoffset: 16;
   }
 }
+/* held with the pointer off the button: letting go there cancels, so the button fades back a little */
+.btn.fin-out {
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
 /* a held Next lesson keeps playing: a soft glow breathes out from the button on each beat (it doesn't move),
    and the step dots run like a playhead */
 .btn.fin-beat {

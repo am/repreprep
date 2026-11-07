@@ -2,7 +2,9 @@
    quickly), then ticks, plays a short arpeggio, sweeps the step dots and, after a breath, opens the next
    lesson. Keep holding after the tick and it turns into a little jam: the arpeggio keeps going round
    Am, F, C and G, the step dots run like a sequencer's playhead and the sound opens up the longer you
-   hold; letting go lands on a last A and moves on. The sound only ever starts from a press. */
+   hold; letting go lands on a last A and moves on. Letting go outside the button cancels it, at any point:
+   while you're off the button the sound sags out of tune, and letting go there ends on a sour note and
+   puts the button back as it was. The sound only ever starts from a press. */
 import { navigate } from "astro:transitions/client";
 
 const HOLD = 900; /* ms for a held press to fill the button */
@@ -40,14 +42,16 @@ function audio() {
   if (AC.state === "suspended") AC.resume();
   return AC;
 }
-/* a soft FM pluck */
-function pluck(t, f, v = 0.6, bright = 0.9) {
+/* a soft FM pluck; cents detunes it */
+function pluck(t, f, v = 0.6, bright = 0.9, cents = 0) {
   const car = AC.createOscillator(),
     mod = AC.createOscillator(),
     mg = AC.createGain(),
     g = AC.createGain();
   car.frequency.value = f;
   mod.frequency.value = f;
+  car.detune.value = cents;
+  mod.detune.value = cents * 1.4;
   mg.gain.setValueAtTime(f * bright, t);
   mg.gain.exponentialRampToValueAtTime(1, t + 0.25);
   g.gain.setValueAtTime(0.0001, t);
@@ -66,6 +70,31 @@ export function arpeggio() {
     s16 = 60 / 90 / 4;
   [440, 523.25, 659.25, 880].forEach((f, i) => pluck(t + i * s16, f, i === 3 ? 0.7 : 0.55));
 }
+/* ---------- out of tune: while the pointer is off the button, everything sags flat and wobbles ---------- */
+let sag = 0,
+  rising = null;
+const wobble = () => (sag ? sag + (Math.random() * 2 - 1) * 40 : 0);
+function outOfTune(on) {
+  sag = on ? -70 : 0;
+  if (rising && AC) rising.detune.setTargetAtTime(on ? -300 : 0, AC.currentTime, 0.08);
+}
+/* a cancel: one sour note that slides down and away, like a tape stopping */
+function sour() {
+  if (!audio()) return;
+  const t = AC.currentTime,
+    o = AC.createOscillator(),
+    g = AC.createGain();
+  o.type = "triangle";
+  o.frequency.setValueAtTime(440, t);
+  o.detune.value = -40;
+  o.frequency.exponentialRampToValueAtTime(196, t + 0.5);
+  g.gain.setValueAtTime(0.14, t);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + 0.55);
+  o.connect(g).connect(out);
+  o.start(t);
+  o.stop(t + 0.6);
+}
+
 /* ---------- the jam: 16ths at 90 BPM, up and down each chord, two beats a chord ---------- */
 const S16 = 60 / 90 / 4;
 const CHORDS = [
@@ -88,18 +117,18 @@ function jam(onStep) {
           ch = CHORDS[Math.floor(n / 8) % 4],
           f = ch[UPDOWN[n % 8]] * (Math.floor(n / 32) % 2 ? 2 : 1);
         /* brighter and a touch louder the longer you hold, with an accent on each beat */
-        pluck(next, f, (n % 4 ? 0.4 : 0.6) * Math.min(1, 0.7 + held / 20), Math.min(3, 0.9 + held / 6));
+        pluck(next, f, (n % 4 ? 0.4 : 0.6) * Math.min(1, 0.7 + held / 20), Math.min(3, 0.9 + held / 6), wobble());
         onStep(n, Math.max(0, (next - AC.currentTime) * 1000));
         n++;
         next += S16;
       }
     }, 25);
   const j = {
-    stop() {
-      if (!timer) return;
+    /* quiet: a cancel, so no landing note */
+    stop(quiet) {
       clearInterval(timer);
       /* land on the root, an octave up */
-      pluck(Math.max(next, AC.currentTime + 0.02), 880, 0.7, 1.2);
+      if (!quiet) pluck(Math.max(next, AC.currentTime + 0.02), 880, 0.7, 1.2);
       j.stop = () => {};
     },
   };
@@ -119,7 +148,12 @@ function riser(ms) {
   g.gain.linearRampToValueAtTime(0.12, t + 0.08);
   o.connect(g).connect(out);
   o.start(t);
+  rising = o;
+  let on = true;
   return () => {
+    if (!on) return;
+    on = false;
+    rising = null;
     const n = AC.currentTime;
     g.gain.cancelScheduledValues(n);
     g.gain.setValueAtTime(g.gain.value, n);
@@ -131,7 +165,7 @@ function riser(ms) {
 /* ---------- the button ---------- */
 /* fills btn from where it is to full over ms, then calls done; a later call speeds it up */
 function fill(btn, ms, done) {
-  const f = btn._fill || (btn._fill = { v: 0, done, stop: riser(ms) });
+  const f = btn._fill || (btn._fill = { v: 0, done, stop: riser(ms), label: btn.innerHTML, timers: [] });
   f.from = f.v;
   f.t0 = performance.now();
   f.ms = ms;
@@ -166,24 +200,46 @@ function celebrate(btn, onDone, to) {
   document.getElementById("meterTxt")?.classList.add("fin-bump");
   const f = btn._fill;
   if (f.held) {
-    f.jam = jam((n, ms) => setTimeout(() => playhead(btn, dots, n), ms));
+    f.jam = jam((n, ms) => f.timers.push(setTimeout(() => playhead(btn, f, dots, n), ms)));
     f.release = () => {
       f.jam.stop();
       btn.classList.remove("fin-jam");
       dots?.querySelectorAll("a.fin-head").forEach((a) => a.classList.remove("fin-head"));
-      setTimeout(() => navigate(to), 450);
+      f.timers.push(setTimeout(() => navigate(to), 450));
     };
-    setTimeout(() => {
-      if (!f.released) {
-        f.released = true;
-        f.release();
-      }
-    }, JAM_MAX * 1000);
-  } else setTimeout(() => navigate(to), still() ? 700 : PAUSE);
+    f.timers.push(
+      setTimeout(() => {
+        if (!f.released) {
+          f.released = true;
+          f.release();
+        }
+      }, JAM_MAX * 1000)
+    );
+  } else f.timers.push(setTimeout(() => navigate(to), still() ? 700 : PAUSE));
+}
+/* let go outside the button: stop everything and put the button, the dots and the card back as they were */
+function cancel(btn) {
+  const f = btn._fill;
+  if (!f) return;
+  delete btn._fill;
+  cancelAnimationFrame(f.raf);
+  f.stop();
+  f.jam?.stop(true);
+  f.timers.forEach(clearTimeout);
+  outOfTune(false);
+  sour();
+  btn.classList.remove("fin-filling", "fin-done", "fin-jam", "fin-beat", "fin-out");
+  btn.style.removeProperty("--fill");
+  btn.innerHTML = f.label;
+  const dots = document.querySelector(".dots");
+  dots?.classList.remove("fin-sweep");
+  dots?.querySelectorAll("a.fin-head").forEach((a) => a.classList.remove("fin-head"));
+  document.querySelector(".player")?.classList.remove("fin-player");
+  document.getElementById("meterTxt")?.classList.remove("fin-bump");
 }
 /* one 16th of the jam: the step dots light in turn like a playhead, and a soft glow leaves the button on the quarters */
-function playhead(btn, dots, n) {
-  if (!btn._fill.jam || btn._fill.released) return;
+function playhead(btn, f, dots, n) {
+  if (btn._fill !== f || f.released) return;
   btn.classList.add("fin-jam");
   if (n % 4 === 0 && !still()) {
     btn.classList.remove("fin-beat");
@@ -195,25 +251,41 @@ function playhead(btn, dots, n) {
   all.forEach((a, i) => a.classList.toggle("fin-head", i === n % all.length));
 }
 
-/* a press on Finish: holding fills it slowly, letting go finishes the fill quickly */
+/* is the pointer over the button? (a touch keeps reporting the button as its target, so ask by position) */
+const over = (btn, e) => btn.contains(document.elementFromPoint(e.clientX, e.clientY));
+
+/* a press on Next lesson: holding fills it slowly, letting go on it finishes the fill quickly, letting go
+   anywhere else cancels; while the pointer is off the button, the button dims to say so */
 export function pressFinish(btn, onDone, to) {
   if (btn._fill) return;
   fill(btn, HOLD, () => celebrate(btn, onDone, to));
-  btn._fill.held = true;
-  /* on the document, so letting go off the button counts too */
-  const up = () => {
-    const f = btn._fill;
+  const f = btn._fill;
+  f.held = true;
+  const move = (e) => {
+    const out = !over(btn, e);
+    if (out === btn.classList.contains("fin-out") || btn._fill !== f) return;
+    btn.classList.toggle("fin-out", out);
+    outOfTune(out);
+  };
+  const up = (e) => {
+    document.removeEventListener("pointermove", move);
+    document.removeEventListener("pointerup", up);
+    document.removeEventListener("pointercancel", up);
+    if (btn._fill !== f) return;
     f.held = false;
-    if (f.v < 1) fill(btn, QUICK);
+    if (e.type === "pointercancel" || !over(btn, e)) cancel(btn);
+    else if (f.v < 1) fill(btn, QUICK);
     else if (f.release && !f.released) {
       f.released = true;
       f.release();
     }
   };
-  document.addEventListener("pointerup", up, { once: true });
-  document.addEventListener("pointercancel", up, { once: true });
+  /* on the document, so letting go off the button is seen too */
+  document.addEventListener("pointermove", move);
+  document.addEventListener("pointerup", up);
+  document.addEventListener("pointercancel", up);
 }
-/* a click or a key on Finish: start (or finish) the fill quickly */
+/* a click or a key on Next lesson: start (or finish) the fill quickly */
 export function clickFinish(btn, onDone, to) {
   if (btn._fill) {
     if (btn._fill.v < 1) fill(btn, QUICK);

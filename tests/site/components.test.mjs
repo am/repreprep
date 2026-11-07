@@ -49,7 +49,7 @@ test("player: the done screen closes the lesson, with no current step and Next l
     const to = nx ? nx.path : `/${I.slug}`;
     assert.match(
       html,
-      new RegExp(`href="${to}" data-nav="1" data-end>${nx ? "Next lesson" : "All lessons"}</a>`),
+      new RegExp(`href="${to}" data-nav="1" data-end draggable="false">${nx ? "Next lesson" : "All lessons"}</a>`),
       where
     );
   }
