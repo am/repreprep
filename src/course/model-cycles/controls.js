@@ -1,8 +1,9 @@
 import { esc } from "../shared/html.js";
+import { CYCLES_ICONS } from "./icons.js";
 
 /* ---------- Model:Cycles controls ----------
    Names and second labels exactly as printed on the panel (Elektron's top-down photo, OS 1.13 manual).
-   Keys printed with an icon only carry `icon`; `name` is the manual's name for them. */
+   Keys printed with an icon (drawn in icons.js) have `name` set to the manual's name for them. */
 export const CYCLES_CONTROLS = {
   level: {
     name: "LEVEL/DATA",
@@ -17,70 +18,60 @@ export const CYCLES_CONTROLS = {
   },
   machines: {
     name: "MACHINES",
-    icon: "drum",
     sub: "PRESET MENU",
     kind: "Key (drum icon, right of the screen)",
     desc: "Opens the MACHINES menu, where LEVEL/DATA picks KICK, SNARE, METAL, PERC, TONE or CHORD for the active track. [FUNC] + [MACHINES] opens the PRESET MENU.",
   },
   punch: {
     name: "PUNCH",
-    icon: "glove",
     sub: "QUANTIZE",
     kind: "Key (boxing-glove icon)",
     desc: "Toggles a fixed pseudo-compression and distortion on the active track. Hold a trig in grid recording and press it to punch just that step (an accent). [FUNC] + [PUNCH] opens QUANTIZE.",
   },
   gate: {
     name: "GATE",
-    icon: "gate",
     sub: "CLICK",
     kind: "Key (gate icon)",
     desc: "Gate mode: when lit, a note holds at full level for its LEN before decaying, like holding a synth key. When off, notes go straight to decay. [FUNC] + [GATE] opens the CLICK (metronome) menu.",
   },
   lfo: {
     name: "LFO",
-    icon: "sine",
     sub: "LFO SETUP",
     kind: "Key (wave icon)",
     desc: "Opens the LFO menu (WAV, MUL, DST, DEP). Shortcut: hold [LFO] and turn any track knob to make it the destination and set the depth. [FUNC] + [LFO] opens LFO SETUP.",
   },
   back: {
     name: "BACK",
-    icon: "back",
     sub: "PAD MENU",
     kind: "Key (return-arrow icon)",
     desc: "Leaves a menu. Also reverts a knob change made in the last three seconds or so. [FUNC] + [BACK] opens the PAD MENU (velocity curve, fixed velocity).",
   },
   settings: {
     name: "SETTINGS",
-    icon: "wrench",
     sub: "TEMP SAVE",
     kind: "Key (wrench icon)",
     desc: "Opens the config menu (projects, patterns, MIDI, system). [FUNC] + [SETTINGS] makes a temporary save of the pattern; hold the combination longer to save it to the project.",
   },
   tempo: {
     name: "TEMPO",
-    icon: "metronome",
     sub: "TAP BPM",
     kind: "Key (metronome icon)",
     desc: "Opens the TEMPO menu: turn LEVEL/DATA to set the BPM. Hold [FUNC] and tap [TEMPO] in time to tap a tempo.",
   },
   record: {
     name: "RECORD",
-    icon: "rec",
     sub: "COPY",
     kind: "Key (circle icon)",
     desc: "Toggles GRID RECORDING (lit red). Hold it and press [PLAY] for LIVE RECORDING. [FUNC] + [RECORD] = copy.",
   },
   play: {
     name: "PLAY",
-    icon: "play",
     sub: "CLEAR",
     kind: "Key (triangle icon)",
     desc: "Starts the pattern (press again to pause). [FUNC] + [PLAY] = clear.",
   },
   stop: {
     name: "STOP",
-    icon: "stop",
     sub: "PASTE",
     kind: "Key (square icon)",
     desc: "Stops playback; delay and reverb tails ring out. Press twice for a quick fade. [FUNC] + [STOP] = paste.",
@@ -208,23 +199,6 @@ for (let i = 1; i <= 16; i++)
     desc: `Step ${i} of the sequencer in grid recording. Outside recording it plays a note ([TRIG 9] is the root). With [PATTERN] held it picks pattern ${i}.`,
   };
 
-/* icon paths, drawn in a 20x20 box centred on 0,0 */
-export const ICONS = {
-  drum: '<ellipse cx="0" cy="-4" rx="6.5" ry="2.6"/><path d="M-6.5 -4V4.5A6.5 2.6 0 0 0 6.5 4.5V-4M-3 -1.5V6.5M3 -1.5V6.5"/>',
-  glove:
-    '<path d="M-4 7V-1.5Q-4 -7 1.5 -7Q6 -7 6 -2.5V3Q6 7 2 7Z"/><path d="M-4 0Q-7 -0.5 -6.5 3Q-6 5.5 -4 5.5M-2 -3H4"/>',
-  gate: '<path d="M-7 6H-4.5V-5H3.5V6H7"/><path d="M-1.5 -1.5L1 1L-1.5 3.5"/>',
-  sine: '<path d="M-7.5 0C-5.5 -7 -3 -7 0 0S5.5 7 7.5 0"/>',
-  back: '<path d="M6 6V-1H-5.5"/><path d="M-2.5 -4.5L-6 -1L-2.5 2.5"/>',
-  wrench: '<path d="M-4.5 -7V-3A4.5 4.5 0 0 0 4.5 -3V-7"/><path d="M-1.6 1.3V7.5H1.6V1.3"/>',
-  metronome: '<path d="M-6 7L-2.5 -7H2.5L6 7Z"/><path d="M0 3.5L5 -5"/>',
-  rec: '<circle cx="0" cy="0" r="6"/>',
-  play: '<path d="M-4.5 -6.5L6 0L-4.5 6.5Z"/>',
-  stop: '<rect x="-5.5" y="-5.5" width="11" height="11" rx="1.5"/>',
-};
-export const iconSvg = (n, cls = "ico") =>
-  `<svg class="${cls}" viewBox="-10 -10 20 20" aria-hidden="true">${ICONS[n]}</svg>`;
-
 /* ---------- panel drawing: traced from Elektron's top-down photo (1128x635 px; the
    viewBox uses that photo's pixel coordinates so every control sits where it really is) ---------- */
 export function drawCycles() {
@@ -245,10 +219,10 @@ export function drawCycles() {
   const trackKnob = (id, x, y, label, grey) =>
     `<rect class="pled" x="${x - 35}" y="${y - 11}" width="6" height="6" rx="1"/>` +
     knob(id, x, y, 18, "knobcap", label, null, grey);
-  const iconKey = (id, x, y, icon, s) =>
+  const iconKey = (id, x, y, s) =>
     g(
       id,
-      `<rect class="ring" x="${x - 20}" y="${y - 20}" width="40" height="40" rx="9"/><rect class="keycap" x="${x - 15}" y="${y - 15}" width="30" height="30" rx="6"/><g class="keyico" transform="translate(${x} ${y})">${ICONS[icon]}</g>` +
+      `<rect class="ring" x="${x - 20}" y="${y - 20}" width="40" height="40" rx="9"/><rect class="keycap" x="${x - 15}" y="${y - 15}" width="30" height="30" rx="6"/><g class="keyico" transform="translate(${x} ${y})">${CYCLES_ICONS[id]}</g>` +
         sub(x, y + 28, s)
     );
   const wideKey = (id, x, y, label, s) =>
@@ -269,20 +243,20 @@ export function drawCycles() {
   out.push(`<text class="model-t" x="333" y="260" text-anchor="middle">Model:Cycles</text>`);
   // column of icon keys right of the screen
   [
-    ["machines", 201, "drum"],
-    ["punch", 260, "glove"],
-    ["gate", 318, "gate"],
-    ["lfo", 376, "sine"],
-  ].forEach(([id, y, ic]) => out.push(iconKey(id, 440, y, ic, C[id].sub)));
+    ["machines", 201],
+    ["punch", 260],
+    ["gate", 318],
+    ["lfo", 376],
+  ].forEach(([id, y]) => out.push(iconKey(id, 440, y, C[id].sub)));
   // 3x2 icon grid
   [
-    ["back", 239, 292, "back"],
-    ["settings", 306, 292, "wrench"],
-    ["tempo", 373, 292, "metronome"],
-    ["record", 239, 348, "rec"],
-    ["play", 306, 348, "play"],
-    ["stop", 373, 348, "stop"],
-  ].forEach(([id, x, y, ic]) => out.push(iconKey(id, x, y, ic, C[id].sub)));
+    ["back", 239, 292],
+    ["settings", 306, 292],
+    ["tempo", 373, 292],
+    ["record", 239, 348],
+    ["play", 306, 348],
+    ["stop", 373, 348],
+  ].forEach(([id, x, y]) => out.push(iconKey(id, x, y, C[id].sub)));
   // FUNC / RETRIG / PATTERN / TRACK
   out.push(wideKey("func", 248, 404, "FUNC"));
   out.push(wideKey("retrig", 365, 404, "RETRIG", "RETRIG MENU"));

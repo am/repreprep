@@ -39,7 +39,7 @@ function byName(C) {
 export function keyCap(label, action = "", icon = "", title = "") {
   return `<span class="k ${action}"${title ? ` title="${esc(title)}"` : ""}>${icon}${label}</span>`;
 }
-/* I = the instrument ({controls, icon}) whose keys the text names */
+/* I = the instrument ({controls, icon}) whose keys the text names; icon(id) draws a key's printed icon, or "" */
 export function keyify(I, text, hl) {
   const C = I.controls || {};
   const names = byName(C);
@@ -53,7 +53,7 @@ export function keyify(I, text, hl) {
         else if (h.turn.includes(id)) cls = "turn";
         else if (h.press.includes(id)) cls = "press";
       }
-      const ic = id && C[id].icon && I.icon ? I.icon(C[id].icon) : "";
+      const ic = id && I.icon ? I.icon(id) : "";
       return keyCap(name.replace(/^TRIG (\d+)$/i, "$1"), cls, ic, ic ? C[id].kind : "");
     })
     .replace(/&quot;(.{2,80}?)&quot;/g, songLink);
