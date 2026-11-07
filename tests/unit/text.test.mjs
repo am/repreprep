@@ -39,19 +39,27 @@ test("keyify turns [KEY] into caps coloured by the step's actions", () => {
 
 test("keyify knows the short names used in lessons", () => {
   for (const [name, id] of [
-    ["REC", "record"],
-    ["LFO", "lfo"],
     ["VOLUME+DIST", "vol"],
     ["VOL+DIST", "vol"],
   ]) {
     assert.deepEqual(caps(keyify(I, `[${name}]`, `p:${id}`)), [[name, "press"]], name);
   }
+  assert.deepEqual(caps(keyify(I, "[REC]", "p:record")), [["", "press"]]);
+  assert.match(keyify(I, "[LFO]", "p:lfo"), /<\/span>&nbsp;LFO$/);
 });
 
-test("keyify draws the icon of keys printed with one", () => {
-  const html = keyify(I, "[TEMPO]", "");
+test("keyify draws keys printed with an icon as the icon alone, then the key's name as a word", () => {
+  const html = keyify(I, "Press [TEMPO] and [REC].", "p:record");
   assert.match(html, /<svg class="ico"/);
   assert.match(html, /title="Key \(metronome icon\)"/);
+  assert.deepEqual(caps(html), [
+    ["", ""],
+    ["", "press"],
+  ]);
+  assert.match(
+    html,
+    /<\/svg><\/span>&nbsp;tempo and <span class="k press"[^>]*><svg[\s\S]*?<\/svg><\/span>&nbsp;record\.$/
+  );
 });
 
 test("keyify escapes HTML and links known song titles", () => {

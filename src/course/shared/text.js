@@ -39,6 +39,8 @@ function byName(C) {
 export function keyCap(label, action = "", icon = "", title = "") {
   return `<span class="k ${action}"${title ? ` title="${esc(title)}"` : ""}>${icon}${label}</span>`;
 }
+/* the name of an icon key as a word in a sentence: "record", "tempo", but "LFO" */
+const keyWord = (name) => (name.length <= 3 ? name : name.toLowerCase());
 /* I = the instrument ({controls, icon}) whose keys the text names; icon(id) draws a key's printed icon, or "" */
 export function keyify(I, text, hl) {
   const C = I.controls || {};
@@ -54,7 +56,9 @@ export function keyify(I, text, hl) {
         else if (h.press.includes(id)) cls = "press";
       }
       const ic = id && I.icon ? I.icon(id) : "";
-      return keyCap(name.replace(/^TRIG (\d+)$/i, "$1"), cls, ic, ic ? C[id].kind : "");
+      // a key printed with an icon shows only the icon on its cap, as on the unit, and its name follows as text (kept on the same line)
+      if (ic) return keyCap("", cls, ic, C[id].kind) + "&nbsp;" + keyWord(C[id].name);
+      return keyCap(name.replace(/^TRIG (\d+)$/i, "$1"), cls);
     })
     .replace(/&quot;(.{2,80}?)&quot;/g, songLink);
 }

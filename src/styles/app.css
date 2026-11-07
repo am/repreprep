@@ -288,10 +288,12 @@ h3 {
   white-space: nowrap;
   margin: 0 1px;
 }
+/* an icon key: the cap shows only the icon, like the key on the unit */
 .k .ico {
-  width: 1.05em;
-  height: 1.05em;
-  vertical-align: -0.16em;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.24em;
+  margin-right: 0;
 }
 .k.press {
   border-color: var(--act-press);
