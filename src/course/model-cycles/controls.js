@@ -210,11 +210,11 @@ export function drawCycles() {
   const knob = (id, x, y, r, cls, label, s, grey) =>
     g(
       id,
-      `<circle class="ring" cx="${x}" cy="${y}" r="${r + 6}"/><circle class="${cls}" cx="${x}" cy="${y}" r="${r}"/><circle class="knobtop" cx="${x - 1}" cy="${y - 1.5}" r="${r - 4}"/>` +
+      `<circle class="ring" cx="${x}" cy="${y}" r="${r + 4}"/><circle class="${cls}" cx="${x}" cy="${y}" r="${r}"/><circle class="knobtop" cx="${x - 1}" cy="${y - 1.5}" r="${r - 4}"/>` +
         (label
-          ? `<text class="lbl" x="${x}" y="${y + r + 12}" text-anchor="middle">${label}${grey ? `<tspan class="grey"> / ${grey}</tspan>` : ""}</text>`
+          ? `<text class="lbl" x="${x}" y="${y + r + 14}" text-anchor="middle">${label}${grey ? `<tspan class="grey"> / ${grey}</tspan>` : ""}</text>`
           : "") +
-        (s ? sub(x, y + r + 21, s) : "")
+        (s ? sub(x, y + r + 23, s) : "")
     );
   const trackKnob = (id, x, y, label, grey) =>
     `<rect class="pled" x="${x - 35}" y="${y - 11}" width="6" height="6" rx="1"/>` +
@@ -222,13 +222,13 @@ export function drawCycles() {
   const iconKey = (id, x, y, s) =>
     g(
       id,
-      `<rect class="ring" x="${x - 20}" y="${y - 20}" width="40" height="40" rx="9"/><rect class="keycap" x="${x - 15}" y="${y - 15}" width="30" height="30" rx="6"/><g class="keyico" transform="translate(${x} ${y})">${CYCLES_ICONS[id]}</g>` +
+      `<rect class="ring" x="${x - 19}" y="${y - 19}" width="38" height="38" rx="8.5"/><rect class="keycap" x="${x - 15}" y="${y - 15}" width="30" height="30" rx="6"/><g class="keyico" transform="translate(${x} ${y})">${CYCLES_ICONS[id]}</g>` +
         sub(x, y + 28, s)
     );
   const wideKey = (id, x, y, label, s) =>
     g(
       id,
-      `<rect class="ring" x="${x - 30}" y="${y - 20}" width="60" height="40" rx="9"/><rect class="keycap" x="${x - 24}" y="${y - 15}" width="48" height="30" rx="6"/><text class="keytxt" x="${x}" y="${y + 3.5}" text-anchor="middle">${label}</text>` +
+      `<rect class="ring" x="${x - 28}" y="${y - 19}" width="56" height="38" rx="8.5"/><rect class="keycap" x="${x - 24}" y="${y - 15}" width="48" height="30" rx="6"/><text class="keytxt" x="${x}" y="${y + 3.5}" text-anchor="middle">${label}</text>` +
         (s ? sub(x, y + 28, s) : "")
     );
 
@@ -303,7 +303,7 @@ export function drawCycles() {
     out.push(
       g(
         id,
-        `<rect class="ring" x="${x - 30}" y="${422}" width="60" height="60" rx="11"/><rect class="padcap" x="${x - 24}" y="428" width="48" height="48" rx="7"/><text class="padtxt" x="${x}" y="457" text-anchor="middle">T${i + 1}</text>` +
+        `<rect class="ring" x="${x - 28}" y="424" width="56" height="56" rx="10"/><rect class="padcap" x="${x - 24}" y="428" width="48" height="48" rx="7"/><text class="padtxt" x="${x}" y="457" text-anchor="middle">T${i + 1}</text>` +
           sub(x, 489, C[id].sub)
       )
     );
