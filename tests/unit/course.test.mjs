@@ -240,3 +240,18 @@ test("every Get ready step comes before the lesson's first Play step", () => {
     assert.ok(r < L.steps.findIndex((s) => (s.k || "play") === "play"), L.id);
   }
 });
+
+test("figure sounds: every playable part of a drawing has a sound, and the drawing stays reachable", async () => {
+  const { FIG_SOUNDS } = await import("../../src/course/shared/fig-sounds.js");
+  const used = new Set();
+  for (const [name, f] of Object.entries(I.figs)) {
+    const html = f();
+    const ids = [...html.matchAll(/data-snd="([^"]+)"/g)].map((m) => m[1]);
+    ids.forEach((id) => {
+      assert.ok(FIG_SOUNDS[id], `${name}: ${id}`);
+      used.add(id);
+    });
+    if (ids.length) assert.match(html, /^<svg class="fig"[^>]* role="group"/, name);
+  }
+  assert.deepEqual([...used].sort(), Object.keys(FIG_SOUNDS).sort());
+});

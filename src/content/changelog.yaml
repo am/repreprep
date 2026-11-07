@@ -3,6 +3,15 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.6.0
+  date: "2026-11-07"
+  title: Drawings you can hear
+  site:
+    - Some drawings now play their sound. Tap a row (or its play button) to hear it, and tap again to stop.
+  lessons:
+    - lesson: model-cycles/w06
+      what: Tap the waveforms, the bright and dark spectrum and the three FM depths to hear them, and hear one note brighten as the FM depth turns up. The table of what each knob does on each machine is now a short chart of which knobs make a sound brighter.
+
 - id: 0.5.1
   date: "2026-10-24"
   title: Clear a lesson's progress

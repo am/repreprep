@@ -1,4 +1,5 @@
 import { esc, svgFig, T, hits, COUNT16, ROWC } from "../../shared/html.js";
+import { sndPart } from "../../shared/fig-sounds.js";
 
 /* ---- Unit 2: Sound ---- */
 export const UNIT_FIGS_2 = (() => {
@@ -196,28 +197,35 @@ export const UNIT_FIGS_2 = (() => {
     /* lesson 6 */
     u2waves() {
       let s = T(400, 36, "Waveforms, from dark to bright", "fh");
-      s += T(300, 62, "two cycles of the wave", "fs") + T(620, 62, "its harmonics (1 = the note you hear)", "fs");
+      s += T(20, 62, "tap a row to hear it", "fs", "start");
+      s += T(310, 62, "two cycles of the wave", "fs") + T(620, 62, "its harmonics (1 = the note you hear)", "fs");
       const rows = [
         ["Sine", "pure, round", "sine", [1, 0, 0, 0, 0, 0, 0, 0]],
-        ["Triangle", "soft, gentle", "tri", [1, 0, 0.11, 0, 0.04, 0, 0.02, 0]],
+        ["Triangle", "soft, gentle", "triangle", [1, 0, 0.11, 0, 0.04, 0, 0.02, 0]],
         ["Square", "hollow, reedy", "square", [1, 0, 0.33, 0, 0.2, 0, 0.14, 0]],
-        ["Sawtooth", "bright, buzzy", "saw", [1, 0.5, 0.33, 0.25, 0.2, 0.17, 0.14, 0.125]],
+        ["Sawtooth", "bright, buzzy", "sawtooth", [1, 0.5, 0.33, 0.25, 0.2, 0.17, 0.14, 0.125]],
       ];
       rows.forEach(([n, d, t, h], r) => {
         const c = 105 + r * 72;
-        s += T(40, c - 2, n, "fl", "start") + T(40, c + 18, d, "fs", "start");
-        s += `<path d="${wave(200, c, 220, 24, 2, t)}" ${stroke(r === 0 ? "var(--done)" : r === 3 ? "var(--hold)" : "var(--turn)")}/>`;
+        let o = T(64, c - 2, n, "fl", "start") + T(64, c + 18, d, "fs", "start");
+        o += `<path d="${wave(210, c, 220, 24, 2, { triangle: "tri", sawtooth: "saw" }[t] || t)}" ${stroke(r === 0 ? "var(--done)" : r === 3 ? "var(--hold)" : "var(--turn)")}/>`;
         h.forEach((v, i) => {
           const x = 490 + i * 35,
             hh = v ? Math.max(3, v * 56) : 0;
           if (hh)
-            s += `<rect x="${x}" y="${c + 28 - hh}" width="20" height="${hh}" rx="3" style="fill:${i ? "var(--turn)" : "var(--led)"}"/>`;
+            o += `<rect x="${x}" y="${c + 28 - hh}" width="20" height="${hh}" rx="3" style="fill:${i ? "var(--turn)" : "var(--led)"}"/>`;
         });
-        s += `<line x1="482" y1="${c + 28}" x2="768" y2="${c + 28}" class="grid"/>`;
+        o += `<line x1="482" y1="${c + 28}" x2="768" y2="${c + 28}" class="grid"/>`;
+        s += sndPart(`wave:${t}`, `Play a ${n.toLowerCase()} wave`, [10, c - 33, 780, 68], [38, c + 2], o);
       });
       for (let i = 0; i < 8; i++) s += T(500 + i * 35, 366, i + 1, "fs");
       s += T(400, 402, "More harmonics, brighter sound. The sine is the darkest, the sawtooth the brightest.", "fb");
-      return svgFig("0 0 800 420", s, "Sine, triangle, square and sawtooth waves with their harmonics");
+      return svgFig(
+        "0 0 800 420",
+        s,
+        "Sine, triangle, square and sawtooth waves with their harmonics: tap one to hear it",
+        "group"
+      );
     },
     u2spectrum() {
       let s = T(400, 36, "Bright and dark are about harmonics", "fh");
@@ -233,26 +241,43 @@ export const UNIT_FIGS_2 = (() => {
         }
         return o + `<line x1="100" y1="${base}" x2="750" y2="${base}" class="ln"/>`;
       };
-      s += T(100, 80, "Bright: many strong harmonics", "fl", "start") + bars(195, amp, "var(--turn)");
-      s +=
-        T(100, 240, "Dark: the same note through a low-pass filter", "fl", "start") +
-        bars(355, (i) => amp(i) * gain(i), "var(--turn)");
+      s += sndPart(
+        "filter:bright",
+        "Play the bright sound",
+        [40, 66, 730, 140],
+        [72, 75],
+        T(100, 80, "Bright: many strong harmonics", "fl", "start") + bars(195, amp, "var(--turn)")
+      );
       const cx = 121 + cut * 40,
         ex = 121 + (cut + 6) * 40;
-      s +=
-        `<path d="M100 262 L${cx} 262 L${ex} 355" class="mark" style="fill:none"/>` +
-        `<line x1="${cx}" y1="256" x2="${cx}" y2="268" class="ln"/>` +
-        T(cx - 8, 284, "cutoff", "fm", "end");
-      s += T(110, 374, "the note", "fs", "start") + T(750, 374, "higher harmonics →", "fs", "end");
-      s += T(400, 404, "A filter is like a tone knob turned down: the note stays, the highs go.", "fb");
-      return svgFig("0 0 800 420", s, "Spectrum of a bright sound and the same sound filtered dark");
+      s += sndPart(
+        "filter:dark",
+        "Play the same sound filtered dark",
+        [40, 220, 730, 144],
+        [72, 235],
+        T(100, 240, "Dark: the same note through a low-pass filter", "fl", "start") +
+          bars(355, (i) => amp(i) * gain(i), "var(--turn)") +
+          `<path d="M100 262 L${cx} 262 L${ex} 355" class="mark" style="fill:none"/>` +
+          `<line x1="${cx}" y1="256" x2="${cx}" y2="268" class="ln"/>` +
+          T(cx - 8, 284, "cutoff", "fm", "end")
+      );
+      s += T(110, 380, "the note", "fs", "start") + T(750, 380, "higher harmonics →", "fs", "end");
+      s += T(400, 406, "A filter is like a tone knob turned down: the note stays, the highs go.", "fb");
+      return svgFig(
+        "0 0 800 420",
+        s,
+        "Spectrum of a bright sound and the same sound filtered dark: tap one to hear it",
+        "group"
+      );
     },
     u2fm() {
       let s = T(400, 36, "FM in plain words", "fh");
-      s += box(50, 110, 190, 50) + T(145, 141, "Modulator", "fl");
-      s += box(50, 240, 190, 50) + T(145, 271, "Carrier", "fl");
-      s += `<path d="M145 162 L145 236" class="arr"/><path d="M137 226 L145 238 L153 226" class="arr"/>`;
-      s += T(155, 192, "wobbles its pitch", "fs", "start") + T(155, 210, "depth: how much", "fs", "start");
+      let d = box(50, 110, 190, 50) + T(145, 141, "Modulator", "fl");
+      d += box(50, 240, 190, 50) + T(145, 271, "Carrier", "fl");
+      d += `<path d="M145 162 L145 236" class="arr"/><path d="M137 226 L145 238 L153 226" class="arr"/>`;
+      d += T(155, 192, "wobbles its pitch", "fs", "start") + T(155, 210, "depth: how much", "fs", "start");
+      d += T(68, 92, "hear the depth turn up", "fs", "start");
+      s += sndPart("fm:sweep", "Play the depth turning up, from none to a lot", [30, 66, 240, 240], [50, 88], d);
       s +=
         `<path d="M242 265 L290 265" class="arr"/><path d="M280 257 L292 265 L280 273" class="arr"/>` +
         T(266, 290, "sound", "fs");
@@ -264,86 +289,60 @@ export const UNIT_FIGS_2 = (() => {
         }
         return `<path d="${P(pts)}" ${stroke(c, 2.5)}/>`;
       };
-      s += T(320, 74, "no modulation: a pure, round tone", "fm", "start") + fm(112, 0, "var(--done)");
-      s += T(320, 164, "a little: warmer, a few harmonics", "fm", "start") + fm(202, 1.2, "var(--turn)");
-      s += T(320, 254, "a lot: bright, then noisy", "fm", "start") + fm(292, 5, "var(--hold)");
+      const row = (id, label, y, I, c, text) =>
+        sndPart(id, label, [300, y - 24, 480, 86], [318, y - 5], T(338, y, text, "fm", "start") + fm(y + 38, I, c));
+      s += row("fm:none", "Play with no modulation", 74, 0, "var(--done)", "no modulation: a pure, round tone");
+      s += row(
+        "fm:little",
+        "Play with a little modulation",
+        164,
+        1.2,
+        "var(--turn)",
+        "a little: warmer, a few harmonics"
+      );
+      s += row("fm:lot", "Play with a lot of modulation", 254, 5, "var(--hold)", "a lot: bright, then noisy");
       s += T(400, 365, "More modulation, more harmonics, brighter sound.", "fb");
       s += T(400, 395, "The Model:Cycles has no filter knob: to darken a sound, turn the modulation down.", "fs");
-      return svgFig("0 0 800 420", s, "FM: a modulator wobbling a carrier at three depths");
+      return svgFig(
+        "0 0 800 420",
+        s,
+        "FM: a modulator wobbling a carrier at three depths: tap one to hear it",
+        "group"
+      );
     },
     u2macros() {
-      let s = T(400, 36, "The four macros, machine by machine", "fh");
+      let s = T(400, 36, "Which knob makes it brighter?", "fh");
       const cols = ["COLOR", "SHAPE", "SWEEP", "CONTOUR"],
-        x0 = 140,
-        cw = 160,
-        y0 = 80,
-        rh = 44;
-      cols.forEach((c, i) => (s += T(x0 + cw * i + cw / 2, 68, c, "fl")));
+        x0 = 150,
+        cw = 155,
+        y0 = 64,
+        rh = 42;
+      cols.forEach((c, i) => (s += T(x0 + cw * i + cw / 2, y0 + 8, c, "fl")));
+      /* 1: sets how much modulation, so it brightens (Elektron's manual, machine parameters) */
       const M = [
-        [
-          "KICK",
-          [
-            ["soft square-like", "modulation"],
-            ["triangle-like mod", "and feedback", 1],
-            ["pitch sweep", "depth and time"],
-            ["modulation", "envelope depth", 1],
-          ],
-        ],
-        [
-          "SNARE",
-          [
-            ["inharmonicity"],
-            ["modulation amount", "and feedback", 1],
-            ["pitch sweep", "depth and time"],
-            ["modulation", "envelope depth", 1],
-          ],
-        ],
-        [
-          "METAL",
-          [
-            ["tune offset A"],
-            ["modulation amount", "and feedback", 1],
-            ["tune offset B"],
-            ["modulation", "envelope depth", 1],
-          ],
-        ],
-        ["PERC", [["inharmonicity"], ["modulation amount", 1], ["pitch sweep"], ["modulation", "envelope depth", 1]]],
-        [
-          "TONE",
-          [["modulator ratio"], ["modulation amount", 1], ["feedback amount"], ["modulation", "envelope depth", 1]],
-        ],
-        [
-          "CHORD",
-          [
-            ["interval mix,", "osc balance"],
-            ["chord type", "or unison"],
-            ["wavetable sweep"],
-            ["filter cutoff", "envelope depth"],
-          ],
-        ],
+        ["KICK", ["tone", 1, "pitch drop", 1]],
+        ["SNARE", ["metallic ring", 1, "pitch drop", 1]],
+        ["METAL", ["tuning A", 1, "tuning B", 1]],
+        ["PERC", ["metallic ring", 1, "pitch drop", 1]],
+        ["TONE", ["character", 1, "grit", 1]],
+        ["CHORD", ["voice mix", "chord type", "wavetable", "filter"]],
       ];
       M.forEach(([n, cells], r) => {
-        const y = y0 + r * rh;
-        s += T(36, y + 28, n, "fl", "start");
-        cells.forEach((cell, i) => {
-          const sh = cell[cell.length - 1] === 1,
-            lines = cell.filter((v) => typeof v === "string"),
-            x = x0 + cw * i;
-          s += `<rect x="${x + 3}" y="${y + 3}" width="${cw - 6}" height="${rh - 6}" rx="8" style="fill:${sh ? "var(--turn-soft)" : "var(--surface-2)"};stroke:var(--line)"/>`;
+        const y = y0 + 22 + r * rh;
+        s += `<line x1="40" y1="${y}" x2="770" y2="${y}" class="grid"/>`;
+        s += T(44, y + 27, n, "fl", "start");
+        cells.forEach((v, i) => {
+          const cx = x0 + cw * i + cw / 2;
           s +=
-            lines.length === 1
-              ? T(x + cw / 2, y + 27, lines[0], "fm")
-              : T(x + cw / 2, y + 19, lines[0], "fm") + T(x + cw / 2, y + 36, lines[1], "fm");
+            v === 1
+              ? `<rect x="${cx - 55}" y="${y + 8}" width="110" height="26" rx="13" style="fill:var(--led)"/>` +
+                T(cx, y + 26, "brighter", "fbar")
+              : T(cx, y + 26, v, "fm");
         });
       });
-      s += T(
-        400,
-        372,
-        "Shaded: how much modulation. More of it adds harmonics, so these are your brightness knobs.",
-        "fb"
-      );
-      s += T(400, 400, "From Elektron's manual. Turn one, listen, and name what changed.", "fs");
-      return svgFig("0 0 800 420", s, "What COLOR, SHAPE, SWEEP and CONTOUR do on each machine");
+      s += T(400, 382, "Coral: how much modulation. More modulation, more harmonics, a brighter sound.", "fb");
+      s += T(400, 408, "From Elektron's manual. Turn one, listen, and name what changed.", "fs");
+      return svgFig("0 0 800 420", s, "Which of COLOR, SHAPE, SWEEP and CONTOUR brightens each machine");
     },
     /* lesson 7 */
     u2layers() {

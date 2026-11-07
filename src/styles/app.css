@@ -684,6 +684,41 @@ svg.fig {
   fill: none;
   marker-end: none;
 }
+/* a part of a drawing you tap to hear (shared/fig-sounds.js): the box lights on hover, focus and while it plays */
+.snd {
+  cursor: pointer;
+  outline: none;
+}
+.snd .snd-hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 1.5;
+  transition: fill 0.15s;
+}
+.snd:hover .snd-hit,
+.snd:focus-visible .snd-hit {
+  fill: var(--surface-2);
+}
+.snd:focus-visible .snd-hit {
+  stroke: var(--led);
+}
+.snd.playing .snd-hit {
+  fill: var(--led-soft);
+}
+.snd .snd-btn circle {
+  fill: var(--led);
+}
+.snd .snd-btn path,
+.snd .snd-btn rect {
+  fill: var(--bg);
+}
+.snd .snd-stop,
+.snd.playing .snd-play {
+  display: none;
+}
+.snd.playing .snd-stop {
+  display: inline;
+}
 /* playable grid: as wide as the drawing area allows while all its rows still fit in its height; text scales with it */
 .gp {
   --gw: min(100cqi - 16px, (100cqh - 260px) / (var(--rows, 2) * 1.25) * 16 + 90px);

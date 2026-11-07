@@ -1,5 +1,5 @@
 ---
-// A Learn step's drawing: a named figure, or a playable step grid the browser can redraw.
+// A Learn step's drawing: a named figure (some have parts you tap to hear), or a playable step grid the browser can redraw.
 import { renderFig } from "../../course/index.js";
 interface Props {
   I: any;
@@ -14,6 +14,8 @@ const { I, fig, id } = Astro.props;
 <script>
   /* playable grids: pick up their specs on each page, stop playing when you leave it */
   import { gridStop, mountGrids } from "../../client/audio.js";
+  import { figSoundStop } from "../../client/fig-sounds.js";
   document.addEventListener("astro:before-swap", gridStop);
+  document.addEventListener("astro:before-swap", figSoundStop);
   document.addEventListener("astro:page-load", mountGrids);
 </script>

@@ -23,18 +23,21 @@ steps:
     k: learn
     fig: u2waves
     t: "Every sound is a stack of tones: the note you hear plus quieter harmonics above it. A sine has none, a sawtooth has them all. The more harmonics, the brighter the sound."
+    hear: Tap each wave to hear it at the same note. The sine is round and soft; each next one gets buzzier.
   - id: low-pass-filter-darkens
     k: learn
     fig: u2spectrum
     t: A low-pass filter darkens a sound by turning down everything above a cutoff. Burial's hats in "Ghost Hardware" are pitched way down with their highs cut away, so they sound dusty rather than crisp.
+    hear: Tap both rows. The dark one plays the same note; only the highs are gone, like a sound through a wall.
   - id: fm-plain-words
     k: learn
     fig: u2fm
     t: "FM, in plain words: one oscillator wobbles another's pitch very fast. A little wobble adds a few harmonics; a lot adds many, then noise. The Model:Cycles has no filter knob, so less modulation is how you go dark."
+    hear: Tap each row, then tap "hear the depth turn up" to hear one note go from round to bright to harsh.
   - id: four-macros-mean-something
     k: learn
     fig: u2macros
-    t: The four macros mean something different on each machine. On five of the six, SHAPE and CONTOUR set how much modulation there is, so they are your main brightness knobs.
+    t: COLOR, SHAPE, SWEEP and CONTOUR do a different job on each machine. On five of the six, SHAPE and CONTOUR set how much modulation there is, so they are your brightness knobs.
     hear: COLOR and SWEEP change the tuning and movement of the tone. Use your ears to decide if that's brighter.
   - id: get-ready
     k: ready

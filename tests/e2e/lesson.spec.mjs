@@ -244,3 +244,21 @@ test("phone: the lesson step reads full width and Next works @phone", async ({ p
   const vw = page.viewportSize().width;
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(vw);
 });
+
+test("drawings with sounds: tapping a row plays it, tapping again stops it", async ({ page }) => {
+  const L6 = I.lessons.find((l) => l.number === 6);
+  const i = L6.steps.findIndex((s) => s.fig === "u2waves");
+  await page.goto(`${L6.path}/${i}`);
+  const sine = page.locator('[data-snd="wave:sine"]');
+  const saw = page.locator('[data-snd="wave:sawtooth"]');
+  await sine.click();
+  await expect(sine).toHaveAttribute("aria-pressed", "true");
+  await saw.click();
+  await expect(sine).toHaveAttribute("aria-pressed", "false");
+  await expect(saw).toHaveClass(/playing/);
+  await saw.click();
+  await expect(saw).toHaveAttribute("aria-pressed", "false");
+  await saw.focus();
+  await page.keyboard.press("Enter");
+  await expect(saw).toHaveAttribute("aria-pressed", "true");
+});
