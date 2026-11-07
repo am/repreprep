@@ -5,7 +5,7 @@ import { courses } from "../course/content.js";
 export const prerender = true;
 
 export async function GET({ site }) {
-  const paths = ["/", "/privacy"];
+  const paths = ["/", "/privacy", "/whats-new"];
   for (const I of await courses()) {
     paths.push(`/${I.slug}`, `/${I.slug}/machines`, `/${I.slug}/shortcuts`, `/${I.slug}/panel`, `/${I.slug}/saving`);
     paths.push(...I.lessons.map((L) => L.path));

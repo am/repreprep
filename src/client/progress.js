@@ -2,14 +2,21 @@
    in it is also saved to your account. Pages arrive already built, and each component's script fills in its
    part of your progress with onProgress, which runs on every page view and again whenever progress changes.
    Same shape as the single-file app, so old progress files load as they are:
-   {inst:{cycles:{lesson, steps:{"w05:3":true}, done:{w05:ts}, notes:{w05:"…"}, active:{w05:3}}}, focus, stepW, updatedAt} */
+   {inst:{cycles:{lesson, steps:{"w05:set-decay":true}, done:{w05:ts}, notes:{w05:"…"}, active:{w05:3},
+    seen:{w05:"0.3.0"}}}, focus, stepW, updatedAt, since, read, stepIds}
+   Ticks are "<lesson id>:<step id>", active the number of the step you were on. since is the site's version
+   when this progress began (lesson updates older than that aren't news to you), read the version you last saw
+   on What's new; seen holds, per lesson, the version whose update note you closed. stepIds marks progress
+   whose ticks use step ids (older progress numbered them, see numbered-steps.js). */
 import { SIGN_IN } from "astro:env/client";
+import { FIRST_VERSION } from "../course/shared/updates.js";
+import { numbersToIds } from "../course/shared/numbered-steps.js";
 import { entries, stamp, merge, sameProgress } from "../lib/merge-progress.js";
 /* the account calls (src/actions), loaded only when sign-in is on */
 const server = () => import("astro:actions");
 
 export const LS_KEY = "repreprep-progress-v1";
-const fresh = () => ({ updatedAt: 0, inst: {}, introSteps: 1 });
+const fresh = () => ({ updatedAt: 0, inst: {}, introSteps: 1, stepIds: 1 });
 export let state = fresh();
 /* the entries as last saved, to tell which ones a change touched (see src/lib/merge-progress.js) */
 let last = {};
@@ -28,7 +35,7 @@ const readLocal = () => {
 /* another tab may have saved since this one last looked: combine with that first */
 const saveLocal = () => {
   const other = readLocal();
-  if (other) take(merge(state, migrate(clean(other))));
+  if (other) take(merge(state, upgrade(clean(other))));
   try {
     lastRaw = JSON.stringify(state);
     localStorage.setItem(LS_KEY, lastRaw);
@@ -41,9 +48,9 @@ function take(s) {
   last = entries(state);
   return changed;
 }
-/* a progress object from a file: drop old app fields, bring old step numbers up to date, combine with this
-   browser's progress so nothing done here is lost */
-export const combine = (s) => take(merge(state, migrate(clean(s))));
+/* a progress object from a file: drop old app fields, turn old step numbers into step ids, and combine it
+   with this browser's progress so nothing done here is lost */
+export const combine = (s) => take(merge(state, upgrade(clean(s))));
 export function ist(k) {
   return state.inst[k] || (state.inst[k] = { lesson: null, steps: {}, done: {}, notes: {}, active: {} });
 }
@@ -72,34 +79,44 @@ function migrate(st) {
   st.introSteps = 1;
   return st;
 }
+/* progress from an older version of the site: steps counted from the intro, then numbers turned into ids */
+const upgrade = (st) => {
+  st.since ||= FIRST_VERSION;
+  return numbersToIds(migrate(st));
+};
 const clean = (st) => {
   const { instrument, tab, ...rest } = st;
   return rest;
 };
 {
   const s = readLocal();
-  if (s) state = Object.assign(state, migrate(s));
-  last = entries(state);
+  if (s) {
+    const old = !s.stepIds;
+    state = Object.assign(fresh(), upgrade(s));
+    last = entries(state);
+    if (old) saveLocal();
+  }
 }
 /* ask the browser not to clear the site's storage on its own (Safari otherwise may after a week away) */
 try {
   navigator.storage?.persist?.().catch(() => {});
 } catch (e) {}
+/* new here: today's lesson updates are already in the lessons you'll open */
+if (!state.since) state.since = document.body.dataset.version;
 
-/* steps per lesson, from the page, so progress can be counted without loading the whole course */
-export const sizes = () => {
+/* each lesson's step ids, from the page, so progress can be counted without loading the whole course */
+export const stepIds = () => {
   try {
-    return JSON.parse(document.body.dataset.sizes || "{}");
+    return JSON.parse(document.body.dataset.steps || "{}");
   } catch (e) {
     return {};
   }
 };
-export function lessonPct(s, id, n) {
-  let d = 0;
-  for (let i = 0; i < n; i++) if (s.steps[id + ":" + i]) d++;
-  return n ? d / n : 0;
-}
+export const ticked = (s, id, ids) => ids.filter((x) => s.steps[id + ":" + x]).length;
+export const lessonPct = (s, id, ids) => (ids.length ? ticked(s, id, ids) / ids.length : 0);
 export const stepHref = (path, i) => (i ? `${path}/${i}` : path);
+/* the step a lesson opens on: the one you were on, or its last step if the lesson has since got shorter */
+export const resumeAt = (s, id) => Math.min(+s.active[id] || 0, Math.max((stepIds()[id] || []).length - 1, 0));
 
 /* ---------- filling the page ---------- */
 const hooks = [];
@@ -125,7 +142,7 @@ document.addEventListener("astro:page-load", refresh);
 window.addEventListener("storage", (e) => {
   if (e.key !== LS_KEY) return;
   const other = readLocal();
-  if (other && take(merge(state, migrate(clean(other)))) && document.visibilityState === "visible") refreshQuietly();
+  if (other && take(merge(state, upgrade(clean(other)))) && document.visibilityState === "visible") refreshQuietly();
 });
 
 /* ---------- saving ---------- */
@@ -170,7 +187,7 @@ export async function flush(keepalive = false) {
       refresh();
     } else if (error) throw error;
     /* the account combines what it had with this save, which may bring back changes from another device */
-    else if (data?.data && take(merge(state, migrate(clean(data.data))))) {
+    else if (data?.data && take(merge(state, upgrade(clean(data.data))))) {
       saveLocal();
       if (!keepalive) refreshQuietly();
     }
@@ -190,7 +207,7 @@ document.addEventListener("visibilitychange", () => {
   if (document.visibilityState === "hidden") flush(true);
   else {
     const other = readLocal();
-    if (other) take(merge(state, migrate(clean(other))));
+    if (other) take(merge(state, upgrade(clean(other))));
     refresh();
     if (account.me) pull();
   }
@@ -206,7 +223,7 @@ async function pull() {
   try {
     const { actions } = await server();
     const { data: j } = await actions.progress.load();
-    const remote = j && j.data && j.data.inst ? migrate(clean(j.data)) : null;
+    const remote = j && j.data && j.data.inst ? upgrade(clean(j.data)) : null;
     const both = merge(state, remote);
     if (take(both)) saveLocal();
     if (!sameProgress(both, remote)) {

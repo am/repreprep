@@ -52,6 +52,40 @@ export const UNIT_FIGS_1 = {
     s += T(400, 392, "Half-time trick: at 140 BPM with the snare only on beat 3, music feels like 70.", "fb");
     return svgFig("0 0 800 420", s, "Tempo ranges of styles");
   },
+  storage() {
+    let s = T(400, 36, "Where your music lives", "fh");
+    s +=
+      `<rect x="40" y="60" width="720" height="130" rx="14" class="box"/>` +
+      T(60, 88, "Your course project", "fl", "start");
+    const bw = 104,
+      gap = 12,
+      x0 = 60;
+    "ABCDEF".split("").forEach((b, i) => {
+      const x = x0 + i * (bw + gap),
+        on = b === "B";
+      s +=
+        `<rect x="${x}" y="104" width="${bw}" height="66" rx="10" style="fill:${on ? "var(--led-soft)" : "var(--surface)"};stroke:${on ? "var(--led)" : "var(--line)"};stroke-width:${on ? 2 : 1}"/>` +
+        T(x + bw / 2, 132, "Bank " + b, "fl") +
+        T(x + bw / 2, 155, "pad T" + (i + 1), "fs");
+    });
+    const bx = x0 + bw + gap + bw / 2,
+      cw = 40,
+      cx0 = 400 - (16 * cw - 4) / 2;
+    s += `<path d="M${bx} 170 L${bx} 214 M${cx0} 214 L${cx0 + 16 * cw - 4} 214" class="ln"/>`;
+    for (let i = 0; i < 16; i++) {
+      const x = cx0 + i * cw,
+        on = i === 0;
+      s +=
+        `<rect x="${x}" y="226" width="${cw - 6}" height="40" rx="6" style="fill:${on ? "var(--led)" : "var(--surface)"};stroke:${on ? "var(--led)" : "var(--line)"}"/>` +
+        T(x + (cw - 6) / 2, 288, i + 1, "fs");
+    }
+    s +=
+      T(cx0, 318, "↑ B01, your track", "fl", "start") +
+      T(cx0 + 16 * cw - 4, 318, "16 patterns per bank, one per trig key", "fm", "end");
+    s += T(400, 362, "A pattern is one loop: six tracks, their sounds and their trigs.", "fb");
+    s += T(400, 392, "Every lesson picks up B01 where the lesson before left it.", "fb");
+    return svgFig("0 0 800 420", s, "A project holds six banks, A to F, of 16 patterns each; your track is B01");
+  },
   /* lesson 2 */
   roles() {
     let s = T(400, 36, "Each drum has a job, and a place from low to high", "fh");

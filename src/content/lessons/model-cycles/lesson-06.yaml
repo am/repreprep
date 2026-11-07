@@ -19,48 +19,117 @@ concepts:
     p:
       - "COLOR, SHAPE, SWEEP and CONTOUR do different jobs on each machine. Don't think in FM terms: turn one, listen, and name what changed."
 steps:
-  - k: learn
+  - id: every-sound-stack-tones
+    k: learn
     fig: u2waves
     t: "Every sound is a stack of tones: the note you hear plus quieter harmonics above it. A sine has none, a sawtooth has them all. The more harmonics, the brighter the sound."
-  - k: learn
+    hear: Tap each wave to hear it at the same note. The sine is round and soft; each next one gets buzzier.
+  - id: low-pass-filter-darkens
+    k: learn
     fig: u2spectrum
     t: A low-pass filter darkens a sound by turning down everything above a cutoff. Burial's hats in "Ghost Hardware" are pitched way down with their highs cut away, so they sound dusty rather than crisp.
-  - k: learn
+    hear: Tap both rows. The dark one plays the same note; only the highs are gone, like a sound through a wall.
+  - id: fm-plain-words
+    k: learn
     fig: u2fm
     t: "FM, in plain words: one oscillator wobbles another's pitch very fast. A little wobble adds a few harmonics; a lot adds many, then noise. The Model:Cycles has no filter knob, so less modulation is how you go dark."
-  - k: learn
+    hear: Tap each row, then tap "hear the depth turn up" to hear one note go from round to bright to harsh.
+  - id: four-macros-mean-something
+    k: learn
     fig: u2macros
-    t: The four macros mean something different on each machine. On five of the six, SHAPE and CONTOUR set how much modulation there is, so they are your main brightness knobs.
-    hear: COLOR and SWEEP change the tuning and movement of the tone. Use your ears to decide if that's brighter.
-  - k: play
-    t: "Let pattern changes wait for the bar: on B01, hold [FUNC] and press [PAGE] to open the SCALE menu, set CHG to 64 with [LEVEL/DATA], then press [BACK]."
+    t: COLOR, SHAPE, SWEEP and CONTOUR do a different job on each machine. Start with SHAPE and CONTOUR. On five of the six machines, SHAPE sets the modulation and CONTOUR the modulation envelope depth.
+    hear: More modulation adds harmonics, so these two are your brightness knobs. On CHORD they do other jobs.
+  - id: color-sweep-change-something
+    k: learn
+    fig: u2macros2
+    t: COLOR and SWEEP change something different on each machine. Some change the modulation, some sweep the pitch, some change the tuning.
+    hear: Turn one, listen, and name what changed. Use your ears to decide if it's brighter.
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        bars:
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13,16:.24", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11", cond: { 9: "1:2", 11: "1:2" } }
+            - {
+                n: T2 Snare,
+                s: snare,
+                hits: "5,9,11,12:.2,13,14:.3,15:.3,16:.3",
+                nudge: "12:.3",
+                cond: { 9: FILL, 11: FILL, 14: "2:2", 15: "2:2" },
+              }
+            - { n: T3 Hats, s: hat, hits: "2:.24,3,4:.24,6:.24,7,8:.24,10:.24,11,12:.24,14:.24,15,16:.24" }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
+  - id: let-pattern-changes-wait
+    k: play
+    t: "Make pattern switches land in time: When you pick another pattern, B01 should finish its 4 bars first. On B01, hold [FUNC] and press [PAGE] to open the SCALE menu. Set CHG to 64 with [LEVEL/DATA] (64 steps is your 4 bars), then press [BACK]."
     hl: h:func p:page t:level p:back
-    hear: Nothing changes in the sound. When you pick another pattern now, it starts at the end of your 4 bars.
-  - k: play
-    t: "Make a twin: hold [PATTERN] + [TRIG 1] and press [RECORD] to copy B01. Then hold [PATTERN] + [TRIG 4] and press and hold [STOP] until the countdown finishes. Go to B04 (hold [PATTERN], press [TRIG 4])."
+    hear: Nothing changes in the sound yet. From now on, when you pick another pattern, B01 plays to the end of its 4 bars first, so the switch lands in time.
+  - id: make-twin
+    k: play
+    t: "Copy B01 to B04: Amber keys stay down, coral keys are pressed. Go to B04 (hold [PATTERN], press [TRIG 4])."
+    combo:
+      [
+        "hold [PATTERN]",
+        "hold [TRIG 1]",
+        "press [RECORD]",
+        "release [TRIG 1]",
+        "hold [TRIG 4]",
+        "hold [STOP] until the countdown ends",
+      ]
     hl: h:pattern p:s1 p:record p:s4 h:stop
-    hear: B04 is an exact copy. B04 becomes the bright version, B01 the dark one.
-  - k: play
+    hear: B04 is an exact copy of B01. You will make B04 bright and B01 dark.
+  - id: brighten-b04-s-hats
+    k: play
     t: "Brighten B04's hats: press [PLAY], select [T3] and turn [SHAPE] and [CONTOUR] up. Hold [FUNC] and turn [PITCH] up a few semitones."
     hl: p:play h:track p:t3 t:shape t:contour h:func t:pitch
     hear: Crisp, glassy hats, the kind that cut through a club.
-  - k: play
-    t: "Brighten the rest of B04: on T1 turn [CONTOUR] up for click, on T2 turn [SHAPE] up for more crack, and on T4 turn [SHAPE] and [COLOR] up."
+  - id: brighten-rest-b04
+    k: play
+    t: "Brighten the rest of B04: select [T1] and turn [CONTOUR] up for click, select [T2] and turn [SHAPE] up for more crack, then select [T4] and turn [SHAPE] and [COLOR] up."
     hl: h:track p:t1 t:contour p:t2 t:shape p:t4 t:color
     hear: The same beat, now hard and shiny.
-  - k: play
-    t: "Now the dark one: hold [PATTERN] and press [TRIG 1]. When B01 starts, select [T3], hold [FUNC] and turn [PITCH] well down. Turn [SHAPE] and [CONTOUR] down and [DECAY] a little shorter."
+  - id: now-dark-one
+    k: play
+    t: "Now darken B01: hold [PATTERN] and press [TRIG 1]. When B01 starts, select [T3], hold [FUNC] and turn [PITCH] well down. Turn [SHAPE] and [CONTOUR] down and [DECAY] a little shorter."
     hl: h:pattern p:s1 h:track p:t3 h:func t:pitch t:shape t:contour t:decay
     hear: "Dusty hats: more like brushed paper than cymbals."
-  - k: play
+  - id: darken-perc-too
+    k: play
     t: "Darken the perc too: select [T4] and turn [SHAPE] and [COLOR] down. Leave your round kick and snare from lesson 5 as they are."
     hl: h:track p:t4 t:shape t:color
     hear: A soft, muted loop where nothing pokes out.
-  - k: play
-    t: "Compare: switch between B01 and B04 while it plays (hold [PATTERN], press [TRIG 1] or [TRIG 4]). Finish on B01, your track, and save it: hold [FUNC] and long-press [SETTINGS]."
+  - id: compare
+    k: play
+    t: "Hear the difference: switch between B01 and B04 while it plays (hold [PATTERN], press [TRIG 1] or [TRIG 4]). Finish on B01, your track, and save it: hold [FUNC] and long-press [SETTINGS]."
     hl: h:pattern p:s1 p:s4 h:func p:settings
     hear: Same rhythm, two worlds. Dark sits back and lets you lean in; bright jumps forward.
-  - k: check
+  - id: want-hats-darker-which
+    k: check
     t: You want your hats darker. Which move works on the Model:Cycles?
     q:
       - Turn SHAPE and CONTOUR up

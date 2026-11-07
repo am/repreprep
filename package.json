@@ -1,21 +1,23 @@
 {
   "name": "repreprep",
-  "version": "0.1.0",
+  "version": "0.6.2",
   "private": true,
   "type": "module",
-  "description": "Rep Rep Rep: hands-on lessons for the Model:Cycles, MicroFreak and Ableton Live",
+  "description": "Rep Rep Rep: hands-on lessons for the Model:Cycles, MicroFreak and Ableton Move",
   "scripts": {
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro build && wrangler dev",
     "deploy": "astro build && wrangler deploy",
-    "check": "node scripts/check-course.mjs && node scripts/check-css.mjs",
+    "check": "node scripts/step-ids.mjs --check && node scripts/check-course.mjs && node scripts/check-css.mjs",
+    "ids": "node scripts/step-ids.mjs",
     "messages": "wrangler d1 execute repreprep --remote --command \"SELECT id, datetime(created_at/1000,'unixepoch') AS sent, reply_to, body FROM messages ORDER BY created_at DESC LIMIT 50\"",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "test": "npm run format:check && npm run check && node --test 'tests/unit/*.test.mjs' && astro build && node --test 'tests/site/*.test.mjs' 'tests/server/*.test.mjs' && playwright test",
     "test:unit": "node --test 'tests/unit/*.test.mjs'",
-    "compare": "node scripts/compare.mjs"
+    "compare": "node scripts/compare.mjs",
+    "mcprj": "node tools/mcprj/bin/mcprj.mjs"
   },
   "dependencies": {
     "@astrojs/cloudflare": "14.4.0",

@@ -36,6 +36,12 @@ const ideas = L.concepts || [];
         </ul>
       </div>
     )}
+    {L.number > 1 && (
+      <p class="t-note">
+        <span class="t-label">Builds on lesson {L.number - 1}</span>
+        Start from B01 in your course project, as you saved it at the end of lesson {L.number - 1}.
+      </p>
+    )}
     {L.listen && (
       <p class="t-note">
         <span class="t-label">Listen first</span>

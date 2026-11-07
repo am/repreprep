@@ -288,10 +288,12 @@ h3 {
   white-space: nowrap;
   margin: 0 1px;
 }
+/* an icon key: the cap shows only the icon, like the key on the unit */
 .k .ico {
-  width: 1.05em;
-  height: 1.05em;
-  vertical-align: -0.16em;
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.24em;
+  margin-right: 0;
 }
 .k.press {
   border-color: var(--act-press);
@@ -312,6 +314,9 @@ a.song {
   text-decoration-thickness: 2px;
   text-underline-offset: 0.1875rem;
   white-space: nowrap;
+}
+.cell .cd::after {
+  content: attr(data-cd);
 }
 a.song:hover {
   color: var(--done);
@@ -341,6 +346,95 @@ a.song svg {
 .btn:disabled {
   opacity: 0.45;
   cursor: default;
+}
+/* Next lesson on a lesson's done screen (src/client/finish.js): holding fills it green from the left, then it turns into a tick */
+[data-end] {
+  -webkit-touch-callout: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+.btn.fin-filling {
+  background: linear-gradient(to right, var(--done) calc(var(--fill, 0) * 100%), var(--fg) 0);
+  border-color: var(--done);
+}
+.btn.fin-done {
+  background: var(--done);
+  border-color: var(--done);
+  color: var(--bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+}
+.fin-ck {
+  width: 1.1em;
+  height: 1.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16;
+  animation: fin-draw 0.3s 0.05s ease-out both;
+}
+@keyframes fin-draw {
+  from {
+    stroke-dashoffset: 16;
+  }
+}
+/* held with the pointer off the button: letting go there cancels, so the button fades back a little */
+.btn.fin-out {
+  opacity: 0.55;
+  transition: opacity 0.15s;
+}
+/* a held Next lesson keeps playing: a soft glow breathes out from the button on each beat (it doesn't move),
+   and the step dots run like a playhead */
+.btn.fin-beat {
+  animation: fin-beat 0.6s ease-out;
+}
+@keyframes fin-beat {
+  from {
+    box-shadow: 0 0 0 0 var(--done-soft);
+  }
+  to {
+    box-shadow: 0 0 0 0.6rem transparent;
+  }
+}
+.player .dots a.fin-head.fin-head::before {
+  transform: scale(1.8);
+  background: var(--led);
+  border-color: var(--led);
+  transition: transform 0.05s;
+}
+/* the step dots light up one by one, left to right, and the step card and reps count glow green */
+.dots.fin-sweep a::before {
+  animation: fin-dot 0.5s calc(var(--i, 0) * 35ms) ease-out both;
+}
+@keyframes fin-dot {
+  40% {
+    transform: scale(1.7);
+    background: var(--done);
+    border-color: var(--done);
+  }
+}
+.player.fin-player .pstep {
+  border-color: var(--done);
+  box-shadow: 0 0 0 4px var(--done-soft);
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+.fin-bump {
+  color: var(--done);
+  transition: color 0.3s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn.fin-filling,
+  .btn.fin-done,
+  .fin-ck {
+    transform: none;
+    animation: none;
+  }
 }
 /* destructive actions stay red whatever the accent color is */
 .btn.danger {
@@ -432,7 +526,7 @@ html.focus body {
 .keyico {
   fill: none;
   stroke: var(--dev-keyprint);
-  stroke-width: 1.5;
+  stroke-width: 2;
   stroke-linejoin: round;
   stroke-linecap: round;
 }
@@ -585,7 +679,7 @@ html.focus body {
   vertical-align: -0.22em;
   fill: none;
   stroke: currentColor;
-  stroke-width: 1.8;
+  stroke-width: 2.2;
   stroke-linejoin: round;
   stroke-linecap: round;
   margin-right: 0.1875rem;
@@ -680,6 +774,95 @@ svg.fig {
   stroke-width: 2;
   fill: none;
   marker-end: none;
+}
+/* a key combo as numbered rows (shared/combo.js): amber keys stay held, coral keys are pressed, knobs are turned; the amber line
+   beside the later rows is the key held through all of them */
+.combo {
+  display: grid;
+  gap: 0.45rem;
+  margin: var(--s2) 0 var(--s3);
+  font-size: 0.85rem;
+}
+.combo .combo-rows {
+  display: grid;
+  gap: 0.45rem;
+}
+.combo .combo-rows.held {
+  margin-left: 0.6rem;
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--hold);
+  border-radius: 0 0 0 6px;
+}
+.combo .combo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.combo .combo-body {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  min-height: 1.3rem;
+}
+.combo .combo-n {
+  width: 1.3rem;
+  height: 1.3rem;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.combo .combo-keys {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.combo .combo-plus {
+  color: var(--faint);
+}
+.combo .combo-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+/* a part of a drawing you tap to hear (shared/fig-sounds.js): the box lights on hover, focus and while it plays */
+.snd {
+  cursor: pointer;
+  outline: none;
+}
+.snd .snd-hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 1.5;
+  transition: fill 0.15s;
+}
+.snd:hover .snd-hit,
+.snd:focus-visible .snd-hit {
+  fill: var(--surface-2);
+}
+.snd:focus-visible .snd-hit {
+  stroke: var(--led);
+}
+.snd.playing .snd-hit {
+  fill: var(--led-soft);
+}
+.snd .snd-btn circle {
+  fill: var(--led);
+}
+.snd .snd-btn path,
+.snd .snd-btn rect {
+  fill: var(--bg);
+}
+.snd .snd-stop,
+.snd.playing .snd-play {
+  display: none;
+}
+.snd.playing .snd-stop {
+  display: inline;
 }
 /* playable grid: as wide as the drawing area allows while all its rows still fit in its height; text scales with it */
 .gp {
@@ -794,6 +977,28 @@ svg.fig {
 .gp .btn {
   font-size: 1em;
 }
+.cell.nw {
+  outline: 2px solid var(--fg);
+  outline-offset: -2px;
+}
+.cell .cd {
+  position: absolute;
+  inset: auto 0 0.25rem;
+  font: var(--fw-semibold) 0.5rem/1 var(--panel);
+  white-space: nowrap;
+  color: var(--fg);
+  text-align: center;
+}
+/* a Get ready step's map: the playable grid with room under it for what the grid can't show */
+.pmap {
+  --gw: max(min(100cqi - 16px, 22rem), min(100cqi - 16px, (100cqh - 300px) / (var(--rows, 6) * 1.25) * 16 + 90px));
+  width: var(--gw);
+  margin: auto;
+  font-size: clamp(13px, calc(var(--gw) / 48), 22px);
+}
+.pmap .gp {
+  --gw: inherit;
+}
 .gctl {
   display: flex;
   flex-wrap: wrap;
@@ -840,6 +1045,17 @@ svg.fig {
   }
 }
 @media (max-width: 660px) {
+  /* the map's track names take three lines, so its cells fill the row instead of keeping their shape */
+  .pmap .cell {
+    aspect-ratio: auto;
+  }
+  .cell .cd {
+    font-size: 0.4375rem;
+    letter-spacing: -0.03em;
+  }
+  .cell .cd::after {
+    content: attr(data-sm);
+  }
   .gg {
     gap: 2px;
     grid-template-columns: 2.875rem repeat(var(--n), minmax(0, 1fr));

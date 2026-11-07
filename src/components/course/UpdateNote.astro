@@ -1,0 +1,71 @@
+---
+// The note at the top of a lesson's step when the lesson changed since you started it: what's new, a link to
+// the full list, and a button to mark it as read. Hidden until the browser script (client/updates.js) finds
+// updates you haven't read.
+interface Props {
+  L: any;
+}
+const { L } = Astro.props;
+---
+
+<aside class="upd" data-upd-note={L.id} hidden aria-label="This lesson was updated">
+  <p class="upd-h">Updated since you started this lesson</p>
+  <ul data-upd-list></ul>
+  <p class="upd-act">
+    <button type="button" class="upd-ok" data-upd-ok>
+      Got it
+    </button>
+    <a href="/whats-new">What's new</a>
+  </p>
+</aside>
+
+<style>
+  .upd {
+    padding: var(--s3) var(--s4);
+    border-radius: var(--r-m);
+    background: var(--led-soft);
+    font-size: var(--fs-sm);
+    line-height: var(--lh-snug);
+  }
+  .upd[hidden] {
+    display: none;
+  }
+  .upd-h {
+    margin: 0 0 var(--s2);
+    font-family: var(--display);
+    font-weight: var(--fw-bold);
+  }
+  .upd ul {
+    margin: 0;
+    padding-left: 1.1em;
+    display: grid;
+    gap: var(--s1);
+  }
+  .upd :global(.v) {
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    color: var(--muted);
+    margin-right: var(--s1);
+  }
+  .upd-act {
+    margin: var(--s3) 0 0;
+    display: flex;
+    gap: var(--s4);
+    align-items: center;
+  }
+  .upd-ok {
+    font: inherit;
+    font-family: var(--display);
+    font-weight: var(--fw-bold);
+    padding: var(--s1) var(--s3);
+    border-radius: var(--r-m);
+    border: 1px solid var(--fg);
+    background: none;
+    color: var(--fg);
+    cursor: pointer;
+  }
+  .upd a {
+    color: var(--fg);
+    text-underline-offset: 0.1875rem;
+  }
+</style>

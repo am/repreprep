@@ -16,8 +16,9 @@ export const ROWC = {
   bass: "var(--led)",
 };
 export const COUNT16 = ["1", "e", "&", "a", "2", "e", "&", "a", "3", "e", "&", "a", "4", "e", "&", "a"];
-export const svgFig = (vb, body, label) =>
-  `<svg class="fig" viewBox="${vb}" role="img" aria-label="${esc(label)}">${body}</svg>`;
+/* role "group" for a drawing with parts you can press (see fig-sounds.js), so those parts stay reachable */
+export const svgFig = (vb, body, label, role = "img") =>
+  `<svg class="fig" viewBox="${vb}" role="${role}" aria-label="${esc(label)}">${body}</svg>`;
 export const T = (x, y, s, cls = "", a = "middle") =>
   `<text x="${x}" y="${y}" text-anchor="${a}" class="${cls}">${s}</text>`;
 /* step pattern helper: "1,5,9,13" -> 16 velocities; "1:.4" sets a velocity */

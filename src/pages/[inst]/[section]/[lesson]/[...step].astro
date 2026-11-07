@@ -4,35 +4,38 @@ import Player from "../../../../components/course/Player.astro";
 import LessonWrapup from "../../../../components/course/LessonWrapup.astro";
 import LessonAbout from "../../../../components/course/LessonAbout.astro";
 import { courses } from "../../../../course/content.js";
-/* /model-cycles/lessons/<lesson> (or /songs/<study>) is the intro; .../<n> is step n; one past the last step is the optional challenge */
+/* /model-cycles/lessons/<lesson> (or /songs/<study>) is the intro; .../<n> is step n; one past the last step is the optional challenge;
+   .../done is the screen Next opens after the last step */
 export async function getStaticPaths() {
   return (await courses()).flatMap((I) =>
-    I.lessons.flatMap((L) =>
-      [...L.steps.keys(), ...(L.challenge ? [L.steps.length] : [])].map((i) => ({
-        params: {
-          inst: I.slug,
-          section: L.song ? "songs" : "lessons",
-          lesson: L.slug,
-          step: i ? String(i) : undefined,
+    I.lessons.flatMap((L) => {
+      const params = { inst: I.slug, section: L.song ? "songs" : "lessons", lesson: L.slug };
+      return [
+        ...[...L.steps.keys(), ...(L.challenge ? [L.steps.length] : [])].map((i) => ({
+          params: { ...params, step: i ? String(i) : undefined },
+          props: { I, L, act: i },
+        })),
+        {
+          params: { ...params, step: "done" },
+          props: { I, L, act: L.steps.length + (L.challenge ? 1 : 0), done: true },
         },
-        props: { I, L, act: i },
-      }))
-    )
+      ];
+    })
   );
 }
-const { I, L, act } = Astro.props;
+const { I, L, act, done } = Astro.props;
 // names the device and, for a song study, the artist and track, since that is what people search for
 const title =
   (L.song ? `${L.song}: song study on the ${I.name}` : `${I.name} lesson ${L.number}: ${L.title}`) +
-  (act === L.steps.length ? " (challenge)" : act ? ` (${act + 1}/${L.steps.length})` : "");
+  (done ? " (done)" : act === L.steps.length ? " (challenge)" : act ? ` (${act + 1}/${L.steps.length})` : "");
 ---
 
 <!-- only the lesson's intro is listed in search results; its steps are reached from there -->
-<Base title={title} description={L.goal} inst={I} tab="lessons" noindex={act > 0}>
-  <Player I={I} L={L} act={act} />
+<Base title={title} description={L.goal} inst={I} tab="lessons" noindex={act > 0 || done}>
+  <Player I={I} L={L} act={act} done={done} />
   <div class="below">
     {!act && <LessonAbout I={I} L={L} />}
-    <LessonWrapup I={I} L={L} />
+    {!done && <LessonWrapup I={I} L={L} />}
   </div>
 </Base>
 

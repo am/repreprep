@@ -95,7 +95,7 @@ export const CYCLES_SHORTCUTS = [
   ["Copy / clear / paste pattern data", "[FUNC] + [RECORD] / [PLAY] / [STOP]"],
   [
     "Copy a whole pattern",
-    "Hold [PATTERN] + [TRIG] (source), press [RECORD]; hold [PATTERN] + [TRIG] (target), hold [STOP] until the countdown ends",
+    "Keep [PATTERN] held throughout: hold [TRIG] (source), press [RECORD]; let go of that [TRIG], hold [TRIG] (target), hold [STOP] until the countdown ends",
   ],
   ["Temporary save / reload", "[FUNC] + [SETTINGS] / [FUNC] + [PATTERN]"],
   ["Save pattern to project", "[FUNC] + long-press [SETTINGS]"],
@@ -130,6 +130,6 @@ export const CYCLES_SAVING = [
   [
     "Not saved",
     "Chains",
-    "A chain of patterns is lost when you switch off or pick another pattern. There is no song mode, so write the order down or record it into Live.",
+    "A chain of patterns is lost when you switch off or pick another pattern. There is no song mode, so write the order down or record the whole performance as one take.",
   ],
 ];

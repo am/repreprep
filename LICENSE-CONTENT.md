@@ -16,5 +16,5 @@ The full license text is in [LICENSE-CC-BY-NC-SA-4.0.txt](LICENSE-CC-BY-NC-SA-4.
 
 The code (everything else) is under the MIT license in [LICENSE](LICENSE).
 
-Product names such as Elektron, Model:Cycles, Arturia, MicroFreak and Ableton Live are trademarks
+Product names such as Elektron, Model:Cycles, Arturia, MicroFreak and Ableton Move are trademarks
 of their owners. This project isn't affiliated with or endorsed by them.

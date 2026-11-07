@@ -1,5 +1,5 @@
 // The lesson player: moving through steps, ticks, finishing, notes, quizzes, the panel and the grids.
-import { test, expect, progress } from "./fixtures.mjs";
+import { test, expect, progress, tick } from "./fixtures.mjs";
 import { COURSES } from "../../src/course/files.js";
 
 const [I] = COURSES;
@@ -17,7 +17,7 @@ test("Start and Next tick steps and move through the lesson", async ({ page }) =
   await page.locator(".navrow .btn.primary").click();
   await expect(page).toHaveURL(`${L1.path}/2`);
   const p = await progress(page);
-  expect(p.inst.cycles.steps).toEqual({ [`${L1.id}:0`]: true, [`${L1.id}:1`]: true });
+  expect(p.inst.cycles.steps).toEqual({ [tick(L1, 0)]: true, [tick(L1, 1)]: true });
   expect(p.inst.cycles.active[L1.id]).toBe(2);
   expect(p.inst.cycles.lesson).toBe(L1.id);
   await expect(page.locator("#meterTxt")).toHaveText(`2 of ${I.lessons.reduce((a, l) => a + steps(l), 0)} reps`);
@@ -34,18 +34,75 @@ test("arrow keys move between steps", async ({ page }) => {
   await expect(page).toHaveURL(`${L1.path}/4`);
 });
 
-test("the last step leads to the optional challenge, and Finish opens the next lesson", async ({ page }) => {
+test("the last step leads to the optional challenge; Next there marks the lesson done and opens the done screen", async ({
+  page,
+}) => {
   const last = steps(L1) - 1;
   await page.goto(`${L1.path}/${last}`);
   await page.locator(".navrow .btn.primary").click();
   await expect(page).toHaveURL(`${L1.path}/${steps(L1)}`);
   await expect(page.locator(".pstep .kind")).toHaveText("Challenge");
-  await expect(page.locator(".navrow .btn.primary")).toHaveText("Finish");
+  await expect(page.locator(".navrow .btn.primary")).toHaveText("Next");
   await page.locator(".navrow .btn.primary").click();
-  await expect(page).toHaveURL(L2.path);
+  await expect(page).toHaveURL(`${L1.path}/done`);
+  await expect(page.locator(".pstep .kind")).toHaveText("Done");
+  await expect(page.locator("[data-done-steps]")).toHaveText(`1 of ${steps(L1)}`);
+  await expect(page.locator("[data-done-date]")).toHaveText("Today");
   const p = await progress(page);
-  expect(p.inst.cycles.steps[`${L1.id}:${last}`]).toBe(true);
-  expect(p.inst.cycles.steps[`${L1.id}:${steps(L1)}`]).toBeUndefined(); /* the challenge is never a rep */
+  expect(p.inst.cycles.steps[tick(L1, last)]).toBe(true);
+  expect(Object.keys(p.inst.cycles.steps).length).toBe(1); /* the challenge is never a rep */
+  expect(p.inst.cycles.done[L1.id]).toBeTruthy();
+  expect(p.inst.cycles.active[L1.id]).toBe(steps(L1)); /* the done screen isn't a step */
+  /* a click on Next lesson fills it, ticks and opens the next lesson */
+  const go = page.locator("[data-end]");
+  await expect(go).toHaveText("Next lesson");
+  await go.click();
+  await expect(go).toHaveText("Done");
+  await expect(page).toHaveURL(L2.path);
+});
+
+test("holding Next lesson fills it, ticks, then keeps playing until you let go", async ({ page }) => {
+  await page.goto(`${L1.path}/done`);
+  const go = page.locator("[data-end]");
+  const box = await go.boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(300);
+  await expect(go).toHaveClass(/fin-filling/);
+  await expect(go).toHaveText("Next lesson");
+  await expect(go).toHaveText("Done"); /* the fill ends while still held */
+  /* still held: the jam plays on, the step dots run like a playhead, and the page stays */
+  await expect(page.locator(".dots a.fin-head")).toHaveCount(1);
+  await page.waitForTimeout(2500);
+  await expect(page).toHaveURL(`${L1.path}/done`);
+  expect((await progress(page)).inst.cycles.done[L1.id]).toBeTruthy(); /* done, even when you came straight here */
+  /* letting go on the button opens the next lesson */
+  await page.mouse.up();
+  await expect(page).toHaveURL(L2.path);
+});
+
+test("letting go of Next lesson outside it cancels, while filling or while the jam plays", async ({ page }) => {
+  await page.goto(`${L1.path}/done`);
+  const go = page.locator("[data-end]");
+  const box = await go.boundingBox();
+  const press = async (ms) => {
+    await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+    await page.mouse.down();
+    await page.waitForTimeout(ms);
+    await page.mouse.move(5, 5);
+    await expect(go).toHaveClass(/fin-out/); /* dimmed: letting go here cancels */
+    await page.mouse.up();
+    await page.waitForTimeout(800);
+    await expect(page).toHaveURL(`${L1.path}/done`);
+    await expect(go).toHaveText("Next lesson");
+    await expect(go).not.toHaveClass(/fin-/);
+    await expect(page.locator(".dots a.fin-head")).toHaveCount(0);
+  };
+  await press(300); /* while it fills */
+  await press(1800); /* after the tick, while the jam plays */
+  /* and it still works afterwards */
+  await go.click();
+  await expect(page).toHaveURL(L2.path);
 });
 
 test("ticking every step marks the lesson done", async ({ page }) => {
@@ -60,10 +117,11 @@ test("ticking every step marks the lesson done", async ({ page }) => {
   await expect(page.locator(".finish .stamp")).toContainText("Done on");
 });
 
-test("Complete marks the lesson done and opens the next; clicking Completed undoes it", async ({ page }) => {
+test("Complete marks the lesson done and opens the done screen; clicking Completed undoes it", async ({ page }) => {
   await page.goto(`${L1.path}/3`);
   await page.locator("[data-finish]").click();
-  await expect(page).toHaveURL(L2.path);
+  await expect(page).toHaveURL(`${L1.path}/done`);
+  await expect(page.locator("[data-done-steps]")).toHaveText(`${steps(L1)} of ${steps(L1)}`);
   let p = await progress(page);
   expect(Object.keys(p.inst.cycles.steps).filter((k) => k.startsWith(L1.id + ":")).length).toBe(steps(L1));
   expect(p.inst.cycles.done[L1.id]).toBeTruthy();
@@ -73,6 +131,38 @@ test("Complete marks the lesson done and opens the next; clicking Completed undo
   await expect(page.locator("[data-finish]")).toHaveText("Complete");
   p = await progress(page);
   expect(p.inst.cycles.done[L1.id]).toBeUndefined();
+});
+
+test("Clear progress unticks the lesson, un-finishes it and keeps the notes", async ({ page }) => {
+  await page.goto(L1.path);
+  await expect(page.locator("[data-clear]")).toBeHidden();
+  await page.locator(".navrow .btn.primary").click();
+  await page.locator(".navrow .btn.primary").click();
+  await expect(page).toHaveURL(`${L1.path}/2`);
+  await page.evaluate((id) => {
+    const s = JSON.parse(localStorage.getItem("repreprep-progress-v1"));
+    s.inst.cycles.notes[id] = "keep me";
+    s.inst.cycles.done[id] = Date.now();
+    localStorage.setItem("repreprep-progress-v1", JSON.stringify(s));
+  }, L1.id);
+  await page.reload();
+  await expect(page.locator("[data-finish]")).toHaveText("Completed");
+  const clear = page.locator("[data-clear]");
+  await expect(clear).toBeVisible();
+  page.once("dialog", (d) => d.dismiss());
+  await clear.click();
+  let p = await progress(page);
+  expect(p.inst.cycles.done[L1.id]).toBeTruthy();
+  page.once("dialog", (d) => d.accept());
+  await clear.click();
+  await expect(page).toHaveURL(L1.path);
+  await expect(page.locator("[data-finish]")).toHaveText("Complete");
+  await expect(clear).toBeHidden();
+  p = await progress(page);
+  expect(Object.keys(p.inst.cycles.steps).filter((k) => k.startsWith(L1.id + ":"))).toEqual([]);
+  expect(p.inst.cycles.done[L1.id]).toBeUndefined();
+  expect(p.inst.cycles.active[L1.id] || 0).toBe(0);
+  expect(p.inst.cycles.notes[L1.id]).toBe("keep me");
 });
 
 test("notes: add, save, edit, cancel", async ({ page }) => {
@@ -211,4 +301,22 @@ test("phone: the lesson step reads full width and Next works @phone", async ({ p
   await expect(page).toHaveURL(`${L1.path}/5`);
   const vw = page.viewportSize().width;
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(vw);
+});
+
+test("drawings with sounds: tapping a row plays it, tapping again stops it", async ({ page }) => {
+  const L6 = I.lessons.find((l) => l.number === 6);
+  const i = L6.steps.findIndex((s) => s.fig === "u2waves");
+  await page.goto(`${L6.path}/${i}`);
+  const sine = page.locator('[data-snd="wave:sine"]');
+  const saw = page.locator('[data-snd="wave:sawtooth"]');
+  await sine.click();
+  await expect(sine).toHaveAttribute("aria-pressed", "true");
+  await saw.click();
+  await expect(sine).toHaveAttribute("aria-pressed", "false");
+  await expect(saw).toHaveClass(/playing/);
+  await saw.click();
+  await expect(saw).toHaveAttribute("aria-pressed", "false");
+  await saw.focus();
+  await page.keyboard.press("Enter");
+  await expect(saw).toHaveAttribute("aria-pressed", "true");
 });

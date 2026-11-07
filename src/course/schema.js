@@ -16,9 +16,20 @@ const row = z
     v: z.array(z.number().min(0).max(1)).length(16).optional(),
     len: z.number().int().min(1).max(16).optional() /* a shorter loop than 16 steps */,
     p: z.array(z.number()).length(16).optional() /* a MIDI note per step */,
+    new: z.string().optional() /* steps added in the last lesson, "2,4,6", drawn outlined */,
+    nudge: z.string().optional() /* steps played off the grid, "12:.3" = a third of a step late */,
+    cond: z
+      .record(z.string().regex(/^([1-9]|1[0-6])$/), z.string().regex(/^([1-8]:[1-8]|FILL|\d{1,2}%)$/))
+      .optional() /* trig conditions, { 14: "2:2", 9: FILL }, written in the step */,
   })
   .refine((r) => (r.hits !== undefined) !== (r.v !== undefined), "give a row either hits or v")
-  .transform(({ hits: h, vel, ...r }) => (h === undefined ? r : { ...r, v: hits(String(h), vel ?? 0.85) }));
+  .transform(({ hits: h, vel, new: nw, nudge, cond, ...r }) => ({
+    ...r,
+    ...(h === undefined ? {} : { v: hits(String(h), vel ?? 0.85) }),
+    ...(nw ? { nw: nw.split(",").map(Number) } : {}),
+    ...(nudge ? { off: hits(nudge, 0) } : {}),
+    ...(cond ? { cd: Array.from({ length: 16 }, (_, i) => cond[i + 1] || "") } : {}),
+  }));
 const preset = z.strictObject({
   name: text,
   bpm: z.number(),
@@ -36,14 +47,51 @@ const grid = z
     presets: z.array(preset).min(2).optional(),
   })
   .refine((g) => !!g.rows !== !!g.presets, "give a grid either rows or presets");
+/* what a pattern should hold when a lesson starts: its tracks as a grid, one tab per bar when it has several */
+const pattern = z
+  .strictObject({
+    slot: z.string().regex(/^[A-H]\d\d$/) /* "B01" */,
+    bpm: z.number(),
+    swing: z.number().min(50).max(75).optional() /* on every track, shown under each track name */,
+    rows: z.array(row).min(1).optional() /* a one-bar pattern */,
+    bars: z.array(z.array(row).min(1)).min(2).optional() /* or one set of rows per page */,
+    slots: z
+      .array(z.strictObject({ slot: z.string().regex(/^[A-H]\d\d$/), rows: z.array(row).min(1) }))
+      .min(2)
+      .optional() /* or several patterns, from slot on, each as its first page */,
+  })
+  .refine((p) => [p.rows, p.bars, p.slots].filter(Boolean).length === 1, "give a pattern rows, bars or slots");
 
 const step = z
   .strictObject({
-    k: z.enum(["learn", "play", "check"]).optional() /* the step's kind; play when left out */,
+    id: z
+      .string()
+      .regex(/^[a-z0-9]+(-[a-z0-9]+)*$/)
+      .refine((s) => s !== "intro", "intro is the lesson's own first step") /* saved ticks use it: never change it */,
+    k: z
+      .enum(["ready", "learn", "play", "check"])
+      .optional() /* the step's kind; play when left out. ready: where the pattern should be before you start */,
     t: text /* what it says; [KEY] draws a key cap */,
     hl: z.string().optional() /* controls to light: "p:play h:func t:level" (press, hold, turn) */,
     hear: text.optional() /* what to listen for */,
-    fig: z.union([text, z.strictObject({ grid })]).optional() /* a drawing by name, or a playable grid */,
+    combo: z
+      .array(z.string().regex(/^(hold|press|release|turn) \[[^\]]+\]( .+)?$/))
+      .min(2)
+      .optional() /* a key combo drawn as numbered rows (shared/combo.js): "hold [PATTERN]", "press [RECORD]", "release [TRIG 1]", "turn [LEVEL/DATA] to 30" */,
+    comboAfter: z
+      .number()
+      .int()
+      .min(1)
+      .optional() /* show the combo after this many sentences of the text, not straight after the title */,
+    page: z
+      .number()
+      .int()
+      .min(1)
+      .max(4)
+      .optional() /* the page light lit on the panel (1 = 1:4); later steps keep it until one sets another */,
+    fig: z
+      .union([text, z.strictObject({ grid }), z.strictObject({ pattern })])
+      .optional() /* a drawing by name, a playable grid, or the pattern as it should be */,
     q: z.array(text).min(2).optional() /* a Check question's answers, the right one starting with ! */,
     a: text.optional() /* why that answer is right */,
     more: z
@@ -51,7 +99,8 @@ const step = z
       .optional() /* a link to one of the instrument's reference tabs */,
   })
   .refine((s) => !s.q || s.q.filter((o) => o.startsWith("!")).length === 1, "mark exactly one answer right with !")
-  .refine((s) => !s.q || s.a, "a question needs its explanation, a");
+  .refine((s) => !s.q || s.a, "a question needs its explanation, a")
+  .refine((s) => (s.k === "ready") === !!(s.fig && s.fig.pattern), "a ready step shows the pattern, fig: { pattern }");
 
 export const lessonSchema = z
   .strictObject({
@@ -66,4 +115,23 @@ export const lessonSchema = z
     steps: z.array(step).min(1),
     challenge: text.optional(),
   })
-  .refine((l) => !!l.song !== (l.number !== undefined), "a lesson has a number, a song study has a song");
+  .refine((l) => !!l.song !== (l.number !== undefined), "a lesson has a number, a song study has a song")
+  .refine((l) => new Set(l.steps.map((s) => s.id)).size === l.steps.length, "two steps share an id");
+
+/* One release in the changelog (src/content/changelog.yaml): its version, the day it went live, a title, what
+   changed on the site, and what changed in which lessons. A lesson change names the lesson as
+   "<instrument slug>/<lesson id>". */
+export const releaseSchema = z.strictObject({
+  id: z.string().regex(/^\d+\.\d+\.\d+$/) /* the version, "0.3.0" */,
+  date: z.string().regex(/^\d{4}-\d\d-\d\d$/),
+  title: text,
+  site: z.array(text).optional(),
+  lessons: z
+    .array(
+      z.strictObject({
+        lesson: z.string().regex(/^[a-z0-9-]+\/[ws]\d\d$/),
+        what: text,
+      })
+    )
+    .optional(),
+});

@@ -23,16 +23,35 @@ test("player: dots, Back and Next on every step of every lesson", () => {
         where = `${L.id} step ${act}`;
       assert.equal(count(html, /<a [^>]*data-step="\d+"/g), total, where);
       assert.equal(count(html, /<a [^>]*data-step="\d+" aria-current="true"/g), 1, where);
-      assert.match(html, new RegExp(`data-lesson="${L.id}" data-step="${act}" data-steps="${n}"`), where);
+      const ids = L.steps.map((st) => st.id).join(" ");
+      assert.match(html, new RegExp(`data-lesson="${L.id}" data-step="${act}" data-step-ids="${ids}"`), where);
       if (act === 0)
         assert.match(html, /<button class="btn" disabled aria-label="Previous step">Back<\/button>/, where);
       else assert.match(html, new RegExp(`href="${stepPath(L, act - 1)}" data-nav="-1"`), where);
-      const end = act === total - 1,
-        nx = nextLesson(I, L);
-      const label = end ? "Finish" : act === 0 ? "Start" : "Next";
-      const href = end ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
-      assert.match(html, new RegExp(`href="${href}" data-nav="1"${end ? " data-end" : ""}>${label}</a>`), where);
+      /* the last step's Next opens the done screen */
+      const label = act === 0 ? "Start" : "Next";
+      const href = stepPath(L, act === total - 1 ? "done" : act + 1);
+      assert.match(html, new RegExp(`href="${href}" data-nav="1">${label}</a>`), where);
     }
+  }
+});
+
+test("player: the done screen closes the lesson, with no current step and Next lesson to move on", () => {
+  for (const L of I.lessons) {
+    const html = player(L, "done"),
+      nx = nextLesson(I, L),
+      where = `${L.id} done`;
+    assert.match(html, / data-done /, where);
+    assert.equal(count(html, /aria-current="true"/g) - count(html, /class="pm-i"[^>]*aria-current="true"/g), 0, where);
+    assert.match(html, /<span class="kind k-done">Done<\/span>/, where);
+    assert.match(html, /class="donehero"/, where);
+    /* Next lesson is the button you hold; after the last lesson it leads to the course page */
+    const to = nx ? nx.path : `/${I.slug}`;
+    assert.match(
+      html,
+      new RegExp(`href="${to}" data-nav="1" data-end draggable="false">${nx ? "Next lesson" : "All lessons"}</a>`),
+      where
+    );
   }
 });
 
@@ -109,4 +128,21 @@ test("reference pages: panel guide for every control, machines, shortcuts", () =
   }
   assert.equal(count(page(`/${I.slug}/machines`), /<section class="band">/g), I.machines.length + 1);
   assert.equal(count(page(`/${I.slug}/shortcuts`), /<tr>/g), I.shortcuts.length);
+});
+
+test("player: the panel lights the page a step is on, and later steps keep it", () => {
+  const L = I.lessons.find((l) => l.id === "w04");
+  const lit = (act) => {
+    const leds = [...player(L, act).matchAll(/class="pageled( on)?"/g)];
+    assert.equal(leds.length, 4, `step ${act}`);
+    return leds.findIndex((m) => m[1]) + 1;
+  };
+  const at = (id) => L.steps.findIndex((s) => s.id === id);
+  assert.equal(lit(at("make-b01-four-bars")), 1);
+  assert.equal(lit(at("make-bar-2-b")), 2);
+  assert.equal(lit(at("make-bar-4-c")), 4);
+  assert.equal(lit(at("empty-before-fill")), 4);
+  assert.equal(lit(at("roll-into-bar-8")), 4);
+  assert.equal(lit(at("add-fill-play-hand")), 4);
+  assert.equal(lit(at("make-t4-drift")), 1);
 });

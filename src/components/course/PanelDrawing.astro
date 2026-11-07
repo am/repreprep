@@ -1,15 +1,16 @@
 ---
-// The instrument's panel, with the controls a step uses lit (hl) or one control selected (sel).
-import { withHl } from "../../course/shared/text.js";
+// The instrument's panel, with the controls a step uses lit (hl) or one control selected (sel), and the page light the step is on.
+import { withHl, withPage } from "../../course/shared/text.js";
 interface Props {
   I: any;
   hl?: string;
   sel?: string;
+  page?: number;
 }
-const { I, hl = "", sel } = Astro.props;
+const { I, hl = "", sel, page = 1 } = Astro.props;
 ---
 
-<Fragment set:html={withHl(I.draw(), hl, sel)} />
+<Fragment set:html={withHl(withPage(I.draw(), page), hl, sel)} />
 
 <script>
   /* the panel's controls are buttons for the keyboard too: Enter or Space clicks them */

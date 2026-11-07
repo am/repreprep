@@ -29,3 +29,5 @@ export const setProgress = (page, state) =>
     },
     [LS_KEY, state]
   );
+/* a step's tick as progress keeps it: "w05:set-decay" */
+export const tick = (L, i) => `${L.id}:${L.steps[i].id}`;

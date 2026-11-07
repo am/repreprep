@@ -304,8 +304,8 @@ export const UNIT_FIGS_4 = {
     s +=
       `<rect x="560" y="110" width="210" height="150" rx="14" class="box"/>` +
       T(665, 150, "Computer", "fl") +
-      T(665, 180, "Live: one audio track", "fs") +
-      T(665, 200, "input 1/2, armed", "fs") +
+      T(665, 180, "recording app", "fs") +
+      T(665, 200, "input 1/2", "fs") +
       T(665, 228, "press record, then play", "fs");
     s +=
       `<path d="M230 170 H310" style="stroke:var(--led);stroke-width:3"/><path d="M230 200 H310" style="stroke:var(--led);stroke-width:3"/>` +
@@ -316,9 +316,13 @@ export const UNIT_FIGS_4 = {
       `<path d="M395 240 V300" style="stroke:var(--done);stroke-width:3"/><rect x="335" y="300" width="120" height="40" rx="10" class="box"/>` +
       T(395, 325, "headphones", "fm");
     s += T(270, 108, 'two 1/4" jack cables', "fs");
-    s += T(400, 382, "Set the level with MAIN VOLUME: loud parts stay well below the top of Live's meter.", "fb");
+    s += T(400, 382, "Set the level with MAIN VOLUME: loud parts stay well below the top of the app's meter.", "fb");
     s += T(400, 406, "Connect cables with everything switched off.", "fs");
-    return svgFig("0 0 800 420", s, "Model:Cycles main outputs into an audio interface and into Live");
+    return svgFig(
+      "0 0 800 420",
+      s,
+      "Model:Cycles main outputs into an audio interface and a recording app on the computer"
+    );
   },
   u4finish() {
     let s = T(400, 36, "The finishing loop", "fh");

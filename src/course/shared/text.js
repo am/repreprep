@@ -3,7 +3,14 @@ import { songLink } from "./songs.js";
 
 /* Step text: [KEY] becomes a keycap (coloured by the step's hl), quoted song titles become Spotify links,
    and Play steps are split into one bullet per sentence. */
-export const KIND = { intro: "Intro", learn: "Learn", play: "Play", check: "Check", challenge: "Challenge" };
+export const KIND = {
+  intro: "Intro",
+  ready: "Get ready",
+  learn: "Learn",
+  play: "Play",
+  check: "Check",
+  challenge: "Challenge",
+};
 export function parseHl(s) {
   const r = { press: [], hold: [], turn: [] };
   (s || "")
@@ -32,7 +39,9 @@ function byName(C) {
 export function keyCap(label, action = "", icon = "", title = "") {
   return `<span class="k ${action}"${title ? ` title="${esc(title)}"` : ""}>${icon}${label}</span>`;
 }
-/* I = the instrument ({controls, icon}) whose keys the text names */
+/* the name of an icon key as a word in a sentence: "record", "tempo", but "LFO" */
+const keyWord = (name) => (name.length <= 3 ? name : name.toLowerCase());
+/* I = the instrument ({controls, icon}) whose keys the text names; icon(id) draws a key's printed icon, or "" */
 export function keyify(I, text, hl) {
   const C = I.controls || {};
   const names = byName(C);
@@ -46,8 +55,10 @@ export function keyify(I, text, hl) {
         else if (h.turn.includes(id)) cls = "turn";
         else if (h.press.includes(id)) cls = "press";
       }
-      const ic = id && C[id].icon && I.icon ? I.icon(C[id].icon) : "";
-      return keyCap(name.replace(/^TRIG (\d+)$/i, "$1"), cls, ic, ic ? C[id].kind : "");
+      const ic = id && I.icon ? I.icon(id) : "";
+      // a key printed with an icon shows only the icon on its cap, as on the unit, and its name follows as text (kept on the same line)
+      if (ic) return keyCap("", cls, ic, C[id].kind) + "&nbsp;" + keyWord(C[id].name);
+      return keyCap(name.replace(/^TRIG (\d+)$/i, "$1"), cls);
     })
     .replace(/&quot;(.{2,80}?)&quot;/g, songLink);
 }
@@ -96,6 +107,12 @@ export function stepParts(st) {
   if (st.k === "learn" || st.k === "check")
     return ss.length < 2 ? { lead, first: body, rest: "" } : { lead, first: ss[0], rest: ss.slice(1).join(" ") };
   return ss.length < 2 ? { lead, para: body } : { lead, items: ss };
+}
+
+/* light the page the step is on (1 to 4); panels without page lights are left as they are */
+export function withPage(svg, page = 1) {
+  let i = 0;
+  return svg.replace(/class="pageled(?: on)?"/g, () => `class="pageled${++i === page ? " on" : ""}"`);
 }
 
 /* light the controls a step uses on the panel drawing (press / hold / turn), or mark one as selected */

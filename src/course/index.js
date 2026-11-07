@@ -10,7 +10,7 @@ import { renderGrid } from "./shared/grid.js";
 export const INSTRUMENTS = [
   MODEL_CYCLES,
   { key: "microfreak", slug: "microfreak", name: "MicroFreak", ready: false },
-  { key: "live", slug: "live", name: "Ableton Live", ready: false },
+  { key: "move", slug: "move", name: "Ableton Move", ready: false },
 ];
 
 export const lessonLabel = (L) => (L.song ? "Song study" : "Lesson " + L.number);
@@ -38,7 +38,8 @@ const slugify = (s) =>
 
 /* An instrument with its lessons, ready for the pages: lessons in course order (song studies last), each
    opening with an intro step (what you will learn, what to listen to) and with its address and short name.
-   Step ids stay the old ones (lesson id + ":" + index, intro = 0), so saved progress keeps working.
+   Saved ticks are "<lesson id>:<step id>" ("w04:make-b01-four-bars", "w04:intro"), so steps can be added,
+   removed or moved without touching anyone's progress; step addresses are numbered (intro = 0).
    The lesson data comes from src/content/lessons: content.js reads it for the pages, files.js for scripts and tests. */
 export function withLessons(I, data) {
   const lessons = structuredClone(data).sort(
@@ -47,6 +48,7 @@ export function withLessons(I, data) {
   const songs = lessons.filter((l) => l.song);
   lessons.forEach((L) => {
     L.steps.unshift({
+      id: "intro",
       intro: true,
       k: "intro",
       hl: "",
@@ -65,7 +67,26 @@ export const nextLesson = (I, L) => I.lessons[I.lessons.indexOf(L) + 1];
 export function renderFig(I, f, id) {
   if (!f) return "";
   if (typeof f === "string") return I.figs[f] ? I.figs[f]() : "";
-  if (f.grid)
-    return `<div class="gridhost" data-grid="${esc(id)}" data-spec="${esc(JSON.stringify(f.grid))}">${renderGrid(f.grid, id)}</div>`;
+  const host = (G) =>
+    `<div class="gridhost" data-grid="${esc(id)}" data-spec="${esc(JSON.stringify(G))}">${renderGrid(G, id)}</div>`;
+  if (f.grid) return host(f.grid);
+  if (f.pattern) return renderPattern(I, f.pattern, host);
   return "";
+}
+
+/* a Get ready step's map: the pattern as the lesson expects to find it, as a grid you can play (a tab per
+   page, named like the page lights, or per pattern), with each track's swing under its name and the steps the last lesson added outlined. */
+function renderPattern(I, P, host) {
+  const sw = (rows) => (P.swing ? rows.map((r) => ({ ...r, sw: P.swing })) : rows);
+  const G = { title: P.slots ? `${P.slots[0].slot} to ${P.slots.at(-1).slot}` : P.slot, bpm: P.bpm, edit: false };
+  if (P.rows) Object.assign(G, { rows: sw(P.rows), swing: P.swing });
+  else if (P.slots) G.presets = P.slots.map((s) => ({ name: s.slot, bpm: P.bpm, swing: P.swing, rows: sw(s.rows) }));
+  else
+    G.presets = P.bars.map((rows, i) => ({
+      name: `${i + 1}:${P.bars.length}`,
+      bpm: P.bpm,
+      swing: P.swing,
+      rows: sw(rows),
+    }));
+  return `<div class="pmap">${host(G)}</div>`;
 }

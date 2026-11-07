@@ -17,11 +17,16 @@ concepts:
   - h: An LFO as an envelope
     p:
       - "With WAV set to ENV, the LFO runs once from the start of each note and stops. Aim it at the volume with negative depth and the sound fades in: a slow attack."
+  - h: "Three speeds"
+    p:
+      - "The same LFO does different jobs at different speeds. Over several bars it changes the music: a part fades in and out. Over one note it shapes the sound, like an envelope. Faster than you can count, hundreds of times a second, it changes the tone itself: that's frequency modulation, the idea behind the FM in lesson 6."
 steps:
-  - k: learn
+  - id: lfo-slow-wave-turns
+    k: learn
     fig: u2lfo
     t: An LFO is a slow wave that turns a knob for you. Depth is how far the knob moves, rate how fast, and the waveform how it gets there. The Model:Cycles offers seven waveforms.
-  - k: learn
+  - id: here-lfo-moves-hats
+    k: learn
     fig:
       grid:
         title: An LFO on the hats' volume
@@ -71,45 +76,136 @@ steps:
                 }
     t: Here an LFO moves the hats' volume, shown as the height of each hit. The same 16 hats, four kinds of movement. Play each one.
     hear: The triangle breathes once a bar. Random sounds like an unsteady hand.
-  - k: learn
+  - id: lfo-setup-decides-how
+    k: learn
     fig: u2reset
     t: LFO SETUP decides how the wave meets your notes. RST OFF lets it run freely, so each hit lands somewhere different on the wave. RST ON restarts it on every note. FDE fades the movement in or out; SPH sets where it starts.
-  - k: learn
+  - id: env-waveform-runs-once
+    k: learn
     fig: u2attack
     t: "The ENV waveform runs once per note, like an envelope. Point it at the volume with depth -64 and it pulls the volume down at the start, then lets go: the sound fades in. GATE keeps it held while it does."
-  - k: play
-    t: Play B01 and select your dusty hats (hold [TRACK], press [T3]). Hold [LFO] and turn [DECAY] a little to the right. That makes DECAY the LFO's destination, and turning further sets the depth.
+  - id: one-lfo-three-speeds
+    k: learn
+    t: "One LFO, three speeds. [LFO SPEED] and MUL set its rate together: at MUL X1, SPEED 32 takes four bars for one cycle; at MUL 2K the same SPEED is hundreds of cycles a second. A good habit is to keep [LFO SPEED] near the middle and choose the range with MUL."
+  - id: get-ready
+    k: ready
+    fig:
+      pattern:
+        slot: B01
+        bpm: 90
+        swing: 58
+        bars:
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - {
+                n: T3 Hats,
+                s: hat,
+                hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24",
+                new: "5,13",
+              }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13,16:.24", nudge: "12:.3" }
+            - {
+                n: T3 Hats,
+                s: hat,
+                hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24",
+                new: "5,13",
+              }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11" }
+            - { n: T2 Snare, s: snare, hits: "5,12:.2,13", nudge: "12:.3" }
+            - {
+                n: T3 Hats,
+                s: hat,
+                hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24",
+                new: "5,13",
+              }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+          - - { n: T1 Kick, s: kick, hits: "1,9,11", cond: { 9: "1:2", 11: "1:2" } }
+            - {
+                n: T2 Snare,
+                s: snare,
+                hits: "5,9,11,12:.2,13,14:.3,15:.3,16:.3",
+                nudge: "12:.3",
+                cond: { 9: FILL, 11: FILL, 14: "2:2", 15: "2:2" },
+              }
+            - {
+                n: T3 Hats,
+                s: hat,
+                hits: "2:.24,3,4:.24,5:.4,6:.24,7,8:.24,10:.24,11,12:.24,13:.4,14:.24,15,16:.24",
+                new: "5,13",
+              }
+            - { n: T4 Perc, s: perc, hits: "1,4,7,10", len: 12 }
+            - { n: T5 Tone, s: bass, hits: "" }
+            - { n: T6 Chord, s: keys, hits: "" }
+    t: "Go to B01 (hold [PATTERN], press [T2], press [TRIG 1]). It should match the map. If not, hold [FUNC] and long-press [PATTERN] to reload the pattern you saved."
+    hl: h:pattern p:t2 p:s1 h:func
+  - id: play-b01-select-dusty
+    k: play
+    t: "Point an LFO at the hats: Play B01 and select your dusty hats (hold [TRACK], press [T3]). Hold [LFO] and turn [DECAY] a little to the right. That makes DECAY the LFO's destination, and turning further sets the depth."
     hl: p:play h:track p:t3 h:lfo t:decay
     hear: "The hats start to breathe: some short, some longer."
-  - k: play
+  - id: set-rate
+    k: play
     t: "Set the rate: turn [LFO SPEED] to 16, one of the values that lock to the beat. Try 8 and 32 too, then a negative value, which runs the wave backwards. Keep the one you like."
     hl: t:lfospd
     hear: Higher values move faster. Pick a speed that feels like breathing, not wobbling.
-  - k: play
+  - id: pick-shape
+    k: play
     t: "Pick the shape: press [LFO] to open the LFO menu. DST now shows DECAY and DEP your depth. Use [LEVEL/DATA] to try each WAV, including random with a small DEP. Press [BACK] when you've chosen."
     hl: p:lfo t:level p:back
     hear: Triangle and sine glide, square flips between two lengths, random sounds like a human hand.
-  - k: play
+  - id: give-perc-slow-drift
+    k: play
     t: "Give the perc a slow drift: select [T4], hold [LFO] and turn [COLOR] a little. Turn [LFO SPEED] down to a small positive value, like 2, so it changes slowly. If it's still too fast, press [LFO] and set MUL lower."
     hl: h:track p:t4 h:lfo t:color t:lfospd p:lfo t:level
     hear: The found tick slowly changes colour from bar to bar.
-  - k: play
-    t: "Hear RST: select [T3] again and press [FUNC] + [LFO] to open LFO SETUP. Set RST to ON with [LEVEL/DATA] and listen, then set it back to OFF."
+  - id: hear-rst
+    k: play
+    t: "Hear what RST does: RST restarts the wave on every note. Select [T3] again and press [FUNC] + [LFO] to open LFO SETUP. Set RST to ON with [LEVEL/DATA] and listen, then set it back to OFF."
     hl: h:track p:t3 h:func p:lfo t:level
     hear: "ON: every hat gets the same slice of the wave and the movement disappears. OFF: it flows across the hats again."
-  - k: play
-    t: "Still in LFO SETUP, try FDE at -30 (fade in) and +30 (fade out), and with RST ON try SPH at 0 and 64. Set FDE back to 0 and RST to OFF, press [BACK], then save B01: hold [FUNC] and long-press [SETTINGS]."
+  - id: still-lfo-setup-try
+    k: play
+    t: "Fade the movement in and out: Still in LFO SETUP, try FDE at -30 (fade in) and +30 (fade out), and with RST ON try SPH at 0 and 64. Set FDE back to 0 and RST to OFF, press [BACK], then save B01: hold [FUNC] and long-press [SETTINGS]."
     hl: t:level p:back h:func p:settings
     hear: Small changes, but now you know every setting on the LFO page. These setup settings can't be locked to a step.
-  - k: play
-    t: "Try the slow attack on B04, your bright copy: hold [PATTERN], press [TRIG 4]. Select [T6] (CHORD), press [RECORD] and place a chord on [TRIG 1]. Hold it, press [LEVEL/DATA] until LEN shows, and set 8. Press [GATE] so it lights."
+  - id: try-slow-attack-b04
+    k: play
+    t: "Set up a slow attack: Use B04, your bright copy. Hold [PATTERN], press [TRIG 4]. Select [T6] (CHORD), press [RECORD] and place a chord on [TRIG 1]. Set its LEN to 8. Press [GATE] so it lights."
+    combo: ["hold [TRIG 1]", "press [LEVEL/DATA] until LEN shows", "turn [LEVEL/DATA] to 8"]
+    comboAfter: 4
     hl: h:pattern p:s4 h:track p:t6 p:record p:s1 p:level t:level p:gate
     hear: A chord that holds for half a bar, then fades out.
-  - k: play
-    t: Press [FUNC] + [BACK], check FIX is OFF, and press [BACK]. Press [LFO] and set WAV to ENV, MUL to X1, DST to DIST and DEP to -64. Turn [LFO SPEED] to set how slowly it fades in.
+  - id: press-check-fix-off
+    k: play
+    t: "Make the chord fade in: Press [FUNC] + [BACK], check FIX is OFF, and press [BACK]. Press [LFO] and set WAV to ENV, MUL to X1, DST to DIST and DEP to -64. Turn [LFO SPEED] to set how slowly it fades in."
     hl: h:func p:back p:lfo t:level t:lfospd
     hear: "The chord swells in instead of starting at once: a slow attack made from an LFO."
-  - k: check
+  - id: slow-over-bars
+    k: play
+    t: "Fade the kick over four bars: This is a slow LFO. Still in B04, select [T1]. Hold [LFO] and turn [VOLUME + DIST] a little to the left. Press [LFO], set WAV to TRI and MUL to X1, then turn [LFO SPEED] to 32."
+    hl: h:track p:t1 h:lfo t:vol p:lfo t:level t:lfospd
+    hear: "Over four bars the kick fades out and comes back. The loop is the same, but the music changes on its own."
+  - id: medium-over-one-note
+    k: play
+    t: "Bend every bass note: This is a medium LFO. Select [T5]. Press [LFO], set WAV to ENV, DST to PITCH and DEP to about +20, then turn [LFO SPEED] to 32. Play [T5] a few times, then set DEP to -20 and play it again."
+    hl: h:track p:t5 p:lfo t:level t:lfospd p:t5
+    hear: "Positive depth starts each note high and drops it into tune, like a tom. Negative depth starts it low and bends it up."
+  - id: fast-inside-tone
+    k: play
+    t: "Turn the wobble into tone: This is a fast LFO. Still on [T5], set WAV to TRI, DEP to about +5 and MUL to 2K. Hold [T5] and slowly turn [LFO SPEED]. Then set DEP back to 0. These changes stay in B04, so your song in B01 is untouched."
+    hl: p:lfo t:level h:t5 t:lfospd
+    hear: "The wobble turns into a new tone: brighter, metallic, sometimes out of tune. That's frequency modulation, made by hand."
+  - id: hats-move-lfo-decay
+    k: check
     t: Your hats move with an LFO on DECAY. You set RST to ON and the movement disappears. Why?
     q:
       - DEP went back to 0
