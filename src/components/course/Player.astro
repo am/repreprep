@@ -1,8 +1,10 @@
 ---
 // The step player: the drawing or the panel on the left (on the intro, the lesson's title in big type), the step on the right. The optional challenge is
-// one more step after the last one: same player, its own kind, and Finish moves there.
+// one more step after the last one: same player, its own kind, and Finish moves there. After the last step, Finish fills,
+// ticks and plays a little arpeggio (src/client/finish.js), then opens the done screen: the same player again, closing the lesson.
 import LessonMenu from "./LessonMenu.astro";
 import IntroCard from "./IntroCard.astro";
+import DoneCard from "./DoneCard.astro";
 import StepText from "./StepText.astro";
 import Quiz from "./Quiz.astro";
 import HearNote from "./HearNote.astro";
@@ -16,16 +18,17 @@ interface Props {
   I: any;
   L: any;
   act: number;
+  done?: boolean;
 }
-const { I, L, act } = Astro.props;
+const { I, L, act, done = false } = Astro.props;
 const n = L.steps.length,
   total = n + (L.challenge ? 1 : 0);
-const ch = act === n;
-const st = ch ? { k: "challenge" } : L.steps[act];
+const ch = !done && act === n;
+const st = done ? { k: "done" } : ch ? { k: "challenge" } : L.steps[act];
 const k = st.k || "play";
 // the page light: the last page a step up to this one set
 const page = L.steps.slice(0, act + 1).reduce((p: number, s: any) => s.page || p, 1);
-const end = act === total - 1;
+const end = !done && act === total - 1;
 const nx = nextLesson(I, L);
 const nextHref = end ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
 const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN", "turn");
@@ -41,6 +44,8 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   data-step-ids={L.steps.map((s: any) => s.id).join(" ")}
   data-next={nx?.id}
   data-next-path={nx?.path}
+  data-done={done ? "" : undefined}
+  data-done-path={stepPath(L, "done")}
 >
   <div class="phead">
     <details class="picker">
@@ -50,14 +55,14 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       </summary>
       <LessonMenu I={I} L={L} />
     </details>
-    <div class="dots" style={`--p:${total > 1 ? act / (total - 1) : 0}`}>
+    <div class="dots" style={`--p:${done ? 1 : total > 1 ? act / (total - 1) : 0}`}>
       {L.steps.map((s: any, i: number) => {
         const lab = KIND[s.k || "play"];
         return (
           <a
             href={stepPath(L, i)}
             data-step={i}
-            aria-current={String(i === act)}
+            aria-current={String(!done && i === act)}
             aria-label={`${lab}, step ${i + 1}`}
             title={lab}
           ></a>
@@ -84,8 +89,10 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     </button>
   </div>
   <div class="pbody" id="pbody">
-    <div class={st.intro ? "pstage intro" : "pstage"}>
-      {st.intro ? (
+    <div class={st.intro || done ? "pstage intro" : "pstage"}>
+      {done ? (
+        <DoneCard L={L} nx={nx} part="hero" />
+      ) : st.intro ? (
         <IntroCard L={L} part="hero" />
       ) : st.fig ? (
         <div class="figwrap">
@@ -107,10 +114,12 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     <div class="pstep" id="now">
       <UpdateNote L={L} />
       <div class="h">
-        <span class={`kind k-${k}`}>{KIND[k]}</span>
+        <span class={`kind k-${k}`}>{done ? "Done" : KIND[k]}</span>
         {ch && " · optional"}
       </div>
-      {ch ? (
+      {done ? (
+        <DoneCard L={L} nx={nx} part="details" />
+      ) : ch ? (
         <Fragment>
           <div class="ptxt">
             <p>
@@ -154,7 +163,18 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
           </button>
         </div>
         <div class="navrow">
-          {act === 0 ? (
+          {done ? (
+            <Fragment>
+              <a class={nx ? "btn" : "btn primary"} href={`/${I.slug}`}>
+                All lessons
+              </a>
+              {nx && (
+                <a class="btn primary" href={nx.path} data-nav="1" data-next-lesson>
+                  Next lesson
+                </a>
+              )}
+            </Fragment>
+          ) : act === 0 ? (
             <button class="btn" disabled aria-label="Previous step">
               Back
             </button>
@@ -163,9 +183,11 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
               Back
             </a>
           )}
-          <a class="btn primary" href={nextHref} data-nav="1" data-end={end ? "" : undefined}>
-            {end ? "Finish" : act === 0 ? "Start" : "Next"}
-          </a>
+          {!done && (
+            <a class="btn primary" href={nextHref} data-nav="1" data-end={end ? "" : undefined}>
+              {end ? "Finish" : act === 0 ? "Start" : "Next"}
+            </a>
+          )}
         </div>
       </div>
     </div>
@@ -177,6 +199,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
      width, the full-window switch, the lesson picker, arrow keys, and clicking a control on the panel. */
   import { onProgress, persist, refresh, ist, state } from "../../client/progress.js";
   import { player, curLesson, markAllDone, goNextLesson, stepKey } from "../../client/lesson.js";
+  import { pressFinish, clickFinish } from "../../client/finish.js";
   import { CYCLES_CONTROLS } from "../../course/model-cycles/controls.js";
   import { iconSvg } from "../../course/model-cycles/icons.js";
   import { keyify } from "../../course/shared/text.js";
@@ -198,9 +221,10 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     const c = curLesson();
     if (!c) return;
     const s = ist(c.k);
-    if (s.lesson !== c.id || (s.active[c.id] ?? 0) !== c.act) {
+    /* the done screen isn't a step: you stay where you finished */
+    if (s.lesson !== c.id || (!c.done && (s.active[c.id] ?? 0) !== c.act)) {
       s.lesson = c.id;
-      s.active[c.id] = c.act;
+      if (!c.done) s.active[c.id] = c.act;
       persist();
     }
     document
@@ -308,24 +332,52 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
         }
         return;
       }
-      /* Next ticks the step you're on; Finish on the last step moves to the next lesson */
+      /* Next ticks the step you're on; Finish on the last step fills, ticks and opens the done screen;
+         Next lesson there opens the next lesson */
       const nav = e.target.closest("[data-nav]");
       const c = nav && nav.dataset.nav === "1" && curLesson();
       if (!c) return;
       const s = ist(c.k);
-      if (c.act < c.n) {
-        s.steps[stepKey(c, c.act)] = true;
-        markAllDone(s, c);
-      } /* the optional challenge is never a rep */
-      if (nav.hasAttribute("data-end")) {
+      if (nav.hasAttribute("data-next-lesson")) {
         e.preventDefault();
         goNextLesson(s, c);
         return;
       }
+      if (nav.hasAttribute("data-end")) {
+        e.preventDefault();
+        clickFinish(nav, () => finished(c), c.donePath);
+        return;
+      }
+      tickHere(s, c);
       persist(); /* the link opens the next step */
     },
     true
   ); /* capture: runs before the router follows a link, so Finish can pick where to go */
+
+  /* ticks the step you're on; the optional challenge is never a rep */
+  function tickHere(s, c) {
+    if (c.act < c.n) {
+      s.steps[stepKey(c, c.act)] = true;
+      markAllDone(s, c);
+    }
+  }
+  /* Finish closes the lesson: it counts as done even if you skipped a step (the done screen shows how many you ticked) */
+  function finished(c) {
+    const s = ist(c.k);
+    tickHere(s, c);
+    s.done[c.id] ||= Date.now();
+    persist();
+    refresh();
+  }
+  /* holding Finish fills it slowly; a long press doesn't open the link menu */
+  document.addEventListener("pointerdown", (e) => {
+    const b = e.button === 0 && e.target.closest("[data-end]"),
+      c = b && curLesson();
+    if (c) pressFinish(b, () => finished(c), c.donePath);
+  });
+  document.addEventListener("contextmenu", (e) => {
+    if (e.target.closest("[data-end]")) e.preventDefault();
+  });
 
   document.addEventListener("keydown", (e) => {
     if (e.target.id === "gutter" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
@@ -819,5 +871,9 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   .kind.k-challenge {
     background: var(--hold-soft);
     color: var(--hold);
+  }
+  .kind.k-done {
+    background: var(--done-soft);
+    color: var(--done);
   }
 </style>

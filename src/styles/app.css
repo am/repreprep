@@ -347,6 +347,79 @@ a.song svg {
   opacity: 0.45;
   cursor: default;
 }
+/* Finish on a lesson's last step (src/client/finish.js): holding fills it green from the left, then it turns into a tick */
+[data-end] {
+  -webkit-touch-callout: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+.btn.fin-filling {
+  background: linear-gradient(to right, var(--done) calc(var(--fill, 0) * 100%), var(--fg) 0);
+  border-color: var(--done);
+  transform: scale(0.98);
+  transition: transform 0.15s;
+}
+.btn.fin-done {
+  background: var(--done);
+  border-color: var(--done);
+  color: var(--bg);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--s2);
+  animation: fin-pop 0.35s ease-out;
+}
+.fin-ck {
+  width: 1.1em;
+  height: 1.1em;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 16;
+  animation: fin-draw 0.3s 0.05s ease-out both;
+}
+@keyframes fin-pop {
+  50% {
+    transform: scale(1.04);
+  }
+}
+@keyframes fin-draw {
+  from {
+    stroke-dashoffset: 16;
+  }
+}
+/* the step dots light up one by one, left to right, and the step card and reps count glow green */
+.dots.fin-sweep a::before {
+  animation: fin-dot 0.5s calc(var(--i, 0) * 35ms) ease-out both;
+}
+@keyframes fin-dot {
+  40% {
+    transform: scale(1.7);
+    background: var(--done);
+    border-color: var(--done);
+  }
+}
+.player.fin-player .pstep {
+  border-color: var(--done);
+  box-shadow: 0 0 0 4px var(--done-soft);
+  transition:
+    border-color 0.3s,
+    box-shadow 0.3s;
+}
+.fin-bump {
+  color: var(--done);
+  transition: color 0.3s;
+}
+@media (prefers-reduced-motion: reduce) {
+  .btn.fin-filling,
+  .btn.fin-done,
+  .fin-ck {
+    transform: none;
+    animation: none;
+  }
+}
 /* destructive actions stay red whatever the accent color is */
 .btn.danger {
   color: var(--danger);

@@ -3,6 +3,14 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.6.1
+  date: "2026-11-07"
+  title: Finishing a lesson
+  site:
+    - Hold Finish on a lesson's last step and it fills green, then turns into a tick with a short arpeggio while the step dots light up. A click works too, just quicker.
+    - Finish now opens a done screen for the lesson, with what you can now do, your steps, the challenge and what comes next. Next lesson moves on when you're ready.
+    - Complete under a lesson plays the same sound and opens the same done screen.
+
 - id: 0.6.0
   date: "2026-11-07"
   title: Drawings you can hear, steps in plain words

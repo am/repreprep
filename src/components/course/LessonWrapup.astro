@@ -46,7 +46,7 @@ const { I, L } = Astro.props;
       class="btn primary"
       data-finish={L.id}
       data-label="Complete"
-      title={`Mark this ${L.song ? "study" : "lesson"} done and open the next one`}
+      title={`Mark this ${L.song ? "study" : "lesson"} done`}
     >
       Complete
     </button>
@@ -67,10 +67,11 @@ const { I, L } = Astro.props;
 </section>
 
 <script>
-  /* Complete (and undoing it), Clear progress, and the notes box: read mode by default; Edit opens it, and only Save keeps what you typed */
+  /* Complete (it opens the done screen, and undoing it), Clear progress, and the notes box: read mode by default; Edit opens it, and only Save keeps what you typed */
   import { onProgress, persist, refresh, ist } from "../../client/progress.js";
   import { navigate } from "astro:transitions/client";
-  import { curLesson, goNextLesson } from "../../client/lesson.js";
+  import { curLesson } from "../../client/lesson.js";
+  import { arpeggio } from "../../client/finish.js";
 
   function showNote(s, id, saved) {
     const box = document.querySelector(`[data-notebox="${id}"]`);
@@ -159,7 +160,9 @@ const { I, L } = Astro.props;
       }
       s.done[c.id] = Date.now();
       c.ids.forEach((x) => (s.steps[c.id + ":" + x] = true));
-      goNextLesson(s, c);
+      persist();
+      arpeggio();
+      navigate(c.donePath);
     },
     true
   );

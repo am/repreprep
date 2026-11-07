@@ -34,18 +34,44 @@ test("arrow keys move between steps", async ({ page }) => {
   await expect(page).toHaveURL(`${L1.path}/4`);
 });
 
-test("the last step leads to the optional challenge, and Finish opens the next lesson", async ({ page }) => {
+test("the last step leads to the optional challenge; Finish ticks, marks the lesson done and opens the done screen", async ({
+  page,
+}) => {
   const last = steps(L1) - 1;
   await page.goto(`${L1.path}/${last}`);
   await page.locator(".navrow .btn.primary").click();
   await expect(page).toHaveURL(`${L1.path}/${steps(L1)}`);
   await expect(page.locator(".pstep .kind")).toHaveText("Challenge");
-  await expect(page.locator(".navrow .btn.primary")).toHaveText("Finish");
-  await page.locator(".navrow .btn.primary").click();
-  await expect(page).toHaveURL(L2.path);
+  const fin = page.locator(".navrow .btn.primary");
+  await expect(fin).toHaveText("Finish");
+  await fin.click();
+  await expect(fin).toHaveText("Done");
+  await expect(page).toHaveURL(`${L1.path}/done`);
+  await expect(page.locator(".pstep .kind")).toHaveText("Done");
+  await expect(page.locator("[data-done-steps]")).toHaveText(`1 of ${steps(L1)}`);
+  await expect(page.locator("[data-done-date]")).toHaveText("Today");
   const p = await progress(page);
   expect(p.inst.cycles.steps[tick(L1, last)]).toBe(true);
   expect(Object.keys(p.inst.cycles.steps).length).toBe(1); /* the challenge is never a rep */
+  expect(p.inst.cycles.done[L1.id]).toBeTruthy();
+  expect(p.inst.cycles.active[L1.id]).toBe(steps(L1)); /* the done screen isn't a step */
+  /* Next lesson opens the next one */
+  await page.locator("[data-next-lesson]").click();
+  await expect(page).toHaveURL(L2.path);
+});
+
+test("holding Finish fills it before it ticks", async ({ page }) => {
+  await page.goto(`${L1.path}/${steps(L1)}`);
+  const fin = page.locator("[data-end]");
+  const box = await fin.boundingBox();
+  await page.mouse.move(box.x + box.width / 2, box.y + box.height / 2);
+  await page.mouse.down();
+  await page.waitForTimeout(300);
+  await expect(fin).toHaveClass(/fin-filling/);
+  await expect(fin).toHaveText("Finish");
+  await expect(fin).toHaveText("Done"); /* the fill ends while still held */
+  await page.mouse.up();
+  await expect(page).toHaveURL(`${L1.path}/done`);
 });
 
 test("ticking every step marks the lesson done", async ({ page }) => {
@@ -60,10 +86,11 @@ test("ticking every step marks the lesson done", async ({ page }) => {
   await expect(page.locator(".finish .stamp")).toContainText("Done on");
 });
 
-test("Complete marks the lesson done and opens the next; clicking Completed undoes it", async ({ page }) => {
+test("Complete marks the lesson done and opens the done screen; clicking Completed undoes it", async ({ page }) => {
   await page.goto(`${L1.path}/3`);
   await page.locator("[data-finish]").click();
-  await expect(page).toHaveURL(L2.path);
+  await expect(page).toHaveURL(`${L1.path}/done`);
+  await expect(page.locator("[data-done-steps]")).toHaveText(`${steps(L1)} of ${steps(L1)}`);
   let p = await progress(page);
   expect(Object.keys(p.inst.cycles.steps).filter((k) => k.startsWith(L1.id + ":")).length).toBe(steps(L1));
   expect(p.inst.cycles.done[L1.id]).toBeTruthy();

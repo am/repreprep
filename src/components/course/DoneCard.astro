@@ -1,0 +1,197 @@
+---
+// The screen after a lesson's last step, in two parts like the intro. "hero" fills the left of the player: a check,
+// the lesson and what you can now do, so finishing reads as an ending and not as the start of the next lesson.
+// "details" goes in the step card: your steps, the challenge, and what comes next.
+import { lessonLabel, goalPhrase, stepPath } from "../../course/index.js";
+interface Props {
+  L: any;
+  nx?: any;
+  part: "hero" | "details";
+}
+const { L, nx, part } = Astro.props;
+const what = L.song ? "study" : "lesson";
+---
+
+{part === "hero" ? (
+  <div class="donehero">
+    <svg class="seal" viewBox="0 0 48 48" aria-hidden="true">
+      <circle cx="24" cy="24" r="22" />
+      <path d="M14 25l7 7 13-15" />
+    </svg>
+    <div class="t-eyebrow">
+      {lessonLabel(L)}
+      {L.unit && ` · ${L.unit}`} · Done
+    </div>
+    <h2 class="t-title">{L.title}</h2>
+    <p class="lede">
+      <b>You can now</b> {goalPhrase(L)}
+    </p>
+  </div>
+) : (
+  <div class="donecard">
+    <dl class="facts t-body">
+      <div>
+        <dt>Steps</dt>
+        <dd data-done-steps>
+          {L.steps.length} of {L.steps.length}
+        </dd>
+      </div>
+      <div>
+        <dt>Finished</dt>
+        <dd data-done-date>Today</dd>
+      </div>
+      {L.challenge && (
+        <div>
+          <dt>Challenge</dt>
+          <dd>
+            <a href={stepPath(L, L.steps.length)}>Open any time</a>
+          </dd>
+        </div>
+      )}
+    </dl>
+    {nx && !L.song && !nx.song && <p class="t-note">Save B01 now. Lesson {nx.number} starts from it.</p>}
+    {nx ? (
+      <div class="upnext">
+        <div class="t-label">Up next</div>
+        <div class="nt">
+          {lessonLabel(nx)} · {nx.title}
+        </div>
+      </div>
+    ) : (
+      <p class="t-note">That was the last {what} in this course.</p>
+    )}
+  </div>
+)}
+
+<script>
+  /* your own count of steps and the day you finished, from your progress */
+  import { onProgress, ist, ticked } from "../../client/progress.js";
+  import { curLesson } from "../../client/lesson.js";
+  onProgress(() => {
+    const c = curLesson(),
+      el = document.querySelector("[data-done-steps]");
+    if (!c || !c.done || !el) return;
+    const s = ist(c.k),
+      at = s.done[c.id];
+    el.textContent = `${ticked(s, c.id, c.ids)} of ${c.n}`;
+    document.querySelector("[data-done-date]").textContent = at
+      ? new Date(at).toDateString() === new Date().toDateString()
+        ? "Today"
+        : new Date(at).toLocaleDateString()
+      : "Not yet";
+  });
+</script>
+
+<style>
+  .donehero {
+    width: 100%;
+    max-width: 52rem;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s5);
+    padding: var(--s6) var(--s5);
+  }
+  .donehero .t-eyebrow {
+    font-size: var(--fs-sm);
+    color: var(--done);
+  }
+  .donehero .t-title {
+    font-size: var(--fs-intro);
+    line-height: 1;
+    letter-spacing: -0.02em;
+  }
+  .donehero .lede {
+    margin: 0;
+    max-width: 32ch;
+    font-size: var(--fs-intro-lede);
+    line-height: var(--lh-snug);
+    color: var(--muted);
+    text-wrap: pretty;
+  }
+  .donehero .lede b {
+    color: var(--fg);
+  }
+  /* the check draws itself as the screen opens */
+  .seal {
+    width: 4.2rem;
+    height: 4.2rem;
+    fill: none;
+    stroke: var(--done);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .seal circle {
+    fill: var(--done-soft);
+    stroke-width: 2;
+    stroke-dasharray: 140;
+    stroke-dashoffset: 0;
+    animation: seal-ring 0.6s ease-out both;
+  }
+  .seal path {
+    stroke-width: 3.5;
+    stroke-dasharray: 40;
+    stroke-dashoffset: 0;
+    animation: seal-tick 0.35s 0.45s ease-out both;
+  }
+  @keyframes seal-ring {
+    from {
+      stroke-dashoffset: 140;
+    }
+  }
+  @keyframes seal-tick {
+    from {
+      stroke-dashoffset: 40;
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .seal circle,
+    .seal path {
+      animation: none;
+    }
+  }
+  .donecard {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+    color: var(--muted);
+  }
+  .facts {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: var(--s2);
+  }
+  .facts div {
+    display: flex;
+    justify-content: space-between;
+    gap: var(--s3);
+    padding-bottom: var(--s2);
+    border-bottom: 1px solid var(--line);
+  }
+  .facts dd {
+    margin: 0;
+    color: var(--fg);
+    font-weight: var(--fw-semibold);
+    text-align: right;
+  }
+  .facts a {
+    color: inherit;
+    text-decoration-color: var(--hold);
+    text-underline-offset: 0.1875rem;
+  }
+  .upnext {
+    border-left: 3px solid var(--led);
+    padding-left: var(--s3);
+  }
+  .upnext .nt {
+    font-family: var(--display);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-lg);
+    color: var(--fg);
+  }
+  @media (max-width: 990px) {
+    .donehero {
+      padding: 0;
+    }
+  }
+</style>

@@ -11,6 +11,8 @@ export const curLesson = () => {
       k: p.dataset.inst,
       id: p.dataset.lesson,
       act: +p.dataset.step,
+      done: p.hasAttribute("data-done"),
+      donePath: p.dataset.donePath,
       ids: p.dataset.stepIds.split(" "),
       n: p.dataset.stepIds.split(" ").length,
       next: p.dataset.next,
@@ -23,7 +25,7 @@ export const stepKey = (c, i) => c.id + ":" + c.ids[i];
 export function markAllDone(s, c) {
   if (!s.done[c.id] && c.ids.every((x) => s.steps[c.id + ":" + x])) s.done[c.id] = Date.now();
 }
-/* finishing a lesson opens the next one where you left it (or its intro); the last lesson stays put */
+/* "Next lesson" on the done screen opens the next one where you left it (or its intro); the last lesson stays put */
 export function goNextLesson(s, c) {
   persist();
   if (c.next) navigate(stepHref(c.nextPath, resumeAt(s, c.next)));

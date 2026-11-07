@@ -37,6 +37,21 @@ test("player: dots, Back and Next on every step of every lesson", () => {
   }
 });
 
+test("player: the done screen closes the lesson, with no current step and Next lesson to move on", () => {
+  for (const L of I.lessons) {
+    const html = player(L, "done"),
+      nx = nextLesson(I, L),
+      where = `${L.id} done`;
+    assert.match(html, / data-done /, where);
+    assert.equal(count(html, /aria-current="true"/g) - count(html, /class="pm-i"[^>]*aria-current="true"/g), 0, where);
+    assert.match(html, /<span class="kind k-done">Done<\/span>/, where);
+    assert.match(html, /class="donehero"/, where);
+    assert.doesNotMatch(html, /data-end/, where);
+    if (nx) assert.match(html, new RegExp(`href="${nx.path}" data-nav="1" data-next-lesson>Next lesson</a>`), where);
+    else assert.doesNotMatch(html, /data-next-lesson/, where);
+  }
+});
+
 test("player: the intro card, a quiz, an answer and the challenge", () => {
   const L = I.lessons.find((l) => l.challenge && l.steps.some((s) => s.q));
   assert.match(
