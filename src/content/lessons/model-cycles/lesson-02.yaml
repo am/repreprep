@@ -111,7 +111,16 @@ steps:
     hear: "No kick: it floats. No snare: no backbeat, it feels lost. No hats: it stops moving forward."
   - id: save-b01-hold-long
     k: play
-    t: "Save your beat and copy it: Save B01 (hold [FUNC], long-press [SETTINGS]). Then copy it to B02. Keep holding [PATTERN] from start to end. Hold [PATTERN] and [TRIG 1], then press [RECORD] to copy. Let go of [TRIG 1] only, hold [TRIG 2], then press and hold [STOP] until the countdown finishes. Go to B02 (hold [PATTERN], press [TRIG 2])."
+    t: "Save your beat and copy it: Save B01 (hold [FUNC], long-press [SETTINGS]). Then copy it to B02. Follow the chart left to right: [PATTERN] stays down the whole time, and [TRIG 1] stays down while you press [RECORD]. Go to B02 (hold [PATTERN], press [TRIG 2])."
+    combo:
+      [
+        "hold [PATTERN]",
+        "hold [TRIG 1]",
+        "press [RECORD]",
+        "release [TRIG 1]",
+        "hold [TRIG 2]",
+        "hold [STOP] until the countdown ends",
+      ]
     hl: h:func p:settings h:pattern p:s1 p:record p:s2 h:stop
     hear: B02 is a copy to experiment on. B01 stays safe.
   - id: b02-build-one-drop

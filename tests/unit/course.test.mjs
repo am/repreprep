@@ -263,3 +263,21 @@ test("every Play step opens with a short title that names its goal", async () =>
       if ((s.k || "play") === "play" && !s.intro) assert.ok(stepParts(s).lead, `${L.id} ${s.id}: ${s.t}`);
     });
 });
+
+test("key combos: bars for held keys, dots for presses, and every combo in the course parses", async () => {
+  const { parseCombo } = await import("../../src/course/shared/combo.js");
+  const c = parseCombo([
+    "hold [PATTERN]",
+    "hold [TRIG 1]",
+    "press [RECORD]",
+    "release [TRIG 1]",
+    "hold [STOP] until done",
+  ]);
+  assert.deepEqual(c.keys, ["PATTERN", "TRIG 1", "RECORD", "STOP"]);
+  assert.deepEqual(c.lanes["TRIG 1"], [{ kind: "hold", start: 1, end: 3, until: undefined }]);
+  assert.equal(c.lanes.PATTERN[0].end, null);
+  assert.equal(c.lanes.STOP[0].until, "until done");
+  assert.throws(() => parseCombo(["release [PATTERN]"]));
+  assert.throws(() => parseCombo(["hold [A]", "hold [A]"]));
+  for (const L of I.lessons) L.steps.forEach((s) => s.combo && parseCombo(s.combo));
+});

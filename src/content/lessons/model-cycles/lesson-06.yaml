@@ -91,7 +91,16 @@ steps:
     hear: Nothing changes in the sound yet. From now on, when you pick another pattern, B01 plays to the end of its 4 bars first, so the switch lands in time.
   - id: make-twin
     k: play
-    t: "Copy B01 to B04: Keep holding [PATTERN] from start to end. Hold [PATTERN] and [TRIG 1], then press [RECORD] to copy. Let go of [TRIG 1] only, hold [TRIG 4], then press and hold [STOP] until the countdown finishes. Go to B04 (hold [PATTERN], press [TRIG 4])."
+    t: "Copy B01 to B04: Follow the chart left to right: [PATTERN] stays down the whole time, and [TRIG 1] stays down while you press [RECORD]. Go to B04 (hold [PATTERN], press [TRIG 4])."
+    combo:
+      [
+        "hold [PATTERN]",
+        "hold [TRIG 1]",
+        "press [RECORD]",
+        "release [TRIG 1]",
+        "hold [TRIG 4]",
+        "hold [STOP] until the countdown ends",
+      ]
     hl: h:pattern p:s1 p:record p:s4 h:stop
     hear: B04 is an exact copy of B01. You will make B04 bright and B01 dark.
   - id: brighten-b04-s-hats

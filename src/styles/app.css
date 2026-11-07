@@ -684,6 +684,81 @@ svg.fig {
   fill: none;
   marker-end: none;
 }
+/* a key combo as a timeline (shared/combo.js): a lane per key, bars for keys kept held, dots for presses */
+.combo {
+  display: grid;
+  grid-template-columns: auto repeat(var(--cols), minmax(1.6rem, 1fr));
+  align-items: center;
+  row-gap: 0.35rem;
+  margin: var(--s2) 0 var(--s3);
+  padding: var(--s2) var(--s3);
+  font-size: 0.8rem;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: var(--surface-2);
+}
+.combo .combo-n {
+  grid-row: 1;
+  text-align: center;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--faint);
+}
+.combo .combo-key {
+  grid-column: 1;
+  font-size: 0.75rem;
+  padding-right: var(--s2);
+  white-space: nowrap;
+}
+.combo .combo-lane {
+  grid-column: 2 / -1;
+  height: 2px;
+  background: var(--line);
+}
+.combo .combo-hold {
+  position: relative;
+  height: 0.7rem;
+  margin: 0 3px;
+  border-radius: 999px;
+  background: var(--hold);
+}
+.combo .combo-hold.to-end {
+  margin-right: 0;
+  border-radius: 999px 3px 3px 999px;
+}
+.combo .combo-hold span {
+  position: absolute;
+  right: 0;
+  top: calc(100% + 2px);
+  white-space: nowrap;
+  font-size: 0.72rem;
+  color: var(--muted);
+}
+.combo .combo-tap {
+  justify-self: center;
+  width: 0.85rem;
+  height: 0.85rem;
+  border-radius: 50%;
+  background: var(--led);
+}
+.combo .combo-legend {
+  grid-column: 1 / -1;
+  margin-top: var(--s2);
+  font-size: 0.75rem;
+  color: var(--muted);
+  display: flex;
+  align-items: center;
+  gap: 0.4em;
+  flex-wrap: wrap;
+}
+.combo .sw {
+  display: inline-block;
+  margin: 0 0 0 0.6em;
+}
+.combo .combo-hold.sw {
+  width: 1.6rem;
+  margin-left: 0;
+}
 /* a part of a drawing you tap to hear (shared/fig-sounds.js): the box lights on hover, focus and while it plays */
 .snd {
   cursor: pointer;

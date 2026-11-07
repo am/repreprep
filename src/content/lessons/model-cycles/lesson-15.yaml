@@ -142,7 +142,16 @@ steps:
     hear: No change in sound. B01 can now hand over to another pattern every 4 bars.
   - id: copy-b01-five-slots
     k: play
-    t: "Copy B01 into five slots: Keep holding [PATTERN] from start to end. Hold [PATTERN] and [TRIG 1], then press [RECORD] to copy. Let go of [TRIG 1] only, hold [TRIG 5], then press and hold [STOP] until the countdown finishes. Still holding [PATTERN], let go of [TRIG 5] and paste the same way on [TRIG 6], [TRIG 7], [TRIG 8] and [TRIG 9]."
+    t: "Copy B01 into five slots: Follow the chart left to right: [PATTERN] stays down the whole time, and [TRIG 1] stays down while you press [RECORD]. Still holding [PATTERN], let go of [TRIG 5] and paste the same way on [TRIG 6], [TRIG 7], [TRIG 8] and [TRIG 9]."
+    combo:
+      [
+        "hold [PATTERN]",
+        "hold [TRIG 1]",
+        "press [RECORD]",
+        "release [TRIG 1]",
+        "hold [TRIG 5]",
+        "hold [STOP] until the countdown ends",
+      ]
     hl: h:pattern h:s1 p:record h:s5 h:stop h:s6 h:s7 h:s8 h:s9
     hear: "Press [PATTERN]: keys 5 to 9 now light up, because those slots hold data."
   - id: intro-2

@@ -1,7 +1,9 @@
 ---
-// A step's text: an optional short title, then a lead and body (Learn, Check) or one bullet per action (Play).
+// A step's text: an optional short title, a key combo timeline if it has one, then a lead and body (Learn, Check)
+// or one bullet per action (Play).
 import Keys from "./Keys.astro";
 import { stepParts } from "../../course/shared/text.js";
+import { renderCombo } from "../../course/shared/combo.js";
 interface Props {
   I: any;
   st: any;
@@ -15,6 +17,7 @@ const { lead, first, rest, para, items } = stepParts(st);
     <Keys I={I} text={lead} hl={st.hl} />
   </h3>
 )}
+{st.combo && <Fragment set:html={renderCombo(I, st.combo)} />}
 {first !== undefined ? (
   <Fragment>
     <p class="t-lead">
