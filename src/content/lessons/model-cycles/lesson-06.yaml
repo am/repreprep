@@ -91,7 +91,7 @@ steps:
     hear: Nothing changes in the sound yet. From now on, when you pick another pattern, B01 plays to the end of its 4 bars first, so the switch lands in time.
   - id: make-twin
     k: play
-    t: "Copy B01 to B04: Follow the chart left to right: [PATTERN] stays down the whole time, and [TRIG 1] stays down while you press [RECORD]. Go to B04 (hold [PATTERN], press [TRIG 4])."
+    t: "Copy B01 to B04: Amber keys stay down, coral keys are pressed. Go to B04 (hold [PATTERN], press [TRIG 4])."
     combo:
       [
         "hold [PATTERN]",

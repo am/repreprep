@@ -121,7 +121,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: keep-last-lesson-s
     k: play
-    t: "Keep last lesson's riff: Copy B01 to B11 with [RECORD] off. Follow the chart left to right: [PATTERN] stays down the whole time, and [TRIG 1] stays down while you press [RECORD]. Stay on B01."
+    t: "Keep last lesson's riff: Copy B01 to B11 with [RECORD] off. Amber keys stay down, coral keys are pressed. Stay on B01."
     combo:
       [
         "hold [PATTERN]",

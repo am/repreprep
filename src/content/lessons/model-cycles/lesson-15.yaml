@@ -142,7 +142,7 @@ steps:
     hear: No change in sound. B01 can now hand over to another pattern every 4 bars.
   - id: copy-b01-five-slots
     k: play
-    t: "Copy B01 into five slots: Follow the chart left to right: [PATTERN] stays down the whole time, and [TRIG 1] stays down while you press [RECORD]. Still holding [PATTERN], let go of [TRIG 5] and paste the same way on [TRIG 6], [TRIG 7], [TRIG 8] and [TRIG 9]."
+    t: "Copy B01 into five slots: Amber keys stay down, coral keys are pressed. Still holding [PATTERN], let go of [TRIG 5] and paste the same way on [TRIG 6], [TRIG 7], [TRIG 8] and [TRIG 9]."
     combo:
       [
         "hold [PATTERN]",

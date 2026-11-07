@@ -1,60 +1,72 @@
-/* A key combo drawn as a timeline: one lane per key, read left to right. A bar is a key you keep held
-   (until its "release" move, or to the end), a dot a key you press and let go. A step lists its moves in
-   `combo`, e.g. ["hold [PATTERN]", "hold [TRIG 1]", "press [RECORD]", "release [TRIG 1]", "hold [TRIG 4]",
-   "hold [STOP] until the countdown ends"]. */
+/* A key combo drawn as numbered rows. A step lists its moves in `combo`, e.g. ["hold [PATTERN]",
+   "hold [TRIG 1]", "press [RECORD]", "release [TRIG 1]", "hold [TRIG 4]", "hold [STOP] until the countdown ends"].
+   Keys held from the start and never let go get row 1 ("hold until the end") and an amber line beside the
+   rows they stay down for. Every other row is one chord: the keys held for it (amber) and the key that
+   finishes it, a press (coral) or a hold "until ...". A release opens the next row with "let go of [KEY], then". */
 import { esc } from "./html.js";
 import { keyify } from "./text.js";
 
 export const COMBO_MOVE = /^(hold|press|release) \[([^\]]+)\](?: (until .+))?$/;
 
+/* checks the moves (no release of a key that isn't held, no hold of a key already held) and groups them */
 export function parseCombo(moves) {
-  const keys = [],
-    lanes = {};
-  moves.forEach((m, i) => {
-    const [, act, key, until] = m.match(COMBO_MOVE) || [];
-    if (!act) throw new Error(`Not a combo move: "${m}"`);
-    if (!lanes[key]) {
-      keys.push(key);
-      lanes[key] = [];
+  const held = new Set(),
+    parsed = moves.map((m) => {
+      const [, act, key, until] = m.match(COMBO_MOVE) || [];
+      if (!act) throw new Error(`Not a combo move: "${m}"`);
+      if (act === "release" && !held.delete(key)) throw new Error(`"${m}": ${key} is not held`);
+      if (act === "hold") {
+        if (held.has(key)) throw new Error(`"${m}": ${key} is already held`);
+        held.add(key);
+      }
+      return { act, key, until };
+    });
+  const released = new Set(parsed.filter((x) => x.act === "release").map((x) => x.key));
+  let i = 0;
+  const outer = [];
+  while (i < parsed.length && parsed[i].act === "hold" && !parsed[i].until && !released.has(parsed[i].key))
+    outer.push(parsed[i++].key);
+  const rows = [];
+  let cur = { keys: [], letGo: [] };
+  for (; i < parsed.length; i++) {
+    const x = parsed[i];
+    if (x.act === "release") cur.letGo.push(x.key);
+    else {
+      cur.keys.push(x);
+      if (x.act === "press" || x.until) {
+        rows.push(cur);
+        cur = { keys: [], letGo: [] };
+      }
     }
-    const L = lanes[key];
-    const open = L.find((x) => x.kind === "hold" && x.end == null);
-    if (act === "release") {
-      if (!open) throw new Error(`"${m}": ${key} is not held`);
-      open.end = i;
-    } else {
-      if (open) throw new Error(`"${m}": ${key} is already held`);
-      L.push({ kind: act, start: i, end: act === "press" ? i : null, until });
-    }
-  });
-  return { keys, lanes, cols: moves.length };
+  }
+  if (cur.keys.length) rows.push(cur);
+  return { outer, rows };
 }
 
 export function renderCombo(I, moves) {
-  const { keys, lanes, cols } = parseCombo(moves);
-  const words = { hold: "hold", press: "press", release: "let go" };
-  const label = moves
-    .map((m) => m.replace(COMBO_MOVE, (s, a, k, u) => `${words[a]} ${k}${u ? " " + u : ""}`))
-    .join(", then ");
-  let h = `<div class="combo" style="--cols:${cols}" role="img" aria-label="${esc("Key timeline: " + label)}">`;
-  h += `<div class="combo-n" aria-hidden="true"></div>`;
-  for (let c = 0; c < cols; c++) h += `<div class="combo-n" aria-hidden="true">${c + 1}</div>`;
-  keys.forEach((k, r) => {
-    const row = r + 2;
-    h += `<div class="combo-key" style="grid-row:${row}">${keyify(I, `[${k}]`, "")}</div>`;
-    h += `<div class="combo-lane" style="grid-row:${row}"></div>`;
-    lanes[k].forEach((x) => {
-      if (x.kind === "press") {
-        h += `<div class="combo-tap" style="grid-row:${row};grid-column:${x.start + 2}"></div>`;
-        return;
-      }
-      const end = x.end == null ? cols : x.end;
-      h +=
-        `<div class="combo-hold${x.end == null ? " to-end" : ""}" style="grid-row:${row};grid-column:${x.start + 2} / ${end + 2}">` +
-        (x.until ? `<span>${esc(x.until)}</span>` : "") +
-        `</div>`;
-    });
+  const { outer, rows } = parseCombo(moves);
+  const cap = (k, cls) => keyify(I, `[${k}]`, "").replace('class="k ', `class="k ${cls} `);
+  const words = (x) => (x.act === "press" ? `press ${x.key}` : `hold ${x.key}${x.until ? " " + x.until : ""}`);
+  const label = [
+    ...outer.map((k) => `hold ${k} until the end`),
+    ...rows.map((r) => [...r.letGo.map((k) => `let go of ${k}`), ...r.keys.map(words)].join(", ")),
+  ];
+  let n = 0;
+  let h = `<div class="combo" role="img" aria-label="${esc("Key combo: " + label.map((t, i) => `${i + 1}. ${t}`).join(" "))}">`;
+  outer.forEach((k) => {
+    h += `<div class="combo-row"><span class="combo-n">${++n}</span><span class="combo-body"><span class="combo-keys">${cap(k, "hold")}</span><span class="combo-note">hold until the end</span></span></div>`;
   });
-  h += `<div class="combo-legend" style="grid-row:${keys.length + 2}"><span class="combo-hold sw"></span> keep held <span class="combo-tap sw"></span> press and let go</div>`;
-  return h + `</div>`;
+  h += `<div class="combo-rows${outer.length ? " held" : ""}">`;
+  rows.forEach((r) => {
+    const keys = r.keys
+      .map((x) => cap(x.key, x.act === "press" ? "press" : "hold"))
+      .join(`<span class="combo-plus">+</span>`);
+    const last = r.keys.at(-1);
+    const pre = r.letGo.length
+      ? `<span class="combo-note">let go of ${r.letGo.map((k) => cap(k, "")).join(" ")}, then</span>`
+      : "";
+    const post = last && last.until ? `<span class="combo-note">${esc(last.until)}</span>` : "";
+    h += `<div class="combo-row"><span class="combo-n">${++n}</span><span class="combo-body">${pre}<span class="combo-keys">${keys}</span>${post}</span></div>`;
+  });
+  return h + `</div></div>`;
 }

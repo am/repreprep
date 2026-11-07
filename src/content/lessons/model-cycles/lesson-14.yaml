@@ -105,7 +105,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: copy-b01-b10-sketchpad
     k: play
-    t: "Copy B01 into a sketchpad: B10 is your sketchpad. Follow the chart left to right: [PATTERN] stays down the whole time, and [TRIG 1] stays down while you press [RECORD]."
+    t: "Copy B01 into a sketchpad: B10 is your sketchpad. Amber keys stay down, coral keys are pressed."
     combo:
       [
         "hold [PATTERN]",

@@ -8,7 +8,7 @@
   title: Drawings you can hear, steps in plain words
   site:
     - Some drawings now play their sound. Tap a row (or its play button) to hear it, and tap again to stop.
-    - Copying a pattern (lessons 2, 6, 10, 14 and 15) now shows a key timeline, with a bar for each key you keep held and a dot for each press, so you can see that [PATTERN] stays down from start to end. The Shortcuts page says the same.
+    - Copying a pattern (lessons 2, 6, 10, 14 and 15) now shows the key combo as numbered rows, with amber for keys you keep held and coral for keys you press. [PATTERN] gets its own row, held until the end, so you can see it stays down throughout. The Shortcuts page says the same.
     - Every Play step in the Model:Cycles lessons and song studies now opens with a short title that says what the step is for, such as "Make pattern switches land in time" or "Give the kick a bounce".
   lessons:
     - lesson: model-cycles/w06
