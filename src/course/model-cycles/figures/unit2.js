@@ -54,6 +54,56 @@ export const UNIT_FIGS_2 = (() => {
     }
     return pts;
   };
+  /* icons for the machine charts: what kind of change a knob makes, from the words the manual uses */
+  const icon = (x, y, kind) => {
+    if (kind === "mod") return `<path d="${wave(x - 11, y, 22, 5, 2, "sine", 40)}" ${stroke("var(--turn)", 2.5)}/>`;
+    if (kind === "pitch")
+      return `<path d="M${x - 11} ${y - 7} Q${x - 9} ${y + 7} ${x + 11} ${y + 7}" ${stroke("var(--hold)", 2.5)}/>`;
+    if (kind === "tune")
+      return `<path d="M${x - 6} ${y - 8} L${x - 6} ${y + 1} Q${x} ${y + 6} ${x + 6} ${y + 1} L${x + 6} ${y - 8} M${x} ${y + 4} L${x} ${y + 9}" ${stroke("var(--done)", 2.5)}/>`;
+    return "";
+  };
+  const kindOf = (t) =>
+    /modulat|feedback/i.test(t)
+      ? "mod"
+      : /pitch sweep/i.test(t)
+        ? "pitch"
+        : /tune|inharmonic|detune/i.test(t)
+          ? "tune"
+          : "";
+  const macroFig = (title, knobs, rows) => {
+    let s = T(400, 36, title, "fh");
+    const cx = [175, 515];
+    knobs.forEach((k, i) => (s += T(cx[i], 76, k, "fl", "start")));
+    rows.forEach(([n, ...cells], r) => {
+      const y = 88 + r * 44;
+      s += `<line x1="30" y1="${y}" x2="770" y2="${y}" class="grid"/>`;
+      s += T(40, y + 28, n, "fl", "start");
+      cells.forEach((c, i) => {
+        const lines = [].concat(c),
+          k = kindOf(lines.join(" "));
+        s += icon(cx[i] + 2, y + 22, k);
+        const tx = cx[i] + 24;
+        s +=
+          lines.length === 1
+            ? T(tx, y + 27, lines[0], "fm", "start")
+            : T(tx, y + 19, lines[0], "fm", "start") + T(tx, y + 37, lines[1], "fm", "start");
+      });
+    });
+    s += `<line x1="30" y1="352" x2="770" y2="352" class="grid"/>`;
+    const leg = [
+      ["mod", "modulation: more of it, more harmonics"],
+      ["pitch", "pitch sweep"],
+      ["tune", "tuning"],
+    ];
+    let lx = 90;
+    leg.forEach(([k, t]) => {
+      s += icon(lx, 378, k) + T(lx + 20, 383, t, "fs", "start");
+      lx += k === "mod" ? 330 : 170;
+    });
+    s += T(400, 410, "In Elektron's words, from the Model:Cycles manual.", "fs");
+    return svgFig("0 0 800 420", s, `${title}, as the Model:Cycles manual describes them`);
+  };
   const box = (x, y, w, h, extra = "") =>
     `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="12" class="box" ${extra}/>`;
   const axis = (x0, y0, x1) => `<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y0}" class="ln"/>`;
@@ -310,39 +360,35 @@ export const UNIT_FIGS_2 = (() => {
         "group"
       );
     },
+    /* Elektron's own words for each machine's four knobs (Model:Cycles manual, 10.2 Machines, pages 35-36),
+       in two drawings of two knobs each, with an icon for the kind of change */
     u2macros() {
-      let s = T(400, 36, "Which knob makes it brighter?", "fh");
-      const cols = ["COLOR", "SHAPE", "SWEEP", "CONTOUR"],
-        x0 = 150,
-        cw = 155,
-        y0 = 64,
-        rh = 42;
-      cols.forEach((c, i) => (s += T(x0 + cw * i + cw / 2, y0 + 8, c, "fl")));
-      /* 1: sets how much modulation, so it brightens (Elektron's manual, machine parameters) */
-      const M = [
-        ["KICK", ["tone", 1, "pitch drop", 1]],
-        ["SNARE", ["metallic ring", 1, "pitch drop", 1]],
-        ["METAL", ["tuning A", 1, "tuning B", 1]],
-        ["PERC", ["metallic ring", 1, "pitch drop", 1]],
-        ["TONE", ["character", 1, "grit", 1]],
-        ["CHORD", ["voice mix", "chord type", "wavetable", "filter"]],
-      ];
-      M.forEach(([n, cells], r) => {
-        const y = y0 + 22 + r * rh;
-        s += `<line x1="40" y1="${y}" x2="770" y2="${y}" class="grid"/>`;
-        s += T(44, y + 27, n, "fl", "start");
-        cells.forEach((v, i) => {
-          const cx = x0 + cw * i + cw / 2;
-          s +=
-            v === 1
-              ? `<rect x="${cx - 55}" y="${y + 8}" width="110" height="26" rx="13" style="fill:var(--led)"/>` +
-                T(cx, y + 26, "brighter", "fbar")
-              : T(cx, y + 26, v, "fm");
-        });
-      });
-      s += T(400, 382, "Coral: how much modulation. More modulation, more harmonics, a brighter sound.", "fb");
-      s += T(400, 408, "From Elektron's manual. Turn one, listen, and name what changed.", "fs");
-      return svgFig("0 0 800 420", s, "Which of COLOR, SHAPE, SWEEP and CONTOUR brightens each machine");
+      return macroFig(
+        "SHAPE and CONTOUR, machine by machine",
+        ["SHAPE", "CONTOUR"],
+        [
+          ["KICK", "Triangle-like modulation and feedback", "Modulation envelope depth"],
+          ["SNARE", "Modulation amount and feedback", "Modulation envelope depth"],
+          ["METAL", "Modulation amount and feedback", "Modulation envelope depth"],
+          ["PERC", "Modulation amount", "Modulation envelope depth"],
+          ["TONE", "Modulation amount", "Modulation envelope depth"],
+          ["CHORD", "Unison/chord", "Filter cutoff envelope depth"],
+        ]
+      );
+    },
+    u2macros2() {
+      return macroFig(
+        "COLOR and SWEEP, machine by machine",
+        ["COLOR", "SWEEP"],
+        [
+          ["KICK", "Soft square-like modulation", "Pitch sweep depth and time"],
+          ["SNARE", "Inharmonicity amount", "Pitch sweep depth and time"],
+          ["METAL", "Tune offset A", "Tune offset B"],
+          ["PERC", "Inharmonicity amount", "Pitch sweep"],
+          ["TONE", "Modulator ratio", "Feedback amount"],
+          ["CHORD", ["Chord: Interval mix and osc balance.", "Unison: Detune"], "Wavetable sweep"],
+        ]
+      );
     },
     /* lesson 7 */
     u2layers() {

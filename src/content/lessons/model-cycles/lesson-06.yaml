@@ -37,8 +37,13 @@ steps:
   - id: four-macros-mean-something
     k: learn
     fig: u2macros
-    t: COLOR, SHAPE, SWEEP and CONTOUR do a different job on each machine. On five of the six, SHAPE and CONTOUR set how much modulation there is, so they are your brightness knobs.
-    hear: COLOR and SWEEP change the tuning and movement of the tone. Use your ears to decide if that's brighter.
+    t: COLOR, SHAPE, SWEEP and CONTOUR do a different job on each machine. Start with SHAPE and CONTOUR. On five of the six machines, SHAPE sets the modulation and CONTOUR the modulation envelope depth.
+    hear: More modulation adds harmonics, so these two are your brightness knobs. On CHORD they do other jobs.
+  - id: color-sweep-change-something
+    k: learn
+    fig: u2macros2
+    t: COLOR and SWEEP change something different on each machine. Some change the modulation, some sweep the pitch, some change the tuning.
+    hear: Turn one, listen, and name what changed. Use your ears to decide if it's brighter.
   - id: get-ready
     k: ready
     fig:

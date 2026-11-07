@@ -10,7 +10,7 @@
     - Some drawings now play their sound. Tap a row (or its play button) to hear it, and tap again to stop.
   lessons:
     - lesson: model-cycles/w06
-      what: Tap the waveforms, the bright and dark spectrum and the three FM depths to hear them, and hear one note brighten as the FM depth turns up. The table of what each knob does on each machine is now a short chart of which knobs make a sound brighter. Steps open with plain words, such as "Copy B01 to B04" and "Make pattern switches wait for the loop to end".
+      what: Tap the waveforms, the bright and dark spectrum and the three FM depths to hear them, and hear one note brighten as the FM depth turns up. The table of what each knob does on each machine is now two charts over two steps, SHAPE and CONTOUR first, then COLOR and SWEEP, in the manual's own words with an icon for each kind of change. Steps open with plain words, such as "Copy B01 to B04" and "Make pattern switches wait for the loop to end".
     - lesson: model-cycles/w04
       what: Steps open with plain words, such as "Make the perc loop every 12 steps" and "Drop the kicks under that fill".
     - lesson: model-cycles/w05
