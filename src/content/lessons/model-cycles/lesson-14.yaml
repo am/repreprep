@@ -105,7 +105,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: copy-b01-b10-sketchpad
     k: play
-    t: "Copy B01 into a sketchpad: B10 is your sketchpad. Hold [PATTERN] + [TRIG 1] and press [RECORD]. Then hold [PATTERN] + [TRIG 10] and press and hold [STOP] until the countdown finishes."
+    t: "Copy B01 into a sketchpad: B10 is your sketchpad. Keep holding [PATTERN] from start to end. Hold [PATTERN] and [TRIG 1], then press [RECORD] to copy. Let go of [TRIG 1] only, hold [TRIG 10], then press and hold [STOP] until the countdown finishes."
     hl: h:pattern h:s1 p:record h:s4 h:stop
     hear: B10 now has your sounds. B01 is unchanged.
   - id: go-b10-hold-press

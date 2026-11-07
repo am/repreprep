@@ -121,7 +121,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: keep-last-lesson-s
     k: play
-    t: "Keep last lesson's riff: with [RECORD] off, hold [PATTERN] + [TRIG 1] and press [RECORD]. Then hold [PATTERN] + [TRIG 11] and press and hold [STOP] until the countdown finishes. Stay on B01."
+    t: "Keep last lesson's riff: Copy B01 to B11 with [RECORD] off. Keep holding [PATTERN] from start to end. Hold [PATTERN] and [TRIG 1], then press [RECORD] to copy. Let go of [TRIG 1] only, hold [TRIG 11], then press and hold [STOP] until the countdown finishes. Stay on B01."
     hl: h:pattern p:s1 p:record p:s11 h:stop
     hear: B11 keeps the riff. B01 is where the bass goes.
   - id: press-select-clear-trigs
