@@ -104,7 +104,7 @@ steps:
     hear: With GATE on, the kick holds at full level while you hold the pad, then decays when you let go.
   - id: hear-loudness-against-timbre
     k: play
-    t: "Hear loudness against timbre: turn [VOLUME + DIST] up from 60 towards 90, then back to 60. Above 60 it gets louder and starts to distort."
+    t: "Hear louder turn into rougher: turn [VOLUME + DIST] up from 60 towards 90, then back to 60. Above 60 it gets louder and starts to distort."
     hl: t:vol
     hear: First just louder, then rougher. Distortion adds harmonics, which changes the timbre too.
   - id: soften-snare

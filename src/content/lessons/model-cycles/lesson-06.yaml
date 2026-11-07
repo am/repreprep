@@ -81,14 +81,14 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: let-pattern-changes-wait
     k: play
-    t: "Let pattern changes wait for the bar: on B01, hold [FUNC] and press [PAGE] to open the SCALE menu, set CHG to 64 with [LEVEL/DATA], then press [BACK]."
+    t: "Make pattern switches wait for the loop to end: on B01, hold [FUNC] and press [PAGE] to open the SCALE menu. Set CHG to 64 with [LEVEL/DATA] (64 steps is your 4 bars), then press [BACK]."
     hl: h:func p:page t:level p:back
-    hear: Nothing changes in the sound. When you pick another pattern now, it starts at the end of your 4 bars.
+    hear: Nothing changes in the sound yet. From now on, when you pick another pattern, B01 plays to the end of its 4 bars first, so the switch lands in time.
   - id: make-twin
     k: play
-    t: "Make a twin: hold [PATTERN] + [TRIG 1] and press [RECORD] to copy B01. Then hold [PATTERN] + [TRIG 4] and press and hold [STOP] until the countdown finishes. Go to B04 (hold [PATTERN], press [TRIG 4])."
+    t: "Copy B01 to B04: hold [PATTERN] + [TRIG 1] and press [RECORD] to copy B01. Then hold [PATTERN] + [TRIG 4] and press and hold [STOP] until the countdown finishes. Go to B04 (hold [PATTERN], press [TRIG 4])."
     hl: h:pattern p:s1 p:record p:s4 h:stop
-    hear: B04 is an exact copy. B04 becomes the bright version, B01 the dark one.
+    hear: B04 is an exact copy of B01. You will make B04 bright and B01 dark.
   - id: brighten-b04-s-hats
     k: play
     t: "Brighten B04's hats: press [PLAY], select [T3] and turn [SHAPE] and [CONTOUR] up. Hold [FUNC] and turn [PITCH] up a few semitones."
@@ -101,7 +101,7 @@ steps:
     hear: The same beat, now hard and shiny.
   - id: now-dark-one
     k: play
-    t: "Now the dark one: hold [PATTERN] and press [TRIG 1]. When B01 starts, select [T3], hold [FUNC] and turn [PITCH] well down. Turn [SHAPE] and [CONTOUR] down and [DECAY] a little shorter."
+    t: "Now darken B01: hold [PATTERN] and press [TRIG 1]. When B01 starts, select [T3], hold [FUNC] and turn [PITCH] well down. Turn [SHAPE] and [CONTOUR] down and [DECAY] a little shorter."
     hl: h:pattern p:s1 h:track p:t3 h:func t:pitch t:shape t:contour t:decay
     hear: "Dusty hats: more like brushed paper than cymbals."
   - id: darken-perc-too
@@ -111,7 +111,7 @@ steps:
     hear: A soft, muted loop where nothing pokes out.
   - id: compare
     k: play
-    t: "Compare: switch between B01 and B04 while it plays (hold [PATTERN], press [TRIG 1] or [TRIG 4]). Finish on B01, your track, and save it: hold [FUNC] and long-press [SETTINGS]."
+    t: "Hear the difference: switch between B01 and B04 while it plays (hold [PATTERN], press [TRIG 1] or [TRIG 4]). Finish on B01, your track, and save it: hold [FUNC] and long-press [SETTINGS]."
     hl: h:pattern p:s1 p:s4 h:func p:settings
     hear: Same rhythm, two worlds. Dark sits back and lets you lean in; bright jumps forward.
   - id: want-hats-darker-which

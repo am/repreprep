@@ -169,7 +169,7 @@ steps:
     hear: The found tick slowly changes colour from bar to bar.
   - id: hear-rst
     k: play
-    t: "Hear RST: select [T3] again and press [FUNC] + [LFO] to open LFO SETUP. Set RST to ON with [LEVEL/DATA] and listen, then set it back to OFF."
+    t: "Hear what RST does (it restarts the wave on every note): select [T3] again and press [FUNC] + [LFO] to open LFO SETUP. Set RST to ON with [LEVEL/DATA] and listen, then set it back to OFF."
     hl: h:track p:t3 h:func p:lfo t:level
     hear: "ON: every hat gets the same slice of the wave and the movement disappears. OFF: it flows across the hats again."
   - id: still-lfo-setup-try
@@ -189,17 +189,17 @@ steps:
     hear: "The chord swells in instead of starting at once: a slow attack made from an LFO."
   - id: slow-over-bars
     k: play
-    t: "Slow, over bars: still in B04, select [T1]. Hold [LFO] and turn [VOLUME + DIST] a little to the left. Press [LFO], set WAV to TRI and MUL to X1, then turn [LFO SPEED] to 32."
+    t: "A slow LFO that fades the kick over four bars: still in B04, select [T1]. Hold [LFO] and turn [VOLUME + DIST] a little to the left. Press [LFO], set WAV to TRI and MUL to X1, then turn [LFO SPEED] to 32."
     hl: h:track p:t1 h:lfo t:vol p:lfo t:level t:lfospd
     hear: "Over four bars the kick fades out and comes back. The loop is the same, but the music changes on its own."
   - id: medium-over-one-note
     k: play
-    t: "Medium, over one note: select [T5]. Press [LFO], set WAV to ENV, DST to PITCH and DEP to about +20, then turn [LFO SPEED] to 32. Play [T5] a few times, then set DEP to -20 and play it again."
+    t: "A medium LFO that bends every note: select [T5]. Press [LFO], set WAV to ENV, DST to PITCH and DEP to about +20, then turn [LFO SPEED] to 32. Play [T5] a few times, then set DEP to -20 and play it again."
     hl: h:track p:t5 p:lfo t:level t:lfospd p:t5
     hear: "Positive depth starts each note high and drops it into tune, like a tom. Negative depth starts it low and bends it up."
   - id: fast-inside-tone
     k: play
-    t: "Fast, inside the tone: still on [T5], set WAV to TRI, DEP to about +5 and MUL to 2K. Hold [T5] and slowly turn [LFO SPEED]. Then set DEP back to 0. These changes stay in B04, so your song in B01 is untouched."
+    t: "A fast LFO that changes the tone itself: still on [T5], set WAV to TRI, DEP to about +5 and MUL to 2K. Hold [T5] and slowly turn [LFO SPEED]. Then set DEP back to 0. These changes stay in B04, so your song in B01 is untouched."
     hl: p:lfo t:level h:t5 t:lfospd
     hear: "The wobble turns into a new tone: brighter, metallic, sometimes out of tune. That's frequency modulation, made by hand."
   - id: hats-move-lfo-decay
