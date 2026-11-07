@@ -91,37 +91,46 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: go-b01-hold-press
     k: play
-    t: Press [RECORD], select [T1] and remove the kicks on [TRIG 5] and [TRIG 13] by pressing them. Add one on [TRIG 11]. Press [PLAY].
+    t: "Give the kick a bounce: Press [RECORD], select [T1] and remove the kicks on [TRIG 5] and [TRIG 13] by pressing them. Add one on [TRIG 11]. Press [PLAY]."
     hl: p:record h:track p:t1 p:s5 p:s13 p:s11 p:play
     hear: "Your kick now sits on 1, 9 and 11: a relaxed, rolling bounce."
   - id: select-place-snare-beats
     k: play
-    t: Select [T2] and place the snare on [TRIG 5] and [TRIG 13], beats 2 and 4.
+    t: "Add the backbeat: Select [T2] and place the snare on [TRIG 5] and [TRIG 13], beats 2 and 4."
     hl: h:track p:t2 p:s5 p:s13
     hear: Now it has a backbeat.
   - id: select-place-hats-s
     k: play
-    t: 'Select [T3] and place hats on the "&"s: [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15].'
+    t: 'Put hats between the beats: Select [T3] and place hats on the "&"s: [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15].'
     hl: h:track p:t3 p:s3 p:s7 p:s11 p:s15
     hear: This is the spine from the drawing, on your own machine.
   - id: hear-each-job-taking
     k: play
-    t: Hear each job by taking it away. Press [RECORD] to leave grid recording, then mute and unmute tracks with [FUNC] + [T1], [T2] and [T3] while it plays.
+    t: "Hear what each part does: Take each one away and listen. Press [RECORD] to leave grid recording, then mute and unmute tracks with [FUNC] + [T1], [T2] and [T3] while it plays."
     hl: p:record h:func p:t1 p:t2 p:t3
     hear: "No kick: it floats. No snare: no backbeat, it feels lost. No hats: it stops moving forward."
   - id: save-b01-hold-long
     k: play
-    t: "Save B01 (hold [FUNC], long-press [SETTINGS]). Then copy it to B02: hold [PATTERN] + [TRIG 1] and press [RECORD], then hold [PATTERN] + [TRIG 2] and press and hold [STOP] until the countdown finishes. Go to B02 (hold [PATTERN], press [TRIG 2])."
+    t: "Save your beat and copy it: Save B01 (hold [FUNC], long-press [SETTINGS]). Then copy it to B02. Amber keys stay down, coral keys are pressed. Go to B02 (hold [PATTERN], press [TRIG 2])."
+    combo:
+      [
+        "hold [PATTERN]",
+        "hold [TRIG 1]",
+        "press [RECORD]",
+        "release [TRIG 1]",
+        "hold [TRIG 2]",
+        "hold [STOP] until the countdown ends",
+      ]
     hl: h:func p:settings h:pattern p:s1 p:record p:s2 h:stop
     hear: B02 is a copy to experiment on. B01 stays safe.
   - id: b02-build-one-drop
     k: play
-    t: "On B02, build a one drop: press [RECORD], select [T1], clear every kick and place one on [TRIG 9] only. Select [T2], remove [TRIG 5] and [TRIG 13], place the snare on [TRIG 9]. Press [PLAY]."
+    t: "Build a one drop on B02: Press [RECORD], select [T1], clear every kick and place one on [TRIG 9] only. Select [T2], remove [TRIG 5] and [TRIG 13], place the snare on [TRIG 9]. Press [PLAY]."
     hl: p:record h:track p:t1 p:s9 p:t2 p:play
     hear: Everything hits together on beat 3. The empty downbeat makes it float.
   - id: still-b02-turn-one
     k: play
-    t: "Still on B02, turn the one drop into steppers: select [T1] and add kicks on [TRIG 1], [TRIG 5] and [TRIG 13]. Then go back to B01 and listen to your own beat again."
+    t: "Turn it into steppers: Still on B02, select [T1] and add kicks on [TRIG 1], [TRIG 5] and [TRIG 13]. Then go back to B01 and listen to your own beat again."
     hl: h:track p:t1 p:s1 p:s5 p:s13 h:pattern p:s1
     hear: Same tempo, three different worlds. Your B01 beat sits between them.
   - id: one-drop-where-does

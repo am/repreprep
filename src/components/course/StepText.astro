@@ -1,13 +1,18 @@
 ---
-// A step's text: an optional short title, then a lead and body (Learn, Check) or one bullet per action (Play).
+// A step's text: an optional short title, a key combo as numbered rows if it has one, then a lead and body (Learn, Check)
+// or one bullet per action (Play). With comboAfter, the combo comes after that many bullets instead.
 import Keys from "./Keys.astro";
 import { stepParts } from "../../course/shared/text.js";
+import { renderCombo } from "../../course/shared/combo.js";
 interface Props {
   I: any;
   st: any;
 }
 const { I, st } = Astro.props;
 const { lead, first, rest, para, items } = stepParts(st);
+const combo = st.combo ? renderCombo(I, st.combo) : "";
+const at = st.comboAfter || 0;
+const bullets = items || (at && para !== undefined ? [para] : null);
 ---
 
 {lead && (
@@ -15,6 +20,7 @@ const { lead, first, rest, para, items } = stepParts(st);
     <Keys I={I} text={lead} hl={st.hl} />
   </h3>
 )}
+{combo && !at && <Fragment set:html={combo} />}
 {first !== undefined ? (
   <Fragment>
     <p class="t-lead">
@@ -26,18 +32,30 @@ const { lead, first, rest, para, items } = stepParts(st);
       </p>
     )}
   </Fragment>
-) : para !== undefined ? (
+) : !bullets ? (
   <p>
     <Keys I={I} text={para} hl={st.hl} />
   </p>
 ) : (
-  <ul class="pacts">
-    {items.map((x: string) => (
-      <li>
-        <Keys I={I} text={x} hl={st.hl} />
-      </li>
-    ))}
-  </ul>
+  <Fragment>
+    <ul class="pacts">
+      {bullets.slice(0, at || bullets.length).map((x: string) => (
+        <li>
+          <Keys I={I} text={x} hl={st.hl} />
+        </li>
+      ))}
+    </ul>
+    {combo && at > 0 && <Fragment set:html={combo} />}
+    {at > 0 && at < bullets.length && (
+      <ul class="pacts">
+        {bullets.slice(at).map((x: string) => (
+          <li>
+            <Keys I={I} text={x} hl={st.hl} />
+          </li>
+        ))}
+      </ul>
+    )}
+  </Fragment>
 )}
 
 <style>

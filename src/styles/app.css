@@ -686,6 +686,95 @@ svg.fig {
   fill: none;
   marker-end: none;
 }
+/* a key combo as numbered rows (shared/combo.js): amber keys stay held, coral keys are pressed, knobs are turned; the amber line
+   beside the later rows is the key held through all of them */
+.combo {
+  display: grid;
+  gap: 0.45rem;
+  margin: var(--s2) 0 var(--s3);
+  font-size: 0.85rem;
+}
+.combo .combo-rows {
+  display: grid;
+  gap: 0.45rem;
+}
+.combo .combo-rows.held {
+  margin-left: 0.6rem;
+  padding-left: 0.9rem;
+  border-left: 3px solid var(--hold);
+  border-radius: 0 0 0 6px;
+}
+.combo .combo-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+.combo .combo-body {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.35rem 0.5rem;
+  min-height: 1.3rem;
+}
+.combo .combo-n {
+  width: 1.3rem;
+  height: 1.3rem;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border: 1px solid var(--line);
+  border-radius: 50%;
+  font-family: var(--mono);
+  font-size: 0.7rem;
+  color: var(--muted);
+}
+.combo .combo-keys {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+}
+.combo .combo-plus {
+  color: var(--faint);
+}
+.combo .combo-note {
+  font-size: 0.8rem;
+  color: var(--muted);
+}
+/* a part of a drawing you tap to hear (shared/fig-sounds.js): the box lights on hover, focus and while it plays */
+.snd {
+  cursor: pointer;
+  outline: none;
+}
+.snd .snd-hit {
+  fill: transparent;
+  stroke: transparent;
+  stroke-width: 1.5;
+  transition: fill 0.15s;
+}
+.snd:hover .snd-hit,
+.snd:focus-visible .snd-hit {
+  fill: var(--surface-2);
+}
+.snd:focus-visible .snd-hit {
+  stroke: var(--led);
+}
+.snd.playing .snd-hit {
+  fill: var(--led-soft);
+}
+.snd .snd-btn circle {
+  fill: var(--led);
+}
+.snd .snd-btn path,
+.snd .snd-btn rect {
+  fill: var(--bg);
+}
+.snd .snd-stop,
+.snd.playing .snd-play {
+  display: none;
+}
+.snd.playing .snd-stop {
+  display: inline;
+}
 /* playable grid: as wide as the drawing area allows while all its rows still fit in its height; text scales with it */
 .gp {
   --gw: min(100cqi - 16px, (100cqh - 260px) / (var(--rows, 2) * 1.25) * 16 + 90px);

@@ -4,7 +4,7 @@ import { renderGrid, gridPreset } from "../course/shared/grid.js";
 let AC = null,
   master = null,
   noiseBuf = null;
-function audio() {
+export function audio() {
   if (!AC) {
     const C = window.AudioContext || window.webkitAudioContext;
     if (!C) return null;
@@ -19,6 +19,8 @@ function audio() {
   if (AC.state === "suspended") AC.resume();
   return AC;
 }
+/* where every sound goes: the shared volume */
+export const audioOut = () => master;
 function noise(t, dur, type, freq, vel, q = 1) {
   const n = AC.createBufferSource();
   n.buffer = noiseBuf;

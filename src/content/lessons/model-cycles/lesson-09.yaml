@@ -113,7 +113,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: go-b01-hold-press
     k: play
-    t: Make sure [RECORD] is off. Select [T5] and turn [DECAY] to about 60. Press [TRIG 9], then [TRIG 1] to [TRIG 16] left to right.
+    t: "Play every key once: Make sure [RECORD] is off. Select [T5] and turn [DECAY] to about 60. Press [TRIG 9], then [TRIG 1] to [TRIG 16] left to right."
     hl: h:track p:t5 t:decay p:s9
     hear: "[TRIG 9] is the root. Left to right, each key is one semitone higher: this is CHROMATIC mode."
   - id: hear-octave
@@ -123,7 +123,7 @@ steps:
     hear: The second note sounds like the first, only higher. Same note, an octave up.
   - id: play-minor-scale-map
     k: play
-    t: "Play the minor scale from the map: [TRIG 4], [TRIG 5], [TRIG 7], [TRIG 9], [TRIG 11], [TRIG 12], [TRIG 14], [TRIG 16]. Then slip [TRIG 10] or [TRIG 13] into the middle of it."
+    t: "Play the minor scale: Use the map: [TRIG 4], [TRIG 5], [TRIG 7], [TRIG 9], [TRIG 11], [TRIG 12], [TRIG 14], [TRIG 16]. Then slip [TRIG 10] or [TRIG 13] into the middle of it."
     hl: p:s4 p:s5 p:s7 p:s9 p:s11 p:s12 p:s14 p:s16
     hear: The lit keys belong together. [TRIG 10] and [TRIG 13] sound like a wrong turn.
   - id: hear-what-makes-minor
@@ -133,7 +133,7 @@ steps:
     hear: First dark, then bright. One key, the 3rd, decides the mood.
   - id: press-improvise-over-beat
     k: play
-    t: "Press [PLAY] and improvise over your beat on the pentatonic keys only: [TRIG 2], [TRIG 4], [TRIG 7], [TRIG 9], [TRIG 12], [TRIG 14], [TRIG 16]. Try ending each idea on [TRIG 9]."
+    t: "Improvise on the pentatonic keys: Press [PLAY] and play over your beat on these keys only: [TRIG 2], [TRIG 4], [TRIG 7], [TRIG 9], [TRIG 12], [TRIG 14], [TRIG 16]. Try ending each idea on [TRIG 9]."
     hl: p:play p:s2 p:s4 p:s7 p:s9 p:s12 p:s14 p:s16
     hear: Nothing clashes. Ending on [TRIG 9] sounds like coming home.
   - id: give-t5-one-bar
@@ -143,12 +143,12 @@ steps:
     hear: T5 will repeat every bar while the rest of B01 runs its four bars.
   - id: press-t5-place-notes
     k: play
-    t: Press [RECORD], select [T5] and place notes on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 11]. On [TRIG 4], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones up. On [TRIG 7], 7 up. On [TRIG 11], 5 up.
+    t: "Write a four-note riff: Press [RECORD], select [T5] and place notes on [TRIG 1], [TRIG 4], [TRIG 7] and [TRIG 11]. On [TRIG 4], hold the trig, press [LEVEL/DATA] until NOTE shows, and turn it 3 semitones up. On [TRIG 7], 7 up. On [TRIG 11], 5 up."
     hl: p:record p:s1 p:s4 p:s7 p:s11 h:s4 p:level t:level h:s7 h:s11 h:track p:t5
     hear: "Root, minor 3rd, 5th, then down a step to the 4th: four pentatonic notes."
   - id: press-leave-grid-recording
     k: play
-    t: "Press [RECORD] to leave grid recording and listen with the beat. Select [T5] and turn its [REVERB SEND] up a little. Save: hold [FUNC] and long-press [SETTINGS]."
+    t: "Hear the riff with the beat: Press [RECORD] to leave grid recording and listen with the beat. Select [T5] and turn its [REVERB SEND] up a little. Save: hold [FUNC] and long-press [SETTINGS]."
     hl: p:record t:reverb h:func p:settings h:track p:t5
     hear: "A four-note riff over your beat. It can't sound wrong: every note is in the scale."
   - id: root-which-key-plays

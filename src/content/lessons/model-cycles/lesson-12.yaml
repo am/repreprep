@@ -112,7 +112,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: go-b01-press-select
     k: play
-    t: "Press [RECORD] and select [T6]. Press [PAGE] until the 2:4 light is on and place a note on [TRIG 9]: the melody's first note."
+    t: "Start the melody: Press [RECORD] and select [T6]. Press [PAGE] until the 2:4 light is on and place a note on [TRIG 9]: the melody's first note."
     hl: p:record h:track p:t6 p:page p:s9
     page: 2
     hear: "The chord in bar 2 now stops halfway: a track plays one sound at a time."
@@ -150,7 +150,7 @@ steps:
     hear: Sometimes the question climbs one step further. It never plays quite the same way twice.
   - id: press-leave-grid-recording
     k: play
-    t: Press [RECORD] to leave grid recording and listen to eight bars. Mute T6 ([FUNC] + [T6]) to hear the space it fills, unmute it, and save (hold [FUNC], long-press [SETTINGS]).
+    t: "Hear the whole phrase: Press [RECORD] to leave grid recording and listen to eight bars. Mute T6 ([FUNC] + [T6]) to hear the space it fills, unmute it, and save (hold [FUNC], long-press [SETTINGS])."
     hl: p:record h:func p:t6 p:settings
     hear: Chords call in bars 1 and 3, the melody replies in 2 and 4. Your track now sings.
   - id: bar-2-plays-c

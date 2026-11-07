@@ -88,7 +88,7 @@ steps:
     hear: C01 on the screen, at 120 BPM.
   - id: set-machines-study-needs
     k: play
-    t: "Set the machines this study needs, the same layout as your course track: T1 KICK, T2 SNARE, T3 METAL, T5 TONE, T6 CHORD. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
+    t: "Set the machines: This study uses the same layout as your course track: T1 KICK, T2 SNARE, T3 METAL, T5 TONE, T6 CHORD. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
     hl: h:track p:machines t:level p:back
   - id: make-piano-chords
     k: play
@@ -97,7 +97,7 @@ steps:
     hear: "Tap [T6]: one dark, low chord."
   - id: give-figure-drawing
     k: play
-    t: "Give it the figure from the drawing: select [T6] and place chords on [TRIG 1], [TRIG 7] and [TRIG 11]. Press [PLAY]."
+    t: "Place the chord figure: From the drawing: select [T6] and place chords on [TRIG 1], [TRIG 7] and [TRIG 11]. Press [PLAY]."
     hl: p:s1 p:s7 p:s11 p:play h:track p:t6
     hear: A short, off-balance chord figure. This is the whole idea of your loop.
   - id: add-beat

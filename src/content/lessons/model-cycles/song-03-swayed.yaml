@@ -66,11 +66,11 @@ steps:
     hear: C03 on the screen, at 122 BPM.
   - id: set-machines-study-needs
     k: play
-    t: "Set the machines this study needs, the same layout as your course track: T1 KICK, T2 SNARE, T3 METAL, T4 PERC. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
+    t: "Set the machines: This study uses the same layout as your course track: T1 KICK, T2 SNARE, T3 METAL, T4 PERC. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
     hl: h:track p:machines t:level p:back
   - id: lay-frame
     k: play
-    t: "Lay the frame: press [RECORD]. Select [T1] and place kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. Select [T2] and place a snare on [TRIG 5] and [TRIG 13]. Select [T3] and place hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15], with [DECAY] turned up so they ring open. Press [PLAY]."
+    t: "Lay down the basic beat: press [RECORD]. Select [T1] and place kicks on [TRIG 1], [TRIG 5], [TRIG 9] and [TRIG 13]. Select [T2] and place a snare on [TRIG 5] and [TRIG 13]. Select [T3] and place hats on [TRIG 3], [TRIG 7], [TRIG 11] and [TRIG 15], with [DECAY] turned up so they ring open. Press [PLAY]."
     hl: p:record h:track p:t1 p:t2 p:t3 t:decay p:play
     hear: The techno frame from the grid.
   - id: make-found-sound-tick

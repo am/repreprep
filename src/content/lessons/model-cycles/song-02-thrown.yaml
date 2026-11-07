@@ -50,7 +50,7 @@ steps:
     hear: C02 on the screen, at 120 BPM.
   - id: set-machines-study-needs
     k: play
-    t: "Set the machines this study needs, the same layout as your course track: T1 KICK, T3 METAL, T5 TONE, T6 CHORD. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
+    t: "Set the machines: This study uses the same layout as your course track: T1 KICK, T3 METAL, T5 TONE, T6 CHORD. For each: hold [TRACK], press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
     hl: h:track p:machines t:level p:back
   - id: make-pluck
     k: play

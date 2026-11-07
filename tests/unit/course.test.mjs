@@ -240,3 +240,61 @@ test("every Get ready step comes before the lesson's first Play step", () => {
     assert.ok(r < L.steps.findIndex((s) => (s.k || "play") === "play"), L.id);
   }
 });
+
+test("figure sounds: every playable part of a drawing has a sound, and the drawing stays reachable", async () => {
+  const { FIG_SOUNDS } = await import("../../src/course/shared/fig-sounds.js");
+  const used = new Set();
+  for (const [name, f] of Object.entries(I.figs)) {
+    const html = f();
+    const ids = [...html.matchAll(/data-snd="([^"]+)"/g)].map((m) => m[1]);
+    ids.forEach((id) => {
+      assert.ok(FIG_SOUNDS[id], `${name}: ${id}`);
+      used.add(id);
+    });
+    if (ids.length) assert.match(html, /^<svg class="fig"[^>]* role="group"/, name);
+  }
+  assert.deepEqual([...used].sort(), Object.keys(FIG_SOUNDS).sort());
+});
+
+test("every Play step opens with a short title that names its goal", async () => {
+  const { stepParts } = await import("../../src/course/shared/text.js");
+  for (const L of I.lessons)
+    L.steps.forEach((s) => {
+      if ((s.k || "play") === "play" && !s.intro) assert.ok(stepParts(s).lead, `${L.id} ${s.id}: ${s.t}`);
+    });
+});
+
+test("key combos: a key held throughout gets its own row, then one row per chord", async () => {
+  const { parseCombo } = await import("../../src/course/shared/combo.js");
+  const c = parseCombo([
+    "hold [PATTERN]",
+    "hold [TRIG 1]",
+    "press [RECORD]",
+    "release [TRIG 1]",
+    "hold [TRIG 4]",
+    "hold [STOP] until done",
+  ]);
+  assert.deepEqual(c.outer, ["PATTERN"]);
+  assert.deepEqual(
+    c.rows.map((r) => [r.letGo, r.keys.map((x) => `${x.act} ${x.key}`)]),
+    [
+      [[], ["hold TRIG 1", "press RECORD"]],
+      [["TRIG 1"], ["hold TRIG 4", "hold STOP"]],
+    ]
+  );
+  const e = parseCombo(["hold [TRIG 14]", "press [RETRIG] to open it", "turn [LEVEL/DATA] to 30", "release [TRIG 14]"]);
+  assert.deepEqual(e.outer, ["TRIG 14"], "a key let go only at the end is held throughout");
+  assert.deepEqual(
+    e.rows.map((r) => r.keys.map((x) => `${x.act} ${x.key} ${x.note}`)),
+    [["press RETRIG to open it"], ["turn LEVEL/DATA to 30"]]
+  );
+  assert.deepEqual(e.letGo, ["TRIG 14"]);
+  assert.throws(() => parseCombo(["hold [A]", "release [A] now"]));
+  assert.throws(() => parseCombo(["release [PATTERN]"]));
+  assert.throws(() => parseCombo(["hold [A]", "hold [A]"]));
+  for (const L of I.lessons)
+    L.steps.forEach((s) => {
+      if (s.combo) parseCombo(s.combo);
+      if (s.comboAfter) assert.ok(s.combo, `${L.id}/${s.id}: comboAfter without a combo`);
+    });
+});

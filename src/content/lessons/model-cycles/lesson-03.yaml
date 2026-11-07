@@ -100,7 +100,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: start-b01-beat-saved
     k: play
-    t: "Press [PLAY]. Select [T3], the hats, and turn [SWING] to about 60%."
+    t: "Swing just the hats: Press [PLAY]. Select [T3], the hats, and turn [SWING] to about 60%."
     hl: p:play h:track p:t3 t:swing
     hear: 'Nothing yet: your hats are only on the "&"s, and swing moves the even steps. Swing needs weak-step hits to work on.'
   - id: give-sixteenth-hats
@@ -110,17 +110,29 @@ steps:
     hear: Now the swing rolls. Turn [SWING] between 50 and 65 to find your spot.
   - id: first-make-velocity-change
     k: play
-    t: First make velocity change the volume. Select [T3], then press [FUNC] + [BACK] to open the PAD menu, turn [LEVEL/DATA] to VDEP and set it to 127, then press [BACK]. If VDEP is 0, velocity doesn't change the volume.
+    t: "Let velocity change the volume: Select [T3], then press [FUNC] + [BACK] to open the PAD menu, turn [LEVEL/DATA] to VDEP and set it to 127, then press [BACK]. If VDEP is 0, velocity doesn't change the volume."
     hl: h:func p:back t:level h:track p:t3
     hear: No change yet. This only lets the next step be heard.
   - id: make-between-hats-quiet
     k: play
-    t: Make the in-between hats quiet. Keep [RECORD] lit. Hold [TRIG 2], [TRIG 4], [TRIG 6] and [TRIG 8] together, press [LEVEL/DATA] until VEL shows on the screen, and turn it down to about 30. Do the same for [TRIG 10] to [TRIG 16].
+    t: "Make the in-between hats quiet: Keep [RECORD] lit. Turn the velocity (VEL) of [TRIG 2], [TRIG 4], [TRIG 6] and [TRIG 8] down to about 30, holding all four together. Do the same for [TRIG 10] to [TRIG 16]."
+    combo:
+      [
+        "hold [TRIG 2]",
+        "hold [TRIG 4]",
+        "hold [TRIG 6]",
+        "hold [TRIG 8]",
+        "press [LEVEL/DATA] until VEL shows on the screen",
+        "turn [LEVEL/DATA] down to about 30",
+      ]
+    comboAfter: 2
     hl: p:record h:s2 h:s4 h:s6 h:s8 p:level t:level
     hear: 'The "&" hats now lead, and the quiet ones just shimmer behind them. Still flat? Hold the same keys and turn [VOLUME + DIST] down instead: that locks a lower volume on those steps.'
   - id: add-ghost-note
     k: play
-    t: "Add a ghost note: select [T2] and set its VDEP to 127 the same way ([FUNC] + [BACK]). Place a snare on [TRIG 12], then hold it, press [LEVEL/DATA] until VEL shows, and turn it down to about 25."
+    t: "Add a ghost note: select [T2] and set its VDEP to 127 the same way ([FUNC] + [BACK]). Place a snare on [TRIG 12], then turn its VEL down to about 25."
+    combo: ["hold [TRIG 12]", "press [LEVEL/DATA] until VEL shows", "turn [LEVEL/DATA] down to about 25"]
+    comboAfter: 2
     hl: h:track p:t2 p:s12 h:s12 t:level
     hear: A tiny extra snare just before the backbeat on 4. Felt more than heard.
   - id: nudge-ghost-note-late

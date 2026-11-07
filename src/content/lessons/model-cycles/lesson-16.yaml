@@ -98,7 +98,7 @@ steps:
     hear: "A snare roll you play live. Press the pad harder for a louder roll: T2's VDEP is up, so the repeats follow how hard you press."
   - id: break-b08-make-temporary
     k: play
-    t: "In the break (B08), make a temporary save: hold [FUNC] and briefly press [SETTINGS]. Hold [TRACK] and turn [REVERB SEND] up: every track pours into the room. Then hold [FUNC] and press [PATTERN] to snap back."
+    t: "Flood the break with reverb: In the break (B08), make a temporary save: hold [FUNC] and briefly press [SETTINGS]. Hold [TRACK] and turn [REVERB SEND] up: every track pours into the room. Then hold [FUNC] and press [PATTERN] to snap back."
     hl: h:func p:settings h:track t:reverb p:pattern
     hear: A wash of reverb over the whole break, then the dry groove exactly as it was.
   - id: end

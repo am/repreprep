@@ -179,17 +179,17 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: go-b01-press-select
     k: play
-    t: Press [RECORD] and select [T6]. Turn [SHAPE] until the screen shows m7, [DECAY] to about 110 and [REVERB SEND] to about 60.
+    t: "Set up the chord sound: Press [RECORD] and select [T6]. Turn [SHAPE] until the screen shows m7, [DECAY] to about 110 and [REVERB SEND] to about 60."
     hl: p:record h:track p:t6 t:shape t:decay t:reverb
     hear: "Tap [T6]: a soft minor 7th chord."
   - id: tap-together-if-they
     k: play
-    t: "Tap [T5] and [T6] together. If they clash, the sounds are tuned differently: select [T6], hold [FUNC] and turn [PITCH] one semitone at a time until chord and bass agree."
+    t: "Tune the chords to the bass: Tap [T5] and [T6] together. If they clash, the sounds are tuned differently: select [T6], hold [FUNC] and turn [PITCH] one semitone at a time until chord and bass agree."
     hl: p:t5 p:t6 h:track h:func t:pitch
     hear: "Bass and chord on the same root: one instrument, low and high."
   - id: open-scale-menu-press
     k: play
-    t: Open the SCALE menu ([FUNC] + [PAGE]), press [T6], set LEN to 16 and press [BACK]. Place one chord on [TRIG 1]. Then set T6's LEN back to 64 the same way.
+    t: "Put a chord on every bar: Open the SCALE menu ([FUNC] + [PAGE]), press [T6], set LEN to 16 and press [BACK]. Place one chord on [TRIG 1]. Then set T6's LEN back to 64 the same way."
     hl: h:func p:page p:t6 t:level p:back p:s1
     hear: One long chord at the top of every bar, copied to all four pages.
   - id: follow-bass
@@ -200,7 +200,7 @@ steps:
     hear: "The chords move with the bass now. Bar 2 sounds sour: an F minor doesn't belong in A minor."
   - id: fix-bar-2-major
     k: play
-    t: "Fix bar 2 with a major 7th: press [PAGE] until the 2:4 light is on, hold [TRIG 1] and turn [SHAPE] to Maj7. Bars 3 and 4 stay m7."
+    t: "Fix bar 2 with Maj7: Use a major 7th. Press [PAGE] until the 2:4 light is on, hold [TRIG 1] and turn [SHAPE] to Maj7. Bars 3 and 4 stay m7."
     hl: p:page h:s1 t:shape
     page: 2
     hear: "Am7, Fmaj7, Dm7, Em7: warm and wide in the middle, never fully home."
@@ -217,7 +217,7 @@ steps:
     hear: "Bar 3 glows brighter for a moment: a hopeful kind of minor."
   - id: press-leave-grid-recording
     k: play
-    t: "Press [RECORD] to leave grid recording and listen to all four bars with the bass and drums. Save: hold [FUNC] and long-press [SETTINGS]."
+    t: "Hear the chords with everything: Press [RECORD] to leave grid recording and listen to all four bars with the bass and drums. Save: hold [FUNC] and long-press [SETTINGS]."
     hl: p:record h:func p:settings
     hear: "Beat, bass and four chords: a full night-time loop."
   - id: which-semitone-formula-minor

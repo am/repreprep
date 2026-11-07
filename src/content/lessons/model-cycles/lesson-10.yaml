@@ -121,12 +121,21 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: keep-last-lesson-s
     k: play
-    t: "Keep last lesson's riff: with [RECORD] off, hold [PATTERN] + [TRIG 1] and press [RECORD]. Then hold [PATTERN] + [TRIG 11] and press and hold [STOP] until the countdown finishes. Stay on B01."
+    t: "Keep last lesson's riff: Copy B01 to B11 with [RECORD] off. Amber keys stay down, coral keys are pressed. Stay on B01."
+    combo:
+      [
+        "hold [PATTERN]",
+        "hold [TRIG 1]",
+        "press [RECORD]",
+        "release [TRIG 1]",
+        "hold [TRIG 11]",
+        "hold [STOP] until the countdown ends",
+      ]
     hl: h:pattern p:s1 p:record p:s11 h:stop
     hear: B11 keeps the riff. B01 is where the bass goes.
   - id: press-select-clear-trigs
     k: play
-    t: Press [RECORD], select [T5] and clear its trigs with [FUNC] + [PLAY]. Open the SCALE menu ([FUNC] + [PAGE]), check that T5's LEN is still 16, and press [BACK].
+    t: "Make room for the bass: Press [RECORD], select [T5] and clear its trigs with [FUNC] + [PLAY]. Open the SCALE menu ([FUNC] + [PAGE]), check that T5's LEN is still 16, and press [BACK]."
     hl: p:record h:track p:t5 h:func p:play p:page p:back
     hear: T5 is silent and one bar long, ready for the bass.
   - id: make-bass
@@ -136,12 +145,15 @@ steps:
     hear: "Tap [T5]: a deep, round note. If it vanishes on small speakers, use -12."
   - id: lock-kick
     k: play
-    t: "Lock it to the kick: place bass notes on [TRIG 1], [TRIG 11] and [TRIG 15]. Make the first one long: hold [TRIG 1], press [LEVEL/DATA] until LEN shows, and turn it up to about 6."
+    t: "Lock it to the kick: place bass notes on [TRIG 1], [TRIG 11] and [TRIG 15]. Make the first one long, with LEN about 6."
+    combo: ["hold [TRIG 1]", "press [LEVEL/DATA] until LEN shows", "turn [LEVEL/DATA] up to about 6"]
+    comboAfter: 2
     hl: p:s1 p:s11 p:s15 h:s1 p:level t:level
     hear: A long root on the 1 and a push with the kick on 11.
   - id: make-octave-jump
     k: play
-    t: "Make [TRIG 15] the octave jump: hold it, hold [FUNC] too, and turn [PITCH] up to -12, one octave above the other notes."
+    t: "Add an octave jump: Raise the PITCH of [TRIG 15] to -12, one octave above the other notes. [FUNC] makes [PITCH] move in whole semitones."
+    combo: ["hold [TRIG 15]", "hold [FUNC]", "turn [PITCH] up to -12"]
     hl: h:s15 h:func t:pitch
     hear: A little hop at the end of the bar that pulls you back to the 1.
   - id: spread-over-four-bars
@@ -151,7 +163,16 @@ steps:
     hear: The same bar four times, for now.
   - id: change-roots
     k: play
-    t: "Change the roots: press [PAGE] until the 2:4 light is on, hold [TRIG 1], [TRIG 11] and [TRIG 15] together, press [LEVEL/DATA] until NOTE shows, and turn 4 semitones down. On 3:4: 7 down. On 4:4: 5 down."
+    t: "Change the roots: press [PAGE] until the 2:4 light is on. Turn the NOTE of [TRIG 1], [TRIG 11] and [TRIG 15] 4 semitones down, holding all three together. On 3:4: 7 down. On 4:4: 5 down."
+    combo:
+      [
+        "hold [TRIG 1]",
+        "hold [TRIG 11]",
+        "hold [TRIG 15]",
+        "press [LEVEL/DATA] until NOTE shows",
+        "turn [LEVEL/DATA] 4 semitones down",
+      ]
+    comboAfter: 2
     hl: p:page h:s1 h:s11 h:s15 p:level t:level
     page: 4
     hear: A, F, D, E. You can almost hear chords that aren't there yet.

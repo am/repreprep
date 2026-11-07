@@ -84,7 +84,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: go-b01-hold-press
     k: play
-    t: Press [PLAY]. Mute the other tracks ([FUNC] + [T2] to [T6]) so only the kick plays. Select the kick (hold [TRACK], press [T1]) and tap [T1] a few times. Describe the stock kick in two words.
+    t: "Listen to the stock kick: Press [PLAY]. Mute the other tracks ([FUNC] + [T2] to [T6]) so only the kick plays. Select the kick (hold [TRACK], press [T1]) and tap [T1] a few times. Describe the stock kick in two words."
     hl: p:play h:func p:t2 p:t3 p:t4 p:t5 p:t6 h:track p:t1
     hear: "Stock kicks are usually punchy and clicky: good in a club, loud for night music."
   - id: make-round
@@ -104,7 +104,7 @@ steps:
     hear: With GATE on, the kick holds at full level while you hold the pad, then decays when you let go.
   - id: hear-loudness-against-timbre
     k: play
-    t: "Hear loudness against timbre: turn [VOLUME + DIST] up from 60 towards 90, then back to 60. Above 60 it gets louder and starts to distort."
+    t: "Hear louder turn into rougher: turn [VOLUME + DIST] up from 60 towards 90, then back to 60. Above 60 it gets louder and starts to distort."
     hl: t:vol
     hear: First just louder, then rougher. Distortion adds harmonics, which changes the timbre too.
   - id: soften-snare
@@ -119,7 +119,7 @@ steps:
     hear: "The backbeat snares ring a little longer, and the quiet ghost note on [TRIG 12] stays short and tight, like a real snare played softly."
   - id: write-two-words-new
     k: play
-    t: "Unmute the other tracks ([FUNC] + [T3] to [T6]). Write two words for your new kick and two for your snare (round, soft, woody, dull…). Then save: hold [FUNC] and long-press [SETTINGS]."
+    t: "Name your new sounds: Unmute the other tracks ([FUNC] + [T3] to [T6]). Write two words for your new kick and two for your snare (round, soft, woody, dull…). Then save: hold [FUNC] and long-press [SETTINGS]."
     hl: h:func p:t3 p:t4 p:t5 p:t6 p:settings
     hear: Same beat as lesson 4, but it now sounds like late at night.
   - id: turned-sweep-down-kick

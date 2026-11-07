@@ -42,15 +42,15 @@ steps:
     t: "Your music lives in a project. A project holds six banks, A to F, one per pad, and each bank holds 16 patterns, one per trig key. A pattern is one loop: six tracks with their sounds and trigs. Your track for this course is B01, bank B, pattern 1, and every lesson picks it up where the last one left it."
   - id: plug-headphones-speakers-press
     k: play
-    t: Plug in headphones or speakers, then press and hold [MAIN VOLUME] to switch on. Keep the volume low and turn it up gently.
+    t: "Switch it on: Plug in headphones or speakers, then press and hold [MAIN VOLUME] to switch on. Keep the volume low and turn it up gently."
     hl: p:mainvol t:mainvol
   - id: make-course-project
     k: play
-    t: "Make a project just for this course: press [SETTINGS], open PROJECT, turn [LEVEL/DATA] to NEW at the top of the list and press [LEVEL/DATA]. The new project is empty. It replaces the project you were in, so if you changed that one and want to keep it, save it first."
+    t: "Start a fresh project: Press [SETTINGS], open PROJECT, turn [LEVEL/DATA] to NEW at the top of the list and press [LEVEL/DATA]. The new project is empty. It replaces the project you were in, so if you changed that one and want to keep it, save it first."
     hl: p:settings t:level
   - id: save-course-project
     k: play
-    t: "Save it once, so every lesson can save into it: still in PROJECT, turn [LEVEL/DATA] to an empty ----- slot at the bottom of the list, press [LEVEL/DATA], choose SAVE and name it (hold [FUNC] and turn [LEVEL/DATA] to change a letter). Press [LEVEL/DATA] to confirm."
+    t: "Save the project once: Every lesson saves into it. Still in PROJECT, turn [LEVEL/DATA] to an empty ----- slot at the bottom of the list, press [LEVEL/DATA], choose SAVE and name it (hold [FUNC] and turn [LEVEL/DATA] to change a letter). Press [LEVEL/DATA] to confirm."
     hl: p:settings t:level h:func
     hear: From now on this is your course project. If you ever go to another project, load this one again from the same PROJECT menu with LOAD.
   - id: go-track-s-home
@@ -60,12 +60,12 @@ steps:
     hear: B01 on the screen.
   - id: tap-each-pad-each
     k: play
-    t: Tap each pad [T1] to [T6]. Each plays its track's sound and makes that track active (its pad turns red).
+    t: "Meet the six tracks: Tap each pad [T1] to [T6]. Each plays its track's sound and makes that track active (its pad turns red)."
     hl: p:t1 p:t2 p:t3 p:t4 p:t5 p:t6
     hear: "Six different sounds. Hit the pads harder and softer: they respond to how hard you play."
   - id: set-up-track-layout
     k: play
-    t: "Set up the track layout you'll use all course: T1 KICK, T2 SNARE, T3 METAL (hats), T4 PERC, T5 TONE (bass), T6 CHORD (chords). For each one, hold [TRACK] and press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
+    t: "Pick a sound for each track: You will use this layout all course: T1 KICK, T2 SNARE, T3 METAL (hats), T4 PERC, T5 TONE (bass), T6 CHORD (chords). For each one, hold [TRACK] and press the pad, press [MACHINES], turn [LEVEL/DATA] to the machine and press [BACK]."
     hl: h:track p:t1 p:machines t:level p:back
     hear: Same layout every lesson, so your hands learn where things are.
   - id: set-tempo
@@ -84,7 +84,7 @@ steps:
     hear: "Four on the floor: a kick on each beat, lined up with the click."
   - id: press-leave-grid-recording
     k: play
-    t: Press [RECORD] to leave grid recording. While it plays, tap [T3] on every "&", halfway between kicks. Then try tapping on every "e" and "a".
+    t: 'Find the offbeats by hand: Press [RECORD] to leave grid recording. While it plays, tap [T3] on every "&", halfway between kicks. Then try tapping on every "e" and "a".'
     hl: p:record p:t3
     hear: 'The "&"s are easy to find. The e''s and a''s are quick and slippery: that''s where groove will live.'
   - id: feel-tempo-change

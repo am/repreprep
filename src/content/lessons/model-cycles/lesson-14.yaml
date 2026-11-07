@@ -105,27 +105,36 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: copy-b01-b10-sketchpad
     k: play
-    t: "Copy B01 into B10 as a sketchpad: hold [PATTERN] + [TRIG 1] and press [RECORD]. Then hold [PATTERN] + [TRIG 10] and press and hold [STOP] until the countdown finishes."
+    t: "Copy B01 into a sketchpad: B10 is your sketchpad. Amber keys stay down, coral keys are pressed."
+    combo:
+      [
+        "hold [PATTERN]",
+        "hold [TRIG 1]",
+        "press [RECORD]",
+        "release [TRIG 1]",
+        "hold [TRIG 10]",
+        "hold [STOP] until the countdown ends",
+      ]
     hl: h:pattern h:s1 p:record h:s4 h:stop
     hear: B10 now has your sounds. B01 is unchanged.
   - id: go-b10-hold-press
     k: play
-    t: "Go to B10 (hold [PATTERN], press [TRIG 10]) and press [FUNC] + [PLAY]: this clears the trigs and keeps the sounds. Open the SCALE menu ([FUNC] + [PAGE]), set MOD to PATTERN and LEN to 16, then press [BACK]."
+    t: "Empty the sketchpad: Go to B10 (hold [PATTERN], press [TRIG 10]) and press [FUNC] + [PLAY]: this clears the trigs and keeps the sounds. Open the SCALE menu ([FUNC] + [PAGE]), set MOD to PATTERN and LEN to 16, then press [BACK]."
     hl: h:pattern p:s10 h:func p:play p:page t:level p:back
     hear: An empty one-bar pattern with your six sounds.
   - id: play-chosen-track-tap
     k: play
-    t: "Play your chosen track and tap its tempo: hold [FUNC] and tap [TEMPO] on the beat. Tempo is stored per pattern, so B01 keeps 90. Press [RECORD] and place kicks ([T1]), snares ([T2]) and hats ([T3]) where you hear them."
+    t: "Rebuild the song's beat: Play your chosen track and tap its tempo: hold [FUNC] and tap [TEMPO] on the beat. Tempo is stored per pattern, so B01 keeps 90. Press [RECORD] and place kicks ([T1]), snares ([T2]) and hats ([T3]) where you hear them."
     hl: h:func p:tempo p:record h:track p:t1 p:t2 p:t3
     hear: "It won't sound like the record, and that's fine: you're copying where the hits sit, not the sounds."
   - id: add-bass-rhythm-t5
     k: play
-    t: "Add the bass rhythm on [T5] with a single note. Press [RECORD] to leave, then play your skeleton and the song one after the other, and write on your sheet what's missing: a sound, the groove, or a part. Save B10."
+    t: "Add the bass and compare: Add the bass rhythm on [T5] with a single note. Press [RECORD] to leave, then play your skeleton and the song one after the other, and write on your sheet what's missing: a sound, the groove, or a part. Save B10."
     hl: h:track p:t5 p:record h:func p:settings
     hear: Four parts are usually enough to recognise a track. That's its skeleton.
   - id: go-b01-hold-press
     k: play
-    t: "Go to B01 (hold [PATTERN], press [TRIG 1]) and play it. Mute every track ([FUNC] + [T1] to [T6]), then unmute them one at a time: kick, bass, chords, then the rest. After each, ask: which three do I hear first?"
+    t: "Find your three main parts: Go to B01 (hold [PATTERN], press [TRIG 1]) and play it. Mute every track ([FUNC] + [T1] to [T6]), then unmute them one at a time: kick, bass, chords, then the rest. After each, ask: which three do I hear first?"
     hl: h:pattern p:s1 p:play h:func p:t1 p:t2 p:t3 p:t4 p:t5 p:t6
     hear: If a fourth part keeps grabbing you, it's too loud or too busy.
   - id: balance
