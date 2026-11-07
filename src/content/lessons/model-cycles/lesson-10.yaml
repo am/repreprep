@@ -145,12 +145,15 @@ steps:
     hear: "Tap [T5]: a deep, round note. If it vanishes on small speakers, use -12."
   - id: lock-kick
     k: play
-    t: "Lock it to the kick: place bass notes on [TRIG 1], [TRIG 11] and [TRIG 15]. Make the first one long: hold [TRIG 1], press [LEVEL/DATA] until LEN shows, and turn it up to about 6."
+    t: "Lock it to the kick: place bass notes on [TRIG 1], [TRIG 11] and [TRIG 15]. Make the first one long, with LEN about 6."
+    combo: ["hold [TRIG 1]", "press [LEVEL/DATA] until LEN shows", "turn [LEVEL/DATA] up to about 6"]
+    comboAfter: 2
     hl: p:s1 p:s11 p:s15 h:s1 p:level t:level
     hear: A long root on the 1 and a push with the kick on 11.
   - id: make-octave-jump
     k: play
-    t: "Add an octave jump: Hold [TRIG 15], hold [FUNC] too, and turn [PITCH] up to -12, one octave above the other notes."
+    t: "Add an octave jump: Raise the PITCH of [TRIG 15] to -12, one octave above the other notes. [FUNC] makes [PITCH] move in whole semitones."
+    combo: ["hold [TRIG 15]", "hold [FUNC]", "turn [PITCH] up to -12"]
     hl: h:s15 h:func t:pitch
     hear: A little hop at the end of the bar that pulls you back to the 1.
   - id: spread-over-four-bars
@@ -160,7 +163,16 @@ steps:
     hear: The same bar four times, for now.
   - id: change-roots
     k: play
-    t: "Change the roots: press [PAGE] until the 2:4 light is on, hold [TRIG 1], [TRIG 11] and [TRIG 15] together, press [LEVEL/DATA] until NOTE shows, and turn 4 semitones down. On 3:4: 7 down. On 4:4: 5 down."
+    t: "Change the roots: press [PAGE] until the 2:4 light is on. Turn the NOTE of [TRIG 1], [TRIG 11] and [TRIG 15] 4 semitones down, holding all three together. On 3:4: 7 down. On 4:4: 5 down."
+    combo:
+      [
+        "hold [TRIG 1]",
+        "hold [TRIG 11]",
+        "hold [TRIG 15]",
+        "press [LEVEL/DATA] until NOTE shows",
+        "turn [LEVEL/DATA] 4 semitones down",
+      ]
+    comboAfter: 2
     hl: p:page h:s1 h:s11 h:s15 p:level t:level
     page: 4
     hear: A, F, D, E. You can almost hear chords that aren't there yet.

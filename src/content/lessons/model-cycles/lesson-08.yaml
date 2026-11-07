@@ -179,7 +179,9 @@ steps:
     hear: Small changes, but now you know every setting on the LFO page. These setup settings can't be locked to a step.
   - id: try-slow-attack-b04
     k: play
-    t: "Set up a slow attack: Use B04, your bright copy. Hold [PATTERN], press [TRIG 4]. Select [T6] (CHORD), press [RECORD] and place a chord on [TRIG 1]. Hold it, press [LEVEL/DATA] until LEN shows, and set 8. Press [GATE] so it lights."
+    t: "Set up a slow attack: Use B04, your bright copy. Hold [PATTERN], press [TRIG 4]. Select [T6] (CHORD), press [RECORD] and place a chord on [TRIG 1]. Set its LEN to 8. Press [GATE] so it lights."
+    combo: ["hold [TRIG 1]", "press [LEVEL/DATA] until LEN shows", "turn [LEVEL/DATA] to 8"]
+    comboAfter: 4
     hl: h:pattern p:s4 h:track p:t6 p:record p:s1 p:level t:level p:gate
     hear: A chord that holds for half a bar, then fades out.
   - id: press-check-fix-off

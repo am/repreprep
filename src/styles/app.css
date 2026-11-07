@@ -686,7 +686,7 @@ svg.fig {
   fill: none;
   marker-end: none;
 }
-/* a key combo as numbered rows (shared/combo.js): amber keys stay held, coral keys are pressed; the amber line
+/* a key combo as numbered rows (shared/combo.js): amber keys stay held, coral keys are pressed, knobs are turned; the amber line
    beside the later rows is the key held through all of them */
 .combo {
   display: grid;

@@ -75,9 +75,14 @@ const step = z
     hl: z.string().optional() /* controls to light: "p:play h:func t:level" (press, hold, turn) */,
     hear: text.optional() /* what to listen for */,
     combo: z
-      .array(z.string().regex(/^(hold|press|release) \[[^\]]+\]( until .+)?$/))
+      .array(z.string().regex(/^(hold|press|release|turn) \[[^\]]+\]( .+)?$/))
       .min(2)
-      .optional() /* a key combo drawn as a timeline (shared/combo.js): "hold [PATTERN]", "press [RECORD]", "release [TRIG 1]" */,
+      .optional() /* a key combo drawn as numbered rows (shared/combo.js): "hold [PATTERN]", "press [RECORD]", "release [TRIG 1]", "turn [LEVEL/DATA] to 30" */,
+    comboAfter: z
+      .number()
+      .int()
+      .min(1)
+      .optional() /* show the combo after this many sentences of the text, not straight after the title */,
     page: z
       .number()
       .int()

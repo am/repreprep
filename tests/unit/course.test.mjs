@@ -282,7 +282,19 @@ test("key combos: a key held throughout gets its own row, then one row per chord
       [["TRIG 1"], ["hold TRIG 4", "hold STOP"]],
     ]
   );
+  const e = parseCombo(["hold [TRIG 14]", "press [RETRIG] to open it", "turn [LEVEL/DATA] to 30", "release [TRIG 14]"]);
+  assert.deepEqual(e.outer, ["TRIG 14"], "a key let go only at the end is held throughout");
+  assert.deepEqual(
+    e.rows.map((r) => r.keys.map((x) => `${x.act} ${x.key} ${x.note}`)),
+    [["press RETRIG to open it"], ["turn LEVEL/DATA to 30"]]
+  );
+  assert.deepEqual(e.letGo, ["TRIG 14"]);
+  assert.throws(() => parseCombo(["hold [A]", "release [A] now"]));
   assert.throws(() => parseCombo(["release [PATTERN]"]));
   assert.throws(() => parseCombo(["hold [A]", "hold [A]"]));
-  for (const L of I.lessons) L.steps.forEach((s) => s.combo && parseCombo(s.combo));
+  for (const L of I.lessons)
+    L.steps.forEach((s) => {
+      if (s.combo) parseCombo(s.combo);
+      if (s.comboAfter) assert.ok(s.combo, `${L.id}/${s.id}: comboAfter without a combo`);
+    });
 });

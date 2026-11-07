@@ -9,16 +9,23 @@
   site:
     - Some drawings now play their sound. Tap a row (or its play button) to hear it, and tap again to stop.
     - Copying a pattern (lessons 2, 6, 10, 14 and 15) now shows the key combo as numbered rows, with amber for keys you keep held and coral for keys you press. [PATTERN] gets its own row, held until the end, so you can see it stays down throughout. The Shortcuts page says the same.
+    - The same numbered rows show other steps where keys stay held while you do something else, such as holding trigs while you press [LEVEL/DATA] and turn it to set their VEL, LEN or NOTE, and copying trigs to other pages.
     - Every Play step in the Model:Cycles lessons and song studies now opens with a short title that says what the step is for, such as "Make pattern switches land in time" or "Give the kick a bounce".
   lessons:
     - lesson: model-cycles/w06
       what: Tap the waveforms, the bright and dark spectrum and the three FM depths to hear them, and hear one note brighten as the FM depth turns up. The table of what each knob does on each machine is now two charts over two steps, SHAPE and CONTOUR first, then COLOR and SWEEP, in the manual's own words with an icon for each kind of change. Steps open with plain words, such as "Copy B01 to B04" and "Make pattern switches land in time".
+    - lesson: model-cycles/w03
+      what: Setting the VEL of the quiet hats and the ghost note now shows the keys as numbered rows, so you can see the trigs stay held while you turn [LEVEL/DATA].
     - lesson: model-cycles/w04
-      what: Steps open with plain words, such as "Make the perc loop every 12 steps" and "Drop the kicks under that fill".
+      what: Steps open with plain words, such as "Make the perc loop every 12 steps" and "Drop the kicks under that fill". The snare roll shows the keys as numbered rows, with [TRIG 14] held until you have set TRIG REPEAT.
+    - lesson: model-cycles/w07
+      what: Setting the VEL of the top layer and copying it to every bar now show the keys as numbered rows.
+    - lesson: model-cycles/w10
+      what: The long first note, the octave jump and the root changes now show the keys as numbered rows, so you can see which keys stay held.
     - lesson: model-cycles/w05
       what: The volume step opens with "Hear louder turn into rougher".
     - lesson: model-cycles/w08
-      what: The three LFO steps say what each one does, such as "A slow LFO that fades the kick over four bars", and the RST step says what RST means.
+      what: The three LFO steps say what each one does, such as "A slow LFO that fades the kick over four bars", and the RST step says what RST means. Setting the chord's LEN shows the keys as numbered rows.
     - lesson: model-cycles/w13
       what: The throw and room steps open with what you do, such as "Throw one snare into the delay".
     - lesson: model-cycles/s03
