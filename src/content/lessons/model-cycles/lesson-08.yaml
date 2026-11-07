@@ -149,7 +149,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: play-b01-select-dusty
     k: play
-    t: Play B01 and select your dusty hats (hold [TRACK], press [T3]). Hold [LFO] and turn [DECAY] a little to the right. That makes DECAY the LFO's destination, and turning further sets the depth.
+    t: "Point an LFO at the hats: Play B01 and select your dusty hats (hold [TRACK], press [T3]). Hold [LFO] and turn [DECAY] a little to the right. That makes DECAY the LFO's destination, and turning further sets the depth."
     hl: p:play h:track p:t3 h:lfo t:decay
     hear: "The hats start to breathe: some short, some longer."
   - id: set-rate
@@ -169,37 +169,37 @@ steps:
     hear: The found tick slowly changes colour from bar to bar.
   - id: hear-rst
     k: play
-    t: "Hear what RST does (it restarts the wave on every note): select [T3] again and press [FUNC] + [LFO] to open LFO SETUP. Set RST to ON with [LEVEL/DATA] and listen, then set it back to OFF."
+    t: "Hear what RST does: RST restarts the wave on every note. Select [T3] again and press [FUNC] + [LFO] to open LFO SETUP. Set RST to ON with [LEVEL/DATA] and listen, then set it back to OFF."
     hl: h:track p:t3 h:func p:lfo t:level
     hear: "ON: every hat gets the same slice of the wave and the movement disappears. OFF: it flows across the hats again."
   - id: still-lfo-setup-try
     k: play
-    t: "Still in LFO SETUP, try FDE at -30 (fade in) and +30 (fade out), and with RST ON try SPH at 0 and 64. Set FDE back to 0 and RST to OFF, press [BACK], then save B01: hold [FUNC] and long-press [SETTINGS]."
+    t: "Fade the movement in and out: Still in LFO SETUP, try FDE at -30 (fade in) and +30 (fade out), and with RST ON try SPH at 0 and 64. Set FDE back to 0 and RST to OFF, press [BACK], then save B01: hold [FUNC] and long-press [SETTINGS]."
     hl: t:level p:back h:func p:settings
     hear: Small changes, but now you know every setting on the LFO page. These setup settings can't be locked to a step.
   - id: try-slow-attack-b04
     k: play
-    t: "Try the slow attack on B04, your bright copy: hold [PATTERN], press [TRIG 4]. Select [T6] (CHORD), press [RECORD] and place a chord on [TRIG 1]. Hold it, press [LEVEL/DATA] until LEN shows, and set 8. Press [GATE] so it lights."
+    t: "Set up a slow attack: Use B04, your bright copy. Hold [PATTERN], press [TRIG 4]. Select [T6] (CHORD), press [RECORD] and place a chord on [TRIG 1]. Hold it, press [LEVEL/DATA] until LEN shows, and set 8. Press [GATE] so it lights."
     hl: h:pattern p:s4 h:track p:t6 p:record p:s1 p:level t:level p:gate
     hear: A chord that holds for half a bar, then fades out.
   - id: press-check-fix-off
     k: play
-    t: Press [FUNC] + [BACK], check FIX is OFF, and press [BACK]. Press [LFO] and set WAV to ENV, MUL to X1, DST to DIST and DEP to -64. Turn [LFO SPEED] to set how slowly it fades in.
+    t: "Make the chord fade in: Press [FUNC] + [BACK], check FIX is OFF, and press [BACK]. Press [LFO] and set WAV to ENV, MUL to X1, DST to DIST and DEP to -64. Turn [LFO SPEED] to set how slowly it fades in."
     hl: h:func p:back p:lfo t:level t:lfospd
     hear: "The chord swells in instead of starting at once: a slow attack made from an LFO."
   - id: slow-over-bars
     k: play
-    t: "A slow LFO that fades the kick over four bars: still in B04, select [T1]. Hold [LFO] and turn [VOLUME + DIST] a little to the left. Press [LFO], set WAV to TRI and MUL to X1, then turn [LFO SPEED] to 32."
+    t: "Fade the kick over four bars: This is a slow LFO. Still in B04, select [T1]. Hold [LFO] and turn [VOLUME + DIST] a little to the left. Press [LFO], set WAV to TRI and MUL to X1, then turn [LFO SPEED] to 32."
     hl: h:track p:t1 h:lfo t:vol p:lfo t:level t:lfospd
     hear: "Over four bars the kick fades out and comes back. The loop is the same, but the music changes on its own."
   - id: medium-over-one-note
     k: play
-    t: "A medium LFO that bends every note: select [T5]. Press [LFO], set WAV to ENV, DST to PITCH and DEP to about +20, then turn [LFO SPEED] to 32. Play [T5] a few times, then set DEP to -20 and play it again."
+    t: "Bend every bass note: This is a medium LFO. Select [T5]. Press [LFO], set WAV to ENV, DST to PITCH and DEP to about +20, then turn [LFO SPEED] to 32. Play [T5] a few times, then set DEP to -20 and play it again."
     hl: h:track p:t5 p:lfo t:level t:lfospd p:t5
     hear: "Positive depth starts each note high and drops it into tune, like a tom. Negative depth starts it low and bends it up."
   - id: fast-inside-tone
     k: play
-    t: "A fast LFO that changes the tone itself: still on [T5], set WAV to TRI, DEP to about +5 and MUL to 2K. Hold [T5] and slowly turn [LFO SPEED]. Then set DEP back to 0. These changes stay in B04, so your song in B01 is untouched."
+    t: "Turn the wobble into tone: This is a fast LFO. Still on [T5], set WAV to TRI, DEP to about +5 and MUL to 2K. Hold [T5] and slowly turn [LFO SPEED]. Then set DEP back to 0. These changes stay in B04, so your song in B01 is untouched."
     hl: p:lfo t:level h:t5 t:lfospd
     hear: "The wobble turns into a new tone: brighter, metallic, sometimes out of tune. That's frequency modulation, made by hand."
   - id: hats-move-lfo-decay

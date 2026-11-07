@@ -157,7 +157,7 @@ steps:
     hear: "Every few bars the chord voicing shifts, and the hats grow longer and shorter on their own clock. The intro now changes while you listen."
   - id: step
     k: play
-    t: "A: go to B06, press [RECORD] and clear [T4]. Press [RECORD] to leave. Select [T3] and turn [CHANCE] to about 60%, then select [T6] and turn its [REVERB SEND] down a little. Save. Leave B07 as it is: it's your peak."
+    t: "Shape the A section: Go to B06, press [RECORD] and clear [T4]. Press [RECORD] to leave. Select [T3] and turn [CHANCE] to about 60%, then select [T6] and turn its [REVERB SEND] down a little. Save. Leave B07 as it is: it's your peak."
     hl: h:pattern p:s6 p:record h:track p:t4 h:func p:play p:t3 t:chance p:t6 t:reverb p:settings
     hear: "Three small changes: one step below the full loop."
   - id: break
@@ -182,7 +182,7 @@ steps:
     hear: "Intro, A, B, A, B, break, B, outro: about 85 seconds, then it loops."
   - id: listen-every-change-where
     k: play
-    t: Listen to every change. Where one feels too sudden, go to the pattern before it, press [RECORD], press [PAGE] until the 4:4 light is on, and remove a few hats on [T3] so the last bar thins out. Save. Picking a pattern loses the chain, so build it again to listen.
+    t: "Smooth the changes: Listen to every change. Where one feels too sudden, go to the pattern before it, press [RECORD], press [PAGE] until the 4:4 light is on, and remove a few hats on [T3] so the last bar thins out. Save. Picking a pattern loses the chain, so build it again to listen."
     hl: p:record p:page h:track p:t3 h:func p:settings
     page: 4
     hear: A small gap before a change makes the next section land harder.

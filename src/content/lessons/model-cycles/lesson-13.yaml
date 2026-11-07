@@ -75,7 +75,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: play-b01-low-set
     k: play
-    t: "Play B01 with [MAIN VOLUME] low. Set the shared room: turn [REVERB SIZE] to about 90. Then hold [FUNC] and turn [REVERB SIZE] to set REV TONE to about +20, which trims the lows from the reverb so it doesn't cloud the kick."
+    t: "Set up the shared room: Play B01 with [MAIN VOLUME] low. Turn [REVERB SIZE] to about 90. Then hold [FUNC] and turn [REVERB SIZE] to set REV TONE to about +20, which trims the lows from the reverb so it doesn't cloud the kick."
     hl: p:play t:mainvol t:revsize h:func
     hear: Any track that already sends to the reverb grows a longer tail.
   - id: set-echo
@@ -85,7 +85,7 @@ steps:
     hear: "At 90 BPM a dotted eighth is half a second: echoes that land between the beats."
   - id: place-parts-near-far
     k: play
-    t: Place parts near and far. Select [T1] and turn [REVERB SEND] and [DELAY SEND] fully left to OFF. Do the same on [T2] and [T5]. Then select [T3] and set [REVERB SEND] to about 30, and select [T6] and set it to about 70.
+    t: "Place parts near and far: Select [T1] and turn [REVERB SEND] and [DELAY SEND] fully left to OFF. Do the same on [T2] and [T5]. Then select [T3] and set [REVERB SEND] to about 30, and select [T6] and set it to about 70."
     hl: h:track p:t1 t:reverb t:delay p:t2 p:t5 p:t3 p:t6
     hear: Kick, snare and bass up front and solid, hats a step back, chords floating behind.
   - id: throw
@@ -96,7 +96,7 @@ steps:
     hear: "Once every four bars the last snare echoes away on its own. Its key flashes: it holds a lock."
   - id: room-shot
     k: play
-    t: "Send one snare into a big room: press [PAGE] until the 2:4 light is on, hold [TRIG 5] and turn [REVERB SEND] to about 110. Press [RECORD] to leave grid recording."
+    t: "Send one snare into the room: Press [PAGE] until the 2:4 light is on, hold [TRIG 5] and turn [REVERB SEND] to about 110. Press [RECORD] to leave grid recording."
     hl: p:page h:s5 t:reverb p:record
     page: 2
     hear: One snare in bar 2 blooms into a big room, then the dry beat is straight back.
@@ -107,7 +107,7 @@ steps:
     hear: The echoes stop fading and start to swell, like a stalling engine. Pull back before they run away.
   - id: try-32-quarter-note
     k: play
-    t: "Try [DELAY TIME] at 32 (a quarter note) and at 16 (an eighth), and keep the one that sits best. Then save: hold [FUNC] and long-press [SETTINGS]."
+    t: "Choose the echo speed: Try [DELAY TIME] at 32 (a quarter note) and at 16 (an eighth), and keep the one that sits best. Then save: hold [FUNC] and long-press [SETTINGS]."
     hl: t:deltime h:func p:settings
     hear: Longer echoes feel slower and wider. Shorter ones feel busier.
   - id: strummed-chord

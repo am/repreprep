@@ -126,7 +126,7 @@ steps:
     hear: B11 keeps the riff. B01 is where the bass goes.
   - id: press-select-clear-trigs
     k: play
-    t: Press [RECORD], select [T5] and clear its trigs with [FUNC] + [PLAY]. Open the SCALE menu ([FUNC] + [PAGE]), check that T5's LEN is still 16, and press [BACK].
+    t: "Make room for the bass: Press [RECORD], select [T5] and clear its trigs with [FUNC] + [PLAY]. Open the SCALE menu ([FUNC] + [PAGE]), check that T5's LEN is still 16, and press [BACK]."
     hl: p:record h:track p:t5 h:func p:play p:page p:back
     hear: T5 is silent and one bar long, ready for the bass.
   - id: make-bass
@@ -141,7 +141,7 @@ steps:
     hear: A long root on the 1 and a push with the kick on 11.
   - id: make-octave-jump
     k: play
-    t: "Make [TRIG 15] the octave jump: hold it, hold [FUNC] too, and turn [PITCH] up to -12, one octave above the other notes."
+    t: "Add an octave jump: Hold [TRIG 15], hold [FUNC] too, and turn [PITCH] up to -12, one octave above the other notes."
     hl: h:s15 h:func t:pitch
     hear: A little hop at the end of the bar that pulls you back to the 1.
   - id: spread-over-four-bars

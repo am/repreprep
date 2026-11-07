@@ -86,7 +86,7 @@ steps:
     hl: h:pattern p:t2 p:s1 h:func
   - id: let-pattern-changes-wait
     k: play
-    t: "Make pattern switches wait for the loop to end: on B01, hold [FUNC] and press [PAGE] to open the SCALE menu. Set CHG to 64 with [LEVEL/DATA] (64 steps is your 4 bars), then press [BACK]."
+    t: "Make pattern switches land in time: When you pick another pattern, B01 should finish its 4 bars first. On B01, hold [FUNC] and press [PAGE] to open the SCALE menu. Set CHG to 64 with [LEVEL/DATA] (64 steps is your 4 bars), then press [BACK]."
     hl: h:func p:page t:level p:back
     hear: Nothing changes in the sound yet. From now on, when you pick another pattern, B01 plays to the end of its 4 bars first, so the switch lands in time.
   - id: make-twin

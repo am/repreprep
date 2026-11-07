@@ -255,3 +255,11 @@ test("figure sounds: every playable part of a drawing has a sound, and the drawi
   }
   assert.deepEqual([...used].sort(), Object.keys(FIG_SOUNDS).sort());
 });
+
+test("every Play step opens with a short title that names its goal", async () => {
+  const { stepParts } = await import("../../src/course/shared/text.js");
+  for (const L of I.lessons)
+    L.steps.forEach((s) => {
+      if ((s.k || "play") === "play" && !s.intro) assert.ok(stepParts(s).lead, `${L.id} ${s.id}: ${s.t}`);
+    });
+});
