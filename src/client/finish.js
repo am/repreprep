@@ -181,7 +181,7 @@ function celebrate(btn, onDone, to) {
     }, JAM_MAX * 1000);
   } else setTimeout(() => navigate(to), still() ? 700 : PAUSE);
 }
-/* one 16th of the jam: the step dots light in turn like a playhead, and the button beats on the quarters */
+/* one 16th of the jam: the step dots light in turn like a playhead, and a soft glow leaves the button on the quarters */
 function playhead(btn, dots, n) {
   if (!btn._fill.jam || btn._fill.released) return;
   btn.classList.add("fin-jam");
