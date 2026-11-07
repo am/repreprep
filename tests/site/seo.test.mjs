@@ -9,7 +9,7 @@ import { pages, ROOT } from "./built.mjs";
 const SITE = "https://repreprep.studio";
 const canonical = (html) => html.match(/<link rel="canonical" href="([^"]*)"/)?.[1];
 const noindex = (html) => /<meta name="robots" content="noindex"/.test(html);
-const isStep = (path) => /\/(lessons|songs)\/[^/]+\/\d+$/.test(path);
+const isStep = (path) => /\/(lessons|songs)\/[^/]+\/(\d+|done)$/.test(path);
 
 test("every page names its own served address as canonical, never a .html file", () => {
   const wrong = [];
