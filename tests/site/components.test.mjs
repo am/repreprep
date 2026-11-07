@@ -28,11 +28,10 @@ test("player: dots, Back and Next on every step of every lesson", () => {
       if (act === 0)
         assert.match(html, /<button class="btn" disabled aria-label="Previous step">Back<\/button>/, where);
       else assert.match(html, new RegExp(`href="${stepPath(L, act - 1)}" data-nav="-1"`), where);
-      const end = act === total - 1,
-        nx = nextLesson(I, L);
-      const label = end ? "Finish" : act === 0 ? "Start" : "Next";
-      const href = end ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
-      assert.match(html, new RegExp(`href="${href}" data-nav="1"${end ? " data-end" : ""}>${label}</a>`), where);
+      /* the last step's Next opens the done screen */
+      const label = act === 0 ? "Start" : "Next";
+      const href = stepPath(L, act === total - 1 ? "done" : act + 1);
+      assert.match(html, new RegExp(`href="${href}" data-nav="1">${label}</a>`), where);
     }
   }
 });
@@ -46,9 +45,13 @@ test("player: the done screen closes the lesson, with no current step and Next l
     assert.equal(count(html, /aria-current="true"/g) - count(html, /class="pm-i"[^>]*aria-current="true"/g), 0, where);
     assert.match(html, /<span class="kind k-done">Done<\/span>/, where);
     assert.match(html, /class="donehero"/, where);
-    assert.doesNotMatch(html, /data-end/, where);
-    if (nx) assert.match(html, new RegExp(`href="${nx.path}" data-nav="1" data-next-lesson>Next lesson</a>`), where);
-    else assert.doesNotMatch(html, /data-next-lesson/, where);
+    /* Next lesson is the button you hold; after the last lesson it leads to the course page */
+    const to = nx ? nx.path : `/${I.slug}`;
+    assert.match(
+      html,
+      new RegExp(`href="${to}" data-nav="1" data-end>${nx ? "Next lesson" : "All lessons"}</a>`),
+      where
+    );
   }
 });
 

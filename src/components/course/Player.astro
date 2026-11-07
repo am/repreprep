@@ -1,7 +1,7 @@
 ---
 // The step player: the drawing or the panel on the left (on the intro, the lesson's title in big type), the step on the right. The optional challenge is
-// one more step after the last one: same player, its own kind, and Finish moves there. After the last step, Finish fills,
-// ticks and plays a little arpeggio (src/client/finish.js), then opens the done screen: the same player again, closing the lesson.
+// one more step after the last one: same player, its own kind. Next on the last step opens the done screen, the same player again,
+// closing the lesson; its Next lesson button fills, ticks and plays (src/client/finish.js), then opens the next lesson.
 import LessonMenu from "./LessonMenu.astro";
 import IntroCard from "./IntroCard.astro";
 import DoneCard from "./DoneCard.astro";
@@ -30,7 +30,7 @@ const k = st.k || "play";
 const page = L.steps.slice(0, act + 1).reduce((p: number, s: any) => s.page || p, 1);
 const end = !done && act === total - 1;
 const nx = nextLesson(I, L);
-const nextHref = end ? (nx ? nx.path : L.path) : stepPath(L, act + 1);
+const nextHref = end ? stepPath(L, "done") : stepPath(L, act + 1);
 const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN", "turn");
 ---
 
@@ -45,6 +45,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   data-next={nx?.id}
   data-next-path={nx?.path}
   data-done={done ? "" : undefined}
+  data-challenge={L.challenge ? "" : undefined}
   data-done-path={stepPath(L, "done")}
 >
   <div class="phead">
@@ -165,14 +166,14 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
         <div class="navrow">
           {done ? (
             <Fragment>
-              <a class={nx ? "btn" : "btn primary"} href={`/${I.slug}`}>
-                All lessons
-              </a>
               {nx && (
-                <a class="btn primary" href={nx.path} data-nav="1" data-next-lesson>
-                  Next lesson
+                <a class="btn" href={`/${I.slug}`}>
+                  All lessons
                 </a>
               )}
+              <a class="btn primary" href={nx ? nx.path : `/${I.slug}`} data-nav="1" data-end>
+                {nx ? "Next lesson" : "All lessons"}
+              </a>
             </Fragment>
           ) : act === 0 ? (
             <button class="btn" disabled aria-label="Previous step">
@@ -184,8 +185,8 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
             </a>
           )}
           {!done && (
-            <a class="btn primary" href={nextHref} data-nav="1" data-end={end ? "" : undefined}>
-              {end ? "Finish" : act === 0 ? "Start" : "Next"}
+            <a class="btn primary" href={nextHref} data-nav="1">
+              {act === 0 ? "Start" : "Next"}
             </a>
           )}
         </div>
@@ -198,7 +199,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   /* Marks where you are, saves ticks as you move on, and runs the player's controls: the step panel's
      width, the full-window switch, the lesson picker, arrow keys, and clicking a control on the panel. */
   import { onProgress, persist, refresh, ist, state } from "../../client/progress.js";
-  import { player, curLesson, markAllDone, goNextLesson, stepKey } from "../../client/lesson.js";
+  import { player, curLesson, markAllDone, nextLessonHref, stepKey } from "../../client/lesson.js";
   import { pressFinish, clickFinish } from "../../client/finish.js";
   import { CYCLES_CONTROLS } from "../../course/model-cycles/controls.js";
   import { iconSvg } from "../../course/model-cycles/icons.js";
@@ -332,27 +333,24 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
         }
         return;
       }
-      /* Next ticks the step you're on; Finish on the last step fills, ticks and opens the done screen;
-         Next lesson there opens the next lesson */
+      /* Next ticks the step you're on; on the last step it also closes the lesson and opens the done screen.
+         Next lesson there fills, ticks and plays, then opens the next lesson */
       const nav = e.target.closest("[data-nav]");
       const c = nav && nav.dataset.nav === "1" && curLesson();
       if (!c) return;
       const s = ist(c.k);
-      if (nav.hasAttribute("data-next-lesson")) {
-        e.preventDefault();
-        goNextLesson(s, c);
-        return;
-      }
       if (nav.hasAttribute("data-end")) {
         e.preventDefault();
-        clickFinish(nav, () => finished(c), c.donePath);
+        clickFinish(nav, () => finished(c), nextLessonHref(s, c, nav));
         return;
       }
       tickHere(s, c);
+      /* the lesson counts as done even if you skipped a step (the done screen shows how many you ticked) */
+      if (c.act === c.n + (c.challenge ? 1 : 0) - 1) s.done[c.id] ||= Date.now();
       persist(); /* the link opens the next step */
     },
     true
-  ); /* capture: runs before the router follows a link, so Finish can pick where to go */
+  ); /* capture: runs before the router follows a link, so Next lesson can pick where to go */
 
   /* ticks the step you're on; the optional challenge is never a rep */
   function tickHere(s, c) {
@@ -361,19 +359,18 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       markAllDone(s, c);
     }
   }
-  /* Finish closes the lesson: it counts as done even if you skipped a step (the done screen shows how many you ticked) */
+  /* Next lesson on the done screen: done, if you came straight to it */
   function finished(c) {
     const s = ist(c.k);
-    tickHere(s, c);
     s.done[c.id] ||= Date.now();
     persist();
     refresh();
   }
-  /* holding Finish fills it slowly; a long press doesn't open the link menu */
+  /* holding Next lesson fills it slowly; a long press doesn't open the link menu */
   document.addEventListener("pointerdown", (e) => {
     const b = e.button === 0 && e.target.closest("[data-end]"),
       c = b && curLesson();
-    if (c) pressFinish(b, () => finished(c), c.donePath);
+    if (c) pressFinish(b, () => finished(c), nextLessonHref(ist(c.k), c, b));
   });
   document.addEventListener("contextmenu", (e) => {
     if (e.target.closest("[data-end]")) e.preventDefault();

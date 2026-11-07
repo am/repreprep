@@ -71,7 +71,6 @@ const { I, L } = Astro.props;
   import { onProgress, persist, refresh, ist } from "../../client/progress.js";
   import { navigate } from "astro:transitions/client";
   import { curLesson } from "../../client/lesson.js";
-  import { arpeggio } from "../../client/finish.js";
 
   function showNote(s, id, saved) {
     const box = document.querySelector(`[data-notebox="${id}"]`);
@@ -161,7 +160,6 @@ const { I, L } = Astro.props;
       s.done[c.id] = Date.now();
       c.ids.forEach((x) => (s.steps[c.id + ":" + x] = true));
       persist();
-      arpeggio();
       navigate(c.donePath);
     },
     true

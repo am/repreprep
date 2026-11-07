@@ -5,7 +5,7 @@ import LessonWrapup from "../../../../components/course/LessonWrapup.astro";
 import LessonAbout from "../../../../components/course/LessonAbout.astro";
 import { courses } from "../../../../course/content.js";
 /* /model-cycles/lessons/<lesson> (or /songs/<study>) is the intro; .../<n> is step n; one past the last step is the optional challenge;
-   .../done is the screen Finish opens */
+   .../done is the screen Next opens after the last step */
 export async function getStaticPaths() {
   return (await courses()).flatMap((I) =>
     I.lessons.flatMap((L) => {

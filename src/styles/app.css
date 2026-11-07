@@ -347,7 +347,7 @@ a.song svg {
   opacity: 0.45;
   cursor: default;
 }
-/* Finish on a lesson's last step (src/client/finish.js): holding fills it green from the left, then it turns into a tick */
+/* Next lesson on a lesson's done screen (src/client/finish.js): holding fills it green from the left, then it turns into a tick */
 [data-end] {
   -webkit-touch-callout: none;
   user-select: none;
@@ -390,7 +390,7 @@ a.song svg {
     stroke-dashoffset: 16;
   }
 }
-/* a held Finish keeps playing: the button beats on the quarters, the step dots run like a playhead */
+/* a held Next lesson keeps playing: the button beats on the quarters, the step dots run like a playhead */
 .btn.fin-beat {
   animation: fin-beat 0.3s ease-out;
 }

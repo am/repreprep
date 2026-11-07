@@ -7,10 +7,9 @@
   date: "2026-11-07"
   title: Finishing a lesson
   site:
-    - Hold Finish on a lesson's last step and it fills green, then turns into a tick with a short arpeggio while the step dots light up. A click works too, just quicker.
-    - Keep holding after the tick and it turns into a little jam. The arpeggio carries on round four chords and gets brighter the longer you hold, the step dots run like a sequencer's playhead, and the button beats in time. Let go to land on a last note and open the done screen.
-    - Finish now opens a done screen for the lesson, with what you can now do, your steps, the challenge and what comes next. Next lesson moves on when you're ready.
-    - Complete under a lesson plays the same sound and opens the same done screen.
+    - The last step of a lesson now has a plain Next, which opens a new done screen for the lesson, with what you can now do, your steps, the challenge and what comes next. The lesson counts as done from there. Complete under a lesson opens the same screen.
+    - On the done screen, hold Next lesson and it fills green, then turns into a tick with a short arpeggio while the step dots light up. A click works too, just quicker.
+    - Keep holding after the tick and it turns into a little jam. The arpeggio carries on round four chords and gets brighter the longer you hold, the step dots run like a sequencer's playhead, and the button beats in time. Let go to land on a last note and move on to the next lesson.
 
 - id: 0.6.0
   date: "2026-11-07"

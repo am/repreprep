@@ -1,9 +1,8 @@
-/* Finishing a lesson: the Finish button on the last step fills green while you hold it (a click fills it
-   quickly), then ticks, plays a short arpeggio, sweeps the step dots and, after a breath, opens the done
-   screen. Keep holding after the tick and it turns into a little jam: the arpeggio keeps going round
+/* Leaving a finished lesson: Next lesson on the done screen fills green while you hold it (a click fills it
+   quickly), then ticks, plays a short arpeggio, sweeps the step dots and, after a breath, opens the next
+   lesson. Keep holding after the tick and it turns into a little jam: the arpeggio keeps going round
    Am, F, C and G, the step dots run like a sequencer's playhead and the sound opens up the longer you
-   hold; letting go lands on a last A and opens the done screen. Complete under the player plays the same
-   sound. The sound only ever starts from a press. */
+   hold; letting go lands on a last A and moves on. The sound only ever starts from a press. */
 import { navigate } from "astro:transitions/client";
 
 const HOLD = 900; /* ms for a held press to fill the button */
@@ -156,7 +155,6 @@ function celebrate(btn, onDone, to) {
   btn.classList.remove("fin-filling");
   btn.classList.add("fin-done");
   btn.innerHTML = CHECK + "Done";
-  btn.setAttribute("aria-label", "Lesson done");
   arpeggio();
   onDone();
   const dots = document.querySelector(".dots");
