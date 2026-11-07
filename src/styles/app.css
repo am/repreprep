@@ -776,57 +776,56 @@ svg.fig {
   marker-end: none;
 }
 /* a key combo as numbered rows (shared/combo.js): amber keys stay held, coral keys are pressed, knobs are turned; the amber line
-   beside the later rows is the key held through all of them */
+   beside the later rows is the key held through all of them. It takes the step's text size, and every size inside is in em,
+   so the rows, notes and key caps read like the bullets around them */
 .combo {
   display: grid;
-  gap: 0.45rem;
-  margin: var(--s2) 0 var(--s3);
-  font-size: 0.85rem;
+  gap: 0.5em;
+  margin: 0.6em 0 0.9em;
 }
 .combo .combo-rows {
   display: grid;
-  gap: 0.45rem;
+  gap: 0.5em;
 }
 .combo .combo-rows.held {
-  margin-left: 0.6rem;
-  padding-left: 0.9rem;
+  margin-left: 0.65em;
+  padding-left: 0.75em;
   border-left: 3px solid var(--hold);
   border-radius: 0 0 0 6px;
 }
 .combo .combo-row {
   display: flex;
   align-items: flex-start;
-  gap: 0.5rem;
+  gap: 0.5em;
 }
 .combo .combo-body {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 0.35rem 0.5rem;
-  min-height: 1.3rem;
+  gap: 0.25em 0.4em;
+  min-height: 1.4em;
 }
 .combo .combo-n {
-  width: 1.3rem;
-  height: 1.3rem;
   flex: none;
   display: grid;
   place-items: center;
   border: 1px solid var(--line);
   border-radius: 50%;
   font-family: var(--mono);
-  font-size: 0.7rem;
+  font-size: 0.74em;
+  width: 1.9em;
+  height: 1.9em;
   color: var(--muted);
 }
 .combo .combo-keys {
   display: inline-flex;
   align-items: center;
-  gap: 0.3rem;
+  gap: 0.3em;
 }
 .combo .combo-plus {
   color: var(--faint);
 }
 .combo .combo-note {
-  font-size: 0.8rem;
   color: var(--muted);
 }
 /* a part of a drawing you tap to hear (shared/fig-sounds.js): the box lights on hover, focus and while it plays */
