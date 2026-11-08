@@ -20,9 +20,11 @@ import { emailReady, sendLink } from "./email.js";
    (tables in migrations/). Sessions are an HttpOnly cookie that lasts 30 days and renews once a day when used. */
 const DAY = 86400;
 
-/* a test account for running on your own computer only: never on a real domain */
+/* running on your own computer: links are printed to the server log, and a fixed secret works. Never on a real domain */
 export const testSignIn = (url) =>
   SIGN_IN && ["localhost", "127.0.0.1"].includes(url.hostname) && (import.meta.env.DEV || ALLOW_TEST_SIGNIN === "1");
+/* the local test account, for the automated tests only: on your own computer and with ALLOW_TEST_SIGNIN=1 */
+export const testAccount = (url) => testSignIn(url) && ALLOW_TEST_SIGNIN === "1";
 /* without its own secret, sign-in only works on your computer, with a fixed secret nobody relies on */
 const secretFor = (url) => BETTER_AUTH_SECRET || (testSignIn(url) ? "local-only-secret-not-for-a-real-domain" : null);
 
@@ -145,7 +147,8 @@ export function auth(url) {
         : []),
       /* refuse passwords known from data breaches (only the first 5 characters of the password's SHA-1 hash leave
          the site); skipped on localhost, where the tests run without the internet */
-      ...(testSignIn(url) ? [devSignIn] : [haveIBeenPwned()]),
+      ...(testAccount(url) ? [devSignIn] : []),
+      ...(testSignIn(url) ? [] : [haveIBeenPwned()]),
     ],
   });
   cache.set(url.origin, a);
@@ -159,7 +162,7 @@ export function providers(url) {
   const list = [];
   if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET) list.push({ id: "google", name: "Google" });
   if (emailReady()) list.push({ id: "email", name: "email" }, { id: "password", name: "password" });
-  if (testSignIn(url)) list.push({ id: "dev", name: "a local test account" });
+  if (testAccount(url)) list.push({ id: "dev", name: "a local test account" });
   return list;
 }
 

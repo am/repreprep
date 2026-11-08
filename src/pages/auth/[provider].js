@@ -1,4 +1,4 @@
-import { auth, testSignIn, safeNext, redirectWith, providers } from "../../lib/auth.js";
+import { auth, testAccount, safeNext, redirectWith, providers } from "../../lib/auth.js";
 export const prerender = false;
 
 /* /auth/google?next=…: sends the browser to Google, then back to `next` once signed in.
@@ -11,7 +11,7 @@ export async function GET({ params, url, request }) {
   /* Better Auth checks the Origin of every sign-in request; this one starts on our own page */
   const headers = new Headers(request.headers);
   headers.set("Origin", url.origin);
-  if (params.provider === "dev" && testSignIn(url)) {
+  if (params.provider === "dev" && testAccount(url)) {
     const res = await a.api.devSignIn({ headers, asResponse: true });
     return redirectWith(res, next);
   }
