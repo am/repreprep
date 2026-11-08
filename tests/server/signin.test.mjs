@@ -41,8 +41,10 @@ const progress = (updatedAt) => ({
 });
 
 test("the pages offer sign-in", async () => {
-  const html = await (await client(w.origin).req("/account")).text();
-  assert.match(html, /<title>Your account/);
+  const c = client(w.origin);
+  assert.match(await (await c.req("/account")).text(), /<title>Log in/);
+  assert.match(await (await c.req("/account/signup")).text(), /<title>Sign up/);
+  assert.match(await (await c.req("/account/data")).text(), /<title>Your data/);
 });
 
 test("the local test account signs in, and is sent back only to this site", async () => {

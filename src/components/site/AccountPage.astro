@@ -1,0 +1,784 @@
+---
+// The account pages, one per tab: Log in (/account), Sign up (/account/signup) and Your data (/account/data).
+// Signed in, /account is Your account instead, and the Log in and Sign up tabs give way to it. Who you are is
+// only known in the browser, so the page holds both versions and its script shows the right one.
+// With sign-in off, every one of them is just your progress.
+import Base from "../../layouts/Base.astro";
+import SectionTabs from "./SectionTabs.astro";
+import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
+interface Props {
+  view: "login" | "signup" | "data";
+}
+const { view } = Astro.props;
+const form = SIGN_IN && view !== "data";
+const TITLE = {
+  login: ["Log in", "Log in to keep your progress on every device."],
+  signup: ["Sign up", "Make an account to keep your progress on every device."],
+  data: ["Your data", "Back up, load or delete your progress."],
+};
+const [title, description] = SIGN_IN ? TITLE[view] : ["Your progress", "Back up your progress or load a saved copy."];
+const TABS = [
+  { key: "login", label: "Log in", href: "/account", show: "out" },
+  { key: "account", label: "Your account", href: "/account", show: "in" },
+  { key: "signup", label: "Sign up", href: "/account/signup", show: "out" },
+  { key: "data", label: "Your data", href: "/account/data" },
+];
+---
+
+<Base noindex title={title} description={description}>
+  <div class="page" id="account" data-view={view}>
+    {SIGN_IN && <SectionTabs items={TABS} tab={view} label="Account" />}
+    {form ? (
+      <Fragment>
+        <p class="msg bad" data-acct-error hidden>
+          Logging in didn't work. Please try again.
+        </p>
+        {/* signed out: the ways in, then email and password with one main button. data-tab (signin or signup)
+            and data-method (password or link) say what is shown */}
+        <section
+          class="signin-col"
+          data-signed-out
+          data-tab={view === "signup" ? "signup" : "signin"}
+          data-method="password"
+          hidden
+        >
+          <h2 class="vh">{view === "signup" ? "Sign up" : "Log in"}</h2>
+          <div class="methods" data-providers></div>
+          <button
+            class="btn mail"
+            type="button"
+            data-method-to="link"
+            data-only-method="password"
+            data-email-way
+            hidden
+          >
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M10 14a4.5 4.5 0 0 0 6.4 0l3.2-3.2a4.5 4.5 0 0 0-6.4-6.4L12 5.6" />
+              <path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3.2 3.2a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2" />
+            </svg>
+            Email me a one-time link
+          </button>
+          <form class="email-signin" data-email-signin data-astro-reload hidden>
+            <p class="or">or</p>
+            <div class="fields">
+              <label>
+                Email
+                <input type="email" name="email" required maxlength="200" autocomplete="email" />
+              </label>
+              <label data-only-method="password">
+                Password{" "}
+                <span class="hint" data-only-tab="signup">
+                  (at least 12 characters)
+                </span>
+                <span class="pw">
+                  <input
+                    type="password"
+                    name="password"
+                    minlength={view === "signup" ? 12 : undefined}
+                    maxlength="128"
+                    autocomplete={view === "signup" ? "new-password" : "current-password"}
+                  />
+                  <button class="eye" type="button" aria-label="Show password" data-eye>
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                      <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+                      <circle cx="12" cy="12" r="3" />
+                    </svg>
+                  </button>
+                </span>
+              </label>
+              <div class="strength" data-strength data-only-tab="signup" data-only-method="password" aria-live="polite">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <small data-strength-label></small>
+              </div>
+              <div
+                class="turnstile"
+                data-turnstile={import.meta.env.DEV ? "1x00000000000000000000BB" : TURNSTILE_SITE_KEY}
+              ></div>
+              <button
+                class="btn primary"
+                type="submit"
+                data-act="signin"
+                data-only-tab="signin"
+                data-only-method="password"
+              >
+                Log in
+              </button>
+              <button
+                class="btn primary"
+                type="submit"
+                data-act="signup"
+                data-only-tab="signup"
+                data-only-method="password"
+              >
+                Sign up
+              </button>
+              <button class="btn primary" type="submit" data-act="link" data-only-method="link">
+                Email me a link
+              </button>
+              <p class="note">
+                <span data-only-tab="signup" data-only-method="password">
+                  We'll email you a link to confirm your address.
+                </span>
+                <span data-only-tab="signin" data-only-method="link">
+                  We'll email you a link that logs you in.
+                </span>
+                <span data-only-tab="signup" data-only-method="link">
+                  We'll email you a link. Opening it creates your account.
+                </span>
+              </p>
+            </div>
+            <p class="msg" data-email-msg role="status"></p>
+            <div class="links">
+              <p data-only-method="link">
+                <button class="linkish" type="button" data-method-to="password">
+                  Use a password instead
+                </button>
+              </p>
+              <p data-only-tab="signin" data-only-method="password">
+                <button class="linkish" type="submit" data-act="forgot" formnovalidate>
+                  Forgot your password?
+                </button>
+              </p>
+            </div>
+          </form>
+          <p class="msg" data-no-providers hidden>
+            Logging in isn't set up on this site yet.
+          </p>
+        </section>
+        {/* signed in: who you are (on the Sign up page, the script sends you to /account instead) */}
+        <section class="signed-in" data-signed-in hidden>
+          <h2 class="vh">Your account</h2>
+          <section class="box who">
+            <p class="t-body">
+              Logged in as <b data-who></b>
+            </p>
+            <button class="btn" data-signout>
+              Log out
+            </button>
+          </section>
+        </section>
+      </Fragment>
+    ) : (
+      <Fragment>
+        <h2 class:list={{ vh: SIGN_IN }}>{title}</h2>
+        {SIGN_IN ? (
+          <p class="t-body lede">
+            <span data-show="out" hidden>
+              Your ticks, finished lessons and notes are saved in this browser. Log in to keep them on every device.
+            </span>
+            <span data-show="in" hidden>
+              Your progress is saved to your account and follows you to every device.
+            </span>{" "}
+            <a href="/privacy">What the site keeps</a>
+          </p>
+        ) : (
+          <p class="t-body lede">
+            Your ticks, finished lessons and notes are saved in this browser. <a href="/privacy">What the site keeps</a>
+          </p>
+        )}
+      </Fragment>
+    )}
+
+    {/* your progress: back up, load, delete, in one card */}
+    {!form && (
+      <section class="sec progress">
+        {SIGN_IN && (
+          <h3 class="t-title t-card" data-show="in" hidden>
+            Progress
+          </h3>
+        )}
+        <div class="box rows">
+          <div class="r">
+            <p class="t-body">
+              <b>Back up</b>Download a copy of your ticks, finished lessons and notes.
+            </p>
+            <button class="btn" data-export>
+              Download progress
+            </button>
+          </div>
+          <div class="r">
+            <p class="t-body">
+              <b>Load a copy</b>Adds a saved file to the progress here, so nothing is lost. A <code>progress.json</code>{" "}
+              from the old local version works too.
+              <span class="msg" data-import-msg></span>
+            </p>
+            <label class="btn">
+              Load a progress file
+              <input type="file" accept="application/json,.json" data-import hidden />
+            </label>
+          </div>
+          <div class="r">
+            <p class="t-body">
+              <b>Delete</b>Removes your ticks, finished lessons and notes
+              {SIGN_IN ? (
+                <span data-show="in" hidden>
+                  , here and from your account
+                </span>
+              ) : (
+                ""
+              )}
+              . This can't be undone.
+              <span class="msg" data-clear-msg></span>
+            </p>
+            <button class="btn danger" data-clear>
+              Delete my progress
+            </button>
+          </div>
+        </div>
+      </section>
+    )}
+
+    {/* your account's data: only with an account, on the Your data page */}
+    {SIGN_IN && !form && (
+      <section class="sec mine" data-signed-in hidden>
+        <h3 class="t-title t-card">Account</h3>
+        <div class="box rows">
+          <div class="r">
+            <p class="t-body">
+              <b>Download my data</b>Everything the site keeps about your account, as a file.
+            </p>
+            <a class="btn" href="/api/export" download data-astro-reload>
+              Download my account data
+            </a>
+          </div>
+          <div class="r">
+            <p class="t-body">
+              <b>Delete my account</b>Removes your account and everything saved with it. Your progress stays in this
+              browser.
+            </p>
+            <button class="btn danger" data-delete>
+              Delete my account
+            </button>
+          </div>
+        </div>
+      </section>
+    )}
+  </div>
+</Base>
+
+<script>
+  /* download, load and delete your progress; with sign-in on, who you are and your account */
+  import { onProgress, flush, update, combine, state, account, LS_KEY } from "../../client/progress.js";
+  import { drawTurnstile, resetTurnstile, turnstileToken } from "../../client/turnstile.js";
+  import { strengthMeter } from "../../client/strength.js";
+  import { esc } from "../../course/shared/html.js";
+  import { SIGN_IN } from "astro:env/client";
+
+  const PROVIDER_ICON = {
+    dev: '<svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="5.5" r="2.75" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M2.75 14a5.25 5.25 0 0 1 10.5 0z" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>',
+    google:
+      '<svg viewBox="0 0 24 24" aria-hidden="true"><path fill="currentColor" d="M21.6 12.2c0-.7-.1-1.4-.2-2H12v3.8h5.4a4.6 4.6 0 0 1-2 3v2.5h3.2c1.9-1.7 3-4.3 3-7.3zM12 22c2.7 0 5-.9 6.6-2.4l-3.2-2.5c-.9.6-2 1-3.4 1-2.6 0-4.8-1.8-5.6-4.1H3.1v2.6A10 10 0 0 0 12 22zm-5.6-8c-.2-.6-.3-1.3-.3-2s.1-1.4.3-2V7.4H3.1a10 10 0 0 0 0 9.2l3.3-2.6zM12 6c1.5 0 2.8.5 3.8 1.5l2.9-2.9A10 10 0 0 0 3.1 7.4L6.4 10C7.2 7.7 9.4 6 12 6z"/></svg>',
+  };
+  onProgress(() => {
+    const root = document.getElementById("account");
+    if (!SIGN_IN || !root || !account.loaded) return;
+    const q = new URLSearchParams(location.search),
+      me = account.me,
+      view = root.dataset.view;
+    /* the old address for signing up, and the Sign up page once you're logged in */
+    if (view === "login" && q.get("mode") === "signup" && !me) return location.replace("/account/signup");
+    if (view === "signup" && me) return location.replace("/account");
+    const err = root.querySelector("[data-acct-error]");
+    if (err) err.hidden = q.get("error") !== "signin";
+    root.querySelectorAll("[data-signed-in]").forEach((el) => (el.hidden = !me));
+    root.querySelectorAll("[data-signed-out]").forEach((el) => (el.hidden = !!me));
+    root.querySelectorAll("[data-show]").forEach((el) => (el.hidden = (el.dataset.show === "in") !== !!me));
+    const sec = root.querySelector("[data-signed-out]");
+    if (me && view === "login") document.title = document.title.replace(/^Log in/, "Your account");
+    if (me) {
+      const who = root.querySelector("[data-who]");
+      if (who) who.textContent = [me.name, me.email && `(${me.email})`].filter(Boolean).join(" ");
+    } else if (sec) {
+      const next = q.get("next") || "/account";
+      const ids = account.providers.map((p) => p.id);
+      const link = (p) =>
+        p.id === "dev"
+          ? `<a class="btn" href="/auth/dev?next=${encodeURIComponent(next)}" data-astro-reload>${PROVIDER_ICON.dev}Continue with a local test account</a>`
+          : `<a class="btn" href="/auth/${p.id}?next=${encodeURIComponent(next)}" data-astro-reload>${PROVIDER_ICON[p.id] || ""}Continue with ${esc(p.name)}</a>`;
+      /* the other ways in, one button each: a new provider is one more entry in providers() */
+      const items = account.providers.filter((p) => !["email", "password"].includes(p.id)).map(link);
+      const box = sec.querySelector("[data-providers]"),
+        html = items.join("");
+      if (box.dataset.html !== html) box.innerHTML = box.dataset.html = html;
+      const form = sec.querySelector("[data-email-signin]");
+      form.hidden = !ids.includes("email");
+      sec.querySelector("[data-email-way]").hidden = form.hidden;
+      if (!form.hidden) drawTurnstile(form.querySelector("[data-turnstile]"));
+      if (view === "signup")
+        strengthMeter({
+          input: form.password,
+          meter: form.querySelector("[data-strength]"),
+          button: form.querySelector('[data-act="signup"]'),
+        });
+      root.querySelector("[data-no-providers]").hidden = account.providers.length > 0;
+    }
+  });
+
+  /* a password or an email link */
+  const signedOut = () => document.querySelector("[data-signed-out]");
+  function clearMsg(sec) {
+    const m = sec.querySelector("[data-email-msg]");
+    m.textContent = "";
+    m.className = "msg";
+    delete sec.dataset.sent;
+  }
+  function setMethod(method) {
+    const sec = signedOut(),
+      form = sec.querySelector("[data-email-signin]");
+    sec.dataset.method = method;
+    clearMsg(sec);
+    (method === "password" && form.email.value ? form.password : form.email).focus();
+  }
+  document.addEventListener("click", (e) => {
+    const m = e.target.closest("[data-method-to]"),
+      eye = e.target.closest("[data-eye]");
+    if (m) setMethod(m.dataset.methodTo);
+    else if (eye) {
+      const input = eye.previousElementSibling,
+        show = input.type === "password";
+      input.type = show ? "text" : "password";
+      eye.setAttribute("aria-label", show ? "Hide password" : "Show password");
+      eye.classList.toggle("on", show);
+    }
+  });
+
+  /* the email form: a password, or a one-use sign-in link. Each request goes to Better Auth with the Turnstile
+     token; what comes back is said in plain words under the form. */
+  const API = {
+    link: "/api/auth/sign-in/magic-link",
+    signin: "/api/auth/sign-in/email",
+    signup: "/api/auth/sign-up/email",
+    forgot: "/api/auth/request-password-reset",
+  };
+  const ERRORS = {
+    PASSWORD_COMPROMISED: "That password has turned up in a data breach, so it's easy to guess. Please choose another.",
+    PASSWORD_TOO_SHORT: "Please use a password of at least 12 characters.",
+    PASSWORD_TOO_LONG: "Please use a password of at most 128 characters.",
+    INVALID_EMAIL_OR_PASSWORD: "That email and password don't match. Try again, or use “Forgot your password?”.",
+    INVALID_EMAIL: "That doesn't look like an email address.",
+  };
+  async function sendEmailForm(form, act) {
+    const msg = form.querySelector("[data-email-msg]");
+    const email = form.email.value.trim();
+    const password = form.password.value;
+    /* only a path on this site, never another address */
+    const asked = new URLSearchParams(location.search).get("next") || "";
+    const next = /^\/(?![\/\\])/.test(asked) && !asked.includes("\\") ? asked : "/account";
+    const body = {
+      link: { email, callbackURL: next, errorCallbackURL: "/account?error=signin" },
+      signin: { email, password, callbackURL: next },
+      signup: { email, password, name: email.split("@")[0], callbackURL: next },
+      forgot: { email, redirectTo: "/account/reset" },
+    }[act];
+    form.querySelectorAll("button").forEach((b) => (b.disabled = true));
+    msg.className = "msg";
+    msg.textContent = "One moment…";
+    const token = await turnstileToken(form.querySelector("[data-turnstile]"));
+    const r = await fetch(API[act], {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-captcha-response": token },
+      body: JSON.stringify(body),
+    }).catch(() => null);
+    const j = await r?.json().catch(() => ({}));
+    form.querySelectorAll("button").forEach((b) => (b.disabled = false));
+    resetTurnstile(form.querySelector("[data-turnstile]"));
+    const say = (text, bad) => {
+      msg.className = bad ? "msg bad" : "msg";
+      msg.textContent = text;
+    };
+    if (r?.ok) {
+      if (act === "signin") return (location.href = next);
+      form.password.value = "";
+      signedOut().dataset.sent = "";
+      return say(
+        {
+          link: `Check your inbox: a login link is on its way to ${email}. It works once, for 10 minutes.`,
+          signup: `Almost there: confirm your address with the link we sent to ${email}, and you're logged in.`,
+          forgot: `If there's an account for ${email}, a link to choose a new password is on its way. It works for an hour.`,
+        }[act]
+      );
+    }
+    if (r?.status === 429) return say("Too many tries. Please wait a minute and try again.", true);
+    if (j?.code === "EMAIL_NOT_VERIFIED")
+      return say(`Please confirm your address first: we've sent a new link to ${email}.`, true);
+    if (ERRORS[j?.code]) return say(ERRORS[j.code], true);
+    if (r?.status === 400 || r?.status === 403)
+      return say("That didn't go through. Check the address and the box above, then try again.", true);
+    say("Something went wrong. Please try again.", true);
+  }
+  document.addEventListener("submit", (e) => {
+    const f = e.target.closest("[data-email-signin]");
+    if (!f) return;
+    e.preventDefault();
+    const sec = signedOut();
+    /* Enter in a field picks the button shown for this view */
+    const shown = e.submitter?.offsetParent ? e.submitter : null;
+    const act = shown?.dataset.act || (sec.dataset.method === "password" ? sec.dataset.tab : "link");
+    if ((act === "signin" && !f.password.value) || (act === "signup" && f.password.value.length < 12)) {
+      f.password.focus();
+      return f.password.reportValidity?.() || undefined;
+    }
+    sendEmailForm(f, act);
+  });
+
+  async function signOut() {
+    await flush();
+    const { actions } = await import("astro:actions");
+    await actions.account.signOut().catch(() => {});
+    /* a shared computer shouldn't keep your progress after you sign out */
+    try {
+      localStorage.removeItem(LS_KEY);
+    } catch (e) {}
+    location.href = "/account";
+  }
+  async function deleteAccount() {
+    if (!confirm("Delete your account and the progress saved with it? This can't be undone.")) return;
+    const { actions } = await import("astro:actions");
+    const { error } = await actions.account.delete().catch((e) => ({ error: e }));
+    if (!error) {
+      account.me = null;
+      location.href = "/account";
+    } else alert("Couldn't delete the account. Please try again.");
+  }
+  function exportProgress() {
+    const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
+    const a = Object.assign(document.createElement("a"), {
+      href: URL.createObjectURL(blob),
+      download: "repreprep-progress.json",
+    });
+    a.click();
+    setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  }
+  /* clears ticks, finished lessons and notes; layout choices stay */
+  function clearProgress() {
+    if (
+      !confirm(
+        "Delete your progress? Your ticks, finished lessons and notes will be removed. Download a copy first if you might want them back."
+      )
+    )
+      return;
+    state.inst = {};
+    update();
+    const msg = document.querySelector("[data-clear-msg]");
+    if (msg) msg.textContent = "Progress deleted.";
+  }
+  async function importProgress(file) {
+    const msg = document.querySelector("[data-import-msg]");
+    try {
+      const s = JSON.parse(await file.text());
+      if (!s || typeof s.inst !== "object") throw new Error("not a progress file");
+      combine(s);
+      update();
+      const n = Object.values(state.inst).reduce((a, v) => a + Object.keys(v.steps || {}).length, 0);
+      if (msg) msg.textContent = `Loaded and combined. ${n} ticked steps.`;
+    } catch (e) {
+      if (msg) msg.textContent = "That file isn't a Rep Rep Rep progress file.";
+    }
+  }
+  document.addEventListener("click", (e) => {
+    if (e.target.closest("[data-signout]")) signOut();
+    else if (e.target.closest("[data-delete]")) deleteAccount();
+    else if (e.target.closest("[data-export]")) exportProgress();
+    else if (e.target.closest("[data-clear]")) clearProgress();
+  });
+  document.addEventListener("change", (e) => {
+    const f = e.target.closest("[data-import]");
+    if (f && f.files[0]) {
+      importProgress(f.files[0]);
+      f.value = "";
+    }
+  });
+</script>
+
+<style>
+  /* the active tab already says which page this is: its title is for screen readers only */
+  .vh {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    border: 0;
+  }
+  .page h3 {
+    margin: 0;
+  }
+  /* what's shown: signing in or creating an account, a password or an email link, and whether a link was sent */
+  [data-tab="signin"] [data-only-tab="signup"],
+  [data-tab="signup"] [data-only-tab="signin"],
+  [data-method="link"] [data-only-method="password"],
+  [data-method="password"] [data-only-method="link"],
+  [data-sent] .fields,
+  [data-tab="signin"][data-method="password"] .note {
+    display: none !important;
+  }
+  .signin-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+    max-width: 26rem;
+  }
+  .signin-col > * {
+    margin: 0;
+  }
+  .signin-col h2 {
+    margin: var(--s2) 0 0;
+    line-height: 1.15;
+  }
+  /* on Your data, the progress card follows its line straight away */
+  .lede + .sec {
+    margin-top: 0;
+  }
+  /* sections sit one big gap apart, each a heading, a line, then its box */
+  .sec {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    margin-top: var(--s7);
+  }
+  .sec > p {
+    margin: 0;
+  }
+  /* a box like the site's Card, without a title of its own */
+  .box {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    margin: 0;
+    padding: var(--s5);
+    border: 1px solid var(--line);
+    border-radius: var(--r-l);
+    background: var(--surface);
+    min-width: 0;
+  }
+  .box > p {
+    margin: 0;
+  }
+  /* the ways in, one full-width pill each, stacked: icon at the left, label in the middle. A new way is one more */
+  .methods {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+  .methods:empty {
+    display: none;
+  }
+  .methods :global(.btn),
+  .mail {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.875rem;
+    padding: var(--s3) 3rem;
+    border-radius: var(--r-m);
+    text-align: center;
+    text-decoration: none;
+    color: var(--fg);
+  }
+  .methods :global(svg),
+  .mail svg {
+    position: absolute;
+    left: var(--s4);
+    top: 50%;
+    translate: 0 -50%;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .mail svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linejoin: round;
+  }
+  .or {
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+    margin: var(--s2) 0 var(--s4);
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .or::before,
+  .or::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid var(--line);
+  }
+  .fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+  }
+  .fields .btn.primary {
+    width: 100%;
+    min-height: 2.875rem;
+    border-radius: var(--r-m);
+    padding-block: var(--s3);
+  }
+  /* the password field with its show/hide eye inside, at the right */
+  .pw {
+    position: relative;
+    display: block;
+  }
+  .pw input {
+    padding-right: 2.75rem;
+  }
+  .eye {
+    position: absolute;
+    right: var(--s1);
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--faint);
+    cursor: pointer;
+  }
+  .eye:hover,
+  .eye.on {
+    color: var(--fg);
+  }
+  .eye svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+  }
+  .note {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--faint);
+    text-align: center;
+  }
+  .links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s2);
+    margin-top: var(--s5);
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .links p {
+    margin: 0;
+  }
+  .linkish.strong {
+    color: var(--fg);
+    font-weight: var(--fw-semibold);
+  }
+  .email-signin {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+  .email-signin > * {
+    margin: 0;
+  }
+  .email-signin label {
+    display: block;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .email-signin .hint {
+    color: var(--faint);
+  }
+  .email-signin input {
+    display: block;
+    width: 100%;
+    margin-top: var(--s2);
+    padding: var(--s3);
+    border-radius: var(--r-m);
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+    font: inherit;
+    font-size: var(--fs-sm);
+  }
+  /* takes no room unless Cloudflare asks the visitor to tick a box */
+  .email-signin .turnstile {
+    display: contents;
+  }
+  .linkish {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+  .linkish:hover {
+    color: var(--fg);
+  }
+  .email-signin .msg:empty {
+    display: none;
+  }
+  /* who you are, with Sign out on the same line */
+  .box.who {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s3);
+  }
+  /* a card of rows: what it does on the left, its button on the right, hairlines between */
+  .box.rows {
+    gap: 0;
+    padding-block: 0;
+  }
+  .r {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s3) var(--s5);
+    padding-block: var(--s4);
+  }
+  .r + .r {
+    border-top: 1px solid var(--line);
+  }
+  .r p {
+    margin: 0;
+    max-width: 46ch;
+  }
+  .r b {
+    display: block;
+    margin-bottom: var(--s1);
+  }
+  .r .btn {
+    flex: none;
+  }
+  .r .msg {
+    display: block;
+    margin-top: var(--s1);
+  }
+  .r .msg:empty {
+    display: none;
+  }
+  /* Turnstile is at least 300px wide: less padding on phones so it fits in the card */
+  @media (max-width: 420px) {
+    .box {
+      padding: var(--s4);
+    }
+  }
+  @media (max-width: 600px) {
+    .r {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

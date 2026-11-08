@@ -1,23 +1,34 @@
 ---
-// An instrument's sections, under the header.
-interface Props {
-  inst: any;
-  tab?: string;
+// The tabs under the header: an instrument's sections, or the account pages (items). An item with `show`
+// ("in" or "out") is only shown signed in or signed out; the account page's script does that.
+interface Item {
+  key: string;
+  label: string;
+  href: string;
+  show?: "in" | "out";
 }
-const { inst, tab } = Astro.props;
-const TABS = [
-  ["lessons", "Lessons", ""],
-  ["panel", "Panel guide", "/panel"],
-  ["saving", "Saving", "/saving"],
-  ["machines", "Machines", "/machines"],
-  ["shortcuts", "Shortcuts", "/shortcuts"],
+interface Props {
+  inst?: any;
+  tab?: string;
+  items?: Item[];
+  label?: string;
+}
+const { inst, tab, items, label = "Sections" } = Astro.props;
+const TABS: Item[] = items || [
+  { key: "lessons", label: "Lessons", href: `/${inst.slug}` },
+  { key: "panel", label: "Panel guide", href: `/${inst.slug}/panel` },
+  { key: "saving", label: "Saving", href: `/${inst.slug}/saving` },
+  { key: "machines", label: "Machines", href: `/${inst.slug}/machines` },
+  { key: "shortcuts", label: "Shortcuts", href: `/${inst.slug}/shortcuts` },
 ];
+/* "Log in" and "Your account" are the same page, signed out or in */
+const current = (k: string) => tab === k || (tab === "login" && k === "account");
 ---
 
-<nav class="tabs" aria-label="Sections">
-  {TABS.map(([k, label, sub]) => (
-    <a href={`/${inst.slug}${sub}`} aria-current={tab === k ? "page" : undefined}>
-      {label}
+<nav class="tabs" aria-label={label}>
+  {TABS.map((t) => (
+    <a href={t.href} aria-current={current(t.key) ? "page" : undefined} data-show={t.show} hidden={!!t.show}>
+      {t.label}
     </a>
   ))}
 </nav>
@@ -43,6 +54,9 @@ const TABS = [
     font-size: var(--fs-s);
     color: var(--muted);
     cursor: pointer;
+  }
+  .tabs a[hidden] {
+    display: none;
   }
   .tabs a[aria-current="page"] {
     color: var(--fg);

@@ -16,7 +16,7 @@ export async function sendLink({ to, subject, intro, button, link, outro }) {
 <div style="max-width:480px;margin:0 auto;background:#fff;border-radius:12px;padding:28px">
 <p style="margin:0 0 16px;font-weight:700;letter-spacing:.04em">REP REP REP</p>
 <p style="margin:0 0 20px">${esc(intro)}</p>
-<p style="margin:0 0 20px"><a href="${esc(link)}" style="display:inline-block;background:#1d1b19;color:#fff;text-decoration:none;padding:12px 20px;border-radius:999px;font-weight:600">${esc(button)}</a></p>
+<p style="margin:0 0 20px"><a href="${esc(link)}" style="display:inline-block;background:#1d1b19;color:#fff;text-decoration:none;padding:12px 20px;border-radius:8px;font-weight:600">${esc(button)}</a></p>
 <p style="margin:0 0 8px;font-size:14px;color:#5f5a54">${esc(outro)}</p>
 <p style="margin:0;font-size:13px;color:#8a847c;word-break:break-all">${esc(link)}</p>
 </div></body></html>`;

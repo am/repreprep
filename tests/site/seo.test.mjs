@@ -32,7 +32,8 @@ test("lesson steps, the account pages and the 404 stay out of search results; ev
   }
   assert.equal(
     listed.size,
-    [...pages.keys()].filter((p) => !isStep(p) && !/^\/(account|account\/reset|404)$|\/panel\/level$/.test(p)).length
+    [...pages.keys()].filter((p) => !isStep(p) && !/^\/(account(\/(reset|signup|data))?|404)$|\/panel\/level$/.test(p))
+      .length
   );
 });
 
