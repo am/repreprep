@@ -5,6 +5,7 @@ import { Font } from "astro:assets";
 import SiteHeader from "../components/site/SiteHeader.astro";
 import SectionTabs from "../components/site/SectionTabs.astro";
 import SiteFooter from "../components/site/SiteFooter.astro";
+import PageLoading from "../components/site/PageLoading.astro";
 import { releases } from "../course/changelog.js";
 import { lessonUpdates } from "../course/shared/updates.js";
 
@@ -116,6 +117,9 @@ const image = new URL("/og-image.png", Astro.site);
     <ClientRouter fallback="swap" />
   </head>
   <body data-inst={inst?.key} data-steps={steps} data-version={version} data-updates={updates}>
+    <div transition:persist="page-loading">
+      <PageLoading />
+    </div>
     <div class="wrap">
       <SiteHeader inst={inst} home={home} />
       {inst?.ready && <SectionTabs inst={inst} tab={tab} />}
