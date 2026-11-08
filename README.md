@@ -73,7 +73,7 @@ Lesson ids (`w05`, `s01`) and step ids are what progress is stored under: a tick
 
 Messages sent from the contact form on `/privacy` are emailed to you and also stored in D1 (kept for a year; `npm run messages` lists the latest). Email needs Email Routing enabled on the repreprep.studio zone, your address verified there as a destination, and that address stored as a secret: `npx wrangler secret put CONTACT_TO`.
 
-Pushes to `main` run the tests and then deploy automatically through GitHub Actions (`.github/workflows/deploy.yml`), and every pull request that passes the tests gets a preview link at `pr-<number>-repreprep.<subdomain>.workers.dev`, posted as a PR comment. The workflow needs a `CLOUDFLARE_API_TOKEN` repository secret (an API token from the "Edit Cloudflare Workers" template, plus Account → D1 → Edit) and a `CLOUDFLARE_ACCOUNT_ID` repository variable. Previews share the production D1 database.
+Pushes to `main` run the tests and then deploy automatically through GitHub Actions (`.github/workflows/deploy.yml`), and every pull request that passes the tests gets a preview link at `pr-<number>-repreprep-preview.<subdomain>.workers.dev`, posted as a PR comment. The workflow needs a `CLOUDFLARE_API_TOKEN` repository secret (an API token from the "Edit Cloudflare Workers" template, plus Account → D1 → Edit) and a `CLOUDFLARE_ACCOUNT_ID` repository variable. Previews run on a separate Worker, `repreprep-preview`, with its own D1 database (`repreprep-preview`) and none of production's secrets, so code under review never reaches real accounts.
 
 ## License and contributing
 

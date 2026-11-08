@@ -5,8 +5,8 @@
   "account_id": "1cb2cb969864b028deeaa699ccbcef21",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
-  // Progress and accounts. `wrangler deploy` creates the database on first deploy;
-  // the tables are created by the app itself the first time it runs.
+  // Progress and accounts (production only; previews use their own database, below).
+  // The tables are created by the app itself the first time it runs.
   "d1_databases": [
     { "binding": "DB", "database_name": "repreprep", "database_id": "58f6e6ef-5d5e-464e-9ef7-11d82ac5cbe5" },
   ],
@@ -23,4 +23,21 @@
     { "pattern": "www.repreprep.studio", "custom_domain": true },
   ],
   "observability": { "enabled": true },
+  // PR previews: a separate Worker (repreprep-preview) with its own database and no production secrets,
+  // so code under review never touches real accounts. Built with CLOUDFLARE_ENV=preview (see deploy.yml).
+  // Bindings and routes are not inherited, so each one is listed again here.
+  "env": {
+    "preview": {
+      "d1_databases": [
+        {
+          "binding": "DB",
+          "database_name": "repreprep-preview",
+          "database_id": "cbce29da-5ccb-4bc5-95b4-9b89a0a27b30",
+        },
+      ],
+      "routes": [],
+      "workers_dev": true,
+      "preview_urls": true,
+    },
+  },
 }
