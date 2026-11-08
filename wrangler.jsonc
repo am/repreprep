@@ -1,12 +1,14 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
   "name": "repreprep",
+  // The "repreprep" Cloudflare account, which holds the Worker, the database and repreprep.studio.
+  "account_id": "1cb2cb969864b028deeaa699ccbcef21",
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   // Progress and accounts. `wrangler deploy` creates the database on first deploy;
   // the tables are created by the app itself the first time it runs.
   "d1_databases": [
-    { "binding": "DB", "database_name": "repreprep", "database_id": "1cc38e06-08ce-4bdd-9095-b9352b9bd580" },
+    { "binding": "DB", "database_name": "repreprep", "database_id": "58f6e6ef-5d5e-464e-9ef7-11d82ac5cbe5" },
   ],
   // Contact-form messages are emailed through Cloudflare Email Routing (enabled on repreprep.studio).
   // The recipient is the CONTACT_TO secret and must be a verified destination address.

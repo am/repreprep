@@ -1,5 +1,6 @@
 import { db } from "../../lib/db.js";
 import { sendContactMail } from "../../lib/mail.js";
+import { passedTurnstile } from "../../lib/turnstile.js";
 export const prerender = false;
 
 const MAX_BODY = 4000,
@@ -14,6 +15,7 @@ export async function POST({ request, url, locals, redirect }) {
   const form = await request.formData().catch(() => null);
   if (!form) return back("error=empty");
   if (String(form.get("website") || "")) return back("sent=1"); /* bots fill the hidden field */
+  if (!(await passedTurnstile(form.get("cf-turnstile-response"), request))) return back("error=bot");
   const body = String(form.get("message") || "").trim();
   const replyTo =
     String(form.get("reply_to") || "")
