@@ -90,7 +90,7 @@ test("a reset link that's used up says so", async ({ page }) => {
   await page.goto("/account/reset?token=made-up");
   await expect(page).toHaveURL("/account/reset");
   await page.getByLabel(/New password/).fill("a long and fresh passphrase");
-  await page.getByRole("button", { name: "Save and sign in again" }).click();
+  await page.getByRole("button", { name: "Save and log in again" }).click();
   await expect(page.locator("[data-reset-msg]")).toHaveText(/This link has expired or was already used/);
 });
 

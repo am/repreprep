@@ -29,14 +29,14 @@ import { SIGN_IN } from "astro:env/client";
           </div>
           <div class="row">
             <button class="btn primary" type="submit">
-              Save and sign in again
+              Save and log in again
             </button>
           </div>
         </form>
         <p class="msg" data-reset-msg role="status" hidden></p>
       </Fragment>
     ) : (
-      <p>Sign-in isn't set up on this site yet.</p>
+      <p>Logging in isn't set up on this site yet.</p>
     )}
   </div>
 </Base>
@@ -46,12 +46,12 @@ import { SIGN_IN } from "astro:env/client";
   /* The link in the email goes through Better Auth, which sends the browser here with ?token=… when the link is good,
      or ?error=INVALID_TOKEN when it's used up or too old. */
   const ERRORS = {
-    INVALID_TOKEN: "This link has expired or was already used. Ask for a new one from the sign-in page.",
+    INVALID_TOKEN: "This link has expired or was already used. Ask for a new one from the log-in page.",
     PASSWORD_COMPROMISED: "That password has turned up in a data breach, so it's easy to guess. Please choose another.",
     PASSWORD_TOO_SHORT: "Please use a password of at least 12 characters.",
     PASSWORD_TOO_LONG: "Please use a password of at most 128 characters.",
   };
-  const AGAIN = ' <a href="/account">Back to sign-in</a>.';
+  const AGAIN = ' <a href="/account">Back to log in</a>.';
 
   function setup() {
     const form = document.querySelector("[data-reset]");
@@ -89,7 +89,7 @@ import { SIGN_IN } from "astro:env/client";
       if (r?.ok) {
         form.hidden = true;
         return say(
-          "Your password is changed, and you're signed out everywhere. Sign in with your new password.",
+          "Your password is changed, and you're logged out everywhere. Log in with your new password.",
           false,
           true
         );

@@ -101,7 +101,7 @@ export function auth(url) {
           subject: "Confirm your email for Rep Rep Rep",
           intro:
             "Confirm this is your address to finish setting up your Rep Rep Rep account. The link works for a day.",
-          button: "Confirm and sign in",
+          button: "Confirm and log in",
           link,
           outro: "If you didn't sign up, you can ignore this email: no account is made without this step.",
         });
@@ -125,11 +125,11 @@ export function auth(url) {
                 if (testSignIn(url)) console.log(`sign-in link for ${email}: ${link}`);
                 await sendLink({
                   to: email,
-                  subject: "Your Rep Rep Rep sign-in link",
-                  intro: "Here's your link to sign in to Rep Rep Rep. It works once, for the next 10 minutes.",
-                  button: "Sign in",
+                  subject: "Your Rep Rep Rep login link",
+                  intro: "Here's your link to log in to Rep Rep Rep. It works once, for the next 10 minutes.",
+                  button: "Log in",
                   link,
-                  outro: "If you didn't ask for this, you can ignore this email: nobody can sign in without the link.",
+                  outro: "If you didn't ask for this, you can ignore this email: nobody can log in without the link.",
                 });
               },
             }),
