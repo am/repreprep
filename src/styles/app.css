@@ -1138,3 +1138,31 @@ a.btn.primary {
 .pstage *:not(.lcd-big):not(.lcd-small) {
   font-family: var(--panel);
 }
+
+/* the meter under a new password (src/client/strength.js): four segments filled by length */
+.strength {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--s1) var(--s2);
+  margin-top: calc(-1 * var(--s2));
+}
+.strength span {
+  height: 0.25rem;
+  border-radius: var(--r-pill);
+  background: var(--line);
+}
+.strength small {
+  grid-column: 1 / -1;
+  min-height: 1.2em;
+  font-size: var(--fs-xs);
+  color: var(--muted);
+}
+/* too short: one segment in the accent color; from 12 characters on, the filled segments are green */
+.strength[data-ok="false"] span:first-child {
+  background: var(--led);
+}
+.strength[data-ok="true"][data-score="2"] span:nth-child(-n + 2),
+.strength[data-ok="true"][data-score="3"] span:nth-child(-n + 3),
+.strength[data-ok="true"][data-score="4"] span:nth-child(-n + 4) {
+  background: var(--done);
+}

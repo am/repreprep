@@ -7,13 +7,13 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
 <Base title="Privacy" description="What Rep Rep Rep keeps about you, and how to see or delete it.">
   <div class="page" id="privacy">
     <h2>Privacy</h2>
-    <p class="msg">Last updated 18 October 2026.</p>
+    <p class="msg">Last updated 8 November 2026.</p>
     <p>
       Rep Rep Rep is a free, non-commercial course run by one person. There are no ads, no analytics and no tracking.
       This page says what the site keeps and how you can see or delete it.
     </p>
 
-    <h3>{SIGN_IN ? "If you don't sign in" : "Your progress"}</h3>
+    <h3>{SIGN_IN ? "If you don't log in" : "Your progress"}</h3>
     <p>
       Your ticks, finished lessons, notes and layout are saved in your own browser (local storage). They never leave
       your device, and clearing your browser data removes them.
@@ -21,27 +21,31 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
 
     {SIGN_IN ? (
       <Fragment>
-        <h3>If you sign in</h3>
-        <p>You can sign in with Google or with a link sent to your email. The site keeps:</p>
+        <h3>If you log in</h3>
+        <p>
+          You can log in with Google, with a link sent to your email, or with your email and a password. The site keeps:
+        </p>
         <ul>
           <li>your email address, and your name if Google shares it,</li>
-          <li>your Google account number if you sign in with Google, so it can recognise you next time,</li>
+          <li>your Google account number if you log in with Google, so it can recognise you next time,</li>
           <li>your progress (the same ticks, notes and layout as above), so it follows you to other devices,</li>
           <li>
-            a sign-in session for each device you sign in on, with its IP address and browser name, so you can see where
-            you're signed in. Each one lasts 30 days from the last time you used it.
+            a session for each device you log in on, with its IP address and browser name, so you can see where you're
+            logged in. Each one lasts 30 days from the last time you used it.
           </li>
         </ul>
         <p>
-          No password is ever seen or stored, and the site keeps nothing else from your Google account. A sign-in link
-          works only once, for 10 minutes. Your data is used only to run the course for you. It is never sold, shared or
-          used for advertising.
+          If you choose a password, only a scrambled form of it is stored (a scrypt hash), which can't be turned back
+          into the password. To refuse passwords known from data breaches, the first 5 characters of another scrambled
+          form are checked with Have I Been Pwned: your password never leaves the site. The site keeps nothing else from
+          your Google account. A login link works only once, for 10 minutes, and a link to choose a new password for an
+          hour. Your data is used only to run the course for you. It is never sold, shared or used for advertising.
         </p>
 
         <h3>Cookies</h3>
         <p>
-          Only when you sign in: one cookie that keeps you signed in, and a short-lived cookie (ten minutes) that
-          protects the sign-in itself. There are no tracking or advertising cookies, so there is no cookie banner.
+          Only when you log in: one cookie that keeps you logged in, and a short-lived cookie (ten minutes) that
+          protects the login itself. There are no tracking or advertising cookies, so there is no cookie banner.
         </p>
       </Fragment>
     ) : (
@@ -55,11 +59,16 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
     <ul>
       <li>
         <b>Cloudflare</b> hosts the site and the database (D1). Like any web host, it handles your IP address to serve
-        pages and keeps short-lived request logs for running and debugging the site. It also sends the sign-in emails.
+        pages and keeps short-lived request logs for running and debugging the site. It also sends the login emails.
       </li>
       {SIGN_IN && (
         <li>
-          <b>Google</b>, only when you choose to sign in with it. Its own privacy policy applies on its sign-in page.
+          <b>Google</b>, only when you choose to log in with it. Its own privacy policy applies on its login page.
+        </li>
+      )}
+      {SIGN_IN && (
+        <li>
+          <b>Have I Been Pwned</b>, only when you choose a password, and only with the 5 characters described above.
         </li>
       )}
     </ul>
@@ -83,7 +92,7 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
       Messages sent with the form below are emailed to the person who runs the site (through Cloudflare) and a copy is
       kept for up to a year, then deleted.
       {SIGN_IN &&
-        " If you're signed in, a message is linked to your account and included in your download. When you delete your account, the link is removed but the message itself stays until it's dealt with."}
+        " If you're logged in, a message is linked to your account and included in your download. When you delete your account, the link is removed but the message itself stays until it's dealt with."}
     </p>
 
     <Card title="Contact" id="contact">
@@ -105,7 +114,7 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
         </label>
         <div
           class="turnstile"
-          data-turnstile={import.meta.env.DEV ? "1x00000000000000000000AA" : TURNSTILE_SITE_KEY}
+          data-turnstile={import.meta.env.DEV ? "1x00000000000000000000BB" : TURNSTILE_SITE_KEY}
         ></div>
         <div class="row">
           <button class="btn primary" type="submit">
@@ -118,7 +127,7 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
 </Base>
 
 <script>
-  import { drawTurnstile } from "../client/turnstile.js";
+  import { drawTurnstile, turnstileToken } from "../client/turnstile.js";
 
   /* after sending, /api/contact comes back here with ?sent=1 or ?error=… */
   const CONTACT_MSG = {
@@ -130,6 +139,16 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
   };
 
   document.addEventListener("astro:page-load", () => drawTurnstile(document.querySelector("[data-turnstile]")));
+  /* the check is invisible: if it hasn't finished when Send is pressed, wait for it rather than send no token */
+  document.addEventListener("submit", async (e) => {
+    const f = e.target.closest("form.contact"),
+      box = f?.querySelector("[data-turnstile]");
+    if (!box || box.querySelector('[name="cf-turnstile-response"]')?.value) return;
+    e.preventDefault();
+    f.querySelector('[type="submit"]').disabled = true;
+    await turnstileToken(box);
+    f.submit();
+  });
   document.addEventListener("astro:page-load", () => {
     const el = document.querySelector("[data-contact-msg]");
     if (!el) return;
@@ -149,9 +168,9 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
     flex-direction: column;
     gap: var(--s4);
   }
+  /* takes no room unless Cloudflare asks the visitor to tick a box */
   .contact .turnstile {
-    margin: 10px 0;
-    min-height: 65px;
+    display: contents;
   }
   .contact label {
     display: block;

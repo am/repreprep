@@ -8,7 +8,12 @@ import "./loading.js";
 onProgress(() => {
   setSync(account.loaded ? syncMsg() : "");
   const a = document.getElementById("acct");
-  if (a && SIGN_IN) a.textContent = account.me ? account.me.name || account.me.email || "Your account" : "Sign in";
+  if (a && SIGN_IN) {
+    const label = account.me ? account.me.name || account.me.email || "Your account" : "Log in or sign up";
+    a.setAttribute("aria-label", label);
+    a.title = label;
+    a.classList.toggle("in", !!account.me);
+  }
   const s = here(),
     mt = document.getElementById("meterTxt");
   if (!s || !mt) return;
