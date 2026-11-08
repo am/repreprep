@@ -21,25 +21,26 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
 
     {SIGN_IN ? (
       <Fragment>
-        <h3>If you sign in with Google or GitHub</h3>
+        <h3>If you sign in with Google</h3>
         <p>The site keeps:</p>
         <ul>
-          <li>
-            your name and email address, as Google or GitHub share them (the email only if they say it's verified),
-          </li>
-          <li>your Google or GitHub account number, so it can recognise you next time,</li>
+          <li>your name and email address, as Google shares them,</li>
+          <li>your Google account number, so it can recognise you next time,</li>
           <li>your progress (the same ticks, notes and layout as above), so it follows you to other devices,</li>
-          <li>a sign-in session that lasts 30 days. Only a scrambled form (a hash) of it is stored.</li>
+          <li>
+            a sign-in session for each device you sign in on, with its IP address and browser name, so you can see where
+            you're signed in. Each one lasts 30 days from the last time you used it.
+          </li>
         </ul>
         <p>
-          No password is ever seen or stored, and the site keeps nothing else from your Google or GitHub account. Your
-          data is used only to run the course for you. It is never sold, shared or used for advertising.
+          No password is ever seen or stored, and the site keeps nothing else from your Google account. Your data is
+          used only to run the course for you. It is never sold, shared or used for advertising.
         </p>
 
         <h3>Cookies</h3>
         <p>
-          Only when you sign in: one cookie that keeps you signed in, and three short-lived cookies (ten minutes) that
-          protect the sign-in itself. There are no tracking or advertising cookies, so there is no cookie banner.
+          Only when you sign in: one cookie that keeps you signed in, and a short-lived cookie (ten minutes) that
+          protects the sign-in itself. There are no tracking or advertising cookies, so there is no cookie banner.
         </p>
       </Fragment>
     ) : (
@@ -57,8 +58,7 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
       </li>
       {SIGN_IN && (
         <li>
-          <b>Google</b> or <b>GitHub</b>, only when you choose to sign in with them. Their own privacy policies apply on
-          their sign-in pages.
+          <b>Google</b>, only when you choose to sign in with it. Its own privacy policy applies on its sign-in page.
         </li>
       )}
     </ul>

@@ -1,7 +1,7 @@
 // Runs a built site in Cloudflare's local runtime (wrangler dev): the server routes (/api, /auth) with a
 // fresh, empty local D1 database, so the tests can sign in, save progress and send messages. The site sees the
 // address it is called on (localhost), not the production domain wrangler would otherwise pass along.
-import { spawn } from "node:child_process";
+import { spawn, execFileSync } from "node:child_process";
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
@@ -11,6 +11,23 @@ import { parse } from "devalue";
    in Playwright's group instead, which Playwright ends as a whole */
 export async function startWorker({ dist = "dist", port, vars = {}, own = true }) {
   const persist = mkdtempSync(join(tmpdir(), "rrr-worker-"));
+  /* the database's tables, from migrations/ */
+  execFileSync(
+    "npx",
+    [
+      "wrangler",
+      "d1",
+      "migrations",
+      "apply",
+      "DB",
+      "--local",
+      "--config",
+      `${dist}/server/wrangler.json`,
+      "--persist-to",
+      persist,
+    ],
+    { stdio: "ignore", env: { ...process.env, WRANGLER_SEND_METRICS: "false", CI: "1" } }
+  );
   const args = [
     "wrangler",
     "dev",
