@@ -117,6 +117,11 @@
       animation: none;
       transform: scaleX(0.6);
     }
+    /* landing: the line fades where it is instead of running to the end */
+    .pl-done .pl i {
+      transform: scaleX(0.6);
+      transition: opacity 0.25s;
+    }
     .pl-on a.pl-from,
     .pl-on .btn.pl-from,
     html.pl-on .dots a.pl-to::before {

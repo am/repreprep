@@ -9,11 +9,24 @@ let timer = 0,
   tapped = null,
   tappedAt = 0;
 
-/* remember what was tapped: the router may open the page a little later (Next lesson plays first) */
+/* remember what was tapped: the router may open the page a little later (Next lesson plays first). Only links the
+   router opens itself count; a link to another site, a new tab, a download or a full reload is left to the browser */
+function routed(a, e) {
+  return (
+    a &&
+    e.button === 0 &&
+    !(e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) &&
+    (!a.target || a.target === "_self") &&
+    !a.hasAttribute("download") &&
+    !a.hasAttribute("data-astro-reload") &&
+    a.origin === location.origin
+  );
+}
 document.addEventListener(
   "click",
   (e) => {
-    tapped = e.target.closest?.("a[href]") || null;
+    const a = e.target.closest?.("a[href]");
+    tapped = routed(a, e) ? a : null;
     tappedAt = Date.now();
   },
   true
@@ -44,6 +57,21 @@ document.addEventListener("astro:before-preparation", (e) => {
       });
     say("Loading the page");
   }, WAIT);
+});
+
+/* the sign off at once, as on a fresh page */
+function reset() {
+  clearTimeout(timer);
+  shown = false;
+  clear();
+  root.classList.remove("pl-on", "pl-done");
+  say("");
+}
+
+/* a failed fetch hands the page to the browser (a full load), so no swap follows; if the browser later brings this
+   page back from its back/forward cache, it would come back mid-load */
+window.addEventListener("pageshow", (e) => {
+  if (e.persisted) reset();
 });
 
 document.addEventListener("astro:after-swap", () => {

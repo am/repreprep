@@ -48,15 +48,50 @@ test("a slow Next lights the button and the step dot it goes to", async ({ page 
 });
 
 test("a quick page change shows no sign", async ({ page }) => {
+  /* the page's clock is ours, so the 150 ms wait doesn't depend on how fast the test server answers */
+  await page.clock.install();
   await page.goto(lesson(2));
-  await page.evaluate(() => {
-    window.__seen = false;
-    new MutationObserver(() => {
-      if (document.documentElement.classList.contains("pl-on")) window.__seen = true;
-    }).observe(document.documentElement, { attributes: true });
-  });
+  const release = await slow(page, `**${lesson(3)}`);
+  await page.locator('a[data-nav="1"]').first().click({ noWaitAfter: true });
+  await page.clock.runFor(100);
+  const html = page.locator("html");
+  await expect(html).not.toHaveClass(/pl-on/);
+  release();
+  await expect(page).toHaveURL(lesson(3));
+  await page.clock.runFor(500);
+  await expect(html).not.toHaveClass(/pl-on|pl-done/);
+  await expect(page.locator(".pl-from, .pl-to")).toHaveCount(0);
+});
+
+test("a link the router doesn't open isn't lit by the next page change", async ({ page }) => {
+  await page.goto(lesson(2));
   await page.locator('a[data-nav="1"]').first().click();
   await expect(page).toHaveURL(lesson(3));
-  await page.waitForTimeout(300);
-  expect(await page.evaluate(() => window.__seen)).toBe(false);
+  /* a link the browser opens itself (here it goes nowhere), then Back */
+  await page.evaluate(() => {
+    const a = Object.assign(document.createElement("a"), { href: "/elsewhere", textContent: "elsewhere" });
+    a.setAttribute("data-astro-reload", "");
+    a.addEventListener("click", (e) => e.preventDefault());
+    document.querySelector("#view").append(a);
+  });
+  await page.locator('#view a[href="/elsewhere"]').click();
+  const release = await slow(page, `**${lesson(2)}`);
+  await page.evaluate(() => history.back());
+  await expect(page.locator("html")).toHaveClass(/pl-on/);
+  await expect(page.locator(".pl-from")).toHaveCount(0);
+  release();
+  await expect(page).toHaveURL(lesson(2));
+});
+
+test("a page brought back from the back/forward cache isn't left loading", async ({ page }) => {
+  await page.goto(lesson(2));
+  await slow(page, `**${lesson(3)}`);
+  await page.locator('a[data-nav="1"]').first().click({ noWaitAfter: true });
+  const html = page.locator("html");
+  await expect(html).toHaveClass(/pl-on/);
+  /* what the browser fires when it restores a page it kept in memory */
+  await page.evaluate(() => window.dispatchEvent(new PageTransitionEvent("pageshow", { persisted: true })));
+  await expect(html).not.toHaveClass(/pl-on|pl-done/);
+  await expect(page.locator(".pl-from, .pl-to")).toHaveCount(0);
+  await expect(page.locator(".pl-say")).toHaveText("");
 });
