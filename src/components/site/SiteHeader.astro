@@ -2,11 +2,12 @@
 // The header on every page. On the home page it keeps only the What's new bell, the theme switch and the
 // progress (or account) link, since the page itself is the logo and the instrument picker. On phones
 // everything but the logo folds into a menu opened by a knob, and the knob shows the bell's unread dot too;
-// on wider screens the menu is just the rest of the header. The controls pill is always bell, step count,
-// theme switch.
+// on wider screens the menu is just the rest of the header. The controls pill is always account icon (while
+// sign-in is on), bell, step count, theme switch.
 import Logo from "./Logo.astro";
 import ThemeSwitch from "./ThemeSwitch.astro";
 import NewsLink from "./NewsLink.astro";
+import AccountLink from "./AccountLink.astro";
 import { INSTRUMENTS } from "../../course/index.js";
 import { SIGN_IN } from "astro:env/client";
 interface Props {
@@ -14,7 +15,6 @@ interface Props {
   home?: boolean;
 }
 const { inst, home } = Astro.props;
-const acct = "Sign in"; /* only shown while sign-in is on; site.js puts your name in once you're signed in */
 ---
 
 {/* one pill, the same on every page: the What's new bell, the step count on a course's pages (a link to the
@@ -22,14 +22,10 @@ const acct = "Sign in"; /* only shown while sign-in is on; site.js puts your nam
 {home ? (
   <header class="top bare">
     <div class="ctrls">
+      {SIGN_IN && <AccountLink />}
       <NewsLink />
       <ThemeSwitch />
     </div>
-    {SIGN_IN && (
-      <a class="acct" href="/account" id="acct">
-        {acct}
-      </a>
-    )}
   </header>
 ) : (
   <header class="top">
@@ -64,19 +60,15 @@ const acct = "Sign in"; /* only shown while sign-in is on; site.js puts your nam
       </nav>
       <hr class="hsep" />
       <div class="ctrls">
+        {SIGN_IN && <AccountLink />}
         <NewsLink />
         {inst?.ready && (
-          <a class="meter" href="/account" title="Your progress: back up, load or reset" id="meterTxt">
+          <a class="meter" href="/account/data" title="Your progress: back up, load or reset" id="meterTxt">
             0 of 0 reps
           </a>
         )}
         <ThemeSwitch />
       </div>
-      {SIGN_IN && (
-        <a class="acct" href="/account" id="acct">
-          {acct}
-        </a>
-      )}
     </div>
   </header>
 )}
@@ -278,30 +270,11 @@ const acct = "Sign in"; /* only shown while sign-in is on; site.js puts your nam
       border: 0;
       border-top: 1px solid var(--line);
     }
-    .hmenu .acct {
-      align-self: flex-start;
-      font-size: var(--fs-s);
-      padding: var(--s2) var(--s4);
-    }
   }
   @media (max-width: 836px) {
     .brand h1 {
       font-size: 2.3rem;
     }
-  }
-  .acct {
-    font-family: var(--mono);
-    font-size: var(--fs-xs);
-    color: var(--muted);
-    text-decoration: none;
-    border: 1px solid var(--line);
-    border-radius: var(--r-pill);
-    padding: var(--s1) var(--s3);
-    white-space: nowrap;
-  }
-  .acct:hover {
-    color: var(--fg);
-    border-color: var(--faint);
   }
   .brand :global(a) {
     color: inherit;
