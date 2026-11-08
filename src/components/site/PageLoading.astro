@@ -1,0 +1,137 @@
+---
+// The sign that the next page is on its way. The site loads pages itself (Astro's ClientRouter), so the browser
+// shows no spinner or progress of its own, and on a slow connection a tap would otherwise look like it did nothing.
+// When a page takes longer than a moment (src/client/loading.js), sixteen trig keys run along the top edge like
+// the sequencer playing at 90 BPM, the link or button you tapped pulses coral, the step dot you're heading to
+// blinks, and the rest of the page fades back. When the page lands, all sixteen keys flash and fade.
+// Kept across page changes (transition:persist in Base.astro) so the landing flash plays on the new page.
+---
+
+<div class="pl" aria-hidden="true">
+  {Array.from({ length: 16 }, (_, n) => (
+    <i style={`--n:${n}`}></i>
+  ))}
+</div>
+<p class="pl-say" role="status" aria-live="polite"></p>
+
+<style is:global>
+  .pl-say {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+  /* the trig keys: one lit step running along them, a 16th each at 90 BPM */
+  .pl {
+    position: fixed;
+    inset: 0 0 auto 0;
+    z-index: 1000;
+    pointer-events: none;
+    display: flex;
+    gap: 4px;
+    height: 6px;
+    padding: 0 4px;
+    opacity: 0;
+  }
+  .pl i {
+    flex: 1;
+    background: var(--line);
+    border-radius: 0 0 1px 1px;
+    animation: pl-trig 2.667s steps(1) infinite paused;
+    animation-delay: calc(var(--n) * 0.1667s);
+  }
+  .pl-on .pl {
+    opacity: 1;
+    transition: opacity 0.2s;
+  }
+  .pl-on .pl i {
+    animation-play-state: running;
+  }
+  .pl-done .pl {
+    opacity: 0;
+    transition: opacity 0.35s 0.1s;
+  }
+  .pl-done .pl i {
+    animation: none;
+    background: var(--led);
+  }
+  @keyframes pl-trig {
+    0% {
+      background: var(--led);
+    }
+    6.25% {
+      background: var(--line);
+    }
+  }
+  /* the page you're leaving fades back; the paths down to what you tapped and the step dot you're heading to stay bright */
+  .pl-on #view:not(:has(.pl-from, .pl-to)),
+  .pl-on #view > :not(:has(.pl-from, .pl-to)):not(.pl-from, .pl-to),
+  .pl-on #view :has(.pl-from, .pl-to) > :not(:has(.pl-from, .pl-to)):not(.pl-from, .pl-to) {
+    opacity: 0.45;
+    transition: opacity 0.3s;
+  }
+  /* the link you tapped answers: coral, with a soft pulse at the same tempo */
+  .pl-on a.pl-from:not(.btn) {
+    color: var(--led) !important;
+    outline: 1.5px solid var(--led);
+    outline-offset: 2px;
+    border-radius: var(--r-m);
+    animation: pl-pulse 0.667s ease-in-out infinite;
+  }
+  /* a button keeps its shape: a coral ring pulses around it, a filled one turns coral */
+  .pl-on .btn.pl-from {
+    border-color: var(--led);
+    color: var(--led);
+    animation: pl-ring 0.667s ease-in-out infinite;
+  }
+  .pl-on .btn.primary.pl-from {
+    background: var(--led);
+    color: var(--bg);
+  }
+  /* the step dot you're heading to blinks, like the next trig in line */
+  html.pl-on .dots a.pl-to::before {
+    border-color: var(--led);
+    animation: pl-blink 0.667s steps(1) infinite;
+  }
+  @keyframes pl-pulse {
+    0%,
+    100% {
+      background-color: var(--led-soft);
+    }
+    50% {
+      background-color: transparent;
+    }
+  }
+  @keyframes pl-ring {
+    0%,
+    100% {
+      box-shadow: 0 0 0 4px var(--led-soft);
+    }
+    50% {
+      box-shadow: 0 0 0 0 var(--led-soft);
+    }
+  }
+  @keyframes pl-blink {
+    0% {
+      background: var(--led);
+    }
+    50% {
+      background: var(--surface-2);
+    }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .pl-on .pl i {
+      animation: none;
+      background: var(--led);
+    }
+    .pl-on a.pl-from,
+    .pl-on .btn.pl-from,
+    html.pl-on .dots a.pl-to::before {
+      animation: none;
+    }
+    html.pl-on .dots a.pl-to::before {
+      background: var(--led);
+    }
+  }
+</style>
