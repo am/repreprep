@@ -117,6 +117,8 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
 </Base>
 
 <script>
+  import { drawTurnstile } from "../client/turnstile.js";
+
   /* after sending, /api/contact comes back here with ?sent=1 or ?error=… */
   const CONTACT_MSG = {
     sent: ["Thanks, your message was sent.", ""],
@@ -126,29 +128,7 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
     bot: ["The check that you're not a bot didn't pass. Please try again.", "bad"],
   };
 
-  /* Cloudflare Turnstile: load its script once, then draw the check into the form on every visit */
-  type Turnstile = { render: (el: Element, opts: Record<string, unknown>) => string };
-  let turnstile: Promise<Turnstile> | null = null;
-  const loadTurnstile = () =>
-    (turnstile ??= new Promise((resolve, reject) => {
-      const s = document.createElement("script");
-      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
-      s.async = true;
-      s.onload = () => resolve((window as unknown as { turnstile: Turnstile }).turnstile);
-      s.onerror = () => {
-        turnstile = null;
-        reject(new Error("Turnstile didn't load"));
-      };
-      document.head.append(s);
-    }));
-  document.addEventListener("astro:page-load", () => {
-    const box = document.querySelector<HTMLElement>("[data-turnstile]");
-    if (!box || box.childElementCount) return;
-    const theme = document.documentElement.dataset.theme || "auto";
-    loadTurnstile()
-      .then((t) => t.render(box, { sitekey: box.dataset.turnstile, theme, size: "flexible" }))
-      .catch(() => {});
-  });
+  document.addEventListener("astro:page-load", () => drawTurnstile(document.querySelector("[data-turnstile]")));
   document.addEventListener("astro:page-load", () => {
     const el = document.querySelector("[data-contact-msg]");
     if (!el) return;

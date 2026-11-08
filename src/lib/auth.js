@@ -1,9 +1,18 @@
 import { betterAuth } from "better-auth";
 import { createAuthEndpoint } from "better-auth/api";
 import { setSessionCookie } from "better-auth/cookies";
+import { magicLink } from "better-auth/plugins/magic-link";
+import { captcha } from "better-auth/plugins/captcha";
 import { env } from "cloudflare:workers";
 import { SIGN_IN } from "astro:env/client";
-import { BETTER_AUTH_SECRET, GOOGLE_CLIENT_ID, GOOGLE_CLIENT_SECRET, ALLOW_TEST_SIGNIN } from "astro:env/server";
+import {
+  BETTER_AUTH_SECRET,
+  GOOGLE_CLIENT_ID,
+  GOOGLE_CLIENT_SECRET,
+  ALLOW_TEST_SIGNIN,
+  TURNSTILE_SECRET_KEY,
+} from "astro:env/server";
+import { emailReady, sendLink } from "./email.js";
 
 /* Sign-in runs on Better Auth (https://better-auth.com), mounted at /api/auth/* (src/pages/api/auth/[...all].js).
    Users, sessions, linked sign-in methods, one-time tokens and rate-limit counters live in the D1 database
@@ -64,7 +73,38 @@ export function auth(url) {
       /* the visitor's address as Cloudflare saw it; X-Forwarded-For can be set by anyone */
       ipAddress: { ipAddressHeaders: ["cf-connecting-ip"] },
     },
-    plugins: testSignIn(url) ? [devSignIn] : [],
+    plugins: [
+      /* "Email me a sign-in link": one use, 10 minutes. Signs up a new address too. */
+      ...(emailReady()
+        ? [
+            magicLink({
+              expiresIn: 600,
+              sendMagicLink: async ({ email, url: link }) => {
+                if (testSignIn(url)) console.log(`sign-in link for ${email}: ${link}`);
+                await sendLink({
+                  to: email,
+                  subject: "Your Rep Rep Rep sign-in link",
+                  intro: "Here's your link to sign in to Rep Rep Rep. It works once, for the next 10 minutes.",
+                  button: "Sign in",
+                  link,
+                  outro: "If you didn't ask for this, you can ignore this email: nobody can sign in without the link.",
+                });
+              },
+            }),
+          ]
+        : []),
+      /* Cloudflare Turnstile on every request that sends an email or checks a password */
+      ...(TURNSTILE_SECRET_KEY
+        ? [
+            captcha({
+              provider: "cloudflare-turnstile",
+              secretKey: TURNSTILE_SECRET_KEY,
+              endpoints: ["/sign-in/magic-link"],
+            }),
+          ]
+        : []),
+      ...(testSignIn(url) ? [devSignIn] : []),
+    ],
   });
   cache.set(url.origin, a);
   return a;
@@ -76,6 +116,7 @@ export function providers(url) {
   if (!a) return [];
   const list = [];
   if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET) list.push({ id: "google", name: "Google" });
+  if (emailReady()) list.push({ id: "email", name: "email" });
   if (testSignIn(url)) list.push({ id: "dev", name: "a local test account" });
   return list;
 }

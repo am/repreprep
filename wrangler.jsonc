@@ -12,7 +12,8 @@
   ],
   // Contact-form messages are emailed through Cloudflare Email Routing (enabled on repreprep.studio).
   // The recipient is the CONTACT_TO secret and must be a verified destination address.
-  "send_email": [{ "name": "MAIL" }],
+  // Sign-in emails (magic links) go to any address through Cloudflare Email Service, from one sender only.
+  "send_email": [{ "name": "MAIL" }, { "name": "EMAIL", "allowed_sender_addresses": ["signin@repreprep.studio"] }],
   // The site's address. Deploys attach both and Cloudflare creates their DNS records and certificates.
   // www → repreprep.studio is a Redirect Rule in the zone (static pages are served before the Worker runs).
   // With routes set, workers.dev and preview URLs would default to off; PR previews need them.
