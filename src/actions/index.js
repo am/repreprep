@@ -23,8 +23,8 @@ export const server = {
       }),
     }),
     signOut: defineAction({
-      handler: async (_, { cookies }) => {
-        await endSession(cookies);
+      handler: async (_, { request, url, cookies }) => {
+        await endSession(request, url, cookies);
       },
     }),
     /* delete the account and everything saved with it */
@@ -34,12 +34,12 @@ export const server = {
         const d = await db();
         await d.batch([
           d.prepare("UPDATE messages SET user_id=NULL WHERE user_id=?").bind(user.id),
-          ...["progress", "sessions", "accounts"].map((t) =>
-            d.prepare(`DELETE FROM ${t} WHERE user_id=?`).bind(user.id)
-          ),
-          d.prepare("DELETE FROM users WHERE id=?").bind(user.id),
+          d.prepare("DELETE FROM progress WHERE user_id=?").bind(user.id),
+          ...["session", "account"].map((t) => d.prepare(`DELETE FROM "${t}" WHERE "userId"=?`).bind(user.id)),
+          d.prepare('DELETE FROM "verification" WHERE "identifier"=?').bind(user.email),
+          d.prepare('DELETE FROM "user" WHERE "id"=?').bind(user.id),
         ]);
-        await endSession(ctx.cookies);
+        await endSession(ctx.request, ctx.url, ctx.cookies);
       },
     }),
   },

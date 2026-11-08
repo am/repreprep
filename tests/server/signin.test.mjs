@@ -8,7 +8,12 @@ import { startWorker, client } from "./worker.mjs";
 let w;
 before(async () => {
   execSync("npx astro build --outDir dist-signin", { env: { ...process.env, SIGN_IN: "true" }, stdio: "ignore" });
-  w = await startWorker({ dist: "dist-signin", port: 8792, vars: { ALLOW_TEST_SIGNIN: "1" } });
+  /* made-up Google keys: enough to start a Google sign-in, which the tests stop at Google's door */
+  w = await startWorker({
+    dist: "dist-signin",
+    port: 8792,
+    vars: { ALLOW_TEST_SIGNIN: "1", GOOGLE_CLIENT_ID: "test-client", GOOGLE_CLIENT_SECRET: "test-secret" },
+  });
 });
 after(() => w?.stop());
 
@@ -28,13 +33,19 @@ test("the pages offer sign-in", async () => {
 
 test("the local test account signs in, and is sent back only to this site", async () => {
   const c = client(w.origin);
-  assert.deepEqual((await c.action("account.me")).data.providers, [{ id: "dev", name: "a local test account" }]);
+  assert.deepEqual((await c.action("account.me")).data.providers, [
+    { id: "google", name: "Google" },
+    { id: "dev", name: "a local test account" },
+  ]);
   assert.equal(await signIn(c, "//evil.example"), "/account");
   assert.equal(await signIn(c), "/model-cycles");
-  assert.ok(c.jar.get("rrr_session"));
-  assert.deepEqual((await c.action("account.me")).data.user, { name: "Local tester", email: null });
-  /* Google and GitHub need their keys, which a local run doesn't have */
-  for (const p of ["/auth/google", "/auth/github"]) assert.equal((await c.req(p)).status, 404, p);
+  assert.ok(c.jar.get("rrr.session_token"));
+  assert.deepEqual((await c.action("account.me")).data.user, {
+    name: "Local tester",
+    email: "local-tester@example.invalid",
+  });
+  /* GitHub sign-in is gone */
+  assert.equal((await c.req("/auth/github")).status, 404);
 });
 
 test("progress is saved to the account and read back", async () => {
@@ -121,7 +132,7 @@ test("signing out ends the session", async () => {
   const c = client(w.origin);
   await signIn(c);
   assert.equal((await c.action("account.signOut")).status, 204);
-  assert.equal(c.jar.get("rrr_session"), undefined);
+  assert.equal(c.jar.get("rrr.session_token"), undefined);
   assert.equal((await c.action("account.me")).data.user, null);
   assert.equal((await c.action("progress.load")).status, 401);
 });
@@ -137,4 +148,46 @@ test("deleting the account removes its progress and signs you out", async () => 
   assert.deepEqual((await c.action("progress.load")).data, { data: null, updatedAt: 0 });
   const body = await (await c.req("/api/export")).json();
   assert.equal(body.messages.length, 0);
+});
+
+test("Google sign-in goes to Google with a one-time state, and a forged return is turned away", async () => {
+  const c = client(w.origin);
+  const r = await c.req("/auth/google?next=/model-cycles");
+  assert.equal(r.status, 302);
+  const to = new URL(r.headers.get("location"));
+  assert.equal(to.origin, "https://accounts.google.com");
+  assert.equal(to.searchParams.get("client_id"), "test-client");
+  assert.equal(to.searchParams.get("redirect_uri"), `${w.origin}/api/auth/callback/google`);
+  assert.equal(to.searchParams.get("code_challenge_method"), "S256");
+  assert.ok(to.searchParams.get("state"));
+  /* coming back with a state this browser never got is an error, not a sign-in */
+  const cb = await client(w.origin).req("/api/auth/callback/google?code=x&state=made-up");
+  assert.equal(cb.status, 302);
+  assert.match(cb.headers.get("location"), /error/);
+  /* only paths on this site are accepted as where to go next */
+  assert.equal((await c.req("/auth/google?next=https://evil.example")).status, 302);
+});
+
+test("the session cookie can't be read by scripts or sent from other sites", async () => {
+  const c = client(w.origin);
+  const r = await c.req("/auth/dev");
+  const cookie = r.headers.getSetCookie().find((h) => h.startsWith("rrr.session_token="));
+  assert.match(cookie, /HttpOnly/i);
+  assert.match(cookie, /SameSite=Lax/i);
+  assert.match(cookie, /Max-Age=2592000/i);
+});
+
+test("Better Auth refuses sign-out from another site, and counts requests per visitor", async () => {
+  const c = client(w.origin);
+  await signIn(c);
+  const evil = await c.req("/api/auth/sign-out", { method: "POST", origin: "https://evil.example", json: {} });
+  assert.equal(evil.status, 403);
+  assert.ok((await c.action("account.me")).data.user, "still signed in");
+  /* the dev sign-in is limited like any sign-in: past the limit it answers 429 */
+  let limited = false;
+  for (let i = 0; i < 120 && !limited; i++) {
+    const r = await client(w.origin).req("/api/auth/get-session", { headers: { "cf-connecting-ip": "203.0.113.9" } });
+    limited = r.status === 429;
+  }
+  assert.ok(limited, "rate limit reached");
 });

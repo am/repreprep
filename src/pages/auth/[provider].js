@@ -1,15 +1,24 @@
-import { startSignIn, testSignIn, userFor, createSession, safeNext } from "../../lib/auth.js";
+import { auth, testSignIn, safeNext, redirectWith, providers } from "../../lib/auth.js";
 export const prerender = false;
 
-/* /auth/google, /auth/github: send the browser to the provider. /auth/dev: local test account. */
-export async function GET({ params, url, cookies, redirect }) {
-  if (params.provider === "dev") {
-    if (!testSignIn(url)) return new Response("Not found", { status: 404 });
-    const id = await userFor("dev", { provider_user_id: "local", name: "Local tester", email: null });
-    await createSession(id, url, cookies);
-    return redirect(safeNext(url.searchParams.get("next")), 302);
+/* /auth/google?next=…: sends the browser to Google, then back to `next` once signed in.
+   /auth/dev?next=…: the local test account (localhost only). */
+export async function GET({ params, url, request }) {
+  const a = auth(url);
+  if (!a || !providers(url).some((p) => p.id === params.provider)) return new Response("Not found", { status: 404 });
+  const next = safeNext(url.searchParams.get("next"));
+  /* Better Auth checks the Origin of every sign-in request; this one starts on our own page */
+  const headers = new Headers(request.headers);
+  headers.set("Origin", url.origin);
+  if (params.provider === "dev" && testSignIn(url)) {
+    const res = await a.api.devSignIn({ headers, asResponse: true });
+    return redirectWith(res, next);
   }
-  const to = startSignIn(params.provider, url, cookies);
-  if (!to) return new Response("This sign-in option is not set up.", { status: 404 });
-  return redirect(to.toString(), 302);
+  const res = await a.api.signInSocial({
+    body: { provider: params.provider, callbackURL: next, errorCallbackURL: "/account?error=signin" },
+    headers,
+    asResponse: true,
+  });
+  const { url: to } = await res.clone().json();
+  return redirectWith(res, to);
 }

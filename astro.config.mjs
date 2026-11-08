@@ -100,10 +100,9 @@ export default defineConfig({
          progress is still saved in the browser. Build with SIGN_IN=true to bring sign-in back. */
       SIGN_IN: envField.boolean({ context: "client", access: "public", default: false }),
       /* secrets, set with `npx wrangler secret put <NAME>` (or in .dev.vars on your computer) */
+      BETTER_AUTH_SECRET: secret() /* signs session cookies: 32+ random bytes, e.g. `openssl rand -base64 32` */,
       GOOGLE_CLIENT_ID: secret(),
       GOOGLE_CLIENT_SECRET: secret(),
-      GITHUB_CLIENT_ID: secret(),
-      GITHUB_CLIENT_SECRET: secret(),
       CONTACT_TO: secret() /* where contact-form messages are emailed */,
       /* Cloudflare Turnstile on the contact form: the public site key of the "contact form" widget in the
          repreprep account (allowed on repreprep.studio and repreprep.workers.dev), and its secret (a Worker

@@ -19,10 +19,8 @@ test("pages are served, unknown addresses get the not-found page", async () => {
 
 test("nobody is signed in and there are no sign-in options", async () => {
   assert.deepEqual((await c.action("account.me")).data, { user: null, providers: [] });
-  for (const p of ["/auth/dev", "/auth/google", "/auth/github"]) assert.equal((await c.req(p)).status, 404, p);
-  const cb = await c.req("/auth/github/callback?code=x&state=y");
-  assert.equal(cb.status, 302);
-  assert.equal(cb.headers.get("location"), "/account?error=signin");
+  for (const p of ["/auth/dev", "/auth/google", "/auth/github", "/api/auth/get-session", "/api/auth/callback/google"])
+    assert.equal((await c.req(p)).status, 404, p);
 });
 
 test("account actions need a signed-in person", async () => {

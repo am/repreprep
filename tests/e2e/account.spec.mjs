@@ -11,7 +11,7 @@ async function signIn(page) {
   await page.goto("/account");
   await page.getByRole("link", { name: "Continue with a local test account" }).click();
   await expect(page).toHaveURL("/account");
-  await expect(page.locator("[data-who]")).toHaveText("Local tester");
+  await expect(page.locator("[data-who]")).toHaveText("Local tester (local-tester@example.invalid)");
 }
 
 test("signing in from the progress page", async ({ page }) => {
