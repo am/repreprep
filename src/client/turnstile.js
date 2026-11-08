@@ -14,12 +14,29 @@ const load = () =>
     document.head.append(s);
   }));
 
+/* The check stays invisible and only shows itself, in place, when Cloudflare isn't sure the visitor is a person
+   ("interaction-only"); most people never see it. */
 export function drawTurnstile(box) {
   if (!box || box.childElementCount) return;
   const theme = document.documentElement.dataset.theme || "auto";
   load()
-    .then((t) => (box.dataset.widget = t.render(box, { sitekey: box.dataset.turnstile, theme, size: "flexible" })))
+    .then(
+      (t) =>
+        (box.dataset.widget = t.render(box, {
+          sitekey: box.dataset.turnstile,
+          theme,
+          size: "flexible",
+          appearance: "interaction-only",
+        }))
+    )
     .catch(() => {});
+}
+/* the token, once the check has passed: waits up to `ms` for it (it's still being made, or the visitor is being
+   asked to tick the box), then gives what there is */
+export async function turnstileToken(box, ms = 8000) {
+  const field = () => box?.querySelector('[name="cf-turnstile-response"]');
+  for (let waited = 0; !field()?.value && waited < ms; waited += 200) await new Promise((r) => setTimeout(r, 200));
+  return field()?.value || "";
 }
 /* a used token can't be sent twice: a fresh check for the next try */
 export const resetTurnstile = (box) => box?.dataset.widget && window.turnstile?.reset(box.dataset.widget);

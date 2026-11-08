@@ -115,7 +115,7 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
         </label>
         <div
           class="turnstile"
-          data-turnstile={import.meta.env.DEV ? "1x00000000000000000000AA" : TURNSTILE_SITE_KEY}
+          data-turnstile={import.meta.env.DEV ? "1x00000000000000000000BB" : TURNSTILE_SITE_KEY}
         ></div>
         <div class="row">
           <button class="btn primary" type="submit">
@@ -128,7 +128,7 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
 </Base>
 
 <script>
-  import { drawTurnstile } from "../client/turnstile.js";
+  import { drawTurnstile, turnstileToken } from "../client/turnstile.js";
 
   /* after sending, /api/contact comes back here with ?sent=1 or ?error=… */
   const CONTACT_MSG = {
@@ -140,6 +140,16 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
   };
 
   document.addEventListener("astro:page-load", () => drawTurnstile(document.querySelector("[data-turnstile]")));
+  /* the check is invisible: if it hasn't finished when Send is pressed, wait for it rather than send no token */
+  document.addEventListener("submit", async (e) => {
+    const f = e.target.closest("form.contact"),
+      box = f?.querySelector("[data-turnstile]");
+    if (!box || box.querySelector('[name="cf-turnstile-response"]')?.value) return;
+    e.preventDefault();
+    f.querySelector('[type="submit"]').disabled = true;
+    await turnstileToken(box);
+    f.submit();
+  });
   document.addEventListener("astro:page-load", () => {
     const el = document.querySelector("[data-contact-msg]");
     if (!el) return;
@@ -159,9 +169,9 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
     flex-direction: column;
     gap: var(--s4);
   }
+  /* takes no room unless Cloudflare asks the visitor to tick a box */
   .contact .turnstile {
-    margin: 10px 0;
-    min-height: 65px;
+    display: contents;
   }
   .contact label {
     display: block;
