@@ -73,7 +73,7 @@ export function auth(url) {
     emailAndPassword: {
       enabled: emailReady(),
       requireEmailVerification: true,
-      minPasswordLength: 10,
+      minPasswordLength: 12,
       maxPasswordLength: 128,
       revokeSessionsOnPasswordReset: true,
       resetPasswordTokenExpiresIn: 3600,

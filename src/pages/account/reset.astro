@@ -10,16 +10,23 @@ import { SIGN_IN } from "astro:env/client";
       <Fragment>
         <form class="reset" data-reset data-astro-reload hidden>
           <label>
-            New password (at least 10 characters)
+            New password (at least 12 characters)
             <input
               type="password"
               name="password"
               required
-              minlength="10"
+              minlength="12"
               maxlength="128"
               autocomplete="new-password"
             />
           </label>
+          <div class="strength" data-strength aria-live="polite">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <small data-strength-label></small>
+          </div>
           <div class="row">
             <button class="btn primary" type="submit">
               Save and sign in again
@@ -35,12 +42,13 @@ import { SIGN_IN } from "astro:env/client";
 </Base>
 
 <script>
+  import { strengthMeter } from "../../client/strength.js";
   /* The link in the email goes through Better Auth, which sends the browser here with ?token=… when the link is good,
      or ?error=INVALID_TOKEN when it's used up or too old. */
   const ERRORS = {
     INVALID_TOKEN: "This link has expired or was already used. Ask for a new one from the sign-in page.",
     PASSWORD_COMPROMISED: "That password has turned up in a data breach, so it's easy to guess. Please choose another.",
-    PASSWORD_TOO_SHORT: "Please use a password of at least 10 characters.",
+    PASSWORD_TOO_SHORT: "Please use a password of at least 12 characters.",
     PASSWORD_TOO_LONG: "Please use a password of at most 128 characters.",
   };
   const AGAIN = ' <a href="/account">Back to sign-in</a>.';
@@ -61,6 +69,11 @@ import { SIGN_IN } from "astro:env/client";
     if (token) history.replaceState(null, "", location.pathname);
     if (!token) return say(ERRORS.INVALID_TOKEN, true, true);
     form.hidden = false;
+    strengthMeter({
+      input: form.password,
+      meter: form.querySelector("[data-strength]"),
+      button: form.querySelector('[type="submit"]'),
+    });
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
       const button = form.querySelector("button");
