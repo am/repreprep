@@ -1,8 +1,9 @@
 name: Deploy
 
 # Every push to main (every merged PR) runs the tests, then deploys to production.
-# Every PR from this repo gets a preview at https://pr-<number>-repreprep.<subdomain>.workers.dev,
-# which shares the production D1 database. PRs from forks get no secrets, so no preview.
+# Every PR from this repo gets a preview at https://pr-<number>-repreprep-preview.<subdomain>.workers.dev:
+# a version of the separate repreprep-preview Worker (wrangler.jsonc env "preview"), with its own D1 database
+# and none of production's secrets. PRs from forks get no secrets, so no preview.
 # Nothing deploys unless the tests (npm test) pass.
 on:
   push:
@@ -72,6 +73,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npm run build
+        env:
+          CLOUDFLARE_ENV: preview
       - name: Upload preview version
         id: upload
         run: |
@@ -90,4 +93,4 @@ jobs:
           header: preview
           message: |
             Preview: ${{ steps.upload.outputs.url }}
-            Built from ${{ github.event.pull_request.head.sha }}. Shares the production database.
+            Built from ${{ github.event.pull_request.head.sha }}. Uses the preview database, not the live one.
