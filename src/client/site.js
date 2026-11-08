@@ -3,6 +3,7 @@
 import { onProgress, here, stepIds, ticked, account, setSync, syncMsg } from "./progress.js";
 import { SIGN_IN } from "astro:env/client";
 import "./updates.js";
+import "./loading.js";
 
 onProgress(() => {
   setSync(account.loaded ? syncMsg() : "");
