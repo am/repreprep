@@ -7,7 +7,7 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
 <Base title="Privacy" description="What Rep Rep Rep keeps about you, and how to see or delete it.">
   <div class="page" id="privacy">
     <h2>Privacy</h2>
-    <p class="msg">Last updated 18 October 2026.</p>
+    <p class="msg">Last updated 8 November 2026.</p>
     <p>
       Rep Rep Rep is a free, non-commercial course run by one person. There are no ads, no analytics and no tracking.
       This page says what the site keeps and how you can see or delete it.
@@ -22,7 +22,10 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
     {SIGN_IN ? (
       <Fragment>
         <h3>If you sign in</h3>
-        <p>You can sign in with Google or with a link sent to your email. The site keeps:</p>
+        <p>
+          You can sign in with Google, with a link sent to your email, or with your email and a password. The site
+          keeps:
+        </p>
         <ul>
           <li>your email address, and your name if Google shares it,</li>
           <li>your Google account number if you sign in with Google, so it can recognise you next time,</li>
@@ -33,9 +36,11 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
           </li>
         </ul>
         <p>
-          No password is ever seen or stored, and the site keeps nothing else from your Google account. A sign-in link
-          works only once, for 10 minutes. Your data is used only to run the course for you. It is never sold, shared or
-          used for advertising.
+          If you choose a password, only a scrambled form of it is stored (a scrypt hash), which can't be turned back
+          into the password. To refuse passwords known from data breaches, the first 5 characters of another scrambled
+          form are checked with Have I Been Pwned: your password never leaves the site. The site keeps nothing else from
+          your Google account. A sign-in link works only once, for 10 minutes, and a link to choose a new password for
+          an hour. Your data is used only to run the course for you. It is never sold, shared or used for advertising.
         </p>
 
         <h3>Cookies</h3>
@@ -60,6 +65,11 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
       {SIGN_IN && (
         <li>
           <b>Google</b>, only when you choose to sign in with it. Its own privacy policy applies on its sign-in page.
+        </li>
+      )}
+      {SIGN_IN && (
+        <li>
+          <b>Have I Been Pwned</b>, only when you choose a password, and only with the 5 characters described above.
         </li>
       )}
     </ul>

@@ -21,18 +21,18 @@ test("every page names its own served address as canonical, never a .html file",
   assert.deepEqual(wrong, []);
 });
 
-test("lesson steps, the progress page and the 404 stay out of search results; everything else is listed", () => {
+test("lesson steps, the account pages and the 404 stay out of search results; everything else is listed", () => {
   const sitemap = readFileSync(join(ROOT, "sitemap.xml"), "utf8");
   const listed = new Set([...sitemap.matchAll(/<loc>([^<]*)<\/loc>/g)].map((m) => m[1].slice(SITE.length)));
   for (const [path, html] of pages) {
-    const hidden = isStep(path) || path === "/account" || path === "/404";
+    const hidden = isStep(path) || /^\/account(\/|$)/.test(path) || path === "/404";
     assert.equal(noindex(html), hidden, `${path} noindex`);
     if (path.endsWith("/panel/level")) continue;
     assert.equal(listed.has(path), !hidden, `${path} in the sitemap`);
   }
   assert.equal(
     listed.size,
-    [...pages.keys()].filter((p) => !isStep(p) && !/^\/(account|404)$|\/panel\/level$/.test(p)).length
+    [...pages.keys()].filter((p) => !isStep(p) && !/^\/(account|account\/reset|404)$|\/panel\/level$/.test(p)).length
   );
 });
 

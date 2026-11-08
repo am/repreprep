@@ -22,6 +22,20 @@ const signIn = async (c, next = "/model-cycles") => {
   assert.equal(r.status, 302);
   return r.headers.get("location");
 };
+/* the local runtime doesn't send email; the site logs each link instead (localhost only).
+   Waits for link number `n` (counting from 1) sent to that address. */
+const emailed = async (what, email, n = 1) => {
+  const re = new RegExp(`${what} for ${email.replace(/[.+]/g, "\\$&")}: (\\S+)`, "g");
+  for (let i = 0; i < 50; i++) {
+    const link = [...w.log().matchAll(re)][n - 1]?.[1];
+    if (link) return new URL(link);
+    await new Promise((ok) => setTimeout(ok, 100));
+  }
+  assert.fail(`${what} number ${n} for ${email} logged`);
+};
+/* each test counts as its own visitor, so Better Auth's per-visitor limits don't carry over between tests */
+let visitor = 10;
+const asVisitor = () => ({ "cf-connecting-ip": `198.51.100.${visitor++}` });
 const progress = (updatedAt) => ({
   data: { updatedAt, inst: { cycles: { steps: { "w01:0": true }, done: {}, notes: { w01: "hi" }, active: {} } } },
 });
@@ -36,6 +50,7 @@ test("the local test account signs in, and is sent back only to this site", asyn
   assert.deepEqual((await c.action("account.me")).data.providers, [
     { id: "google", name: "Google" },
     { id: "email", name: "email" },
+    { id: "password", name: "password" },
     { id: "dev", name: "a local test account" },
   ]);
   assert.equal(await signIn(c, "//evil.example"), "/account");
@@ -200,14 +215,7 @@ test("a sign-in link by email signs you in once, and only for this site", async 
   assert.equal((await ask({ email, callbackURL: "/model-cycles" }, { origin: "https://evil.example" })).status, 403);
   const r = await ask({ email, callbackURL: "/model-cycles", errorCallbackURL: "/account?error=signin" });
   assert.equal(r.status, 200);
-  /* the local runtime doesn't send email; the site logs the link instead (localhost only) */
-  let link;
-  for (let i = 0; i < 50 && !link; i++) {
-    link = w.log().match(new RegExp(`sign-in link for ${email.replace(/[.+]/g, "\\$&")}: (\\S+)`))?.[1];
-    if (!link) await new Promise((ok) => setTimeout(ok, 100));
-  }
-  assert.ok(link, "link logged");
-  const u = new URL(link);
+  const u = await emailed("sign-in link", email);
   assert.equal(u.origin, w.origin);
   const open = await c.req(u.pathname + u.search);
   assert.equal(open.status, 302);
@@ -220,4 +228,89 @@ test("a sign-in link by email signs you in once, and only for this site", async 
   assert.match(again.headers.get("location"), /error/);
   /* a link that sends you to another site is refused when it is asked for */
   assert.equal((await ask({ email, callbackURL: "https://evil.example/" })).status, 403);
+});
+
+test("email and password: an account starts only once its address is confirmed", async () => {
+  const c = client(w.origin);
+  const headers = asVisitor();
+  const email = `pw-${Date.now()}@example.com`;
+  const post = (path, json) => c.req(`/api/auth/${path}`, { method: "POST", json, headers });
+  const password = "a long and fresh passphrase";
+  /* too short */
+  const short = await post("sign-up/email", { email, password: "short", name: "pw" });
+  assert.equal(short.status, 400);
+  assert.equal((await short.json()).code, "PASSWORD_TOO_SHORT");
+  /* signing up sends a confirm link and doesn't sign you in */
+  assert.equal(
+    (await post("sign-up/email", { email, password, name: "pw", callbackURL: "/model-cycles" })).status,
+    200
+  );
+  assert.equal(c.jar.get("rrr.session_token"), undefined);
+  const first = await emailed("confirm link", email);
+  /* signing in before confirming is refused, and sends a fresh link */
+  const early = await post("sign-in/email", { email, password, callbackURL: "/model-cycles" });
+  assert.equal(early.status, 403);
+  assert.equal((await early.json()).code, "EMAIL_NOT_VERIFIED");
+  const link = await emailed("confirm link", email, 2);
+  assert.ok(first);
+  /* the confirm link signs you in and sends you on, on this site only */
+  const open = await c.req(link.pathname + link.search);
+  assert.equal(open.status, 302);
+  assert.equal(new URL(open.headers.get("location"), w.origin).href, `${w.origin}/model-cycles`);
+  assert.equal((await c.action("account.me")).data.user.email, email);
+  /* afterwards the password works, a wrong one doesn't */
+  const other = client(w.origin);
+  const otherPost = (json) => other.req("/api/auth/sign-in/email", { method: "POST", json, headers: asVisitor() });
+  const wrong = await otherPost({ email, password: "not the right password" });
+  assert.equal(wrong.status, 401);
+  assert.equal((await wrong.json()).code, "INVALID_EMAIL_OR_PASSWORD");
+  assert.equal((await otherPost({ email, password })).status, 200);
+  assert.equal((await other.action("account.me")).data.user.email, email);
+  /* signing up again with the same address gives nothing away */
+  assert.equal((await post("sign-up/email", { email, password: "another long passphrase", name: "x" })).status, 200);
+  /* from another site, refused */
+  const evil = await c.req("/api/auth/sign-in/email", {
+    method: "POST",
+    json: { email, password },
+    origin: "https://evil.example",
+    headers: asVisitor(),
+  });
+  assert.equal(evil.status, 403);
+});
+
+test("a forgotten password is reset by email, once, and signs out every device", async () => {
+  const c = client(w.origin);
+  const email = `reset-${Date.now()}@example.com`;
+  const password = "the first long passphrase";
+  const post = (path, json, who = c) => who.req(`/api/auth/${path}`, { method: "POST", json, headers: asVisitor() });
+  await post("sign-up/email", { email, password, name: "reset" });
+  const confirm = await emailed("confirm link", email);
+  await c.req(confirm.pathname + confirm.search);
+  assert.equal((await c.action("account.me")).data.user.email, email);
+  /* an address with no account gets the same answer */
+  const nobody = await post("request-password-reset", { email: "nobody@example.com", redirectTo: "/account/reset" });
+  assert.equal(nobody.status, 200);
+  /* only a page on this site can receive the reset link */
+  assert.equal((await post("request-password-reset", { email, redirectTo: "https://evil.example/reset" })).status, 403);
+  assert.equal((await post("request-password-reset", { email, redirectTo: "/account/reset" })).status, 200);
+  const link = await emailed("password reset link", email);
+  /* the emailed link lands on the reset page with its token */
+  const open = await client(w.origin).req(link.pathname + link.search);
+  assert.equal(open.status, 302);
+  const landing = new URL(open.headers.get("location"), w.origin);
+  assert.equal(landing.pathname, "/account/reset");
+  const token = landing.searchParams.get("token");
+  assert.ok(token);
+  const newPassword = "the second long passphrase";
+  const reset = (json) => post("reset-password", json, client(w.origin));
+  assert.equal((await reset({ newPassword: "short", token })).status, 400);
+  assert.equal((await reset({ newPassword, token })).status, 200);
+  /* the same link twice is refused */
+  assert.equal((await reset({ newPassword: "a third long passphrase", token })).status, 400);
+  /* every session ended, the old password stopped working, the new one works */
+  assert.equal((await c.action("account.me")).data.user, null);
+  assert.equal((await post("sign-in/email", { email, password }, client(w.origin))).status, 401);
+  assert.equal((await post("sign-in/email", { email, password: newPassword }, client(w.origin))).status, 200);
+  /* the reset page itself is there */
+  assert.match(await (await c.req("/account/reset")).text(), /Choose a new password/);
 });

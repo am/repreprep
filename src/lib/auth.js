@@ -3,6 +3,7 @@ import { createAuthEndpoint } from "better-auth/api";
 import { setSessionCookie } from "better-auth/cookies";
 import { magicLink } from "better-auth/plugins/magic-link";
 import { captcha } from "better-auth/plugins/captcha";
+import { haveIBeenPwned } from "better-auth/plugins/haveibeenpwned";
 import { env } from "cloudflare:workers";
 import { SIGN_IN } from "astro:env/client";
 import {
@@ -65,6 +66,45 @@ export function auth(url) {
       ? { google: { clientId: GOOGLE_CLIENT_ID, clientSecret: GOOGLE_CLIENT_SECRET, prompt: "select_account" } }
       : {},
     account: { accountLinking: { enabled: true, trustedProviders: ["google"] } },
+    /* email + password: only with email sending, because the address is confirmed before the first sign-in
+       and a forgotten password is reset by email */
+    emailAndPassword: {
+      enabled: emailReady(),
+      requireEmailVerification: true,
+      minPasswordLength: 10,
+      maxPasswordLength: 128,
+      revokeSessionsOnPasswordReset: true,
+      resetPasswordTokenExpiresIn: 3600,
+      sendResetPassword: async ({ user, url: link }) => {
+        if (testSignIn(url)) console.log(`password reset link for ${user.email}: ${link}`);
+        await sendLink({
+          to: user.email,
+          subject: "Reset your Rep Rep Rep password",
+          intro: "Here's your link to choose a new password for Rep Rep Rep. It works once, for the next hour.",
+          button: "Choose a new password",
+          link,
+          outro: "If you didn't ask for this, you can ignore this email: your password stays the same.",
+        });
+      },
+    },
+    emailVerification: {
+      sendOnSignUp: true,
+      sendOnSignIn: true,
+      autoSignInAfterVerification: true,
+      expiresIn: 86400,
+      sendVerificationEmail: async ({ user, url: link }) => {
+        if (testSignIn(url)) console.log(`confirm link for ${user.email}: ${link}`);
+        await sendLink({
+          to: user.email,
+          subject: "Confirm your email for Rep Rep Rep",
+          intro:
+            "Confirm this is your address to finish setting up your Rep Rep Rep account. The link works for a day.",
+          button: "Confirm and sign in",
+          link,
+          outro: "If you didn't sign up, you can ignore this email: no account is made without this step.",
+        });
+      },
+    },
     /* counters in D1: a Worker's memory isn't shared between requests, and KV can't count atomically */
     rateLimit: { enabled: true, storage: "database" },
     verification: { storeInDatabase: true },
@@ -99,11 +139,13 @@ export function auth(url) {
             captcha({
               provider: "cloudflare-turnstile",
               secretKey: TURNSTILE_SECRET_KEY,
-              endpoints: ["/sign-in/magic-link"],
+              endpoints: ["/sign-in/magic-link", "/sign-up/email", "/sign-in/email", "/request-password-reset"],
             }),
           ]
         : []),
-      ...(testSignIn(url) ? [devSignIn] : []),
+      /* refuse passwords known from data breaches (only the first 5 characters of the password's SHA-1 hash leave
+         the site); skipped on localhost, where the tests run without the internet */
+      ...(testSignIn(url) ? [devSignIn] : [haveIBeenPwned()]),
     ],
   });
   cache.set(url.origin, a);
@@ -116,7 +158,7 @@ export function providers(url) {
   if (!a) return [];
   const list = [];
   if (GOOGLE_CLIENT_ID && GOOGLE_CLIENT_SECRET) list.push({ id: "google", name: "Google" });
-  if (emailReady()) list.push({ id: "email", name: "email" });
+  if (emailReady()) list.push({ id: "email", name: "email" }, { id: "password", name: "password" });
   if (testSignIn(url)) list.push({ id: "dev", name: "a local test account" });
   return list;
 }

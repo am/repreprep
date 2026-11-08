@@ -24,9 +24,9 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
             you sign in, what you did here is added to your account. <a href="/privacy">What the site keeps</a>.
           </p>
           <div class="signin" data-providers></div>
-          <form class="email-signin" data-email-signin data-astro-reload hidden>
+          <form class="email-signin" data-email-signin data-mode="link" data-astro-reload hidden>
             <label>
-              Or get a sign-in link by email
+              Or sign in with your email
               <input
                 type="email"
                 name="email"
@@ -36,15 +36,38 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
                 placeholder="you@example.com"
               />
             </label>
+            <label data-password-part>
+              Password (at least 10 characters)
+              <input type="password" name="password" minlength="10" maxlength="128" autocomplete="current-password" />
+            </label>
             <div
               class="turnstile"
               data-turnstile={import.meta.env.DEV ? "1x00000000000000000000AA" : TURNSTILE_SITE_KEY}
             ></div>
-            <div class="row">
-              <button class="btn primary" type="submit">
+            <div class="row" data-link-part>
+              <button class="btn primary" type="submit" data-act="link">
                 Email me a link
               </button>
+              <button class="btn" type="button" data-mode-to="password" data-password-option>
+                Use a password instead
+              </button>
             </div>
+            <div class="row" data-password-part>
+              <button class="btn primary" type="submit" data-act="signin">
+                Sign in
+              </button>
+              <button class="btn" type="submit" data-act="signup">
+                Create account
+              </button>
+              <button class="btn" type="submit" data-act="forgot" formnovalidate>
+                Forgot password?
+              </button>
+            </div>
+            <p class="t-body" data-password-part>
+              <button class="linkish" type="button" data-mode-to="link">
+                Email me a link instead
+              </button>
+            </p>
             <p class="msg" data-email-msg role="status"></p>
           </form>
           <p class="msg" data-no-providers hidden>
@@ -141,9 +164,10 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
     else {
       const box = root.querySelector("[data-providers]");
       const next = q.get("next") || "/account";
-      const links = account.providers.filter((p) => p.id !== "email");
+      const links = account.providers.filter((p) => !["email", "password"].includes(p.id));
       const form = root.querySelector("[data-email-signin]");
       form.hidden = !account.providers.some((p) => p.id === "email");
+      form.querySelector("[data-password-option]").hidden = !account.providers.some((p) => p.id === "password");
       if (!form.hidden) drawTurnstile(form.querySelector("[data-turnstile]"));
       box.innerHTML = links
         .map(
@@ -155,41 +179,87 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
     }
   });
 
-  /* "Email me a link": Better Auth sends a one-use link that signs in (or signs up) and comes back to `next` */
-  async function emailLink(form) {
+  /* the email form: a one-use sign-in link (the default), or a password. Each request goes to Better Auth with the
+     Turnstile token; what comes back is said in plain words under the form. */
+  const API = {
+    link: "/api/auth/sign-in/magic-link",
+    signin: "/api/auth/sign-in/email",
+    signup: "/api/auth/sign-up/email",
+    forgot: "/api/auth/request-password-reset",
+  };
+  const ERRORS = {
+    PASSWORD_COMPROMISED: "That password has turned up in a data breach, so it's easy to guess. Please choose another.",
+    PASSWORD_TOO_SHORT: "Please use a password of at least 10 characters.",
+    PASSWORD_TOO_LONG: "Please use a password of at most 128 characters.",
+    INVALID_EMAIL_OR_PASSWORD: "That email and password don't match. Try again, or use “Forgot password?”.",
+    INVALID_EMAIL: "That doesn't look like an email address.",
+  };
+  async function sendEmailForm(form, act) {
     const msg = form.querySelector("[data-email-msg]");
     const email = form.email.value.trim();
+    const password = form.password.value;
+    /* only a path on this site, never another address */
+    const asked = new URLSearchParams(location.search).get("next") || "";
+    const next = /^\/(?![\/\\])/.test(asked) && !asked.includes("\\") ? asked : "/account";
+    const body = {
+      link: { email, callbackURL: next, errorCallbackURL: "/account?error=signin" },
+      signin: { email, password, callbackURL: next },
+      signup: { email, password, name: email.split("@")[0], callbackURL: next },
+      forgot: { email, redirectTo: "/account/reset" },
+    }[act];
     const token = form.querySelector('[name="cf-turnstile-response"]')?.value || "";
-    const next = new URLSearchParams(location.search).get("next") || "/account";
-    const btn = form.querySelector("button");
-    btn.disabled = true;
+    form.querySelectorAll("button").forEach((b) => (b.disabled = true));
     msg.className = "msg";
-    msg.textContent = "Sending…";
-    const r = await fetch("/api/auth/sign-in/magic-link", {
+    msg.textContent = "One moment…";
+    const r = await fetch(API[act], {
       method: "POST",
       headers: { "Content-Type": "application/json", "x-captcha-response": token },
-      body: JSON.stringify({ email, callbackURL: next, errorCallbackURL: "/account?error=signin" }),
+      body: JSON.stringify(body),
     }).catch(() => null);
-    btn.disabled = false;
+    const j = await r?.json().catch(() => ({}));
+    form.querySelectorAll("button").forEach((b) => (b.disabled = false));
     resetTurnstile(form.querySelector("[data-turnstile]"));
+    const say = (text, bad) => {
+      msg.className = bad ? "msg bad" : "msg";
+      msg.textContent = text;
+    };
     if (r?.ok) {
-      msg.textContent = `Check your inbox: a sign-in link is on its way to ${email}. It works once, for 10 minutes.`;
-      form.email.value = "";
-    } else {
-      msg.className = "msg bad";
-      msg.textContent =
-        r?.status === 429
-          ? "Too many tries. Please wait a minute and try again."
-          : r?.status === 400 || r?.status === 403
-            ? "That didn't go through. Check the address and the box above, then try again."
-            : "Couldn't send the link. Please try again.";
+      if (act === "signin") return (location.href = next);
+      form.password.value = "";
+      return say(
+        {
+          link: `Check your inbox: a sign-in link is on its way to ${email}. It works once, for 10 minutes.`,
+          signup: `Almost there: confirm your address with the link we sent to ${email}, and you're signed in.`,
+          forgot: `If there's an account for ${email}, a link to choose a new password is on its way. It works for an hour.`,
+        }[act]
+      );
     }
+    if (r?.status === 429) return say("Too many tries. Please wait a minute and try again.", true);
+    if (j?.code === "EMAIL_NOT_VERIFIED")
+      return say(`Please confirm your address first: we've sent a new link to ${email}.`, true);
+    if (ERRORS[j?.code]) return say(ERRORS[j.code], true);
+    if (r?.status === 400 || r?.status === 403)
+      return say("That didn't go through. Check the address and the box above, then try again.", true);
+    say("Something went wrong. Please try again.", true);
   }
   document.addEventListener("submit", (e) => {
     const f = e.target.closest("[data-email-signin]");
     if (!f) return;
     e.preventDefault();
-    emailLink(f);
+    const act = e.submitter?.dataset.act || (f.dataset.mode === "password" ? "signin" : "link");
+    if ((act === "signin" || act === "signup") && f.password.value.length < 10) {
+      f.password.focus();
+      return f.password.reportValidity?.() || undefined;
+    }
+    sendEmailForm(f, act);
+  });
+  document.addEventListener("click", (e) => {
+    const b = e.target.closest("[data-mode-to]");
+    if (!b) return;
+    const f = b.closest("[data-email-signin]");
+    f.dataset.mode = b.dataset.modeTo;
+    f.querySelector("[data-email-msg]").textContent = "";
+    (f.dataset.mode === "password" ? f.password : f.email).focus();
   });
 
   async function signOut() {
@@ -301,6 +371,22 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
   .email-signin .turnstile {
     margin: 10px 0;
     min-height: 65px;
+  }
+  .email-signin[data-mode="link"] [data-password-part],
+  .email-signin[data-mode="password"] [data-link-part] {
+    display: none;
+  }
+  .email-signin label + label {
+    margin-top: var(--s3);
+  }
+  .email-signin .linkish {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: inherit;
+    font: inherit;
+    text-decoration: underline;
+    cursor: pointer;
   }
   .email-signin .msg {
     margin-top: var(--s2);

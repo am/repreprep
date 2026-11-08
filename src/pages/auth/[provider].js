@@ -5,7 +5,7 @@ export const prerender = false;
    /auth/dev?next=…: the local test account (localhost only). */
 export async function GET({ params, url, request }) {
   const a = auth(url);
-  if (!a || params.provider === "email" || !providers(url).some((p) => p.id === params.provider))
+  if (!a || ["email", "password"].includes(params.provider) || !providers(url).some((p) => p.id === params.provider))
     return new Response("Not found", { status: 404 });
   const next = safeNext(url.searchParams.get("next"));
   /* Better Auth checks the Origin of every sign-in request; this one starts on our own page */

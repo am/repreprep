@@ -9,7 +9,7 @@ import { join } from "node:path";
 import { pages, page, exists, ROOT } from "./built.mjs";
 
 test("every lesson step, challenge, done screen and reference page is built", () => {
-  const want = ["/", "/account", "/privacy", "/404", "/whats-new"];
+  const want = ["/", "/account", "/account/reset", "/privacy", "/404", "/whats-new"];
   for (const I of COURSES) {
     want.push(`/${I.slug}`, `/${I.slug}/panel`, `/${I.slug}/machines`, `/${I.slug}/shortcuts`, `/${I.slug}/saving`);
     for (const id of Object.keys(I.controls)) want.push(`/${I.slug}/panel/${id}`);
