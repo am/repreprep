@@ -3,6 +3,12 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.6.3
+  date: "2026-11-07"
+  title: Key combos as big as the step text
+  site:
+    - The numbered key-combo rows (copying a pattern, setting VEL, LEN or NOTE on held trigs) now use the same text size as the rest of the step, so the keys and the "hold until the end" notes are as easy to read as the bullets around them.
+
 - id: 0.6.2
   date: "2026-11-07"
   title: Progress on more than one device
