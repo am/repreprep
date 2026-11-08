@@ -38,9 +38,11 @@ function buildPattern(project, clean, name, spec, projectTempo) {
       throw new Error(`${name} ${what}: ${e.message}`);
     }
   };
-  if (spec.title) at("title", () => (pattern.title = spec.title));
+  // the unit names a used pattern's kit after the pattern
+  if (spec.title) at("title", () => (pattern.title = pattern.kit.name = spec.title));
   if (spec.tempo ?? projectTempo) pattern.tempo = spec.tempo ?? projectTempo;
   if (spec.speed) at("speed", () => (pattern.speed = spec.speed));
+  if (spec.scale) at("scale", () => (pattern.scale = spec.scale));
   const tracks = spec.tracks ?? {};
   const longest = Math.max(0, ...Object.values(tracks).map((t) => stepString(t.steps).length));
   pattern.length = spec.length ?? (longest > 16 ? longest : 16);
@@ -64,6 +66,7 @@ function buildTrack(pattern, clean, t, spec) {
   if (spec.level != null) pattern.kit.setLevel(t, spec.level);
   if (spec.swing != null) track.swing = spec.swing - 50;
   if (spec.length != null) track.stepCount = spec.length;
+  if (spec.chance != null) track.chance = spec.chance;
   [...stepString(spec.steps)].forEach((c, s) => c !== "." && track.setTrig(s));
   for (const [step, trig] of Object.entries(spec.trigs ?? {})) {
     const s = Number(step) - 1;
