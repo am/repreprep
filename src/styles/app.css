@@ -83,6 +83,8 @@
   --r-l: 0.75rem;
   --r-xl: 1rem;
   --r-pill: 999px;
+  /* every button on the site: the lesson steps' Back and Next set it */
+  --r-btn: var(--r-m);
   --shadow: rgba(0, 0, 0, 0.18);
   /* drawn device details that don't change with the theme */
   --dev-page-on: #f3d36b;
@@ -332,7 +334,7 @@ a.song svg {
   border: 1px solid var(--line);
   background: var(--surface);
   padding: var(--s2) var(--s4);
-  border-radius: var(--r-m);
+  border-radius: var(--r-btn);
   cursor: pointer;
   font-family: var(--display);
   font-weight: var(--fw-semibold);
@@ -886,7 +888,7 @@ svg.fig {
 .gtabs button {
   border: 1px solid var(--line);
   background: transparent;
-  border-radius: var(--r-pill);
+  border-radius: var(--r-btn);
   padding: 0.3em 0.8em;
   font-size: 0.92em;
   cursor: pointer;
