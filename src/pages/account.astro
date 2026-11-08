@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import Card from "../components/site/Card.astro";
-import { SIGN_IN } from "astro:env/client";
+import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
 ---
 
 <Base
@@ -24,6 +24,29 @@ import { SIGN_IN } from "astro:env/client";
             you sign in, what you did here is added to your account. <a href="/privacy">What the site keeps</a>.
           </p>
           <div class="signin" data-providers></div>
+          <form class="email-signin" data-email-signin data-astro-reload hidden>
+            <label>
+              Or get a sign-in link by email
+              <input
+                type="email"
+                name="email"
+                required
+                maxlength="200"
+                autocomplete="email"
+                placeholder="you@example.com"
+              />
+            </label>
+            <div
+              class="turnstile"
+              data-turnstile={import.meta.env.DEV ? "1x00000000000000000000AA" : TURNSTILE_SITE_KEY}
+            ></div>
+            <div class="row">
+              <button class="btn primary" type="submit">
+                Email me a link
+              </button>
+            </div>
+            <p class="msg" data-email-msg role="status"></p>
+          </form>
           <p class="msg" data-no-providers hidden>
             Sign-in isn't set up on this site yet.
           </p>
@@ -97,6 +120,7 @@ import { SIGN_IN } from "astro:env/client";
 <script>
   /* download, load and delete your progress; with sign-in on, who you are and your account */
   import { onProgress, flush, update, combine, state, account, LS_KEY } from "../client/progress.js";
+  import { drawTurnstile, resetTurnstile } from "../client/turnstile.js";
   import { esc } from "../course/shared/html.js";
   import { SIGN_IN } from "astro:env/client";
 
@@ -117,7 +141,11 @@ import { SIGN_IN } from "astro:env/client";
     else {
       const box = root.querySelector("[data-providers]");
       const next = q.get("next") || "/account";
-      box.innerHTML = account.providers
+      const links = account.providers.filter((p) => p.id !== "email");
+      const form = root.querySelector("[data-email-signin]");
+      form.hidden = !account.providers.some((p) => p.id === "email");
+      if (!form.hidden) drawTurnstile(form.querySelector("[data-turnstile]"));
+      box.innerHTML = links
         .map(
           (p) =>
             `<a class="btn" href="/auth/${p.id}?next=${encodeURIComponent(next)}" data-astro-reload>${PROVIDER_ICON[p.id] || ""}Continue with ${esc(p.name)}</a>`
@@ -125,6 +153,43 @@ import { SIGN_IN } from "astro:env/client";
         .join("");
       root.querySelector("[data-no-providers]").hidden = account.providers.length > 0;
     }
+  });
+
+  /* "Email me a link": Better Auth sends a one-use link that signs in (or signs up) and comes back to `next` */
+  async function emailLink(form) {
+    const msg = form.querySelector("[data-email-msg]");
+    const email = form.email.value.trim();
+    const token = form.querySelector('[name="cf-turnstile-response"]')?.value || "";
+    const next = new URLSearchParams(location.search).get("next") || "/account";
+    const btn = form.querySelector("button");
+    btn.disabled = true;
+    msg.className = "msg";
+    msg.textContent = "Sending…";
+    const r = await fetch("/api/auth/sign-in/magic-link", {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "x-captcha-response": token },
+      body: JSON.stringify({ email, callbackURL: next, errorCallbackURL: "/account?error=signin" }),
+    }).catch(() => null);
+    btn.disabled = false;
+    resetTurnstile(form.querySelector("[data-turnstile]"));
+    if (r?.ok) {
+      msg.textContent = `Check your inbox: a sign-in link is on its way to ${email}. It works once, for 10 minutes.`;
+      form.email.value = "";
+    } else {
+      msg.className = "msg bad";
+      msg.textContent =
+        r?.status === 429
+          ? "Too many tries. Please wait a minute and try again."
+          : r?.status === 400 || r?.status === 403
+            ? "That didn't go through. Check the address and the box above, then try again."
+            : "Couldn't send the link. Please try again.";
+    }
+  }
+  document.addEventListener("submit", (e) => {
+    const f = e.target.closest("[data-email-signin]");
+    if (!f) return;
+    e.preventDefault();
+    emailLink(f);
   });
 
   async function signOut() {
@@ -211,5 +276,36 @@ import { SIGN_IN } from "astro:env/client";
   .signin :global(svg) {
     width: 1.125rem;
     height: 1.125rem;
+  }
+  .email-signin {
+    max-width: 24rem;
+    margin: 0 0 var(--s4);
+  }
+  .email-signin label {
+    display: block;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .email-signin input {
+    display: block;
+    width: 100%;
+    margin-top: var(--s2);
+    padding: var(--s3);
+    border-radius: var(--r-m);
+    border: 1px solid var(--line);
+    background: var(--surface);
+    color: var(--fg);
+    font: inherit;
+    font-size: var(--fs-sm);
+  }
+  .email-signin .turnstile {
+    margin: 10px 0;
+    min-height: 65px;
+  }
+  .email-signin .msg {
+    margin-top: var(--s2);
+  }
+  .email-signin .msg:empty {
+    display: none;
   }
 </style>

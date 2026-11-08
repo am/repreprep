@@ -35,6 +35,7 @@ test("the local test account signs in, and is sent back only to this site", asyn
   const c = client(w.origin);
   assert.deepEqual((await c.action("account.me")).data.providers, [
     { id: "google", name: "Google" },
+    { id: "email", name: "email" },
     { id: "dev", name: "a local test account" },
   ]);
   assert.equal(await signIn(c, "//evil.example"), "/account");
@@ -190,4 +191,33 @@ test("Better Auth refuses sign-out from another site, and counts requests per vi
     limited = r.status === 429;
   }
   assert.ok(limited, "rate limit reached");
+});
+
+test("a sign-in link by email signs you in once, and only for this site", async () => {
+  const c = client(w.origin);
+  const email = `learner-${Date.now()}@example.com`;
+  const ask = (body, opts) => c.req("/api/auth/sign-in/magic-link", { method: "POST", json: body, ...opts });
+  assert.equal((await ask({ email, callbackURL: "/model-cycles" }, { origin: "https://evil.example" })).status, 403);
+  const r = await ask({ email, callbackURL: "/model-cycles", errorCallbackURL: "/account?error=signin" });
+  assert.equal(r.status, 200);
+  /* the local runtime doesn't send email; the site logs the link instead (localhost only) */
+  let link;
+  for (let i = 0; i < 50 && !link; i++) {
+    link = w.log().match(new RegExp(`sign-in link for ${email.replace(/[.+]/g, "\\$&")}: (\\S+)`))?.[1];
+    if (!link) await new Promise((ok) => setTimeout(ok, 100));
+  }
+  assert.ok(link, "link logged");
+  const u = new URL(link);
+  assert.equal(u.origin, w.origin);
+  const open = await c.req(u.pathname + u.search);
+  assert.equal(open.status, 302);
+  assert.equal(new URL(open.headers.get("location"), w.origin).href, `${w.origin}/model-cycles`);
+  assert.equal(open.headers.get("referrer-policy"), "no-referrer");
+  assert.equal((await c.action("account.me")).data.user.email, email);
+  /* the same link a second time is turned away */
+  const again = await client(w.origin).req(u.pathname + u.search);
+  assert.equal(again.status, 302);
+  assert.match(again.headers.get("location"), /error/);
+  /* a link that sends you to another site is refused when it is asked for */
+  assert.equal((await ask({ email, callbackURL: "https://evil.example/" })).status, 403);
 });

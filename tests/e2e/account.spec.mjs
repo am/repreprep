@@ -24,6 +24,17 @@ test("signing in from the progress page", async ({ page }) => {
   await expect(page.locator("#sync")).toHaveText("Progress saved to your account.");
 });
 
+test("asking for a sign-in link by email", async ({ page }) => {
+  await page.goto("/account");
+  const form = page.locator("[data-email-signin]");
+  await expect(form).toBeVisible();
+  await form.getByRole("textbox").fill("someone@example.com");
+  await form.getByRole("button", { name: "Email me a link" }).click();
+  await expect(form.locator("[data-email-msg]")).toHaveText(
+    /Check your inbox: a sign-in link is on its way to someone@example\.com/
+  );
+});
+
 test("deleting the account starts it over", async ({ page }) => {
   await signIn(page);
   page.on("dialog", (d) => d.accept());
