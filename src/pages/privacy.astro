@@ -1,7 +1,7 @@
 ---
 import Base from "../layouts/Base.astro";
 import Card from "../components/site/Card.astro";
-import { SIGN_IN } from "astro:env/client";
+import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
 ---
 
 <Base title="Privacy" description="What Rep Rep Rep keeps about you, and how to see or delete it.">
@@ -102,6 +102,7 @@ import { SIGN_IN } from "astro:env/client";
           Leave this empty
           <input name="website" tabindex="-1" autocomplete="off" />
         </label>
+        <div class="turnstile" data-turnstile={TURNSTILE_SITE_KEY}></div>
         <div class="row">
           <button class="btn primary" type="submit">
             Send
@@ -119,7 +120,32 @@ import { SIGN_IN } from "astro:env/client";
     empty: ["Please write a message first.", "bad"],
     long: ["That message is too long. Please keep it under 4000 characters.", "bad"],
     busy: ["The form is getting a lot of messages right now. Please try again tomorrow.", "bad"],
+    bot: ["The check that you're not a bot didn't pass. Please try again.", "bad"],
   };
+
+  /* Cloudflare Turnstile: load its script once, then draw the check into the form on every visit */
+  type Turnstile = { render: (el: Element, opts: Record<string, unknown>) => string };
+  let turnstile: Promise<Turnstile> | null = null;
+  const loadTurnstile = () =>
+    (turnstile ??= new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = "https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit";
+      s.async = true;
+      s.onload = () => resolve((window as unknown as { turnstile: Turnstile }).turnstile);
+      s.onerror = () => {
+        turnstile = null;
+        reject(new Error("Turnstile didn't load"));
+      };
+      document.head.append(s);
+    }));
+  document.addEventListener("astro:page-load", () => {
+    const box = document.querySelector<HTMLElement>("[data-turnstile]");
+    if (!box || box.childElementCount) return;
+    const theme = document.documentElement.dataset.theme || "auto";
+    loadTurnstile()
+      .then((t) => t.render(box, { sitekey: box.dataset.turnstile, theme, size: "flexible" }))
+      .catch(() => {});
+  });
   document.addEventListener("astro:page-load", () => {
     const el = document.querySelector("[data-contact-msg]");
     if (!el) return;
@@ -138,6 +164,10 @@ import { SIGN_IN } from "astro:env/client";
     display: flex;
     flex-direction: column;
     gap: var(--s4);
+  }
+  .contact .turnstile {
+    margin: 10px 0;
+    min-height: 65px;
   }
   .contact label {
     display: block;

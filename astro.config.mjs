@@ -105,6 +105,10 @@ export default defineConfig({
       GITHUB_CLIENT_ID: secret(),
       GITHUB_CLIENT_SECRET: secret(),
       CONTACT_TO: secret() /* where contact-form messages are emailed */,
+      /* Cloudflare Turnstile on the contact form: the public site key, and the secret (a Worker secret).
+         The default site key is Cloudflare's always-pass test key, used on your computer. */
+      TURNSTILE_SITE_KEY: envField.string({ context: "client", access: "public", default: "1x00000000000000000000AA" }),
+      TURNSTILE_SECRET_KEY: secret(),
       ALLOW_TEST_SIGNIN: secret() /* "1" offers the local test account on localhost (never on a real domain) */,
     },
   },
