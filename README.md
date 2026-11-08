@@ -56,7 +56,7 @@ Lesson ids (`w05`, `s01`) and step ids are what progress is stored under: a tick
 - Signed out, progress (ticked steps, finished lessons, notes, layout) is kept in the browser.
 - Signed in, it's also saved to the account and loads on any device. When you sign in, the newer of the browser's and the account's progress wins.
 - Sign-in is with Google or GitHub, so the site never stores passwords. Sessions are a random token in an HttpOnly cookie; the database stores only its hash.
-- Sign-in is switched off for now, and `/account` is a "Your progress" page. The switch is `SIGN_IN` in `astro.config.mjs` (an `astro:env` setting, read by the pages, the server and the browser code): change its default to `true`, or build with `SIGN_IN=true`, to bring sign-in back.
+- Sign-in is on for the live site only: the production deploy in `.github/workflows/deploy.yml` builds with `SIGN_IN=true`. The switch is `SIGN_IN` in `astro.config.mjs` (an `astro:env` setting, read by the pages, the server and the browser code). It defaults to off, so tests and PR previews show `/account` as a "Your progress" page; build with `SIGN_IN=true` to try sign-in on your computer.
 - `/account` can download progress as a file and load one, including `progress.json` from the old local version of the course.
 
 ## Publish on Cloudflare

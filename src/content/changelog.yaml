@@ -3,6 +3,13 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.6.6
+  date: "2026-11-08"
+  title: Log in to keep your progress everywhere
+  site:
+    - You can now make an account and log in, with a link sent to your email or with an email and password. Your ticks, notes and quiz answers then follow you to any browser where you log in. The person icon next to the bell takes you there.
+    - Without an account nothing changes. Your progress is still saved in this browser, and Your data still lets you download it or load a file.
+
 - id: 0.6.5
   date: "2026-11-08"
   title: Buttons with the same corners
