@@ -105,6 +105,11 @@ export default defineConfig({
       GITHUB_CLIENT_ID: secret(),
       GITHUB_CLIENT_SECRET: secret(),
       CONTACT_TO: secret() /* where contact-form messages are emailed */,
+      /* Cloudflare Turnstile on the contact form: the public site key of the "contact form" widget in the
+         repreprep account (allowed on repreprep.studio and repreprep.workers.dev), and its secret (a Worker
+         secret). `npm run dev` uses Cloudflare's always-pass test key instead, since localhost isn't allowed. */
+      TURNSTILE_SITE_KEY: envField.string({ context: "client", access: "public", default: "0x4AAAAAAF4zfCCh2mFAQj0Q" }),
+      TURNSTILE_SECRET_KEY: secret(),
       ALLOW_TEST_SIGNIN: secret() /* "1" offers the local test account on localhost (never on a real domain) */,
     },
   },
