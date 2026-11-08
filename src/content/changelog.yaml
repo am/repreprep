@@ -7,7 +7,7 @@
   date: "2026-11-08"
   title: A sign that the next page is on its way
   site:
-    - On a slow connection, tapping a link no longer looks like nothing happened. If the next page takes more than a moment, sixteen trig keys run along the top of the screen like the sequencer playing, the link or button you tapped pulses coral, and the rest of the page fades back. When the new page lands, the keys flash and fade.
+    - On a slow connection, tapping a link no longer looks like nothing happened. If the next page takes more than a moment, a thin coral line creeps across the top of the screen, the link or button you tapped pulses coral, and the rest of the page fades back. When the new page lands, the line runs to the end and fades.
     - In a lesson, Next and Back pulse the same way, and the step dot you're heading to blinks until its step opens.
 
 - id: 0.6.3

@@ -1,7 +1,7 @@
 /* The page loading sign (PageLoading.astro). The ClientRouter fetches the next page itself, so the browser shows
-   nothing while it waits. If the page isn't there after a moment, <html> gets .pl-on: the trig keys run along the
+   nothing while it waits. If the page isn't there after a moment, <html> gets .pl-on: a coral line creeps across the
    top, the link or button you tapped (.pl-from) pulses and the step dot you're heading to (.pl-to) blinks. When the
-   new page is in, .pl-done flashes the keys and fades them out. Fast loads show nothing. */
+   new page is in, .pl-done runs the line to the end and fades it. Fast loads show nothing. */
 const WAIT = 150; /* ms before the sign shows */
 const root = document.documentElement;
 let timer = 0,

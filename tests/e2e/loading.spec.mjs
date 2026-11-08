@@ -1,5 +1,5 @@
-// The page loading sign: on a slow page change the trig keys run, the tapped link pulses and the step dot you're
-// heading to blinks; when the page lands they flash and clear. Fast page changes show nothing.
+// The page loading sign: on a slow page change a coral line creeps across the top, the tapped link pulses and the step dot you're
+// heading to blinks; when the page lands the line finishes and they clear. Fast page changes show nothing.
 import { test, expect } from "./fixtures.mjs";
 import { COURSES } from "../../src/course/files.js";
 
@@ -17,7 +17,7 @@ async function slow(page, glob) {
   return () => release();
 }
 
-test("a slow lesson link shows the trig keys and lights the tapped link", async ({ page }) => {
+test("a slow lesson link shows the line and lights the tapped link", async ({ page }) => {
   await page.goto(`/${I.slug}`);
   const release = await slow(page, `**${lesson()}`);
   const link = page.locator(`#view a[href="${lesson()}"]`).first();
