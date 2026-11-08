@@ -3,6 +3,19 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.6.5
+  date: "2026-11-08"
+  title: Buttons with the same corners
+  site:
+    - Every button now has the same slightly rounded corners as Back and Next in a lesson. The pattern buttons on the grids were round pills, and the quiz answers, the "Got it" button on lesson notes and the maximise button were a little different. The course buttons on the home page keep their rounder corners.
+
+- id: 0.6.4
+  date: "2026-11-08"
+  title: A sign that the next page is on its way
+  site:
+    - On a slow connection, tapping a link no longer looks like nothing happened. If the next page takes more than a moment, a thin coral line creeps across the top of the screen, the link or button you tapped pulses coral, and the rest of the page fades back. When the new page lands, the line runs to the end and fades.
+    - In a lesson, Next and Back pulse the same way, and the step dot you're heading to blinks until its step opens.
+
 - id: 0.6.3
   date: "2026-11-07"
   title: Key combos as big as the step text
