@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig, envField, fontProviders } from "astro/config";
 import cloudflare from "@astrojs/cloudflare";
+import preload from "./src/integrations/preload.js";
 
 const secret = () => envField.string({ context: "server", access: "secret", optional: true });
 
@@ -67,10 +68,14 @@ function family(name, cssVariable, fallbacks, faces) {
 export default defineConfig({
   site: "https://repreprep.studio",
   trailingSlash: "never",
-  build: { format: "file" },
+  /* the stylesheet goes inside each page, so the first paint doesn't wait for one more file to arrive */
+  build: { format: "file", inlineStylesheets: "always" },
   session: false,
   adapter: cloudflare({ imageService: "passthrough", imagesBindingName: false }),
   devToolbar: { enabled: false },
+  /* fonts and script imports start loading with the page (src/integrations/preload.js); the account calls
+     too when sign-in is on, since every page then asks who is logged in */
+  integrations: [preload({ dynamic: process.env.SIGN_IN === "true" })],
   /* the fonts are served from this site, so visitors' browsers never ask Google for them */
   fonts: [
     family("Manrope", "--font-manrope", ["Helvetica Neue", "Arial", "sans-serif"], [["200 800", "normal"]]),

@@ -3,6 +3,12 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.6.8
+  date: "2026-11-09"
+  title: Pages appear sooner
+  site:
+    - Pages show up sooner on a slow connection. The browser now gets the page's styles inside the page itself, and starts fetching its fonts and scripts straight away instead of one after another. On a slow phone connection the first text appears about 1.5 seconds earlier.
+
 - id: 0.6.7
   date: "2026-11-09"
   title: Safer logging in
