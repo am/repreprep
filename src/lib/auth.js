@@ -166,9 +166,8 @@ export function providers(url) {
   return list;
 }
 
-/* where to land after signing in: only paths on this site */
-export const safeNext = (p) =>
-  typeof p === "string" && p.startsWith("/") && !p.startsWith("//") && !p.includes("\\") ? p : "/account";
+/* where to land after signing in: only paths on this site (see safe-next.js) */
+export { safeNext } from "./safe-next.js";
 
 /* the signed-in user ({id, name, email}), or null */
 export async function currentUser(request, url) {
