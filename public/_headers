@@ -1,3 +1,12 @@
+# Browser safety headers on every page (the same list as src/lib/security-headers.js, which explains each one).
+/*
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+  X-Frame-Options: DENY
+  Content-Security-Policy: frame-ancestors 'none'
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+
 # Copies of the site on workers.dev (the old address and every PR preview) stay out of search results;
 # only repreprep.studio is listed.
 https://:sub.:account.workers.dev/*
