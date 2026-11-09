@@ -3,6 +3,12 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.6.7
+  date: "2026-11-09"
+  title: One page for your account
+  site:
+    - Once you're logged in, the account area is a single page. Your progress, your account's data and Log out are all in one place, without the Your account and Your data tabs.
+
 - id: 0.6.6
   date: "2026-11-08"
   title: Log in to keep your progress everywhere

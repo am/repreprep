@@ -22,6 +22,17 @@ test("logging in from the account page", async ({ page }) => {
   await expect(page.locator("#acct")).toHaveAttribute("aria-label", "Local tester");
   await expect(page.locator("[data-signed-out]")).toBeHidden();
   await expect(page.locator("#sync")).toHaveText("Progress saved to your account.");
+  /* logged in, the account is one page: no tabs, your progress, your account's data and Log out */
+  await expect(page.getByRole("navigation", { name: "Account" })).toBeHidden();
+  await expect(page.getByRole("heading", { name: "Your account", exact: true })).toBeVisible();
+  await expect(page).toHaveTitle(/^Your account/);
+  await expect(page.locator("[data-export]")).toBeVisible();
+  await expect(page.locator("[data-delete]")).toBeVisible();
+  await expect(page.getByRole("button", { name: "Log out" })).toBeVisible();
+  await page.goto("/account/data");
+  await expect(page.getByRole("navigation", { name: "Account" })).toBeHidden();
+  await expect(page.getByRole("heading", { name: "Your account", exact: true })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Log out" })).toBeVisible();
 });
 
 test("asking for a login link by email", async ({ page }) => {
@@ -81,6 +92,7 @@ test("the old sign-up address and the Your data tab", async ({ page }) => {
   await expect(page.getByRole("heading", { name: "Your data", exact: true })).toBeAttached();
   await expect(page.locator("[data-export]")).toBeVisible();
   await expect(page.locator("[data-delete]")).toBeHidden();
+  await expect(page.locator("[data-signout]")).toBeHidden();
 });
 
 test("a reset link that's used up says so", async ({ page }) => {
@@ -96,8 +108,6 @@ test("a reset link that's used up says so", async ({ page }) => {
 
 test("deleting the account starts it over", async ({ page }) => {
   await signIn(page);
-  await page.getByRole("link", { name: "Your data", exact: true }).click();
-  await expect(page).toHaveURL("/account/data");
   page.on("dialog", (d) => d.accept());
   await page.locator("[data-delete]").click();
   await expect(page.locator("[data-signed-out]")).toBeVisible();
