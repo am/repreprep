@@ -1,8 +1,8 @@
 ---
 // The account pages, one per tab: Log in (/account), Sign up (/account/signup) and Your data (/account/data).
-// Signed in, /account is Your account instead, and the Log in and Sign up tabs give way to it. Who you are is
-// only known in the browser, so the page holds both versions and its script shows the right one.
-// With sign-in off, every one of them is just your progress.
+// Signed in, there are no tabs: /account and /account/data are one page, Your account, with your progress, your
+// account's data and Log out. Who you are is only known in the browser, so the page holds both versions and its
+// script shows the right one. With sign-in off, every one of them is just your progress.
 import Base from "../../layouts/Base.astro";
 import SectionTabs from "./SectionTabs.astro";
 import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
@@ -11,6 +11,9 @@ interface Props {
 }
 const { view } = Astro.props;
 const form = SIGN_IN && view !== "data";
+/* your progress and your account: the whole page on Your data (and with sign-in off), and on Log in once
+   you're logged in */
+const data = !SIGN_IN || view !== "signup";
 const TITLE = {
   login: ["Log in", "Log in to keep your progress on every device."],
   signup: ["Sign up", "Make an account to keep your progress on every device."],
@@ -18,16 +21,15 @@ const TITLE = {
 };
 const [title, description] = SIGN_IN ? TITLE[view] : ["Your progress", "Back up your progress or load a saved copy."];
 const TABS = [
-  { key: "login", label: "Log in", href: "/account", show: "out" },
-  { key: "account", label: "Your account", href: "/account", show: "in" },
-  { key: "signup", label: "Sign up", href: "/account/signup", show: "out" },
+  { key: "login", label: "Log in", href: "/account" },
+  { key: "signup", label: "Sign up", href: "/account/signup" },
   { key: "data", label: "Your data", href: "/account/data" },
 ];
 ---
 
 <Base noindex title={title} description={description}>
   <div class="page" id="account" data-view={view}>
-    {SIGN_IN && <SectionTabs items={TABS} tab={view} label="Account" />}
+    {SIGN_IN && <SectionTabs items={TABS} tab={view} label="Account" show="out" />}
     {form ? (
       <Fragment>
         <p class="msg bad" data-acct-error hidden>
@@ -148,113 +150,120 @@ const TABS = [
             Logging in isn't set up on this site yet.
           </p>
         </section>
-        {/* signed in: who you are (on the Sign up page, the script sends you to /account instead) */}
-        <section class="signed-in" data-signed-in hidden>
-          <h2 class="vh">Your account</h2>
-          <section class="box who">
-            <p class="t-body">
-              Logged in as <b data-who></b>
-            </p>
-            <button class="btn" data-signout>
-              Log out
-            </button>
-          </section>
-        </section>
       </Fragment>
-    ) : (
-      <Fragment>
-        <h2 class:list={{ vh: SIGN_IN }}>{title}</h2>
+    ) : null}
+
+    {data && (
+      <div data-signed-in={form ? "" : undefined} hidden={form}>
         {SIGN_IN ? (
-          <p class="t-body lede">
-            <span data-show="out" hidden>
-              Your ticks, finished lessons and notes are saved in this browser. Log in to keep them on every device.
-            </span>
-            <span data-show="in" hidden>
-              Your progress is saved to your account and follows you to every device.
-            </span>{" "}
-            <a href="/privacy">What the site keeps</a>
-          </p>
+          <Fragment>
+            <h2 class="t-title" data-show="in" hidden>
+              Your account
+            </h2>
+            <h2 class="vh" data-show="out" hidden>
+              Your data
+            </h2>
+            <p class="t-body lede">
+              <span data-show="out" hidden>
+                Your ticks, finished lessons and notes are saved in this browser. Log in to keep them on every device.
+              </span>
+              <span data-show="in" hidden>
+                Your progress is saved to your account and follows you to every device.
+              </span>{" "}
+              <a href="/privacy">What the site keeps</a>
+            </p>
+          </Fragment>
         ) : (
-          <p class="t-body lede">
-            Your ticks, finished lessons and notes are saved in this browser. <a href="/privacy">What the site keeps</a>
-          </p>
+          <Fragment>
+            <h2>{title}</h2>
+            <p class="t-body lede">
+              Your ticks, finished lessons and notes are saved in this browser.{" "}
+              <a href="/privacy">What the site keeps</a>
+            </p>
+          </Fragment>
         )}
-      </Fragment>
-    )}
+        {/* your progress: back up, load, delete, in one card */}
+        <section class="sec progress">
+          {SIGN_IN && (
+            <h3 class="t-title t-card" data-show="in" hidden>
+              Progress
+            </h3>
+          )}
+          <div class="box rows">
+            <div class="r">
+              <p class="t-body">
+                <b>Back up</b>Download a copy of your ticks, finished lessons and notes.
+              </p>
+              <button class="btn" data-export>
+                Download progress
+              </button>
+            </div>
+            <div class="r">
+              <p class="t-body">
+                <b>Load a copy</b>Adds a saved file to the progress here, so nothing is lost. A progress.json file from
+                the old local version works too.
+                <span class="msg" data-import-msg></span>
+              </p>
+              <label class="btn">
+                Load a progress file
+                <input type="file" accept="application/json,.json" data-import hidden />
+              </label>
+            </div>
+            <div class="r">
+              <p class="t-body">
+                <b>Delete</b>Removes your ticks, finished lessons and notes
+                {SIGN_IN ? (
+                  <span data-show="in" hidden>
+                    , here and from your account
+                  </span>
+                ) : (
+                  ""
+                )}
+                . This can't be undone.
+                <span class="msg" data-clear-msg></span>
+              </p>
+              <button class="btn danger" data-clear>
+                Delete my progress
+              </button>
+            </div>
+          </div>
+        </section>
 
-    {/* your progress: back up, load, delete, in one card */}
-    {!form && (
-      <section class="sec progress">
+        {/* your account: who you are and Log out, then its data. Only with an account */}
         {SIGN_IN && (
-          <h3 class="t-title t-card" data-show="in" hidden>
-            Progress
-          </h3>
+          <section class="sec mine" data-signed-in hidden>
+            <h3 class="t-title t-card">Account</h3>
+            <div class="box rows">
+              <div class="r">
+                <p class="t-body">
+                  <b>Logged in as</b>
+                  <span data-who></span>
+                </p>
+                <button class="btn" data-signout>
+                  Log out
+                </button>
+              </div>
+              <div class="r">
+                <p class="t-body">
+                  <b>Download my data</b>Everything the site keeps about your account, as a file.
+                </p>
+                <a class="btn" href="/api/export" download data-astro-reload>
+                  Download my account data
+                </a>
+              </div>
+              <div class="r">
+                <p class="t-body">
+                  <b>Delete my account</b>Removes your account and everything saved with it. Your progress stays in this
+                  browser.
+                </p>
+                <button class="btn danger" data-delete>
+                  Delete my account
+                </button>
+              </div>
+            </div>
+          </section>
         )}
-        <div class="box rows">
-          <div class="r">
-            <p class="t-body">
-              <b>Back up</b>Download a copy of your ticks, finished lessons and notes.
-            </p>
-            <button class="btn" data-export>
-              Download progress
-            </button>
-          </div>
-          <div class="r">
-            <p class="t-body">
-              <b>Load a copy</b>Adds a saved file to the progress here, so nothing is lost. A progress.json file from
-              the old local version works too.
-              <span class="msg" data-import-msg></span>
-            </p>
-            <label class="btn">
-              Load a progress file
-              <input type="file" accept="application/json,.json" data-import hidden />
-            </label>
-          </div>
-          <div class="r">
-            <p class="t-body">
-              <b>Delete</b>Removes your ticks, finished lessons and notes
-              {SIGN_IN ? (
-                <span data-show="in" hidden>
-                  , here and from your account
-                </span>
-              ) : (
-                ""
-              )}
-              . This can't be undone.
-              <span class="msg" data-clear-msg></span>
-            </p>
-            <button class="btn danger" data-clear>
-              Delete my progress
-            </button>
-          </div>
-        </div>
-      </section>
-    )}
-
-    {/* your account's data: only with an account, on the Your data page */}
-    {SIGN_IN && !form && (
-      <section class="sec mine" data-signed-in hidden>
-        <h3 class="t-title t-card">Account</h3>
-        <div class="box rows">
-          <div class="r">
-            <p class="t-body">
-              <b>Download my data</b>Everything the site keeps about your account, as a file.
-            </p>
-            <a class="btn" href="/api/export" download data-astro-reload>
-              Download my account data
-            </a>
-          </div>
-          <div class="r">
-            <p class="t-body">
-              <b>Delete my account</b>Removes your account and everything saved with it. Your progress stays in this
-              browser.
-            </p>
-            <button class="btn danger" data-delete>
-              Delete my account
-            </button>
-          </div>
-        </div>
-      </section>
+      </div>
     )}
   </div>
 </Base>
@@ -287,7 +296,7 @@ const TABS = [
     root.querySelectorAll("[data-signed-out]").forEach((el) => (el.hidden = !!me));
     root.querySelectorAll("[data-show]").forEach((el) => (el.hidden = (el.dataset.show === "in") !== !!me));
     const sec = root.querySelector("[data-signed-out]");
-    if (me && view === "login") document.title = document.title.replace(/^Log in/, "Your account");
+    if (me) document.title = document.title.replace(/^(Log in|Your data)/, "Your account");
     if (me) {
       const who = root.querySelector("[data-who]");
       if (who) who.textContent = [me.name, me.email && `(${me.email})`].filter(Boolean).join(" ");
@@ -727,14 +736,6 @@ const TABS = [
   }
   .email-signin .msg:empty {
     display: none;
-  }
-  /* who you are, with Sign out on the same line */
-  .box.who {
-    flex-direction: row;
-    flex-wrap: wrap;
-    align-items: center;
-    justify-content: space-between;
-    gap: var(--s3);
   }
   /* a card of rows: what it does on the left, its button on the right, hairlines between */
   .box.rows {
