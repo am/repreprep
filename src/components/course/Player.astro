@@ -63,7 +63,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
           <a
             href={stepPath(L, i)}
             data-step={i}
-            aria-current={String(!done && i === act)}
+            aria-current={!done && i === act ? "true" : "false"}
             aria-label={`${lab}, step ${i + 1}`}
             title={lab}
           ></a>
@@ -74,7 +74,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
           class="opt"
           href={stepPath(L, n)}
           data-step={n}
-          aria-current={String(ch)}
+          aria-current={ch ? "true" : "false"}
           aria-label="Challenge (optional)"
           title="Challenge (optional)"
         ></a>
@@ -207,7 +207,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   import { esc } from "../../course/shared/html.js";
 
   const PANELS = { cycles: { controls: CYCLES_CONTROLS, icon: iconSvg } };
-  const $ = (s) => document.querySelector(s);
+  const $ = (s) => document.querySelector<HTMLElement>(s);
 
   /* the player fills the window below the header */
   function fitPlayer() {
@@ -229,7 +229,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       persist();
     }
     document
-      .querySelectorAll(".dots [data-step]")
+      .querySelectorAll<HTMLElement>(".dots [data-step]")
       .forEach((a) => a.classList.toggle("done", !!s.steps[stepKey(c, +a.dataset.step)]));
     const mx = $("[data-max]");
     if (mx) {
@@ -259,7 +259,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     if (save) persist();
   }
   document.addEventListener("pointerdown", (e) => {
-    const g = e.target.closest("#gutter");
+    const g = (e.target as Element).closest("#gutter");
     if (!g) return;
     e.preventDefault();
     g.setPointerCapture(e.pointerId);
@@ -278,7 +278,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     g.addEventListener("pointercancel", up, { once: true });
   });
   document.addEventListener("dblclick", (e) => {
-    if (e.target.closest("#gutter")) {
+    if ((e.target as Element).closest("#gutter")) {
       delete state.stepW;
       document.documentElement.style.removeProperty("--sw");
       persist();
@@ -290,7 +290,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     "click",
     (e) => {
       document.querySelectorAll("details.picker[open]").forEach((d) => {
-        if (!d.contains(e.target)) d.open = false;
+        if (!d.contains(e.target as Node)) (d as HTMLDetailsElement).open = false;
       });
     },
     true
@@ -299,7 +299,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     "keydown",
     (e) => {
       if (e.key === "Escape") {
-        const d = $("details.picker[open]");
+        const d = document.querySelector<HTMLDetailsElement>("details.picker[open]");
         if (d) {
           d.open = false;
           e.stopImmediatePropagation();
@@ -312,16 +312,16 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   document.addEventListener(
     "click",
     (e) => {
-      if (e.target.closest("[data-closectl]")) {
+      if ((e.target as Element).closest("[data-closectl]")) {
         $("#ctlinfo").hidden = true;
         return;
       }
-      if (e.target.closest("[data-max]")) {
+      if ((e.target as Element).closest("[data-max]")) {
         setFocus(!state.focus);
         return;
       }
       /* a control on the panel: what it does, in a box over the step */
-      const ctl = e.target.closest("svg .c");
+      const ctl = (e.target as Element).closest<SVGElement>("svg .c");
       if (ctl) {
         if (ctl.closest("[data-panel-guide]")) return;
         const I = PANELS[document.body.dataset.inst],
@@ -335,7 +335,7 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       }
       /* Next ticks the step you're on; on the last step it also closes the lesson and opens the done screen.
          Next lesson there fills, ticks and plays, then opens the next lesson */
-      const nav = e.target.closest("[data-nav]");
+      const nav = (e.target as Element).closest<HTMLElement>("[data-nav]");
       const c = nav && nav.dataset.nav === "1" && curLesson();
       if (!c) return;
       const s = ist(c.k);
@@ -368,26 +368,26 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   }
   /* holding Next lesson fills it slowly; a long press doesn't open the link menu */
   document.addEventListener("pointerdown", (e) => {
-    const b = e.button === 0 && e.target.closest("[data-end]"),
+    const b = e.button === 0 && (e.target as Element).closest("[data-end]"),
       c = b && curLesson();
     if (c) pressFinish(b, () => finished(c), nextLessonHref(ist(c.k), c, b));
   });
   /* nor drags the link away, which would end the press */
   document.addEventListener("contextmenu", (e) => {
-    if (e.target.closest("[data-end]")) e.preventDefault();
+    if ((e.target as Element).closest("[data-end]")) e.preventDefault();
   });
   document.addEventListener("dragstart", (e) => {
-    if (e.target.closest && e.target.closest("[data-end]")) e.preventDefault();
+    if ((e.target as Element).closest && (e.target as Element).closest("[data-end]")) e.preventDefault();
   });
 
   document.addEventListener("keydown", (e) => {
-    if (e.target.id === "gutter" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
+    if ((e.target as Element).id === "gutter" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
       e.preventDefault();
       const cur = $(".pstep").getBoundingClientRect().width;
       setStepW(cur + (e.key === "ArrowLeft" ? 40 : -40), true);
       return;
     }
-    if (player() && !e.target.closest("textarea,input,select") && !e.metaKey && !e.ctrlKey && !e.altKey) {
+    if (player() && !(e.target as Element).closest("textarea,input,select") && !e.metaKey && !e.ctrlKey && !e.altKey) {
       if (e.key === "Escape" && state.focus) {
         setFocus(false);
         return;

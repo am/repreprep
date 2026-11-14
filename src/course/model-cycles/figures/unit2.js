@@ -1,4 +1,4 @@
-import { esc, svgFig, T, hits, COUNT16, ROWC } from "../../shared/html.js";
+import { svgFig, T } from "../../shared/html.js";
 import { sndPart } from "../../shared/fig-sounds.js";
 
 /* ---- Unit 2: Sound ---- */
@@ -421,7 +421,7 @@ export const UNIT_FIGS_2 = (() => {
       s += `<path d="M505 85 Q525 85 525 105 L525 300 Q525 320 505 320" class="ln"/><path d="M528 200 L548 200" class="arr"/><path d="M540 193 L550 200 L540 207" class="arr"/>`;
       s += box(560, 90, 215, 230) + T(667, 118, "heard as one drum", "fm");
       const sx = (x) => 570 + (x - 200) * 0.66;
-      rows.forEach(([n, d, c, pts], r) => {
+      rows.forEach(([, , c, pts], r) => {
         const b = 140 + r * 90,
           q = pts.map(([x, y]) => [sx(x), 290 - (b - y) * 1.2]);
         s += `<path d="${P(q)} Z" style="fill:${c};opacity:.35"/><path d="${P(q)}" ${stroke(c, 2)}/>`;

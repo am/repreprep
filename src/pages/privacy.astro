@@ -138,19 +138,21 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
     bot: ["The check that you're not a bot didn't pass. Please try again.", "bad"],
   };
 
-  document.addEventListener("astro:page-load", () => drawTurnstile(document.querySelector("[data-turnstile]")));
+  document.addEventListener("astro:page-load", () =>
+    drawTurnstile(document.querySelector<HTMLElement>("[data-turnstile]"))
+  );
   /* the check is invisible: if it hasn't finished when Send is pressed, wait for it rather than send no token */
   document.addEventListener("submit", async (e) => {
-    const f = e.target.closest("form.contact"),
-      box = f?.querySelector("[data-turnstile]");
-    if (!box || box.querySelector('[name="cf-turnstile-response"]')?.value) return;
+    const f = (e.target as Element).closest<HTMLFormElement>("form.contact"),
+      box = f?.querySelector<HTMLElement>("[data-turnstile]");
+    if (!box || box.querySelector<HTMLInputElement>('[name="cf-turnstile-response"]')?.value) return;
     e.preventDefault();
-    f.querySelector('[type="submit"]').disabled = true;
+    f.querySelector<HTMLButtonElement>('[type="submit"]').disabled = true;
     await turnstileToken(box);
     f.submit();
   });
   document.addEventListener("astro:page-load", () => {
-    const el = document.querySelector("[data-contact-msg]");
+    const el = document.querySelector<HTMLElement>("[data-contact-msg]");
     if (!el) return;
     const q = new URLSearchParams(location.search);
     const m = CONTACT_MSG[q.get("sent") ? "sent" : q.get("error")];

@@ -28,20 +28,20 @@ const { I, st } = Astro.props;
   document.addEventListener(
     "click",
     (e) => {
-      const b = e.target.closest("[data-opt]");
+      const b = (e.target as Element).closest<HTMLButtonElement>("[data-opt]");
       if (!b) return;
       e.stopPropagation();
       const q = b.closest(".quiz");
       if (q.classList.contains("solved")) return;
-      const m = q.querySelector(".qmsg");
+      const m = q.querySelector<HTMLElement>(".qmsg");
       m.hidden = false;
       if (b.dataset.opt === "1") {
         b.classList.add("right");
         q.classList.add("solved");
         m.textContent = "Right.";
         m.className = "qmsg ok";
-        q.querySelector(".qexp").hidden = false;
-        q.querySelectorAll(".opt").forEach((x) => (x.disabled = true));
+        q.querySelector<HTMLElement>(".qexp").hidden = false;
+        q.querySelectorAll<HTMLButtonElement>(".opt").forEach((x) => (x.disabled = true));
       } else {
         b.classList.add("wrong");
         b.disabled = true;

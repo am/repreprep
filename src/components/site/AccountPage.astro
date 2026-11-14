@@ -358,7 +358,7 @@ const ICON = {
     const password = form.password.value;
     /* only a path on this site, never another address */
     const asked = new URLSearchParams(location.search).get("next") || "";
-    const next = /^\/(?![\/\\])/.test(asked) && !asked.includes("\\") ? asked : "/account";
+    const next = /^\/(?![/\\])/.test(asked) && !asked.includes("\\") ? asked : "/account";
     const body = {
       link: { email, callbackURL: next, errorCallbackURL: "/account?error=signin" },
       signin: { email, password, callbackURL: next },

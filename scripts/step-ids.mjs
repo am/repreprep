@@ -124,7 +124,7 @@ function baseRegister() {
       execFileSync("git", ["rev-parse", "--verify", ref], { stdio: "ignore" });
       return null; /* the ref is there but has no register yet */
     } catch (e2) {
-      if (process.env.CI) throw new Error(`step ids: can't read ${ref} to compare the register with`);
+      if (process.env.CI) throw new Error(`step ids: can't read ${ref} to compare the register with`, { cause: e2 });
       return null;
     }
   }

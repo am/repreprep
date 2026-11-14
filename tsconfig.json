@@ -1,0 +1,15 @@
+{
+  // Astro's base settings. `npm run typecheck` (astro check) reads this file and checks every .astro file:
+  // the props and data in its frontmatter and the TypeScript in its <script> tags. Plain .js files are read
+  // for their types but not checked themselves (checkJs off), and strict mode is off, so browser code can
+  // stay plain JavaScript without null checks on every element it looks up.
+  "extends": "astro/tsconfigs/base",
+  "include": [".astro/types.d.ts", "src/**/*"],
+  // AccountPage.astro is left out until it is split into smaller parts (see CONTRIBUTING.md, Code conventions).
+  "exclude": ["dist", "dist-signin", "src/components/site/AccountPage.astro"],
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": false,
+    "strict": false
+  }
+}
