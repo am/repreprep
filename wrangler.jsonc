@@ -6,7 +6,7 @@
   "compatibility_date": "2026-09-01",
   "compatibility_flags": ["nodejs_compat"],
   // Progress and accounts (production only; previews use their own database, below).
-  // The tables are created by the app itself the first time it runs.
+  // Its tables come from migrations/, applied before every deploy.
   "d1_databases": [
     { "binding": "DB", "database_name": "repreprep", "database_id": "58f6e6ef-5d5e-464e-9ef7-11d82ac5cbe5" },
   ],
