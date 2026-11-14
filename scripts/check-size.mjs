@@ -5,15 +5,12 @@ import { readFileSync, readdirSync } from "node:fs";
 
 const MAX_LINES = 400,
   MAX_SCRIPT = 100;
-/* files still waiting to be split: remove each one once it is */
-const PENDING = new Set(["src/components/site/AccountPage.astro"]);
 
 const files = readdirSync("src", { recursive: true })
   .filter((f) => f.endsWith(".astro"))
   .map((f) => `src/${f}`);
 const problems = [];
 for (const f of files) {
-  if (PENDING.has(f)) continue;
   const text = readFileSync(f, "utf8");
   const lines = text.split("\n").length;
   if (lines > MAX_LINES) problems.push(`${f}: ${lines} lines (most ${MAX_LINES})`);

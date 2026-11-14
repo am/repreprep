@@ -1,0 +1,302 @@
+---
+// Logging in or signing up: Google and the other ways in, then email with a password or a one-time link.
+// Shown signed out; src/client/account.js fills in the ways in and sends the form.
+import { TURNSTILE_SITE_KEY } from "astro:env/client";
+interface Props {
+  view: "login" | "signup" | "data";
+}
+const { view } = Astro.props;
+---
+
+<p class="msg bad" data-acct-error hidden>
+  Logging in didn't work. Please try again.
+</p>
+{/* signed out: the ways in, then email and password with one main button. data-tab (signin or signup)
+    and data-method (password or link) say what is shown */}
+<section
+  class="signin-col"
+  data-signed-out
+  data-tab={view === "signup" ? "signup" : "signin"}
+  data-method="password"
+  hidden
+>
+  <h2 class="vh">{view === "signup" ? "Sign up" : "Log in"}</h2>
+  <div class="methods" data-providers></div>
+  <button class="btn mail" type="button" data-method-to="link" data-only-method="password" data-email-way hidden>
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M10 14a4.5 4.5 0 0 0 6.4 0l3.2-3.2a4.5 4.5 0 0 0-6.4-6.4L12 5.6" />
+      <path d="M14 10a4.5 4.5 0 0 0-6.4 0l-3.2 3.2a4.5 4.5 0 0 0 6.4 6.4l1.2-1.2" />
+    </svg>
+    Email me a one-time link
+  </button>
+  <form class="email-signin" data-email-signin data-astro-reload hidden>
+    <p class="or">or</p>
+    <div class="fields">
+      <label>
+        Email
+        <input type="email" name="email" required maxlength="200" autocomplete="email" />
+      </label>
+      <label data-only-method="password">
+        Password{" "}
+        <span class="hint" data-only-tab="signup">
+          (at least 12 characters)
+        </span>
+        <span class="pw">
+          <input
+            type="password"
+            name="password"
+            minlength={view === "signup" ? 12 : undefined}
+            maxlength="128"
+            autocomplete={view === "signup" ? "new-password" : "current-password"}
+          />
+          <button class="eye" type="button" aria-label="Show password" data-eye>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z" />
+              <circle cx="12" cy="12" r="3" />
+            </svg>
+          </button>
+        </span>
+      </label>
+      <div class="strength" data-strength data-only-tab="signup" data-only-method="password" aria-live="polite">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <small data-strength-label></small>
+      </div>
+      <div
+        class="turnstile"
+        data-turnstile={import.meta.env.DEV ? "1x00000000000000000000BB" : TURNSTILE_SITE_KEY}
+      ></div>
+      <button class="btn primary" type="submit" data-act="signin" data-only-tab="signin" data-only-method="password">
+        Log in
+      </button>
+      <button class="btn primary" type="submit" data-act="signup" data-only-tab="signup" data-only-method="password">
+        Sign up
+      </button>
+      <button class="btn primary" type="submit" data-act="link" data-only-method="link">
+        Email me a link
+      </button>
+      <p class="note">
+        <span data-only-tab="signup" data-only-method="password">
+          We'll email you a link to confirm your address.
+        </span>
+        <span data-only-tab="signin" data-only-method="link">
+          We'll email you a link that logs you in.
+        </span>
+        <span data-only-tab="signup" data-only-method="link">
+          We'll email you a link. Opening it creates your account.
+        </span>
+      </p>
+    </div>
+    <p class="msg" data-email-msg role="status"></p>
+    <div class="links">
+      <p data-only-method="link">
+        <button class="linkish" type="button" data-method-to="password">
+          Use a password instead
+        </button>
+      </p>
+      <p data-only-tab="signin" data-only-method="password">
+        <button class="linkish" type="submit" data-act="forgot" formnovalidate>
+          Forgot your password?
+        </button>
+      </p>
+    </div>
+  </form>
+  <p class="msg" data-no-providers hidden>
+    Logging in isn't set up on this site yet.
+  </p>
+</section>
+
+<style>
+  /* what's shown: signing in or creating an account, a password or an email link, and whether a link was sent */
+  [data-tab="signin"] [data-only-tab="signup"],
+  [data-tab="signup"] [data-only-tab="signin"],
+  [data-method="link"] [data-only-method="password"],
+  [data-method="password"] [data-only-method="link"],
+  [data-sent] .fields,
+  [data-tab="signin"][data-method="password"] .note {
+    display: none !important;
+  }
+  .signin-col {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+    max-width: 26rem;
+  }
+  .signin-col > * {
+    margin: 0;
+  }
+  .signin-col h2 {
+    margin: var(--s2) 0 0;
+    line-height: 1.15;
+  }
+  /* the ways in, one full-width pill each, stacked: icon at the left, label in the middle. A new way is one more */
+  .methods {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+  .methods:empty {
+    display: none;
+  }
+  .methods :global(.btn),
+  .mail {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.875rem;
+    padding: var(--s3) 3rem;
+    border-radius: var(--r-btn);
+    text-align: center;
+    text-decoration: none;
+    color: var(--fg);
+  }
+  .methods :global(svg),
+  .mail svg {
+    position: absolute;
+    left: var(--s4);
+    top: 50%;
+    translate: 0 -50%;
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+  .mail svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linejoin: round;
+  }
+  .or {
+    display: flex;
+    align-items: center;
+    gap: var(--s3);
+    margin: var(--s2) 0 var(--s4);
+    font-family: var(--mono);
+    font-size: var(--fs-xs);
+    letter-spacing: var(--ls-caps);
+    text-transform: uppercase;
+    color: var(--faint);
+  }
+  .or::before,
+  .or::after {
+    content: "";
+    flex: 1;
+    border-top: 1px solid var(--line);
+  }
+  .fields {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+  }
+  .fields .btn.primary {
+    width: 100%;
+    min-height: 2.875rem;
+    border-radius: var(--r-btn);
+    padding-block: var(--s3);
+  }
+  /* the password field with its show/hide eye inside, at the right */
+  .pw {
+    position: relative;
+    display: block;
+  }
+  .pw input {
+    padding-right: 2.75rem;
+  }
+  .eye {
+    position: absolute;
+    right: var(--s1);
+    bottom: 0;
+    display: grid;
+    place-items: center;
+    width: 2.25rem;
+    height: 100%;
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--faint);
+    cursor: pointer;
+  }
+  .eye:hover,
+  .eye.on {
+    color: var(--fg);
+  }
+  .eye svg {
+    width: 1.125rem;
+    height: 1.125rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+  }
+  .note {
+    margin: 0;
+    font-size: var(--fs-sm);
+    color: var(--faint);
+    text-align: center;
+  }
+  .links {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--s2);
+    margin-top: var(--s5);
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .links p {
+    margin: 0;
+  }
+  .linkish.strong {
+    color: var(--fg);
+    font-weight: var(--fw-semibold);
+  }
+  .email-signin {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+  }
+  .email-signin > * {
+    margin: 0;
+  }
+  .email-signin label {
+    display: block;
+    font-size: var(--fs-sm);
+    color: var(--muted);
+  }
+  .email-signin .hint {
+    color: var(--faint);
+  }
+  .email-signin input {
+    display: block;
+    width: 100%;
+    margin-top: var(--s2);
+    padding: var(--s3);
+    border-radius: var(--r-btn);
+    border: 1px solid var(--line);
+    background: var(--bg);
+    color: var(--fg);
+    font: inherit;
+    font-size: var(--fs-sm);
+  }
+  /* takes no room unless Cloudflare asks the visitor to tick a box */
+  .email-signin .turnstile {
+    display: contents;
+  }
+  .linkish {
+    padding: 0;
+    border: 0;
+    background: none;
+    color: var(--muted);
+    font: inherit;
+    text-decoration: underline;
+    text-underline-offset: 0.2em;
+    cursor: pointer;
+  }
+  .linkish:hover {
+    color: var(--fg);
+  }
+  .email-signin .msg:empty {
+    display: none;
+  }
+</style>

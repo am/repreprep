@@ -5,8 +5,7 @@
   // stay plain JavaScript without null checks on every element it looks up.
   "extends": "astro/tsconfigs/base",
   "include": [".astro/types.d.ts", "src/**/*"],
-  // AccountPage.astro is left out until it is split into smaller parts (see CONTRIBUTING.md, Code conventions).
-  "exclude": ["dist", "dist-signin", "src/components/site/AccountPage.astro"],
+  "exclude": ["dist", "dist-signin"],
   "compilerOptions": {
     "allowJs": true,
     "checkJs": false,
