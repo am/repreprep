@@ -169,13 +169,8 @@ const ICON = {
             <h2 class="vh" data-show="out" hidden>
               Your data
             </h2>
-            <p class="t-body lede">
-              <span data-show="out" hidden>
-                Your ticks, finished lessons and notes are saved in this browser. Log in to keep them on every device.
-              </span>
-              <span data-show="in" hidden>
-                Your progress is saved to your account and follows you to every device.
-              </span>{" "}
+            <p class="t-body lede" data-show="out" hidden>
+              Your ticks, finished lessons and notes are saved in this browser. Log in to keep them on every device.{" "}
               <a href="/privacy">What the site keeps</a>
             </p>
           </Fragment>
@@ -189,7 +184,7 @@ const ICON = {
           </Fragment>
         )}
         <section class="sec">
-          <div class="box rows">
+          <div class="rows">
             {SIGN_IN && (
               <div class="r" data-signed-in hidden>
                 <p class="t-body">
@@ -526,7 +521,8 @@ const ICON = {
     line-height: 1.15;
   }
   /* on Your data, the progress card follows its line straight away */
-  .lede + .sec {
+  .lede + .sec,
+  .lede[hidden] + .sec {
     margin-top: 0;
   }
   /* sections sit one big gap apart, each a heading, a line, then its box */
@@ -537,21 +533,6 @@ const ICON = {
     margin-top: var(--s7);
   }
   .sec > p {
-    margin: 0;
-  }
-  /* a box like the site's Card, without a title of its own */
-  .box {
-    display: flex;
-    flex-direction: column;
-    gap: var(--s3);
-    margin: 0;
-    padding: var(--s5);
-    border: 1px solid var(--line);
-    border-radius: var(--r-l);
-    background: var(--surface);
-    min-width: 0;
-  }
-  .box > p {
     margin: 0;
   }
   /* the ways in, one full-width pill each, stacked: icon at the left, label in the middle. A new way is one more */
@@ -722,10 +703,9 @@ const ICON = {
   .email-signin .msg:empty {
     display: none;
   }
-  /* a card of rows: what it does on the left, its button on the right, hairlines between */
-  .box.rows {
-    gap: 0;
-    padding-block: 0;
+  /* rows: what it does on the left, its buttons on the right, hairlines between */
+  .rows {
+    max-width: 46rem;
   }
   .r {
     display: flex;
@@ -776,11 +756,5 @@ const ICON = {
   }
   .r .msg:empty {
     display: none;
-  }
-  /* Turnstile is at least 300px wide: less padding on phones so it fits in the card */
-  @media (max-width: 420px) {
-    .box {
-      padding: var(--s4);
-    }
   }
 </style>
