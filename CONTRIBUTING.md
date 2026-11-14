@@ -29,7 +29,7 @@ These keep the code easy to read as the site grows. `npm test` checks what a mac
 
 - **Where code goes.** Pages in `src/pages` stay thin: they fetch data and place components. Markup in `src/components` (`course/` or `site/`). Course logic that runs at build time in `src/course`. Server-only code in `src/lib`, `src/actions` and `src/middleware.js`. Browser code in `src/client`.
 - **Scripts.** A component's `<script>` may hold a few lines of wiring. Anything longer (about 100 lines) goes in a module in `src/client` that the script imports.
-- **Size.** Split a component when it passes about 400 lines, along the parts a reader sees (a form, a header, a card), not into generic helpers.
+- **Size.** Split a component when it passes about 400 lines, along the parts a reader sees (a form, a header, a card), not into generic helpers. `npm run check` fails on a component over 400 lines or a script in one over 100 (`scripts/check-size.mjs`).
 - **Styles.** Design tokens and the shared text roles (`.t-title`, `.t-body` and so on) live in `src/styles/app.css`. A component's own styles live in its `<style>` block. Move a rule only when you are already changing that file.
 - **Names.** Write names out in full: `lesson`, `step`, `instrument`, not `L`, `st`, `I`. Rename older short names when you are already changing that code, not in a separate sweep.
 - **No early abstractions.** Add a shared helper or component only when the same code exists in three places. Two copies are fine.
