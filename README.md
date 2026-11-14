@@ -36,7 +36,7 @@ Open http://localhost:4321. On your own computer the account page offers a **loc
 - `src/content/changelog.yaml`: what changed in each version, shown on `/whats-new`, as the version in the footer, and as a note on lessons people had started (see CONTRIBUTING.md). `src/course/shared/updates.js` compares versions and works out which notes to show.
 - `src/layouts/Base.astro`: the page shell every page uses.
 - `src/pages/`: one file per kind of address. Only `api/` (the contact form and the account download) and `auth/` (signing in) run on the server; every other page is built ahead of time.
-- Browser code: each component carries its own `<script>` (the player, notes, quiz, panel guide, grids). They share `src/client/progress.js` (your progress, saved in the browser and to your account) and `src/client/lesson.js`; `src/client/site.js` runs the header, footer and theme switch on every page, and `audio.js` plays the grids. The theme, saved layout, logo and home page fade stay as small inline scripts because they must run before the page first paints.
+- Browser code: lives in `src/client`; a component's `<script>` imports what it needs (short wiring can stay in the component, see Code conventions in CONTRIBUTING.md). Components share `src/client/progress.js` (your progress, saved in the browser and to your account) and `src/client/lesson.js`; `src/client/site.js` runs the header, footer and theme switch on every page, and `audio.js` plays the grids. The theme, saved layout, logo and home page fade stay as small inline scripts because they must run before the page first paints.
 - Server code: `src/actions/` holds the Astro Actions the browser code calls (who is signed in, loading and saving progress, signing out, deleting the account), with their input checked. `src/middleware.js` runs before every server route and action: it refuses writes from other sites and sets `locals.user`. `src/lib/` has sign-in, the database and the contact email. Settings and secrets are declared with `astro:env` in `astro.config.mjs`.
 - Fonts: the files are in `src/assets/fonts` and served from the site through Astro's fonts setting in `astro.config.mjs`, so no page asks Google Fonts for anything. `npm run compare <ref> --fonts` lets the compared pages load Google's fonts, for checking a change to how fonts are served.
 
@@ -55,7 +55,7 @@ Lesson ids (`w05`, `s01`) and step ids are what progress is stored under: a tick
 
 - Signed out, progress (ticked steps, finished lessons, notes, layout) is kept in the browser.
 - Signed in, it's also saved to the account and loads on any device. When you sign in, the newer of the browser's and the account's progress wins.
-- Sign-in is with Google or GitHub, so the site never stores passwords. Sessions are a random token in an HttpOnly cookie; the database stores only its hash.
+- Sign-in is with Google, a one-time link by email, or email and password (through [Better Auth](https://www.better-auth.com), `src/lib/auth.js`). Sessions are a random token in an HttpOnly cookie.
 - Sign-in is on for the live site only: the production deploy in `.github/workflows/deploy.yml` builds with `SIGN_IN=true`. The switch is `SIGN_IN` in `astro.config.mjs` (an `astro:env` setting, read by the pages, the server and the browser code). It defaults to off, so tests and PR previews show `/account` as a "Your progress" page; build with `SIGN_IN=true` to try sign-in on your computer.
 - `/account` can download progress as a file and load one, including `progress.json` from the old local version of the course.
 
@@ -63,13 +63,11 @@ Lesson ids (`w05`, `s01`) and step ids are what progress is stored under: a tick
 
 1. Put this folder in a GitHub repository.
 2. Sign in: `npx wrangler login`.
-3. Deploy: `npm run deploy`. The first deploy creates the `repreprep` D1 database; the app creates its tables on first use.
+3. Deploy: `npm run deploy`. The first deploy creates the `repreprep` D1 database; its tables come from `migrations/` (`npx wrangler d1 migrations apply repreprep --remote`, which the GitHub workflow runs before every deploy).
 4. The domain: `repreprep.studio` and `www.repreprep.studio` are custom domains in `wrangler.jsonc`, attached on every deploy (the zone must be in the same Cloudflare account). www redirects to the root through a Redirect Rule in the zone (Rules → Redirect Rules → "Redirect from WWW to root").
-5. Set up sign-in (either or both):
-   - **Google**: in Google Cloud Console create an OAuth client (type "Web application") with redirect URI `https://repreprep.studio/auth/google/callback`.
-   - **GitHub**: in GitHub → Settings → Developer settings → OAuth Apps, create an app with callback URL `https://repreprep.studio/auth/github/callback`.
-   - Store the keys as secrets: `npx wrangler secret put GOOGLE_CLIENT_ID`, then `GOOGLE_CLIENT_SECRET`, `GITHUB_CLIENT_ID`, `GITHUB_CLIENT_SECRET`.
-     The account page only shows the providers whose keys are set.
+5. Set up sign-in:
+   - `npx wrangler secret put BETTER_AUTH_SECRET` (32 or more random bytes, e.g. `openssl rand -base64 32`).
+   - **Google**: in Google Cloud Console create an OAuth client (type "Web application"), then store its keys with `npx wrangler secret put GOOGLE_CLIENT_ID` and `GOOGLE_CLIENT_SECRET`. The account page only offers Google when its keys are set.
 
 Messages sent from the contact form on `/privacy` are emailed to you and also stored in D1 (kept for a year; `npm run messages` lists the latest). Email needs Email Routing enabled on the repreprep.studio zone, your address verified there as a destination, and that address stored as a secret: `npx wrangler secret put CONTACT_TO`.
 
