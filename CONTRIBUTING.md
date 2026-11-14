@@ -34,7 +34,7 @@ These keep the code easy to read as the site grows. `npm test` checks what a mac
 - **Names.** Write names out in full: `lesson`, `step`, `instrument`, not `L`, `st`, `I`. Rename older short names when you are already changing that code, not in a separate sweep.
 - **No early abstractions.** Add a shared helper or component only when the same code exists in three places. Two copies are fine.
 - **Use what Astro gives.** Lessons and the changelog are content collections, settings are `astro:env`, server calls are Astro Actions, fonts use the fonts setting. Reach for these before writing your own.
-- **Comments say why**, in plain sentences, and are updated with the code they describe.
+- **As little as needed.** Code and comments are both read by people, so write only what the change needs. Comment only where the code can't explain itself (usually why, not what), keep the comment short, and update it with the code.
 - **Tests before refactors.** A change that should look the same to visitors needs tests covering what it touches, and `npm run compare` must report no differences. Put that result in the pull request's Checked section.
 - **One change per pull request.** Fill in the template. Keep its title and description current after every push.
 
