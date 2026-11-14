@@ -32,7 +32,7 @@ const title =
 
 <!-- only the lesson's intro is listed in search results; its steps are reached from there -->
 <Base title={title} description={L.goal} inst={I} tab="lessons" noindex={act > 0 || done}>
-  <Player I={I} L={L} act={act} done={done} />
+  <Player instrument={I} lesson={L} at={act} done={done} />
   <div class="below">
     {!act && <LessonAbout I={I} L={L} />}
     {!done && <LessonWrapup I={I} L={L} />}

@@ -2,7 +2,8 @@
 // The step player: the drawing or the panel on the left (on the intro, the lesson's title in big type), the step on the right. The optional challenge is
 // one more step after the last one: same player, its own kind. Next on the last step opens the done screen, the same player again,
 // closing the lesson; its Next lesson button fills, ticks and plays (src/client/finish.js), then opens the next lesson.
-import LessonMenu from "./LessonMenu.astro";
+import PlayerHead from "./PlayerHead.astro";
+import PlayerFoot from "./PlayerFoot.astro";
 import IntroCard from "./IntroCard.astro";
 import DoneCard from "./DoneCard.astro";
 import StepText from "./StepText.astro";
@@ -12,95 +13,51 @@ import Keys from "./Keys.astro";
 import Figure from "./Figure.astro";
 import PanelDrawing from "./PanelDrawing.astro";
 import UpdateNote from "./UpdateNote.astro";
-import { KIND, keyCap } from "../../course/shared/text.js";
-import { lessonLabel, stepPath, nextLesson } from "../../course/index.js";
+import { KIND } from "../../course/shared/text.js";
+import { stepPath, nextLesson } from "../../course/index.js";
 interface Props {
-  I: any;
-  L: any;
-  act: number;
+  instrument: any;
+  lesson: any;
+  /* 0 is the intro; one past the last step is the challenge */
+  at: number;
   done?: boolean;
 }
-const { I, L, act, done = false } = Astro.props;
-const n = L.steps.length,
-  total = n + (L.challenge ? 1 : 0);
-const ch = !done && act === n;
-const st = done ? { k: "done" } : ch ? { k: "challenge" } : L.steps[act];
-const k = st.k || "play";
+const { instrument, lesson, at, done = false } = Astro.props;
+const onChallenge = !done && at === lesson.steps.length;
+const step = done ? { k: "done" } : onChallenge ? { k: "challenge" } : lesson.steps[at];
+const kind = step.k || "play";
 // the page light: the last page a step up to this one set
-const page = L.steps.slice(0, act + 1).reduce((p: number, s: any) => s.page || p, 1);
-const end = !done && act === total - 1;
-const nx = nextLesson(I, L);
-const nextHref = end ? stepPath(L, "done") : stepPath(L, act + 1);
-const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN", "turn");
+const page = lesson.steps.slice(0, at + 1).reduce((p: number, s: any) => s.page || p, 1);
+const next = nextLesson(instrument, lesson);
 ---
 
 <section
   class="player"
   id="player"
   aria-label="Step player"
-  data-inst={I.key}
-  data-lesson={L.id}
-  data-step={act}
-  data-step-ids={L.steps.map((s: any) => s.id).join(" ")}
-  data-next={nx?.id}
-  data-next-path={nx?.path}
+  data-inst={instrument.key}
+  data-lesson={lesson.id}
+  data-step={at}
+  data-step-ids={lesson.steps.map((s: any) => s.id).join(" ")}
+  data-next={next?.id}
+  data-next-path={next?.path}
   data-done={done ? "" : undefined}
-  data-challenge={L.challenge ? "" : undefined}
-  data-done-path={stepPath(L, "done")}
+  data-challenge={lesson.challenge ? "" : undefined}
+  data-done-path={stepPath(lesson, "done")}
 >
-  <div class="phead">
-    <details class="picker">
-      <summary class="ttl" title="Jump to another lesson">
-        {lessonLabel(L)} · {L.title}
-        <span class="caret" aria-hidden="true"></span>
-      </summary>
-      <LessonMenu I={I} L={L} />
-    </details>
-    <div class="dots" style={`--p:${done ? 1 : total > 1 ? act / (total - 1) : 0}`}>
-      {L.steps.map((s: any, i: number) => {
-        const lab = KIND[s.k || "play"];
-        return (
-          <a
-            href={stepPath(L, i)}
-            data-step={i}
-            aria-current={!done && i === act ? "true" : "false"}
-            aria-label={`${lab}, step ${i + 1}`}
-            title={lab}
-          ></a>
-        );
-      })}
-      {L.challenge && (
-        <a
-          class="opt"
-          href={stepPath(L, n)}
-          data-step={n}
-          aria-current={ch ? "true" : "false"}
-          aria-label="Challenge (optional)"
-          title="Challenge (optional)"
-        ></a>
-      )}
-    </div>
-    <button class="maxbtn" type="button" data-max aria-label="Maximize" title="Maximize">
-      <svg class="mx-in" viewBox="0 0 16 16" aria-hidden="true">
-        <path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" />
-      </svg>
-      <svg class="mx-out" viewBox="0 0 16 16" aria-hidden="true">
-        <path d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4" />
-      </svg>
-    </button>
-  </div>
+  <PlayerHead instrument={instrument} lesson={lesson} at={at} done={done} />
   <div class="pbody" id="pbody">
-    <div class={st.intro || done ? "pstage intro" : "pstage"}>
+    <div class={step.intro || done ? "pstage intro" : "pstage"}>
       {done ? (
-        <DoneCard L={L} nx={nx} part="hero" />
-      ) : st.intro ? (
-        <IntroCard L={L} part="hero" />
-      ) : st.fig ? (
+        <DoneCard L={lesson} nx={next} part="hero" />
+      ) : step.intro ? (
+        <IntroCard L={lesson} part="hero" />
+      ) : step.fig ? (
         <div class="figwrap">
-          <Figure I={I} fig={st.fig} id={`${L.id}:${act}`} />
+          <Figure I={instrument} fig={step.fig} id={`${lesson.id}:${at}`} />
         </div>
       ) : (
-        <PanelDrawing I={I} hl={st.hl} page={page} />
+        <PanelDrawing I={instrument} hl={step.hl} page={page} />
       )}
     </div>
     <div
@@ -113,295 +70,49 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
       title="Drag to resize · double-click to reset"
     ></div>
     <div class="pstep" id="now">
-      <UpdateNote L={L} />
+      <UpdateNote L={lesson} />
       <div class="h">
-        <span class={`kind k-${k}`}>{done ? "Done" : KIND[k]}</span>
-        {ch && " · optional"}
+        <span class={`kind k-${kind}`}>{done ? "Done" : KIND[kind]}</span>
+        {onChallenge && " · optional"}
       </div>
       {done ? (
-        <DoneCard L={L} nx={nx} part="details" />
-      ) : ch ? (
+        <DoneCard L={lesson} nx={next} part="details" />
+      ) : onChallenge ? (
         <Fragment>
           <div class="ptxt">
             <p>
-              <Keys I={I} text={L.challenge} />
+              <Keys I={instrument} text={lesson.challenge} />
             </p>
           </div>
           <p class="t-note">Optional. Try it now, or come back to it any time.</p>
         </Fragment>
       ) : (
         <Fragment>
-          {st.intro ? (
-            <IntroCard L={L} part="details" />
+          {step.intro ? (
+            <IntroCard L={lesson} part="details" />
           ) : (
             <div class="ptxt">
-              <StepText I={I} st={st} />
+              <StepText I={instrument} st={step} />
             </div>
           )}
-          {st.q && <Quiz I={I} st={st} />}
-          {st.hear && <HearNote I={I} st={st} />}
-          {st.more && (
+          {step.q && <Quiz I={instrument} st={step} />}
+          {step.hear && <HearNote I={instrument} st={step} />}
+          {step.more && (
             <p class="more">
-              <a href={`/${I.slug}/${st.more.to}`}>{st.more.text}</a>
+              <a href={`/${instrument.slug}/${step.more.to}`}>{step.more.text}</a>
             </p>
           )}
         </Fragment>
       )}
       <div class="ctl" id="ctlinfo" hidden></div>
       <div class="grow"></div>
-      <div class="pfoot">
-        <div class="legend" hidden={k !== "play"}>
-          <Fragment set:html={legend} />
-          <button
-            type="button"
-            class="hint"
-            aria-label="Tips: click a control to learn it. Left and right arrow keys move between steps."
-          >
-            i
-            <span class="tip" aria-hidden="true">
-              Click a control to learn it. The ← → keys move between steps.
-            </span>
-          </button>
-        </div>
-        <div class="navrow">
-          {done ? (
-            <Fragment>
-              {nx && (
-                <a class="btn" href={`/${I.slug}`}>
-                  All lessons
-                </a>
-              )}
-              <a class="btn primary" href={nx ? nx.path : `/${I.slug}`} data-nav="1" data-end draggable="false">
-                {nx ? "Next lesson" : "All lessons"}
-              </a>
-            </Fragment>
-          ) : act === 0 ? (
-            <button class="btn" disabled aria-label="Previous step">
-              Back
-            </button>
-          ) : (
-            <a class="btn" href={stepPath(L, act - 1)} data-nav="-1" aria-label="Previous step">
-              Back
-            </a>
-          )}
-          {!done && (
-            <a class="btn primary" href={nextHref} data-nav="1">
-              {act === 0 ? "Start" : "Next"}
-            </a>
-          )}
-        </div>
-      </div>
+      <PlayerFoot instrument={instrument} lesson={lesson} at={at} done={done} kind={kind} next={next} />
     </div>
   </div>
 </section>
 
 <script>
-  /* Marks where you are, saves ticks as you move on, and runs the player's controls: the step panel's
-     width, the full-window switch, the lesson picker, arrow keys, and clicking a control on the panel. */
-  import { onProgress, persist, refresh, ist, state } from "../../client/progress.js";
-  import { player, curLesson, markAllDone, nextLessonHref, stepKey } from "../../client/lesson.js";
-  import { pressFinish, clickFinish } from "../../client/finish.js";
-  import { CYCLES_CONTROLS } from "../../course/model-cycles/controls.js";
-  import { iconSvg } from "../../course/model-cycles/icons.js";
-  import { keyify } from "../../course/shared/text.js";
-  import { esc } from "../../course/shared/html.js";
-
-  const PANELS = { cycles: { controls: CYCLES_CONTROLS, icon: iconSvg } };
-  const $ = (s) => document.querySelector<HTMLElement>(s);
-
-  /* the player fills the window below the header */
-  function fitPlayer() {
-    const el = player();
-    if (!el) return;
-    const top = el.getBoundingClientRect().top + window.scrollY;
-    el.style.setProperty("--ph", `calc(100dvh - ${Math.round(top) + 20}px)`);
-  }
-  window.addEventListener("resize", fitPlayer);
-
-  onProgress(() => {
-    const c = curLesson();
-    if (!c) return;
-    const s = ist(c.k);
-    /* the done screen isn't a step: you stay where you finished */
-    if (s.lesson !== c.id || (!c.done && (s.active[c.id] ?? 0) !== c.act)) {
-      s.lesson = c.id;
-      if (!c.done) s.active[c.id] = c.act;
-      persist();
-    }
-    document
-      .querySelectorAll<HTMLElement>(".dots [data-step]")
-      .forEach((a) => a.classList.toggle("done", !!s.steps[stepKey(c, +a.dataset.step)]));
-    const mx = $("[data-max]");
-    if (mx) {
-      const l = state.focus ? "Exit full window (Esc)" : "Maximize";
-      mx.setAttribute("aria-label", l);
-      mx.title = l;
-    }
-    document.documentElement.classList.toggle("focus", !!state.focus);
-    if (state.stepW) document.documentElement.style.setProperty("--sw", state.stepW + "px");
-    fitPlayer();
-  });
-  function setFocus(on) {
-    state.focus = on;
-    persist();
-    refresh();
-  }
-
-  /* drag the gutter to resize the step column; the width is saved with your progress */
-  function clampStepW(w) {
-    const b = $("#pbody");
-    const max = b ? Math.max(320, b.clientWidth * 0.7) : 900;
-    return Math.round(Math.min(Math.max(w, 260), max));
-  }
-  function setStepW(w, save) {
-    state.stepW = clampStepW(w);
-    document.documentElement.style.setProperty("--sw", state.stepW + "px");
-    if (save) persist();
-  }
-  document.addEventListener("pointerdown", (e) => {
-    const g = (e.target as Element).closest("#gutter");
-    if (!g) return;
-    e.preventDefault();
-    g.setPointerCapture(e.pointerId);
-    g.classList.add("drag");
-    document.body.classList.add("resizing");
-    const right = $("#pbody").getBoundingClientRect().right;
-    const move = (ev) => setStepW(right - ev.clientX, false);
-    const up = () => {
-      g.removeEventListener("pointermove", move);
-      g.classList.remove("drag");
-      document.body.classList.remove("resizing");
-      persist();
-    };
-    g.addEventListener("pointermove", move);
-    g.addEventListener("pointerup", up, { once: true });
-    g.addEventListener("pointercancel", up, { once: true });
-  });
-  document.addEventListener("dblclick", (e) => {
-    if ((e.target as Element).closest("#gutter")) {
-      delete state.stepW;
-      document.documentElement.style.removeProperty("--sw");
-      persist();
-    }
-  });
-
-  /* lesson picker: close when clicking elsewhere or pressing Esc */
-  document.addEventListener(
-    "click",
-    (e) => {
-      document.querySelectorAll("details.picker[open]").forEach((d) => {
-        if (!d.contains(e.target as Node)) (d as HTMLDetailsElement).open = false;
-      });
-    },
-    true
-  );
-  document.addEventListener(
-    "keydown",
-    (e) => {
-      if (e.key === "Escape") {
-        const d = document.querySelector<HTMLDetailsElement>("details.picker[open]");
-        if (d) {
-          d.open = false;
-          e.stopImmediatePropagation();
-        }
-      }
-    },
-    true
-  );
-
-  document.addEventListener(
-    "click",
-    (e) => {
-      if ((e.target as Element).closest("[data-closectl]")) {
-        $("#ctlinfo").hidden = true;
-        return;
-      }
-      if ((e.target as Element).closest("[data-max]")) {
-        setFocus(!state.focus);
-        return;
-      }
-      /* a control on the panel: what it does, in a box over the step */
-      const ctl = (e.target as Element).closest<SVGElement>("svg .c");
-      if (ctl) {
-        if (ctl.closest("[data-panel-guide]")) return;
-        const I = PANELS[document.body.dataset.inst],
-          c = I && I.controls[ctl.dataset.id],
-          box = $("#ctlinfo");
-        if (c && box) {
-          box.hidden = false;
-          box.innerHTML = `<div class="h">${esc(c.kind)} <button class="x" data-closectl aria-label="Close">×</button></div><b>${esc(c.name)}</b>${c.sub ? ` <span class="sec">(${esc(c.sub)})</span>` : ""}. ${keyify(I, c.desc, "")}`;
-        }
-        return;
-      }
-      /* Next ticks the step you're on; on the last step it also closes the lesson and opens the done screen.
-         Next lesson there fills, ticks and plays, then opens the next lesson */
-      const nav = (e.target as Element).closest<HTMLElement>("[data-nav]");
-      const c = nav && nav.dataset.nav === "1" && curLesson();
-      if (!c) return;
-      const s = ist(c.k);
-      if (nav.hasAttribute("data-end")) {
-        e.preventDefault();
-        clickFinish(nav, () => finished(c), nextLessonHref(s, c, nav));
-        return;
-      }
-      tickHere(s, c);
-      /* the lesson counts as done even if you skipped a step (the done screen shows how many you ticked) */
-      if (c.act === c.n + (c.challenge ? 1 : 0) - 1) s.done[c.id] ||= Date.now();
-      persist(); /* the link opens the next step */
-    },
-    true
-  ); /* capture: runs before the router follows a link, so Next lesson can pick where to go */
-
-  /* ticks the step you're on; the optional challenge is never a rep */
-  function tickHere(s, c) {
-    if (c.act < c.n) {
-      s.steps[stepKey(c, c.act)] = true;
-      markAllDone(s, c);
-    }
-  }
-  /* Next lesson on the done screen: done, if you came straight to it */
-  function finished(c) {
-    const s = ist(c.k);
-    s.done[c.id] ||= Date.now();
-    persist();
-    refresh();
-  }
-  /* holding Next lesson fills it slowly; a long press doesn't open the link menu */
-  document.addEventListener("pointerdown", (e) => {
-    const b = e.button === 0 && (e.target as Element).closest("[data-end]"),
-      c = b && curLesson();
-    if (c) pressFinish(b, () => finished(c), nextLessonHref(ist(c.k), c, b));
-  });
-  /* nor drags the link away, which would end the press */
-  document.addEventListener("contextmenu", (e) => {
-    if ((e.target as Element).closest("[data-end]")) e.preventDefault();
-  });
-  document.addEventListener("dragstart", (e) => {
-    if ((e.target as Element).closest && (e.target as Element).closest("[data-end]")) e.preventDefault();
-  });
-
-  document.addEventListener("keydown", (e) => {
-    if ((e.target as Element).id === "gutter" && (e.key === "ArrowLeft" || e.key === "ArrowRight")) {
-      e.preventDefault();
-      const cur = $(".pstep").getBoundingClientRect().width;
-      setStepW(cur + (e.key === "ArrowLeft" ? 40 : -40), true);
-      return;
-    }
-    if (player() && !(e.target as Element).closest("textarea,input,select") && !e.metaKey && !e.ctrlKey && !e.altKey) {
-      if (e.key === "Escape" && state.focus) {
-        setFocus(false);
-        return;
-      }
-      const nav = e.key === "ArrowRight" ? 1 : e.key === "ArrowLeft" ? -1 : 0;
-      if (nav) {
-        const b = $(`[data-nav="${nav}"]`);
-        if (b) {
-          e.preventDefault();
-          b.click();
-        }
-      }
-    }
-  });
+  import "../../client/player.js";
 </script>
 
 <style>
@@ -428,172 +139,6 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
     flex-direction: column;
     gap: var(--s3);
     scroll-margin-top: var(--s3);
-  }
-  .phead {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--s2) var(--s4);
-  }
-  .phead .ttl {
-    font-family: var(--display);
-    font-weight: var(--fw-semibold);
-    font-size: var(--fs-lg);
-    min-width: 0;
-  }
-  .phead .ttl span {
-    color: var(--muted);
-    font-weight: var(--fw-medium);
-  }
-  .picker {
-    position: relative;
-    min-width: 0;
-  }
-  .picker summary {
-    list-style: none;
-    cursor: pointer;
-    display: inline-flex;
-    align-items: center;
-    gap: var(--s2);
-    padding: var(--s1) var(--s3) var(--s1) 0;
-    border-radius: var(--r-m);
-  }
-  .picker summary::-webkit-details-marker {
-    display: none;
-  }
-  .picker summary:hover {
-    color: var(--led);
-  }
-  .picker .caret {
-    width: 0.4375rem;
-    height: 0.4375rem;
-    border-right: 2px solid currentColor;
-    border-bottom: 2px solid currentColor;
-    transform: rotate(45deg) translateY(-2px);
-    opacity: 0.6;
-  }
-  .picker[open] .caret {
-    transform: rotate(-135deg) translateY(-2px);
-  }
-  .dots {
-    flex: 1 1 13.75rem;
-    min-width: 10rem;
-    max-width: 32.5rem;
-    margin-left: auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    position: relative;
-    height: 1.5rem;
-  }
-  .dots::before {
-    content: "";
-    position: absolute;
-    left: 0.6875rem;
-    right: 0.6875rem;
-    top: 50%;
-    height: 2px;
-    margin-top: -1px;
-    background: var(--line);
-    border-radius: var(--r-xs);
-  }
-  .dots::after {
-    content: "";
-    position: absolute;
-    left: 0.6875rem;
-    top: 50%;
-    height: 2px;
-    margin-top: -1px;
-    width: calc((100% - 1.375rem) * var(--p, 0));
-    background: var(--done);
-    border-radius: var(--r-xs);
-  }
-  .dots a {
-    position: relative;
-    z-index: 1;
-    width: 1.375rem;
-    height: 1.375rem;
-    padding: 0;
-    border: 0;
-    background: none;
-    cursor: pointer;
-    display: grid;
-    place-items: center;
-  }
-  .dots a::before {
-    content: "";
-    width: 0.625rem;
-    height: 0.625rem;
-    border-radius: 50%;
-    background: var(--surface-2);
-    border: 2px solid var(--line);
-    box-sizing: border-box;
-    transition: transform 0.12s;
-  }
-  .dots a:hover::before {
-    transform: scale(1.3);
-  }
-  .dots a.done::before {
-    background: var(--done);
-    border-color: var(--done);
-  }
-  .dots a.opt::before {
-    border-style: dashed;
-    border-color: var(--hold);
-  }
-  .dots a[aria-current="true"]::before {
-    width: 0.875rem;
-    height: 0.875rem;
-    background: var(--surface);
-    border: 0.1875rem solid var(--led);
-  }
-  /* icon only: expand arrows, or collapse arrows while the player fills the window */
-  .maxbtn {
-    display: grid;
-    place-items: center;
-    width: 2rem;
-    height: 2rem;
-    padding: 0;
-    border: 1px solid var(--line);
-    background: none;
-    border-radius: var(--r-btn);
-    cursor: pointer;
-    color: var(--muted);
-  }
-  /* on phones: lesson title and maximize share the first row, the step timeline gets its own full-width row below */
-  @media (max-width: 836px) {
-    .phead .picker {
-      flex: 1;
-    }
-    .phead .maxbtn {
-      order: 1;
-    }
-    .phead .dots {
-      order: 2;
-      flex-basis: 100%;
-      max-width: none;
-      margin-left: 0;
-    }
-  }
-  .maxbtn svg {
-    width: 1rem;
-    height: 1rem;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 1.6;
-    stroke-linecap: round;
-    stroke-linejoin: round;
-  }
-  .maxbtn .mx-out,
-  :global(html.focus) .maxbtn .mx-in {
-    display: none;
-  }
-  :global(html.focus) .maxbtn .mx-out {
-    display: block;
-  }
-  .maxbtn:hover {
-    color: var(--fg);
-    border-color: var(--faint);
   }
   .pbody {
     flex: 1;
@@ -682,22 +227,6 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   .pstep .grow {
     flex: 1;
   }
-  /* legend and Back/Next stay in view at the bottom of the card when a long step scrolls */
-  /* the top of the bar fades in, so text scrolling underneath stays visible and hints there is more */
-  .pfoot {
-    position: sticky;
-    bottom: calc(-1 * var(--s5));
-    margin: calc(-1 * var(--s6)) calc(-1 * var(--s5)) calc(-1 * var(--s5));
-    padding: var(--s9) var(--s5) var(--s5);
-    display: flex;
-    flex-direction: column;
-    gap: var(--s4);
-    background: linear-gradient(to bottom, transparent, var(--bg) calc(var(--s9) - var(--s3)));
-    pointer-events: none;
-  }
-  .pfoot > * {
-    pointer-events: auto;
-  }
   .ctl {
     padding: var(--s3) var(--s3);
     border-radius: var(--r-l);
@@ -721,77 +250,6 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
   .ctl :global(.sec) {
     color: var(--muted);
   }
-  .legend {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: var(--s2) var(--s3);
-    font-size: var(--fs-step);
-  }
-  /* the "i" hint: a small round button whose tip shows on hover or keyboard focus */
-  .hint {
-    position: relative;
-    margin-left: auto;
-    display: grid;
-    place-items: center;
-    width: 1.375rem;
-    height: 1.375rem;
-    padding: 0;
-    border: 1px solid var(--line);
-    border-radius: 50%;
-    background: none;
-    color: var(--muted);
-    font: italic var(--fw-bold) 0.8125rem/1 var(--body);
-    cursor: help;
-  }
-  .hint:hover,
-  .hint:focus-visible {
-    color: var(--fg);
-    border-color: var(--faint);
-  }
-  .hint .tip {
-    position: absolute;
-    z-index: 20;
-    right: 0;
-    bottom: calc(100% + var(--s2));
-    width: max-content;
-    max-width: 16.25rem;
-    padding: var(--s2) var(--s3);
-    border: 1px solid var(--line);
-    border-radius: var(--r-m);
-    background: var(--surface);
-    box-shadow: 0 0.5rem 1.5rem var(--shadow);
-    font: var(--fw-regular) var(--fs-sm)/var(--lh-snug) var(--body);
-    font-style: normal;
-    color: var(--fg);
-    text-align: left;
-    opacity: 0;
-    visibility: hidden;
-    transform: translateY(0.25rem);
-    transition:
-      opacity 0.15s,
-      transform 0.15s,
-      visibility 0.15s;
-  }
-  .hint:hover .tip,
-  .hint:focus-visible .tip {
-    opacity: 1;
-    visibility: visible;
-    transform: none;
-  }
-  .navrow {
-    display: flex;
-    gap: var(--s2);
-  }
-  .navrow .btn {
-    flex: 1;
-    padding: var(--s3) var(--s3);
-    font-size: var(--fs-sm);
-  }
-  .navrow .btn:first-child {
-    flex: 0 0 auto;
-    padding-inline: var(--s4);
-  }
   /* narrow windows: stack, and let the player grow with its text instead of scrolling inside */
   @media (max-width: 990px) {
     .player {
@@ -812,12 +270,6 @@ const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN"
        and Back/Next sit at the end of the card instead of pinned to the screen, so no text can show below them */
     .pstep {
       overflow: visible;
-    }
-    .pfoot {
-      position: static;
-      margin: 0;
-      padding: 0;
-      background: none;
     }
   }
   /* maximized: the player takes the whole window */
