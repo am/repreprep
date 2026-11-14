@@ -1,0 +1,392 @@
+(function () {
+  function shuffle(a) {
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1)),
+        t = a[i];
+      a[i] = a[j];
+      a[j] = t;
+    }
+    return a;
+  }
+  // hand-picked sets of three colors, each set clearly apart within itself (checked in OKLab) and readable
+  // on the page background; light mode gets its own deeper sets
+  var PALETTES = {
+    dark: [
+      ["#2f5bff", "#ffe14d", "#ff3b6b"],
+      ["#00e0b8", "#8a3cff", "#ff8a00"],
+      ["#ff2bd6", "#00c2ff", "#c6ff00"],
+      ["#ff4f1f", "#4d7cff", "#7dffb0"],
+      ["#8b5cff", "#ffb000", "#00d68f"],
+      ["#ff006e", "#3a86ff", "#ffbe0b"],
+      ["#00f5d4", "#f15bb5", "#6a4dff"],
+      ["#fb5607", "#9b5cff", "#06d6a0"],
+      ["#c1ff00", "#ff00a0", "#1f6bff"],
+      ["#ff7a00", "#00b3ff", "#d000ff"],
+      ["#1aff6e", "#ff2e2e", "#7b61ff"],
+      ["#fff03a", "#ff3df0", "#00a3ff"],
+    ],
+    light: [
+      ["#1434f5", "#ff7a00", "#00a37a"],
+      ["#008f7a", "#7a2cff", "#ff4f1f"],
+      ["#d4009b", "#0072e0", "#3fae00"],
+      ["#e01e00", "#2f2fd0", "#00a37a"],
+      ["#6d28d9", "#e07b00", "#009e60"],
+      ["#e0005a", "#1c5fe0", "#c79400"],
+      ["#0096a8", "#c2007a", "#4b2bff"],
+      ["#e04800", "#7b2fe0", "#00956b"],
+      ["#5aa800", "#d6008a", "#0047d6"],
+      ["#d96600", "#0089d6", "#a600d6"],
+      ["#00a344", "#d61f1f", "#5a3dff"],
+      ["#b8a000", "#d600c2", "#0070d6"],
+    ],
+  };
+  function lin(x) {
+    return x <= 0.04045 ? x / 12.92 : Math.pow((x + 0.055) / 1.055, 2.4);
+  }
+  function lum(c) {
+    var v = c.map(lin);
+    return 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+  }
+  function oklab(h) {
+    var c = [1, 3, 5].map(function (i) {
+      return lin(parseInt(h.slice(i, i + 2), 16) / 255);
+    });
+    var l = Math.cbrt(0.4122214708 * c[0] + 0.5363325363 * c[1] + 0.0514459929 * c[2]);
+    var m = Math.cbrt(0.2119034982 * c[0] + 0.6806995451 * c[1] + 0.1073969566 * c[2]);
+    var s = Math.cbrt(0.0883024619 * c[0] + 0.2817188376 * c[1] + 0.6299787005 * c[2]);
+    return [
+      0.2104542553 * l + 0.793617785 * m - 0.0040720468 * s,
+      1.9779984951 * l - 2.428592205 * m + 0.4505937099 * s,
+      0.0259040371 * l + 0.7827717662 * m - 0.808675766 * s,
+    ];
+  }
+  function dist(a, b) {
+    var A = oklab(a),
+      B = oklab(b);
+    return Math.hypot(A[0] - B[0], A[1] - B[1], A[2] - B[2]);
+  }
+  function bgLum() {
+    var m = getComputedStyle(document.body).backgroundColor.match(/[\d.]+/g);
+    return m
+      ? lum(
+          m.slice(0, 3).map(function (x) {
+            return x / 255;
+          })
+        )
+      : 0;
+  }
+  // the next set of colors: one whose every color is as far as possible from every color showing now,
+  // so a swap reads as a new palette, not the same three colors trading places
+  function palette(el) {
+    var list = PALETTES[bgLum() > 0.4 ? "light" : "dark"],
+      cur = [];
+    if (el)
+      cur = [0, 1, 2]
+        .map(function (i) {
+          return el.children[i].style.getPropertyValue("--c");
+        })
+        .filter(function (c) {
+          return c.charAt(0) === "#";
+        });
+    if (!cur.length)
+      try {
+        cur = (sessionStorage.getItem("rrr-logo-pal") || "").split(",").filter(Boolean);
+      } catch (e) {}
+    var recent = [];
+    try {
+      recent = JSON.parse(sessionStorage.getItem("rrr-logo-recent") || "[]");
+    } catch (e) {}
+    var ranked = list
+      .filter(function (p) {
+        return recent.indexOf(p.join()) < 0;
+      })
+      .map(function (p) {
+        var gap = Infinity;
+        p.forEach(function (a) {
+          cur.forEach(function (b) {
+            gap = Math.min(gap, dist(a, b));
+          });
+        });
+        return { p: p, gap: cur.length ? gap : Math.random() };
+      })
+      .sort(function (a, b) {
+        return b.gap - a.gap;
+      });
+    var p = ranked[0].p; // the farthest from what's showing
+    recent = [p.join()].concat(recent).slice(0, 5); // the last five sets sit out, so it doesn't bounce between two
+    try {
+      sessionStorage.setItem("rrr-logo-pal", p.join(","));
+      sessionStorage.setItem("rrr-logo-recent", JSON.stringify(recent));
+    } catch (e) {}
+    return p.slice();
+  }
+  // each layer gets its own offset slot (plus a little jitter) so all three always show,
+  // and the slots stay within a small box so the word still reads as one REP
+  function slots() {
+    return shuffle([0, 0.045, 0.09]).map(function (v) {
+      return (v + Math.random() * 0.02).toFixed(3) + "em";
+    });
+  }
+  function remix(el) {
+    var c = shuffle(palette(el)),
+      x = slots(),
+      y = slots();
+    Array.prototype.forEach.call(el.children, function (s, i) {
+      s.style.setProperty("--c", c[i]);
+      s.style.setProperty("--x", x[i]);
+      s.style.setProperty("--y", y[i]);
+    });
+  }
+  function rand(a, b) {
+    return a + Math.random() * (b - a);
+  }
+  // one glitch: a few fast frames of hidden layers, cut slices and jumps, then a fresh remix
+  function glitch(el) {
+    var frames = 3 + Math.floor(Math.random() * 4),
+      c = palette(el);
+    el.classList.add("glitch");
+    (function frame(n) {
+      if (!n) {
+        Array.prototype.forEach.call(el.children, function (s) {
+          s.style.opacity = "";
+          s.style.clipPath = "";
+        });
+        remix(el);
+        el.classList.remove("glitch");
+        return;
+      }
+      Array.prototype.forEach.call(el.children, function (s, i) {
+        s.style.opacity = Math.random() < 0.25 ? "0" : "";
+        var top = rand(0, 70);
+        s.style.clipPath =
+          Math.random() < 0.5
+            ? "inset(" + top.toFixed(0) + "% 0 " + (100 - top - rand(15, 40)).toFixed(0) + "% 0)"
+            : "";
+        s.style.setProperty("--x", rand(-0.12, 0.2).toFixed(3) + "em");
+        s.style.setProperty("--y", rand(-0.06, 0.12).toFixed(3) + "em");
+        if (Math.random() < 0.5) s.style.setProperty("--c", c[(i + n) % 3]);
+      });
+      setTimeout(
+        function () {
+          frame(n - 1);
+        },
+        rand(40, 110)
+      );
+    })(frames);
+  }
+  // beats are scheduled from a fixed start time so they never drift; tap() can restart them at a new tempo.
+  // The tap key's light flashes on every beat, like the TEMPO key on the Model:Cycles.
+  function beats(el, bpm, onBeat) {
+    var st = (el._beat = { ms: 60000 / bpm, t0: performance.now(), n: 0, timer: 0 }),
+      key = tapKey(el);
+    st.tick = function tick() {
+      clearTimeout(st.timer);
+      if (!el.isConnected) return; // page swapped; the new page starts its own loop
+      if (!document.hidden) {
+        onBeat(st.n % 4 === 0, st.ms);
+        if (st.sound > 0) {
+          click(st.n % 4 === 0);
+          st.sound--;
+        }
+        if (key) {
+          key.classList.toggle("down", st.n % 4 === 0);
+          key.classList.add("lit");
+          later(90, function () {
+            key.classList.remove("lit");
+          });
+        }
+      }
+      st.n++;
+      if (performance.now() - (st.t0 + st.n * st.ms) > st.ms) st.t0 = performance.now() - st.n * st.ms; // back from a background tab
+      st.timer = setTimeout(tick, Math.max(0, st.t0 + st.n * st.ms - performance.now()));
+    };
+    st.tick();
+  }
+  // a quiet, dry metronome, like the Model:Cycles click: "clack" on the bar, "tik" on the other beats.
+  // Browsers only allow sound after a tap, so it starts with the first tap and stops four bars after the last one.
+  var audio;
+  function click(down) {
+    try {
+      audio = audio || new (window.AudioContext || window.webkitAudioContext)();
+      var t = audio.currentTime,
+        len = down ? 0.03 : 0.018;
+      var buf = audio.createBuffer(1, Math.ceil(audio.sampleRate * len), audio.sampleRate),
+        d = buf.getChannelData(0);
+      for (var i = 0; i < d.length; i++) d[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / d.length, 4);
+      var src = audio.createBufferSource(),
+        f = audio.createBiquadFilter(),
+        g = audio.createGain();
+      src.buffer = buf;
+      f.type = "bandpass";
+      f.frequency.value = down ? 1500 : 3200;
+      f.Q.value = down ? 4 : 6;
+      g.gain.value = down ? 0.22 : 0.12;
+      src.connect(f);
+      f.connect(g);
+      g.connect(audio.destination);
+      src.start(t);
+    } catch (e) {}
+  }
+  function tapKey(el) {
+    var w = el.parentNode;
+    return w && w.classList.contains("logo-wrap") ? w.querySelector(".tap") : null;
+  }
+  // tap tempo: each tap lands on a beat (the first tap of a run is the downbeat); from the second tap on,
+  // the tempo is the average gap of the last few taps, kept within the Model:Cycles range of 30 to 300 BPM.
+  // A pause of two seconds starts a new run.
+  function tap(el) {
+    var st = el._beat,
+      key = tapKey(el),
+      now = performance.now(),
+      t = el._taps || [];
+    if (!st) return;
+    if (t.length && now - t[t.length - 1] > 2000) {
+      t = [];
+      el._tapN = 0;
+    }
+    t.push(now);
+    el._taps = t = t.slice(-5);
+    if (t.length > 1) {
+      st.ms = Math.min(2000, Math.max(200, (t[t.length - 1] - t[0]) / (t.length - 1)));
+      try {
+        localStorage.setItem("rrr-bpm", Math.round(60000 / st.ms));
+      } catch (e) {}
+    }
+    st.sound = 16 + 1; // this tap's beat plus four bars
+    st.n = el._tapN = el._tapN || 0;
+    el._tapN++;
+    st.t0 = now - st.n * st.ms;
+    st.tick();
+    if (key) {
+      key.querySelector("b").textContent = t.length > 1 ? Math.round(60000 / st.ms) + " BPM" : "TAP";
+      key.classList.add("on");
+      clearTimeout(el._tapOff);
+      el._tapOff = setTimeout(function () {
+        key.classList.remove("on");
+        key.querySelector("b").textContent = "TAP";
+      }, 2500);
+    }
+  }
+  function later(ms, f) {
+    setTimeout(f, ms);
+  }
+  function slot() {
+    return rand(0, 0.11).toFixed(3) + "em";
+  }
+  // a whole new set of colors at once (offsets stay)
+  function recolor(el) {
+    var c = shuffle(palette(el));
+    [0, 1, 2].forEach(function (i) {
+      el.children[i].style.setProperty("--c", c[i]);
+    });
+  }
+  // one layer per beat, never the same one twice in a row (and never `not`, when given)
+  function pick(el, not) {
+    var i;
+    do {
+      i = Math.floor(Math.random() * 3);
+    } while (i === el._last || el.children[i] === not);
+    el._last = i;
+    return el.children[i];
+  }
+  // a short, soft fade toward the page background (a tint, not transparency, so it never blends with the
+  // layers underneath); depth is how much color stays at the bottom of the dip
+  function pulse(s, depth, ms) {
+    var c = getComputedStyle(s).color,
+      bg = getComputedStyle(document.body).backgroundColor;
+    var dip = "color-mix(in oklab, " + c + " " + Math.round((depth || 0.5) * 100) + "%, " + bg + ")";
+    s.animate([{ color: c }, { color: dip, offset: 0.3 }, { color: c }], { duration: ms || 220, easing: "ease-out" });
+  }
+  // the layer is torn sideways for a moment, with fresh noise each time
+  function tear(s, scale, ms) {
+    var t = document.querySelector("#rrr-tear feTurbulence"),
+      d = document.querySelector("#rrr-tear feDisplacementMap");
+    if (!t) return;
+    t.setAttribute("seed", Math.floor(Math.random() * 999));
+    d.setAttribute("scale", scale || 34);
+    s.style.filter = "url(#rrr-tear)";
+    later(ms || 110, function () {
+      s.style.filter = "";
+    });
+  }
+  // a tiny accent on the off-beats, picked at random so the pattern never shows: a quick blink, a flash of
+  // another layer's color, a small tear, or (now and then) nothing
+  function accent(el) {
+    var s = el.children[Math.floor(Math.random() * 3)],
+      r = Math.random();
+    if (r < 0.3) pulse(s, 0.25, 90);
+    else if (r < 0.55) {
+      var o = el.children[(Array.prototype.indexOf.call(el.children, s) + 1 + Math.floor(Math.random() * 2)) % 3];
+      var c = getComputedStyle(o).color;
+      s.animate([{ color: c }, { color: c }], { duration: 70 });
+    } else if (r < 0.85) tear(s, 9 + Math.random() * 8, 70);
+  }
+  // a layer snaps to a new spot; on the bar another layer jolts and the colors swap
+  function drift(el, down, s) {
+    s = s || pick(el);
+    s.style.setProperty("--x", slot());
+    s.style.setProperty("--y", slot());
+    if (down) {
+      var o = pick(el),
+        x = o.style.getPropertyValue("--x");
+      o.style.transition = "none";
+      o.style.setProperty("--x", (parseFloat(x) + 0.08).toFixed(3) + "em");
+      later(60, function () {
+        o.style.setProperty("--x", x);
+        o.style.transition = "";
+      });
+      recolor(el);
+    }
+    return s;
+  }
+  // each beat one layer snaps to a new spot while a different layer pulses; the bar gets the full tear,
+  // the other beats a small random accent
+  function dance(el, down) {
+    var p = pick(el),
+      m = drift(el, down, pick(el, p));
+    pulse(p);
+    if (down) tear(m);
+    else
+      later(Math.random() * 40, function () {
+        accent(el);
+      });
+  }
+  var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+  // a new theme means a new background: switch to a palette made for it
+  if (!window.__rrrLogoTheme) {
+    window.__rrrLogoTheme = true;
+    window.addEventListener("rrr-theme", function () {
+      Array.prototype.forEach.call(document.querySelectorAll(".logo[data-on]"), recolor);
+    });
+  }
+  Array.prototype.forEach.call(document.querySelectorAll(".logo:not([data-on])"), function (el) {
+    el.dataset.on = "1";
+    remix(el);
+    var d = el.hasAttribute("data-dance") && dance;
+    var saved = 0;
+    try {
+      saved = +localStorage.getItem("rrr-bpm");
+    } catch (e) {}
+    if (d && !reduce)
+      beats(el, saved || +el.dataset.bpm, function (down) {
+        d(el, down);
+      });
+    else if (!reduce) {
+      (function next() {
+        setTimeout(
+          function () {
+            if (!el.isConnected) return;
+            if (!document.hidden) glitch(el);
+            next();
+          },
+          rand(10000, 40000)
+        );
+      })();
+    }
+    el.addEventListener("click", function (e) {
+      if (d && el._beat) tap(el);
+      else remix(el);
+      if (location.pathname === "/" || d) e.preventDefault();
+    });
+  });
+})();
