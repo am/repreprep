@@ -1,0 +1,227 @@
+---
+// The player's top row: lesson menu, step dots, maximize button.
+import LessonMenu from "./LessonMenu.astro";
+import { KIND } from "../../course/shared/text.js";
+import { lessonLabel, stepPath } from "../../course/index.js";
+interface Props {
+  instrument: any;
+  lesson: any;
+  at: number;
+  done: boolean;
+}
+const { instrument, lesson, at, done } = Astro.props;
+const stepCount = lesson.steps.length,
+  total = stepCount + (lesson.challenge ? 1 : 0);
+const onChallenge = !done && at === stepCount;
+---
+
+<div class="phead">
+  <details class="picker">
+    <summary class="ttl" title="Jump to another lesson">
+      {lessonLabel(lesson)} · {lesson.title}
+      <span class="caret" aria-hidden="true"></span>
+    </summary>
+    <LessonMenu I={instrument} L={lesson} />
+  </details>
+  <div class="dots" style={`--p:${done ? 1 : total > 1 ? at / (total - 1) : 0}`}>
+    {lesson.steps.map((step: any, i: number) => {
+      const label = KIND[step.k || "play"];
+      return (
+        <a
+          href={stepPath(lesson, i)}
+          data-step={i}
+          aria-current={!done && i === at ? "true" : "false"}
+          aria-label={`${label}, step ${i + 1}`}
+          title={label}
+        ></a>
+      );
+    })}
+    {lesson.challenge && (
+      <a
+        class="opt"
+        href={stepPath(lesson, stepCount)}
+        data-step={stepCount}
+        aria-current={onChallenge ? "true" : "false"}
+        aria-label="Challenge (optional)"
+        title="Challenge (optional)"
+      ></a>
+    )}
+  </div>
+  <button class="maxbtn" type="button" data-max aria-label="Maximize" title="Maximize">
+    <svg class="mx-in" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M2 6V2h4M10 2h4v4M14 10v4h-4M6 14H2v-4" />
+    </svg>
+    <svg class="mx-out" viewBox="0 0 16 16" aria-hidden="true">
+      <path d="M6 2v4H2M14 6h-4V2M10 14v-4h4M2 10h4v4" />
+    </svg>
+  </button>
+</div>
+
+<style>
+  .phead {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s2) var(--s4);
+  }
+  .phead .ttl {
+    font-family: var(--display);
+    font-weight: var(--fw-semibold);
+    font-size: var(--fs-lg);
+    min-width: 0;
+  }
+  .phead .ttl span {
+    color: var(--muted);
+    font-weight: var(--fw-medium);
+  }
+  .picker {
+    position: relative;
+    min-width: 0;
+  }
+  .picker summary {
+    list-style: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--s2);
+    padding: var(--s1) var(--s3) var(--s1) 0;
+    border-radius: var(--r-m);
+  }
+  .picker summary::-webkit-details-marker {
+    display: none;
+  }
+  .picker summary:hover {
+    color: var(--led);
+  }
+  .picker .caret {
+    width: 0.4375rem;
+    height: 0.4375rem;
+    border-right: 2px solid currentColor;
+    border-bottom: 2px solid currentColor;
+    transform: rotate(45deg) translateY(-2px);
+    opacity: 0.6;
+  }
+  .picker[open] .caret {
+    transform: rotate(-135deg) translateY(-2px);
+  }
+  .dots {
+    flex: 1 1 13.75rem;
+    min-width: 10rem;
+    max-width: 32.5rem;
+    margin-left: auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: relative;
+    height: 1.5rem;
+  }
+  .dots::before {
+    content: "";
+    position: absolute;
+    left: 0.6875rem;
+    right: 0.6875rem;
+    top: 50%;
+    height: 2px;
+    margin-top: -1px;
+    background: var(--line);
+    border-radius: var(--r-xs);
+  }
+  .dots::after {
+    content: "";
+    position: absolute;
+    left: 0.6875rem;
+    top: 50%;
+    height: 2px;
+    margin-top: -1px;
+    width: calc((100% - 1.375rem) * var(--p, 0));
+    background: var(--done);
+    border-radius: var(--r-xs);
+  }
+  .dots a {
+    position: relative;
+    z-index: 1;
+    width: 1.375rem;
+    height: 1.375rem;
+    padding: 0;
+    border: 0;
+    background: none;
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+  }
+  .dots a::before {
+    content: "";
+    width: 0.625rem;
+    height: 0.625rem;
+    border-radius: 50%;
+    background: var(--surface-2);
+    border: 2px solid var(--line);
+    box-sizing: border-box;
+    transition: transform 0.12s;
+  }
+  .dots a:hover::before {
+    transform: scale(1.3);
+  }
+  .dots a.done::before {
+    background: var(--done);
+    border-color: var(--done);
+  }
+  .dots a.opt::before {
+    border-style: dashed;
+    border-color: var(--hold);
+  }
+  .dots a[aria-current="true"]::before {
+    width: 0.875rem;
+    height: 0.875rem;
+    background: var(--surface);
+    border: 0.1875rem solid var(--led);
+  }
+  /* icon only: expand arrows, or collapse arrows while the player fills the window */
+  .maxbtn {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    padding: 0;
+    border: 1px solid var(--line);
+    background: none;
+    border-radius: var(--r-btn);
+    cursor: pointer;
+    color: var(--muted);
+  }
+  /* on phones: lesson title and maximize share the first row, the step timeline gets its own full-width row below */
+  @media (max-width: 836px) {
+    .phead .picker {
+      flex: 1;
+    }
+    .phead .maxbtn {
+      order: 1;
+    }
+    .phead .dots {
+      order: 2;
+      flex-basis: 100%;
+      max-width: none;
+      margin-left: 0;
+    }
+  }
+  .maxbtn svg {
+    width: 1rem;
+    height: 1rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .maxbtn .mx-out,
+  :global(html.focus) .maxbtn .mx-in {
+    display: none;
+  }
+  :global(html.focus) .maxbtn .mx-out {
+    display: block;
+  }
+  .maxbtn:hover {
+    color: var(--fg);
+    border-color: var(--faint);
+  }
+</style>
