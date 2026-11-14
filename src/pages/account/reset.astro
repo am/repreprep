@@ -54,10 +54,10 @@ import { SIGN_IN } from "astro:env/client";
   const AGAIN = ' <a href="/account">Back to log in</a>.';
 
   function setup() {
-    const form = document.querySelector("[data-reset]");
-    const msg = document.querySelector("[data-reset-msg]");
+    const form = document.querySelector<HTMLFormElement>("[data-reset]");
+    const msg = document.querySelector<HTMLElement>("[data-reset-msg]");
     if (!form || !msg) return;
-    const say = (text, bad, link) => {
+    const say = (text: string, bad = false, link = false) => {
       msg.hidden = false;
       msg.className = bad ? "msg bad" : "msg";
       msg.textContent = text;
@@ -71,8 +71,8 @@ import { SIGN_IN } from "astro:env/client";
     form.hidden = false;
     strengthMeter({
       input: form.password,
-      meter: form.querySelector("[data-strength]"),
-      button: form.querySelector('[type="submit"]'),
+      meter: form.querySelector<HTMLElement>("[data-strength]"),
+      button: form.querySelector<HTMLButtonElement>('[type="submit"]'),
     });
     form.addEventListener("submit", async (e) => {
       e.preventDefault();

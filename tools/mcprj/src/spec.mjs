@@ -35,7 +35,7 @@ function buildPattern(project, clean, name, spec, projectTempo) {
     try {
       fn();
     } catch (e) {
-      throw new Error(`${name} ${what}: ${e.message}`);
+      throw new Error(`${name} ${what}: ${e.message}`, { cause: e });
     }
   };
   if (spec.title) at("title", () => (pattern.title = spec.title));
