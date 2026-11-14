@@ -3,6 +3,13 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.6.8
+  date: "2026-11-09"
+  title: One page for your account
+  site:
+    - Once you're logged in, the account area is a single page, without the Your account and Your data tabs. One card holds who you're logged in as, your progress and your account's data.
+    - Downloading, loading and deleting your progress, logging out, and downloading or deleting your account are now icon buttons. Hold the pointer over one to see what it does.
+
 - id: 0.6.7
   date: "2026-11-09"
   title: Safer logging in
