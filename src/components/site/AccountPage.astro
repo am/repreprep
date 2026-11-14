@@ -25,6 +25,12 @@ const TABS = [
   { key: "signup", label: "Sign up", href: "/account/signup" },
   { key: "data", label: "Your data", href: "/account/data" },
 ];
+const ICON = {
+  down: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+  up: '<path d="M12 15V4M7 9l5-5 5 5M5 20h14"/>',
+  trash: '<path d="M4 7h16M10 7V4h4v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/>',
+  logout: '<path d="M10 4H5v16h5M14 8l4 4-4 4M18 12H9"/>',
+};
 ---
 
 <Base noindex title={title} description={description}>
@@ -182,87 +188,69 @@ const TABS = [
             </p>
           </Fragment>
         )}
-        {/* your progress: back up, load, delete, in one card */}
-        <section class="sec progress">
-          {SIGN_IN && (
-            <h3 class="t-title t-card" data-show="in" hidden>
-              Progress
-            </h3>
-          )}
+        <section class="sec">
           <div class="box rows">
-            <div class="r">
-              <p class="t-body">
-                <b>Back up</b>Download a copy of your ticks, finished lessons and notes.
-              </p>
-              <button class="btn" data-export>
-                Download progress
-              </button>
-            </div>
-            <div class="r">
-              <p class="t-body">
-                <b>Load a copy</b>Adds a saved file to the progress here, so nothing is lost. A progress.json file from
-                the old local version works too.
-                <span class="msg" data-import-msg></span>
-              </p>
-              <label class="btn">
-                Load a progress file
-                <input type="file" accept="application/json,.json" data-import hidden />
-              </label>
-            </div>
-            <div class="r">
-              <p class="t-body">
-                <b>Delete</b>Removes your ticks, finished lessons and notes
-                {SIGN_IN ? (
-                  <span data-show="in" hidden>
-                    , here and from your account
-                  </span>
-                ) : (
-                  ""
-                )}
-                . This can't be undone.
-                <span class="msg" data-clear-msg></span>
-              </p>
-              <button class="btn danger" data-clear>
-                Delete my progress
-              </button>
-            </div>
-          </div>
-        </section>
-
-        {/* your account: who you are and Log out, then its data. Only with an account */}
-        {SIGN_IN && (
-          <section class="sec mine" data-signed-in hidden>
-            <h3 class="t-title t-card">Account</h3>
-            <div class="box rows">
-              <div class="r">
+            {SIGN_IN && (
+              <div class="r" data-signed-in hidden>
                 <p class="t-body">
                   <b>Logged in as</b>
                   <span data-who></span>
                 </p>
-                <button class="btn" data-signout>
-                  Log out
+                <div class="acts">
+                  <button class="btn ib" data-signout aria-label="Log out" title="Log out">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.logout} />
+                  </button>
+                </div>
+              </div>
+            )}
+            <div class="r">
+              <p class="t-body">
+                <b>Progress</b>Your ticks, finished lessons and notes.
+                <span class="msg" data-import-msg data-clear-msg></span>
+              </p>
+              <div class="acts">
+                <button class="btn ib" data-export aria-label="Download progress" title="Download progress">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.down} />
                 </button>
-              </div>
-              <div class="r">
-                <p class="t-body">
-                  <b>Download my data</b>Everything the site keeps about your account, as a file.
-                </p>
-                <a class="btn" href="/api/export" download data-astro-reload>
-                  Download my account data
-                </a>
-              </div>
-              <div class="r">
-                <p class="t-body">
-                  <b>Delete my account</b>Removes your account and everything saved with it. Your progress stays in this
-                  browser.
-                </p>
-                <button class="btn danger" data-delete>
-                  Delete my account
+                <label class="btn ib" title="Load a progress file">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.up} />
+                  <input
+                    type="file"
+                    accept="application/json,.json"
+                    data-import
+                    aria-label="Load a progress file"
+                    hidden
+                  />
+                </label>
+                <button class="btn ib danger" data-clear aria-label="Delete my progress" title="Delete my progress">
+                  <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.trash} />
                 </button>
               </div>
             </div>
-          </section>
-        )}
+            {SIGN_IN && (
+              <div class="r" data-signed-in hidden>
+                <p class="t-body">
+                  <b>Account</b>Everything the site keeps about you.
+                </p>
+                <div class="acts">
+                  <a
+                    class="btn ib"
+                    href="/api/export"
+                    download
+                    data-astro-reload
+                    aria-label="Download my account data"
+                    title="Download my account data"
+                  >
+                    <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.down} />
+                  </a>
+                  <button class="btn ib danger" data-delete aria-label="Delete my account" title="Delete my account">
+                    <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.trash} />
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
+        </section>
       </div>
     )}
   </div>
@@ -465,7 +453,7 @@ const TABS = [
   function clearProgress() {
     if (
       !confirm(
-        "Delete your progress? Your ticks, finished lessons and notes will be removed. Download a copy first if you might want them back."
+        "Delete your progress? Your ticks, finished lessons and notes will be removed, here and from your account if you're logged in. This can't be undone, so download a copy first if you might want them back."
       )
     )
       return;
@@ -514,9 +502,6 @@ const TABS = [
     clip-path: inset(50%);
     white-space: nowrap;
     border: 0;
-  }
-  .page h3 {
-    margin: 0;
   }
   /* what's shown: signing in or creating an account, a password or an email link, and whether a link was sent */
   [data-tab="signin"] [data-only-tab="signup"],
@@ -752,7 +737,11 @@ const TABS = [
   .r + .r {
     border-top: 1px solid var(--line);
   }
+  .r {
+    flex-wrap: wrap;
+  }
   .r p {
+    flex: 1 1 14rem;
     margin: 0;
     max-width: 46ch;
   }
@@ -760,8 +749,26 @@ const TABS = [
     display: block;
     margin-bottom: var(--s1);
   }
-  .r .btn {
+  .acts {
+    display: flex;
     flex: none;
+    gap: var(--s2);
+  }
+  .ib {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+  }
+  .ib svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
   }
   .r .msg {
     display: block;
@@ -774,12 +781,6 @@ const TABS = [
   @media (max-width: 420px) {
     .box {
       padding: var(--s4);
-    }
-  }
-  @media (max-width: 600px) {
-    .r {
-      flex-direction: column;
-      align-items: flex-start;
     }
   }
 </style>
