@@ -1,4 +1,4 @@
-import { esc, svgFig, T, hits, COUNT16, ROWC } from "../../shared/html.js";
+import { svgFig, T } from "../../shared/html.js";
 
 /* ---- Unit 3: Notes and harmony ---- */
 export const UNIT_FIGS_3 = {

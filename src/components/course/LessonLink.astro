@@ -10,7 +10,7 @@ interface Props {
 const { l, class: cls, current = false } = Astro.props;
 ---
 
-<a class={cls} href={l.path} data-lesson={l.id} data-path={l.path} aria-current={String(current)}>
+<a class={cls} href={l.path} data-lesson={l.id} data-path={l.path} aria-current={current ? "true" : "false"}>
   <span class="n">{l.short}</span>
   <slot />
   <span class="end">
@@ -28,13 +28,13 @@ const { l, class: cls, current = false } = Astro.props;
     const s = here();
     if (!s) return;
     const ids = stepIds();
-    document.querySelectorAll("[data-prog]").forEach((el) => {
+    document.querySelectorAll<HTMLElement>("[data-prog]").forEach((el) => {
       const id = el.dataset.prog;
       const p = lessonPct(s, id, ids[id] || []);
       el.className = "s " + (s.done[id] || p === 1 ? "full" : p > 0 ? "part" : "");
       el.style.setProperty("--p", Math.round(p * 100) + "%");
     });
-    document.querySelectorAll("a[data-lesson][data-path]").forEach((a) => {
+    document.querySelectorAll<HTMLAnchorElement>("a[data-lesson][data-path]").forEach((a) => {
       a.href = stepHref(a.dataset.path, resumeAt(s, a.dataset.lesson));
     });
   });

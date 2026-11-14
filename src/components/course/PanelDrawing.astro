@@ -15,7 +15,11 @@ const { I, hl = "", sel, page = 1 } = Astro.props;
 <script>
   /* the panel's controls are buttons for the keyboard too: Enter or Space clicks them */
   document.addEventListener("keydown", (e) => {
-    if ((e.key === "Enter" || e.key === " ") && e.target.classList && e.target.classList.contains("c")) {
+    if (
+      (e.key === "Enter" || e.key === " ") &&
+      (e.target as Element).classList &&
+      (e.target as Element).classList.contains("c")
+    ) {
       e.preventDefault();
       e.target.dispatchEvent(new MouseEvent("click", { bubbles: true }));
     }

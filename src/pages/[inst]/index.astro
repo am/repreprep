@@ -47,16 +47,21 @@ const songs = I.lessons.filter((l) => l.song).length;
   /* Continue opens the lesson you were on, at the step you were on */
   import { onProgress, here, stepHref, resumeAt } from "../../client/progress.js";
   onProgress(() => {
-    const c = document.querySelector("[data-continue]"),
+    const c = document.querySelector<HTMLAnchorElement>("[data-continue]"),
       s = here();
     if (!c || !s) return;
-    const cur = [...document.querySelectorAll(".umap a[data-lesson]")].find((a) => a.dataset.lesson === s.lesson);
+    const cur = [...document.querySelectorAll<HTMLElement>(".umap a[data-lesson]")].find(
+      (a) => a.dataset.lesson === s.lesson
+    );
     if (cur && Object.keys(s.steps).length) {
       c.href = stepHref(cur.dataset.path, resumeAt(s, s.lesson));
       c.textContent = c.dataset.labelContinue;
-      const w = document.querySelector("[data-continue-what]");
+      const w = document.querySelector<HTMLElement>("[data-continue-what]");
       if (w)
-        w.textContent = cur.querySelector(".n").textContent + " · " + cur.querySelector(".t").childNodes[0].textContent;
+        w.textContent =
+          cur.querySelector<HTMLElement>(".n").textContent +
+          " · " +
+          cur.querySelector<HTMLElement>(".t").childNodes[0].textContent;
     }
   });
 </script>

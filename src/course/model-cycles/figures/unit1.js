@@ -1,4 +1,4 @@
-import { esc, svgFig, T, hits, COUNT16, ROWC } from "../../shared/html.js";
+import { svgFig, T, COUNT16 } from "../../shared/html.js";
 
 /* ---------- Figures: our own drawings and playable examples for the Learn steps ----------
    A step with fig:"name" shows FIGS[name]() in place of the panel. Grids (fig:{grid:{...}}) can be played and edited. */

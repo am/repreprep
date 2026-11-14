@@ -1,4 +1,4 @@
-import { esc, svgFig, T, hits, COUNT16, ROWC } from "../../shared/html.js";
+import { svgFig, T } from "../../shared/html.js";
 
 /* ---- Unit 4: Space, arrangement and finishing ---- */
 export const UNIT_FIGS_4 = {

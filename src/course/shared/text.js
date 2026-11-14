@@ -75,7 +75,7 @@ export function splitSent(t) {
       d === 0 &&
       /[.!?]/.test(c) &&
       t[i + 1] === " " &&
-      /[A-Z\["]/.test(t[i + 2] || "") &&
+      /[A-Z["]/.test(t[i + 2] || "") &&
       !/\b(e\.g|i\.e)\.$/.test(cur)
     ) {
       out.push(cur.trim());
@@ -98,7 +98,7 @@ export function stepParts(st) {
   let lead = "",
     body = t;
   /* a sentence that merely has a colon keeps it */
-  const m = t.match(/^([^.:,\[(]{3,48}): (.+)$/);
+  const m = t.match(/^([^.:,[(]{3,48}): (.+)$/);
   if (m && st.k !== "check" && m[1].split(" ").length <= 6) {
     lead = m[1];
     body = m[2].charAt(0).toUpperCase() + m[2].slice(1);

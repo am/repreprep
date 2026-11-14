@@ -18,7 +18,7 @@ const c = I.controls[sel];
 
 <Base
   title={`${I.name} panel guide: ${c.name}`}
-  description={`${c.name} on the ${I.name}: ${c.desc.replace(/[\[\]]/g, "")}`}
+  description={`${c.name} on the ${I.name}: ${c.desc.replace(/[[\]]/g, "")}`}
   inst={I}
   tab="panel"
   canonicalPath={first ? `/${I.slug}/panel` : undefined}
