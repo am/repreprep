@@ -42,3 +42,6 @@ Delete this section if there is nothing to try. -->
 ## Checked
 
 <!-- What was run or looked at, e.g. `npm run build`, `npm run check`, screen sizes tested. -->
+
+- [ ] `npm test` passed
+- [ ] For a change visitors shouldn't notice: `npm run compare` reported no differences

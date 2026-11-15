@@ -23,6 +23,21 @@ Thanks for helping. Fixes to lessons, corrections against the real instruments a
 - Never change a step's id, even when you rewrite its text, and never edit the register by hand.
 - Steps can be added anywhere, removed or reordered: give a new step a new id. A removed step's ticks are simply ignored.
 
+## Code conventions
+
+These keep the code easy to read as the site grows. `npm test` checks what a machine can check; the rest is up to the person (or tool) making the change.
+
+- **Where code goes.** Pages in `src/pages` stay thin: they fetch data and place components. Markup in `src/components` (`course/` or `site/`). Course logic that runs at build time in `src/course`. Server-only code in `src/lib`, `src/actions` and `src/middleware.js`. Browser code in `src/client`.
+- **Scripts.** A component's `<script>` may hold a few lines of wiring. Anything longer (about 100 lines) goes in a module in `src/client` that the script imports.
+- **Size.** Split a component when it passes about 400 lines, along the parts a reader sees (a form, a header, a card), not into generic helpers.
+- **Styles.** Design tokens and the shared text roles (`.t-title`, `.t-body` and so on) live in `src/styles/app.css`. A component's own styles live in its `<style>` block. Move a rule only when you are already changing that file.
+- **Names.** Write names out in full: `lesson`, `step`, `instrument`, not `L`, `st`, `I`. Rename older short names when you are already changing that code, not in a separate sweep.
+- **No early abstractions.** Add a shared helper or component only when the same code exists in three places. Two copies are fine.
+- **Use what Astro gives.** Lessons and the changelog are content collections, settings are `astro:env`, server calls are Astro Actions, fonts use the fonts setting. Reach for these before writing your own.
+- **As little as needed.** Code and comments are both read by people, so write only what the change needs. Comment only where the code can't explain itself (usually why, not what), keep the comment short, and update it with the code.
+- **Tests before refactors.** A change that should look the same to visitors needs tests covering what it touches, and `npm run compare` must report no differences. Put that result in the pull request's Checked section.
+- **One change per pull request.** Fill in the template. Keep its title and description current after every push.
+
 ## What's new
 
 Every change people would notice goes in `src/content/changelog.yaml`, newest release at the top, and the same version goes in `package.json` (the tests check both). The site shows the list on `/whats-new`, the version in the footer, and a dot on the bell in the header (and on the menu knob on phones) for anyone who hasn't opened `/whats-new` since a new version came out.
