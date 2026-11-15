@@ -13,37 +13,39 @@ const PROVIDER_ICON = {
 onProgress(() => {
   const root = document.getElementById("account");
   if (!SIGN_IN || !root || !account.loaded) return;
-  const q = new URLSearchParams(location.search),
+  const query = new URLSearchParams(location.search),
     me = account.me,
     view = root.dataset.view;
   /* the old address for signing up, and the Sign up page once you're logged in */
-  if (view === "login" && q.get("mode") === "signup" && !me) return location.replace("/account/signup");
+  if (view === "login" && query.get("mode") === "signup" && !me) return location.replace("/account/signup");
   if (view === "signup" && me) return location.replace("/account");
-  const err = root.querySelector("[data-acct-error]");
-  if (err) err.hidden = q.get("error") !== "signin";
-  root.querySelectorAll("[data-signed-in]").forEach((el) => (el.hidden = !me));
-  root.querySelectorAll("[data-signed-out]").forEach((el) => (el.hidden = !!me));
-  root.querySelectorAll("[data-show]").forEach((el) => (el.hidden = (el.dataset.show === "in") !== !!me));
-  const sec = root.querySelector("[data-signed-out]");
+  const errorBox = root.querySelector("[data-acct-error]");
+  if (errorBox) errorBox.hidden = query.get("error") !== "signin";
+  root.querySelectorAll("[data-signed-in]").forEach((element) => (element.hidden = !me));
+  root.querySelectorAll("[data-signed-out]").forEach((element) => (element.hidden = !!me));
+  root
+    .querySelectorAll("[data-show]")
+    .forEach((element) => (element.hidden = (element.dataset.show === "in") !== !!me));
+  const section = root.querySelector("[data-signed-out]");
   if (me) document.title = document.title.replace(/^(Log in|Your data)/, "Your account");
   if (me) {
     const who = root.querySelector("[data-who]");
     if (who) who.textContent = [me.name, me.email && `(${me.email})`].filter(Boolean).join(" ");
-  } else if (sec) {
-    const next = q.get("next") || "/account";
-    const ids = account.providers.map((p) => p.id);
-    const link = (p) =>
-      p.id === "dev"
+  } else if (section) {
+    const next = query.get("next") || "/account";
+    const ids = account.providers.map((provider) => provider.id);
+    const link = (provider) =>
+      provider.id === "dev"
         ? `<a class="btn" href="/auth/dev?next=${encodeURIComponent(next)}" data-astro-reload>${PROVIDER_ICON.dev}Continue with a local test account</a>`
-        : `<a class="btn" href="/auth/${p.id}?next=${encodeURIComponent(next)}" data-astro-reload>${PROVIDER_ICON[p.id] || ""}Continue with ${esc(p.name)}</a>`;
+        : `<a class="btn" href="/auth/${provider.id}?next=${encodeURIComponent(next)}" data-astro-reload>${PROVIDER_ICON[provider.id] || ""}Continue with ${esc(provider.name)}</a>`;
     /* the other ways in, one button each: a new provider is one more entry in providers() */
-    const items = account.providers.filter((p) => !["email", "password"].includes(p.id)).map(link);
-    const box = sec.querySelector("[data-providers]"),
+    const items = account.providers.filter((provider) => !["email", "password"].includes(provider.id)).map(link);
+    const box = section.querySelector("[data-providers]"),
       html = items.join("");
     if (box.dataset.html !== html) box.innerHTML = box.dataset.html = html;
-    const form = sec.querySelector("[data-email-signin]");
+    const form = section.querySelector("[data-email-signin]");
     form.hidden = !ids.includes("email");
-    sec.querySelector("[data-email-way]").hidden = form.hidden;
+    section.querySelector("[data-email-way]").hidden = form.hidden;
     if (!form.hidden) drawTurnstile(form.querySelector("[data-turnstile]"));
     if (view === "signup")
       strengthMeter({
@@ -57,23 +59,23 @@ onProgress(() => {
 
 /* a password or an email link */
 const signedOut = () => document.querySelector("[data-signed-out]");
-function clearMsg(sec) {
-  const m = sec.querySelector("[data-email-msg]");
-  m.textContent = "";
-  m.className = "msg";
-  delete sec.dataset.sent;
+function clearMessage(section) {
+  const message = section.querySelector("[data-email-msg]");
+  message.textContent = "";
+  message.className = "msg";
+  delete section.dataset.sent;
 }
 function setMethod(method) {
-  const sec = signedOut(),
-    form = sec.querySelector("[data-email-signin]");
-  sec.dataset.method = method;
-  clearMsg(sec);
+  const section = signedOut(),
+    form = section.querySelector("[data-email-signin]");
+  section.dataset.method = method;
+  clearMessage(section);
   (method === "password" && form.email.value ? form.password : form.email).focus();
 }
-document.addEventListener("click", (e) => {
-  const m = e.target.closest("[data-method-to]"),
-    eye = e.target.closest("[data-eye]");
-  if (m) setMethod(m.dataset.methodTo);
+document.addEventListener("click", (event) => {
+  const methodLink = event.target.closest("[data-method-to]"),
+    eye = event.target.closest("[data-eye]");
+  if (methodLink) setMethod(methodLink.dataset.methodTo);
   else if (eye) {
     const input = eye.previousElementSibling,
       show = input.type === "password";
@@ -98,8 +100,8 @@ const ERRORS = {
   INVALID_EMAIL_OR_PASSWORD: "That email and password don't match. Try again, or use “Forgot your password?”.",
   INVALID_EMAIL: "That doesn't look like an email address.",
 };
-async function sendEmailForm(form, act) {
-  const msg = form.querySelector("[data-email-msg]");
+async function sendEmailForm(form, action) {
+  const message = form.querySelector("[data-email-msg]");
   const email = form.email.value.trim();
   const password = form.password.value;
   /* only a path on this site, never another address */
@@ -110,25 +112,25 @@ async function sendEmailForm(form, act) {
     signin: { email, password, callbackURL: next },
     signup: { email, password, name: email.split("@")[0], callbackURL: next },
     forgot: { email, redirectTo: "/account/reset" },
-  }[act];
-  form.querySelectorAll("button").forEach((b) => (b.disabled = true));
-  msg.className = "msg";
-  msg.textContent = "One moment…";
+  }[action];
+  form.querySelectorAll("button").forEach((button) => (button.disabled = true));
+  message.className = "msg";
+  message.textContent = "One moment…";
   const token = await turnstileToken(form.querySelector("[data-turnstile]"));
-  const r = await fetch(API[act], {
+  const response = await fetch(API[action], {
     method: "POST",
     headers: { "Content-Type": "application/json", "x-captcha-response": token },
     body: JSON.stringify(body),
   }).catch(() => null);
-  const j = await r?.json().catch(() => ({}));
-  form.querySelectorAll("button").forEach((b) => (b.disabled = false));
+  const result = await response?.json().catch(() => ({}));
+  form.querySelectorAll("button").forEach((button) => (button.disabled = false));
   resetTurnstile(form.querySelector("[data-turnstile]"));
   const say = (text, bad) => {
-    msg.className = bad ? "msg bad" : "msg";
-    msg.textContent = text;
+    message.className = bad ? "msg bad" : "msg";
+    message.textContent = text;
   };
-  if (r?.ok) {
-    if (act === "signin") return (location.href = next);
+  if (response?.ok) {
+    if (action === "signin") return (location.href = next);
     form.password.value = "";
     signedOut().dataset.sent = "";
     return say(
@@ -136,30 +138,30 @@ async function sendEmailForm(form, act) {
         link: `Check your inbox: a login link is on its way to ${email}. It works once, for 10 minutes.`,
         signup: `Almost there: confirm your address with the link we sent to ${email}, and you're logged in.`,
         forgot: `If there's an account for ${email}, a link to choose a new password is on its way. It works for an hour.`,
-      }[act]
+      }[action]
     );
   }
-  if (r?.status === 429) return say("Too many tries. Please wait a minute and try again.", true);
-  if (j?.code === "EMAIL_NOT_VERIFIED")
+  if (response?.status === 429) return say("Too many tries. Please wait a minute and try again.", true);
+  if (result?.code === "EMAIL_NOT_VERIFIED")
     return say(`Please confirm your address first: we've sent a new link to ${email}.`, true);
-  if (ERRORS[j?.code]) return say(ERRORS[j.code], true);
-  if (r?.status === 400 || r?.status === 403)
+  if (ERRORS[result?.code]) return say(ERRORS[result.code], true);
+  if (response?.status === 400 || response?.status === 403)
     return say("That didn't go through. Check the address and the box above, then try again.", true);
   say("Something went wrong. Please try again.", true);
 }
-document.addEventListener("submit", (e) => {
-  const f = e.target.closest("[data-email-signin]");
-  if (!f) return;
-  e.preventDefault();
-  const sec = signedOut();
+document.addEventListener("submit", (event) => {
+  const form = event.target.closest("[data-email-signin]");
+  if (!form) return;
+  event.preventDefault();
+  const section = signedOut();
   /* Enter in a field picks the button shown for this view */
-  const shown = e.submitter?.offsetParent ? e.submitter : null;
-  const act = shown?.dataset.act || (sec.dataset.method === "password" ? sec.dataset.tab : "link");
-  if ((act === "signin" && !f.password.value) || (act === "signup" && f.password.value.length < 12)) {
-    f.password.focus();
-    return f.password.reportValidity?.() || undefined;
+  const shown = event.submitter?.offsetParent ? event.submitter : null;
+  const action = shown?.dataset.act || (section.dataset.method === "password" ? section.dataset.tab : "link");
+  if ((action === "signin" && !form.password.value) || (action === "signup" && form.password.value.length < 12)) {
+    form.password.focus();
+    return form.password.reportValidity?.() || undefined;
   }
-  sendEmailForm(f, act);
+  sendEmailForm(form, action);
 });
 
 async function signOut() {
@@ -169,13 +171,13 @@ async function signOut() {
   /* a shared computer shouldn't keep your progress after you sign out */
   try {
     localStorage.removeItem(LS_KEY);
-  } catch (e) {}
+  } catch {}
   location.href = "/account";
 }
 async function deleteAccount() {
   if (!confirm("Delete your account and the progress saved with it? This can't be undone.")) return;
   const { actions } = await import("astro:actions");
-  const { error } = await actions.account.delete().catch((e) => ({ error: e }));
+  const { error } = await actions.account.delete().catch((caught) => ({ error: caught }));
   if (!error) {
     account.me = null;
     location.href = "/account";
@@ -183,12 +185,12 @@ async function deleteAccount() {
 }
 function exportProgress() {
   const blob = new Blob([JSON.stringify(state, null, 2)], { type: "application/json" });
-  const a = Object.assign(document.createElement("a"), {
+  const link = Object.assign(document.createElement("a"), {
     href: URL.createObjectURL(blob),
     download: "repreprep-progress.json",
   });
-  a.click();
-  setTimeout(() => URL.revokeObjectURL(a.href), 1000);
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(link.href), 1000);
 }
 /* clears ticks, finished lessons and notes; layout choices stay */
 function clearProgress() {
@@ -200,32 +202,35 @@ function clearProgress() {
     return;
   state.inst = {};
   update();
-  const msg = document.querySelector("[data-clear-msg]");
-  if (msg) msg.textContent = "Progress deleted.";
+  const message = document.querySelector("[data-clear-msg]");
+  if (message) message.textContent = "Progress deleted.";
 }
 async function importProgress(file) {
-  const msg = document.querySelector("[data-import-msg]");
+  const message = document.querySelector("[data-import-msg]");
   try {
-    const s = JSON.parse(await file.text());
-    if (!s || typeof s.inst !== "object") throw new Error("not a progress file");
-    combine(s);
+    const loaded = JSON.parse(await file.text());
+    if (!loaded || typeof loaded.inst !== "object") throw new Error("not a progress file");
+    combine(loaded);
     update();
-    const n = Object.values(state.inst).reduce((a, v) => a + Object.keys(v.steps || {}).length, 0);
-    if (msg) msg.textContent = `Loaded and combined. ${n} ticked steps.`;
-  } catch (e) {
-    if (msg) msg.textContent = "That file isn't a Rep Rep Rep progress file.";
+    const ticked = Object.values(state.inst).reduce(
+      (total, progress) => total + Object.keys(progress.steps || {}).length,
+      0
+    );
+    if (message) message.textContent = `Loaded and combined. ${ticked} ticked steps.`;
+  } catch {
+    if (message) message.textContent = "That file isn't a Rep Rep Rep progress file.";
   }
 }
-document.addEventListener("click", (e) => {
-  if (e.target.closest("[data-signout]")) signOut();
-  else if (e.target.closest("[data-delete]")) deleteAccount();
-  else if (e.target.closest("[data-export]")) exportProgress();
-  else if (e.target.closest("[data-clear]")) clearProgress();
+document.addEventListener("click", (event) => {
+  if (event.target.closest("[data-signout]")) signOut();
+  else if (event.target.closest("[data-delete]")) deleteAccount();
+  else if (event.target.closest("[data-export]")) exportProgress();
+  else if (event.target.closest("[data-clear]")) clearProgress();
 });
-document.addEventListener("change", (e) => {
-  const f = e.target.closest("[data-import]");
-  if (f && f.files[0]) {
-    importProgress(f.files[0]);
-    f.value = "";
+document.addEventListener("change", (event) => {
+  const input = event.target.closest("[data-import]");
+  if (input && input.files[0]) {
+    importProgress(input.files[0]);
+    input.value = "";
   }
 });
