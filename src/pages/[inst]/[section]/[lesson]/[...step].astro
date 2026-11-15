@@ -36,8 +36,8 @@ const title =
 <Base title={title} description={lesson.goal} inst={instrument} tab="lessons" noindex={at > 0 || done}>
   <Player instrument={instrument} lesson={lesson} at={at} done={done} />
   <div class="below">
-    {!at && <LessonAbout I={instrument} L={lesson} />}
-    {!done && <LessonWrapup I={instrument} L={lesson} />}
+    {!at && <LessonAbout instrument={instrument} lesson={lesson} />}
+    {!done && <LessonWrapup instrument={instrument} lesson={lesson} />}
   </div>
 </Base>
 

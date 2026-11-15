@@ -3,23 +3,22 @@ import { onProgress, persist, refresh, ist } from "./progress.js";
 import { navigate } from "astro:transitions/client";
 import { curLesson } from "./lesson.js";
 
-function showNote(s, id, saved) {
+function showNote(saved, id, justSaved) {
   const box = document.querySelector(`[data-notebox="${id}"]`);
   if (!box) return;
-  const t = s.notes[id] || "",
-    txt = box.querySelector(".nb-text");
-  txt.textContent = t;
-  txt.hidden = !t;
-  box.querySelector(".nb-empty").hidden = !!t;
-  const ed = box.querySelector("[data-note-edit]");
-  ed.textContent = t ? "Edit" : "Add a note";
+  const note = saved.notes[id] || "",
+    text = box.querySelector(".nb-text");
+  text.textContent = note;
+  text.hidden = !note;
+  box.querySelector(".nb-empty").hidden = !!note;
+  const edit = box.querySelector("[data-note-edit]");
+  edit.textContent = note ? "Edit" : "Add a note";
   if (!box.classList.contains("editing")) {
     box.querySelector(".nb-view").hidden = false;
     box.querySelector(".nb-edit").hidden = true;
-    ed.hidden = false;
+    edit.hidden = false;
   }
-  const st = box.querySelector(".nb-stamp");
-  if (saved !== undefined) st.hidden = !saved;
+  if (justSaved !== undefined) box.querySelector(".nb-stamp").hidden = !justSaved;
 }
 function noteMode(box, edit) {
   box.classList.toggle("editing", edit);
@@ -30,106 +29,108 @@ function noteMode(box, edit) {
 }
 
 onProgress(() => {
-  const c = curLesson();
-  if (!c) return;
-  const s = ist(c.k),
-    done = s.done[c.id];
-  const fb = document.querySelector("[data-finish]"),
+  const lesson = curLesson();
+  if (!lesson) return;
+  const saved = ist(lesson.k),
+    done = saved.done[lesson.id];
+  const finish = document.querySelector("[data-finish]"),
     stamp = document.querySelector(".finish .stamp");
-  if (fb) {
-    fb.textContent = done ? "Completed" : fb.dataset.label;
-    fb.classList.toggle("primary", !done);
+  if (finish) {
+    finish.textContent = done ? "Completed" : finish.dataset.label;
+    finish.classList.toggle("primary", !done);
   }
   if (stamp) {
     stamp.hidden = !done;
     if (done) stamp.textContent = "Done on " + new Date(done).toLocaleDateString();
   }
-  const cb = document.querySelector("[data-clear]");
-  if (cb) cb.hidden = !started(s, c);
-  showNote(s, c.id);
+  const clear = document.querySelector("[data-clear]");
+  if (clear) clear.hidden = !started(saved, lesson);
+  showNote(saved, lesson.id);
 });
 
 /* any ticked step, a finished lesson or a place in it past the intro */
-const started = (s, c) =>
-  !!s.done[c.id] || +s.active[c.id] > 0 || Object.keys(s.steps).some((k) => k.startsWith(c.id + ":"));
+const started = (saved, lesson) =>
+  !!saved.done[lesson.id] ||
+  +saved.active[lesson.id] > 0 ||
+  Object.keys(saved.steps).some((key) => key.startsWith(lesson.id + ":"));
 
 /* Clear progress: unticks the lesson's steps, un-finishes it and starts it again from the intro. Notes stay. */
-document.addEventListener("click", (e) => {
-  const b = e.target.closest("[data-clear]"),
-    c = b && curLesson();
-  if (!c) return;
+document.addEventListener("click", (event) => {
+  const clear = event.target.closest("[data-clear]"),
+    lesson = clear && curLesson();
+  if (!lesson) return;
   if (
     !confirm(
       "Clear your progress on this lesson? Your ticked steps go and it starts again from the intro. Your notes stay."
     )
   )
     return;
-  const s = ist(c.k);
-  Object.keys(s.steps).forEach((k) => {
-    if (k.startsWith(c.id + ":")) delete s.steps[k];
+  const saved = ist(lesson.k);
+  Object.keys(saved.steps).forEach((key) => {
+    if (key.startsWith(lesson.id + ":")) delete saved.steps[key];
   });
-  delete s.done[c.id];
-  delete s.active[c.id];
+  delete saved.done[lesson.id];
+  delete saved.active[lesson.id];
   persist();
-  if (c.act) navigate(b.dataset.path);
+  if (lesson.act) navigate(clear.dataset.path);
   else refresh();
 });
 
 document.addEventListener(
   "click",
-  (e) => {
-    const fin = e.target.closest("[data-finish]"),
-      c = fin && curLesson();
-    if (!c) return;
-    const s = ist(c.k);
-    if (s.done[c.id]) {
-      delete s.done[c.id];
+  (event) => {
+    const finish = event.target.closest("[data-finish]"),
+      lesson = finish && curLesson();
+    if (!lesson) return;
+    const saved = ist(lesson.k);
+    if (saved.done[lesson.id]) {
+      delete saved.done[lesson.id];
       persist();
       refresh();
       return;
     }
-    s.done[c.id] = Date.now();
-    c.ids.forEach((x) => (s.steps[c.id + ":" + x] = true));
+    saved.done[lesson.id] = Date.now();
+    lesson.ids.forEach((stepId) => (saved.steps[lesson.id + ":" + stepId] = true));
     persist();
-    navigate(c.donePath);
+    navigate(lesson.donePath);
   },
   true
 );
 
-document.addEventListener("click", (e) => {
-  const b = e.target.closest("[data-note-edit],[data-note-save],[data-note-cancel]");
-  if (!b) return;
-  const box = b.closest("[data-notebox]"),
+document.addEventListener("click", (event) => {
+  const button = event.target.closest("[data-note-edit],[data-note-save],[data-note-cancel]");
+  if (!button) return;
+  const box = button.closest("[data-notebox]"),
     id = box.dataset.notebox,
-    c = curLesson();
-  if (!c) return;
-  const s = ist(c.k),
-    ta = box.querySelector("textarea");
-  if (b.hasAttribute("data-note-edit")) {
-    ta.value = s.notes[id] || "";
+    lesson = curLesson();
+  if (!lesson) return;
+  const saved = ist(lesson.k),
+    textarea = box.querySelector("textarea");
+  if (button.hasAttribute("data-note-edit")) {
+    textarea.value = saved.notes[id] || "";
     noteMode(box, true);
-    ta.focus();
+    textarea.focus();
     return;
   }
-  if (b.hasAttribute("data-note-save")) {
-    const v = ta.value.trim();
-    if (v) s.notes[id] = v;
-    else delete s.notes[id];
+  if (button.hasAttribute("data-note-save")) {
+    const note = textarea.value.trim();
+    if (note) saved.notes[id] = note;
+    else delete saved.notes[id];
     persist();
   }
   noteMode(box, false);
-  showNote(s, id, b.hasAttribute("data-note-save"));
+  showNote(saved, id, button.hasAttribute("data-note-save"));
   box.querySelector("[data-note-edit]").focus();
 });
-document.addEventListener("keydown", (e) => {
-  const ta = e.target.closest && e.target.closest("[data-notebox] textarea");
-  if (!ta) return;
-  const box = ta.closest("[data-notebox]");
-  if (e.key === "Escape") {
-    e.preventDefault();
+document.addEventListener("keydown", (event) => {
+  const textarea = event.target.closest && event.target.closest("[data-notebox] textarea");
+  if (!textarea) return;
+  const box = textarea.closest("[data-notebox]");
+  if (event.key === "Escape") {
+    event.preventDefault();
     box.querySelector("[data-note-cancel]").click();
-  } else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
-    e.preventDefault();
+  } else if (event.key === "Enter" && (event.metaKey || event.ctrlKey)) {
+    event.preventDefault();
     box.querySelector("[data-note-save]").click();
   }
 });

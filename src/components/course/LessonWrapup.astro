@@ -3,16 +3,16 @@
 // challenge live in the player, so they aren't repeated here.
 import { lessonLabel } from "../../course/index.js";
 interface Props {
-  I: any;
-  L: any;
+  instrument: any;
+  lesson: any;
 }
-const { I, L } = Astro.props;
+const { instrument, lesson } = Astro.props;
 ---
 
 <section class="wrapup stack" aria-label="After the lesson">
-  <section class="notebox" data-notebox={L.id} aria-labelledby={`nb-${L.id}`}>
+  <section class="notebox" data-notebox={lesson.id} aria-labelledby={`nb-${lesson.id}`}>
     <div class="nb-h">
-      <h2 class="t-title t-card" id={`nb-${L.id}`}>
+      <h2 class="t-title t-card" id={`nb-${lesson.id}`}>
         Notes
       </h2>
       <button type="button" class="btn" data-note-edit>
@@ -25,7 +25,7 @@ const { I, L } = Astro.props;
     </div>
     <div class="nb-edit" hidden>
       <textarea
-        aria-label={`Notes for ${lessonLabel(L).toLowerCase()}`}
+        aria-label={`Notes for ${lessonLabel(lesson).toLowerCase()}`}
         placeholder="Presets you liked, what was hard, ideas for next time"
       ></textarea>
       <div class="row">
@@ -44,20 +44,20 @@ const { I, L } = Astro.props;
   <div class="finish">
     <button
       class="btn primary"
-      data-finish={L.id}
+      data-finish={lesson.id}
       data-label="Complete"
-      title={`Mark this ${L.song ? "study" : "lesson"} done`}
+      title={`Mark this ${lesson.song ? "study" : "lesson"} done`}
     >
       Complete
     </button>
-    <a class="btn" href={`/${I.slug}`}>
+    <a class="btn" href={`/${instrument.slug}`}>
       All lessons
     </a>
     <button
       class="btn danger"
-      data-clear={L.id}
-      data-path={L.path}
-      title={`Untick every step of this ${L.song ? "study" : "lesson"} and start it again from the intro`}
+      data-clear={lesson.id}
+      data-path={lesson.path}
+      title={`Untick every step of this ${lesson.song ? "study" : "lesson"} and start it again from the intro`}
       hidden
     >
       Clear progress
