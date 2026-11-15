@@ -44,4 +44,5 @@ Delete this section if there is nothing to try. -->
 <!-- What was run or looked at, e.g. `npm run build`, `npm run check`, screen sizes tested. -->
 
 - [ ] `npm test` passed
+- [ ] Diff read against the Code conventions in CONTRIBUTING.md
 - [ ] For a change visitors shouldn't notice: `npm run compare` reported no differences

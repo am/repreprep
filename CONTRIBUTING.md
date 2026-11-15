@@ -8,6 +8,7 @@ Thanks for helping. Fixes to lessons, corrections against the real instruments a
 - Run the site locally with `npm install` and `npm run dev` (see the README).
 - After changing lessons, run `npm run check`. It renders every step and stops at the first broken one.
 - Before opening a pull request, run `npm run format`, then `npm test` (see Tests in the README).
+- Before you push, read your whole diff against the Code conventions below. The checks catch only part of them.
 
 ## How lessons are written
 
@@ -31,7 +32,7 @@ These keep the code easy to read as the site grows. `npm test` checks what a mac
 - **Scripts.** A component's `<script>` may hold a few lines of wiring. Anything longer (about 100 lines) goes in a module in `src/client` that the script imports.
 - **Size.** Split a component when it passes about 400 lines, along the parts a reader sees (a form, a header, a card), not into generic helpers. `npm run check` fails on a component over 400 lines or a script in one over 100 (`scripts/check-size.mjs`).
 - **Styles.** Design tokens and the shared text roles (`.t-title`, `.t-body` and so on) live in `src/styles/app.css`. A component's own styles live in its `<style>` block. Move a rule only when you are already changing that file.
-- **Names.** Write names out in full: `lesson`, `step`, `instrument`, not `L`, `st`, `I`. Rename older short names when you are already changing that code, not in a separate sweep.
+- **Names.** Write names out in full: `lesson`, `step`, `instrument`, not `L`, `st`, `I`. Rename older short names when you are already changing that code, not in a separate sweep. `npm run lint` fails on a name shorter than three letters on any line you added or changed (`scripts/check-names.mjs`), except a few usual ones such as `i`, `x`, `id` and `ok`.
 - **No early abstractions.** Add a shared helper or component only when the same code exists in three places. Two copies are fine.
 - **Use what Astro gives.** Lessons and the changelog are content collections, settings are `astro:env`, server calls are Astro Actions, fonts use the fonts setting. Reach for these before writing your own.
 - **As little as needed.** Code and comments are both read by people, so write only what the change needs. Comment only where the code can't explain itself (usually why, not what), keep the comment short, and update it with the code.
