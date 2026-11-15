@@ -228,6 +228,15 @@ test("lesson picker opens, jumps to a lesson and closes on Escape", async ({ pag
   await expect(page).toHaveURL(L2.path);
 });
 
+test("the lesson picker closes when you click elsewhere", async ({ page }) => {
+  await page.goto(L1.path);
+  const picker = page.locator("details.picker");
+  await picker.locator("summary").click();
+  await expect(picker).toHaveAttribute("open", "");
+  await page.locator(".pstep").click({ position: { x: 5, y: 5 } });
+  await expect(picker).not.toHaveAttribute("open", "");
+});
+
 test("lesson links reopen the step you were on", async ({ page }) => {
   await page.goto(`${L2.path}/5`);
   await page.goto(L1.path);
@@ -259,6 +268,31 @@ test("the step panel can be resized with the keyboard and reset with a double-cl
   await page.locator("#gutter").dblclick();
   await expect.poll(async () => (await page.locator(".pstep").boundingBox()).width).toBeCloseTo(w0, 0);
   expect((await progress(page)).stepW).toBeUndefined();
+});
+
+test("dragging the gutter resizes the step panel and remembers the width", async ({ page }) => {
+  await page.goto(`${L1.path}/4`);
+  const w0 = (await page.locator(".pstep").boundingBox()).width;
+  const g = await page.locator("#gutter").boundingBox();
+  await page.mouse.move(g.x + g.width / 2, g.y + g.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(g.x + g.width / 2 - 100, g.y + g.height / 2, { steps: 5 });
+  await page.mouse.up();
+  await expect.poll(async () => (await page.locator(".pstep").boundingBox()).width).toBeGreaterThan(w0 + 80);
+  const saved = (await progress(page)).stepW;
+  expect(saved).toBeGreaterThan(w0 + 80);
+  await page.reload();
+  await expect.poll(async () => Math.round((await page.locator(".pstep").boundingBox()).width)).toBe(saved);
+});
+
+test("a long press on Next lesson opens no link menu", async ({ page }) => {
+  await page.goto(`${L1.path}/done`);
+  const prevented = await page.locator("[data-end]").evaluate((a) => {
+    const e = new MouseEvent("contextmenu", { bubbles: true, cancelable: true });
+    a.dispatchEvent(e);
+    return e.defaultPrevented;
+  });
+  expect(prevented).toBe(true);
 });
 
 test("Play steps light their controls; clicking a control explains it", async ({ page }) => {

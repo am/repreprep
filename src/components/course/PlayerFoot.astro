@@ -1,0 +1,159 @@
+---
+// The bottom of the step card: key legend, then Back and Next (All lessons and Next lesson on the done screen).
+import { keyCap } from "../../course/shared/text.js";
+import { stepPath } from "../../course/index.js";
+interface Props {
+  instrument: any;
+  lesson: any;
+  at: number;
+  done: boolean;
+  kind: string;
+  next?: any;
+}
+const { instrument, lesson, at, done, kind, next } = Astro.props;
+const total = lesson.steps.length + (lesson.challenge ? 1 : 0);
+const last = !done && at === total - 1;
+const nextHref = last ? stepPath(lesson, "done") : stepPath(lesson, at + 1);
+const legend = keyCap("PRESS", "press") + keyCap("HOLD", "hold") + keyCap("TURN", "turn");
+---
+
+<div class="pfoot">
+  <div class="legend" hidden={kind !== "play"}>
+    <Fragment set:html={legend} />
+    <button
+      type="button"
+      class="hint"
+      aria-label="Tips: click a control to learn it. Left and right arrow keys move between steps."
+    >
+      i
+      <span class="tip" aria-hidden="true">
+        Click a control to learn it. The ← → keys move between steps.
+      </span>
+    </button>
+  </div>
+  <div class="navrow">
+    {done ? (
+      <Fragment>
+        {next && (
+          <a class="btn" href={`/${instrument.slug}`}>
+            All lessons
+          </a>
+        )}
+        <a class="btn primary" href={next ? next.path : `/${instrument.slug}`} data-nav="1" data-end draggable="false">
+          {next ? "Next lesson" : "All lessons"}
+        </a>
+      </Fragment>
+    ) : at === 0 ? (
+      <button class="btn" disabled aria-label="Previous step">
+        Back
+      </button>
+    ) : (
+      <a class="btn" href={stepPath(lesson, at - 1)} data-nav="-1" aria-label="Previous step">
+        Back
+      </a>
+    )}
+    {!done && (
+      <a class="btn primary" href={nextHref} data-nav="1">
+        {at === 0 ? "Start" : "Next"}
+      </a>
+    )}
+  </div>
+</div>
+
+<style>
+  /* legend and Back/Next stay in view at the bottom of the card when a long step scrolls */
+  /* the top of the bar fades in, so text scrolling underneath stays visible and hints there is more */
+  .pfoot {
+    position: sticky;
+    bottom: calc(-1 * var(--s5));
+    margin: calc(-1 * var(--s6)) calc(-1 * var(--s5)) calc(-1 * var(--s5));
+    padding: var(--s9) var(--s5) var(--s5);
+    display: flex;
+    flex-direction: column;
+    gap: var(--s4);
+    background: linear-gradient(to bottom, transparent, var(--bg) calc(var(--s9) - var(--s3)));
+    pointer-events: none;
+  }
+  .pfoot > * {
+    pointer-events: auto;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--s2) var(--s3);
+    font-size: var(--fs-step);
+  }
+  /* the "i" hint: a small round button whose tip shows on hover or keyboard focus */
+  .hint {
+    position: relative;
+    margin-left: auto;
+    display: grid;
+    place-items: center;
+    width: 1.375rem;
+    height: 1.375rem;
+    padding: 0;
+    border: 1px solid var(--line);
+    border-radius: 50%;
+    background: none;
+    color: var(--muted);
+    font: italic var(--fw-bold) 0.8125rem/1 var(--body);
+    cursor: help;
+  }
+  .hint:hover,
+  .hint:focus-visible {
+    color: var(--fg);
+    border-color: var(--faint);
+  }
+  .hint .tip {
+    position: absolute;
+    z-index: 20;
+    right: 0;
+    bottom: calc(100% + var(--s2));
+    width: max-content;
+    max-width: 16.25rem;
+    padding: var(--s2) var(--s3);
+    border: 1px solid var(--line);
+    border-radius: var(--r-m);
+    background: var(--surface);
+    box-shadow: 0 0.5rem 1.5rem var(--shadow);
+    font: var(--fw-regular) var(--fs-sm)/var(--lh-snug) var(--body);
+    font-style: normal;
+    color: var(--fg);
+    text-align: left;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(0.25rem);
+    transition:
+      opacity 0.15s,
+      transform 0.15s,
+      visibility 0.15s;
+  }
+  .hint:hover .tip,
+  .hint:focus-visible .tip {
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+  .navrow {
+    display: flex;
+    gap: var(--s2);
+  }
+  .navrow .btn {
+    flex: 1;
+    padding: var(--s3) var(--s3);
+    font-size: var(--fs-sm);
+  }
+  .navrow .btn:first-child {
+    flex: 0 0 auto;
+    padding-inline: var(--s4);
+  }
+  @media (max-width: 990px) {
+    .pfoot {
+      position: static;
+      margin: 0;
+      padding: 0;
+      background: none;
+    }
+  }
+</style>
