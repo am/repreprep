@@ -16,9 +16,9 @@ interface Props {
 const { dance, bpm = 90 } = Astro.props;
 const layers = [
   // starting look, from the original sketch (used until the script runs, and without JS)
-  { w: 800, c: "ink", x: 0.045, y: 0.03 },
-  { w: 400, c: "blue", x: 0.09, y: 0.09 },
-  { w: 200, c: "yellow", x: 0, y: 0 },
+  { weight: 800, color: "ink", x: 0.045, y: 0.03 },
+  { weight: 400, color: "blue", x: 0.09, y: 0.09 },
+  { weight: 200, color: "yellow", x: 0, y: 0 },
 ];
 ---
 
@@ -26,8 +26,11 @@ const layers = [
   /* a dancing logo is also a tap-tempo key: hovering shows the key, tapping sets the beat */
   <span class="logo-wrap">
     <a href="/" class="logo" aria-label="Rep Rep Rep. Tap to set the tempo" data-dance data-bpm={bpm}>
-      {layers.map((l) => (
-        <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>
+      {layers.map((layer) => (
+        <span
+          aria-hidden="true"
+          style={`--w:${layer.weight};--c:var(--logo-${layer.color});--x:${layer.x}em;--y:${layer.y}em`}
+        >
           REP
         </span>
       ))}
@@ -46,8 +49,11 @@ const layers = [
   </span>
 ) : (
   <a href="/" class="logo" aria-label="Rep Rep Rep, home">
-    {layers.map((l) => (
-      <span aria-hidden="true" style={`--w:${l.w};--c:var(--logo-${l.c});--x:${l.x}em;--y:${l.y}em`}>
+    {layers.map((layer) => (
+      <span
+        aria-hidden="true"
+        style={`--w:${layer.weight};--c:var(--logo-${layer.color});--x:${layer.x}em;--y:${layer.y}em`}
+      >
         REP
       </span>
     ))}
