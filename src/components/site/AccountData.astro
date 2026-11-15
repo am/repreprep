@@ -1,0 +1,169 @@
+---
+// Your progress, and once you're logged in your account: one row each, with icon buttons.
+import { SIGN_IN } from "astro:env/client";
+interface Props {
+  title: string;
+  /* the page also has the log in form: this part waits until you are logged in */
+  form: boolean;
+}
+const { title, form } = Astro.props;
+const ICON = {
+  down: '<path d="M12 4v11M7 10l5 5 5-5M5 20h14"/>',
+  up: '<path d="M12 15V4M7 9l5-5 5 5M5 20h14"/>',
+  trash: '<path d="M4 7h16M10 7V4h4v3M6 7l1 13h10l1-13M10 11v6M14 11v6"/>',
+  logout: '<path d="M10 4H5v16h5M14 8l4 4-4 4M18 12H9"/>',
+};
+---
+
+<div data-signed-in={form ? "" : undefined} hidden={form}>
+  {SIGN_IN ? (
+    <Fragment>
+      <h2 class="t-title" data-show="in" hidden>
+        Your account
+      </h2>
+      <h2 class="vh" data-show="out" hidden>
+        Your data
+      </h2>
+      <p class="t-body lede" data-show="out" hidden>
+        Your ticks, finished lessons and notes are saved in this browser. Log in to keep them on every device.{" "}
+        <a href="/privacy">What the site keeps</a>
+      </p>
+    </Fragment>
+  ) : (
+    <Fragment>
+      <h2>{title}</h2>
+      <p class="t-body lede">
+        Your ticks, finished lessons and notes are saved in this browser. <a href="/privacy">What the site keeps</a>
+      </p>
+    </Fragment>
+  )}
+  <section class="sec">
+    <div class="rows">
+      {SIGN_IN && (
+        <div class="r" data-signed-in hidden>
+          <p class="t-body">
+            <b>Logged in as</b>
+            <span data-who></span>
+          </p>
+          <div class="acts">
+            <button class="btn ib" data-signout aria-label="Log out" title="Log out">
+              <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.logout} />
+            </button>
+          </div>
+        </div>
+      )}
+      <div class="r">
+        <p class="t-body">
+          <b>Progress</b>Your ticks, finished lessons and notes.
+          <span class="msg" data-import-msg data-clear-msg></span>
+        </p>
+        <div class="acts">
+          <button class="btn ib" data-export aria-label="Download progress" title="Download progress">
+            <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.down} />
+          </button>
+          <label class="btn ib" title="Load a progress file">
+            <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.up} />
+            <input type="file" accept="application/json,.json" data-import aria-label="Load a progress file" hidden />
+          </label>
+          <button class="btn ib danger" data-clear aria-label="Delete my progress" title="Delete my progress">
+            <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.trash} />
+          </button>
+        </div>
+      </div>
+      {SIGN_IN && (
+        <div class="r" data-signed-in hidden>
+          <p class="t-body">
+            <b>Account</b>Everything the site keeps about you.
+          </p>
+          <div class="acts">
+            <a
+              class="btn ib"
+              href="/api/export"
+              download
+              data-astro-reload
+              aria-label="Download my account data"
+              title="Download my account data"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.down} />
+            </a>
+            <button class="btn ib danger" data-delete aria-label="Delete my account" title="Delete my account">
+              <svg viewBox="0 0 24 24" aria-hidden="true" set:html={ICON.trash} />
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  </section>
+</div>
+
+<style>
+  /* on Your data, the progress card follows its line straight away */
+  .lede + .sec,
+  .lede[hidden] + .sec {
+    margin-top: 0;
+  }
+  /* sections sit one big gap apart, each a heading, a line, then its box */
+  .sec {
+    display: flex;
+    flex-direction: column;
+    gap: var(--s3);
+    margin-top: var(--s7);
+  }
+  .sec > p {
+    margin: 0;
+  }
+  /* rows: what it does on the left, its buttons on the right, hairlines between */
+  .rows {
+    max-width: 46rem;
+  }
+  .r {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--s3) var(--s5);
+    padding-block: var(--s4);
+  }
+  .r + .r {
+    border-top: 1px solid var(--line);
+  }
+  .r {
+    flex-wrap: wrap;
+  }
+  .r p {
+    flex: 1 1 14rem;
+    margin: 0;
+    max-width: 46ch;
+  }
+  .r b {
+    display: block;
+    margin-bottom: var(--s1);
+  }
+  .acts {
+    display: flex;
+    flex: none;
+    gap: var(--s2);
+  }
+  .ib {
+    display: grid;
+    place-items: center;
+    width: 2.75rem;
+    height: 2.75rem;
+    padding: 0;
+  }
+  .ib svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+  .r .msg {
+    display: block;
+    margin-top: var(--s1);
+  }
+  .r .msg:empty {
+    display: none;
+  }
+</style>
