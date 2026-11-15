@@ -92,7 +92,8 @@ const normalize = (html) =>
         js
           .replace(/\/\*[\s\S]*?\*\//g, "")
           .replace(/^\s*\/\/.*$/gm, "")
-          .replace(/\n\s*\n/g, "\n") +
+          .replace(/\n\s*\n/g, "\n")
+          .trim() +
         b
     )
     .replace(/<(area|br|hr|img|input|link|meta)\b([^>]*?)\s*\/>/g, "<$1$2>")
