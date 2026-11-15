@@ -4,33 +4,34 @@
 import Keys from "./Keys.astro";
 import { stepPath } from "../../course/index.js";
 interface Props {
-  I: any;
-  L: any;
+  instrument: any;
+  lesson: any;
 }
-const { I, L } = Astro.props;
-const ideas = L.concepts || [];
-const n = L.steps.length;
+const { instrument, lesson } = Astro.props;
+const ideas = lesson.concepts || [];
+const stepCount = lesson.steps.length;
 ---
 
 {ideas.length > 0 && (
   <details class="about">
     <summary>
-      <h2 class="t-title t-card">About this {L.song ? "study" : "lesson"}</h2>
+      <h2 class="t-title t-card">About this {lesson.song ? "study" : "lesson"}</h2>
       <span class="caret" aria-hidden="true"></span>
     </summary>
     <div class="about-body stack">
-      {ideas.map((c: any) => (
+      {ideas.map((idea: any) => (
         <div class="idea">
-          <h3>{c.h}</h3>
-          {c.p.map((p: string) => (
+          <h3>{idea.h}</h3>
+          {idea.p.map((paragraph: string) => (
             <p class="t-body">
-              <Keys I={I} text={p} />
+              <Keys I={instrument} text={paragraph} />
             </p>
           ))}
         </div>
       ))}
       <p class="t-note">
-        {n - 1} steps{L.challenge && ", then an optional challenge"}. <a href={stepPath(L, 1)}>Start the first step</a>
+        {stepCount - 1} steps{lesson.challenge && ", then an optional challenge"}.{" "}
+        <a href={stepPath(lesson, 1)}>Start the first step</a>
       </p>
     </div>
   </details>
