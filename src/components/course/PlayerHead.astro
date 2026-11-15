@@ -24,14 +24,14 @@ const onChallenge = !done && at === stepCount;
     <LessonMenu I={instrument} L={lesson} />
   </details>
   <div class="dots" style={`--p:${done ? 1 : total > 1 ? at / (total - 1) : 0}`}>
-    {lesson.steps.map((step: any, i: number) => {
+    {lesson.steps.map((step: any, index: number) => {
       const label = KIND[step.k || "play"];
       return (
         <a
-          href={stepPath(lesson, i)}
-          data-step={i}
-          aria-current={!done && i === at ? "true" : "false"}
-          aria-label={`${label}, step ${i + 1}`}
+          href={stepPath(lesson, index)}
+          data-step={index}
+          aria-current={!done && index === at ? "true" : "false"}
+          aria-label={`${label}, step ${index + 1}`}
           title={label}
         ></a>
       );

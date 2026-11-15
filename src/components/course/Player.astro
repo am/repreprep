@@ -27,7 +27,7 @@ const onChallenge = !done && at === lesson.steps.length;
 const step = done ? { k: "done" } : onChallenge ? { k: "challenge" } : lesson.steps[at];
 const kind = step.k || "play";
 // the page light: the last page a step up to this one set
-const page = lesson.steps.slice(0, at + 1).reduce((p: number, s: any) => s.page || p, 1);
+const page = lesson.steps.slice(0, at + 1).reduce((current: number, step: any) => step.page || current, 1);
 const next = nextLesson(instrument, lesson);
 ---
 
@@ -38,7 +38,7 @@ const next = nextLesson(instrument, lesson);
   data-inst={instrument.key}
   data-lesson={lesson.id}
   data-step={at}
-  data-step-ids={lesson.steps.map((s: any) => s.id).join(" ")}
+  data-step-ids={lesson.steps.map((step: any) => step.id).join(" ")}
   data-next={next?.id}
   data-next-path={next?.path}
   data-done={done ? "" : undefined}
