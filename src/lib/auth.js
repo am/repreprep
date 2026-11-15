@@ -14,6 +14,7 @@ import {
   TURNSTILE_SECRET_KEY,
 } from "astro:env/server";
 import { emailReady, sendLink } from "./email.js";
+import { hashedRateLimitStorage } from "./rate-limit.js";
 
 /* Sign-in runs on Better Auth (https://better-auth.com), mounted at /api/auth/* (src/pages/api/auth/[...all].js).
    Users, sessions, linked sign-in methods, one-time tokens and rate-limit counters live in the D1 database
@@ -107,13 +108,21 @@ export function auth(url) {
         });
       },
     },
-    /* counters in D1: a Worker's memory isn't shared between requests, and KV can't count atomically */
-    rateLimit: { enabled: true, storage: "database" },
+    /* counters in D1: a Worker's memory isn't shared between requests, and KV can't count atomically.
+       Each counter is keyed by a hash of the visitor's IP address, never the address itself (rate-limit.js) */
+    rateLimit: { enabled: true, customStorage: hashedRateLimitStorage(secret) },
     verification: { storeInDatabase: true },
     advanced: {
       cookiePrefix: "rrr",
-      /* the visitor's address as Cloudflare saw it; X-Forwarded-For can be set by anyone */
+      /* the visitor's address as Cloudflare saw it, for the request limits only; X-Forwarded-For can be set by anyone.
+         (disableIpTracking would also switch the limits off, so the address is kept out of the database below) */
       ipAddress: { ipAddressHeaders: ["cf-connecting-ip"] },
+    },
+    /* sessions don't keep the IP address or browser name Better Auth would store: the site doesn't use them */
+    databaseHooks: {
+      session: {
+        create: { before: async (session) => ({ data: { ...session, ipAddress: null, userAgent: null } }) },
+      },
     },
     plugins: [
       /* "Email me a sign-in link": one use, 10 minutes. Signs up a new address too. */

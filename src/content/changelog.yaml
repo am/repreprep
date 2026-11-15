@@ -3,6 +3,12 @@
 # release here (or add to the one it will ship in) and set the same version in package.json.
 # Fields are listed in releaseSchema (src/course/schema.js).
 
+- id: 0.6.9
+  date: "2026-11-15"
+  title: No IP addresses kept
+  site:
+    - When you log in, the site no longer keeps your IP address or browser name, and the ones it had kept are gone. Login attempts are still counted to slow down password guessing, under a scrambled form of the address that can't be turned back into it.
+
 - id: 0.6.8
   date: "2026-11-09"
   title: One page for your account

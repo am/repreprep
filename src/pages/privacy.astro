@@ -30,8 +30,8 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
           <li>your Google account number if you log in with Google, so it can recognise you next time,</li>
           <li>your progress (the same ticks, notes and layout as above), so it follows you to other devices,</li>
           <li>
-            a session for each device you log in on, with its IP address and browser name, so you can see where you're
-            logged in. Each one lasts 30 days from the last time you used it.
+            a session for each device you log in on, which keeps you logged in there. It lasts 30 days from the last
+            time you used it, and holds no IP address or browser name.
           </li>
         </ul>
         <p>
@@ -39,7 +39,9 @@ import { SIGN_IN, TURNSTILE_SITE_KEY } from "astro:env/client";
           into the password. To refuse passwords known from data breaches, the first 5 characters of another scrambled
           form are checked with Have I Been Pwned: your password never leaves the site. The site keeps nothing else from
           your Google account. A login link works only once, for 10 minutes, and a link to choose a new password for an
-          hour. Your data is used only to run the course for you. It is never sold, shared or used for advertising.
+          hour. To slow down anyone guessing passwords, the site counts login requests per visitor for up to an hour,
+          under a scrambled form of the IP address that can't be turned back into it. Your data is used only to run the
+          course for you. It is never sold, shared or used for advertising.
         </p>
 
         <h3>Cookies</h3>

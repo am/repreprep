@@ -71,6 +71,28 @@ export async function startWorker({ dist = "dist", port, vars = {}, own = true }
   return {
     origin,
     log: () => log,
+    /* runs SQL on the local database and returns the rows */
+    sql(command) {
+      const out = execFileSync(
+        "npx",
+        [
+          "wrangler",
+          "d1",
+          "execute",
+          "DB",
+          "--local",
+          "--config",
+          `${dist}/server/wrangler.json`,
+          "--persist-to",
+          persist,
+          "--json",
+          "--command",
+          command,
+        ],
+        { encoding: "utf8", env: { ...process.env, WRANGLER_SEND_METRICS: "false", CI: "1" } }
+      );
+      return JSON.parse(out)[0].results;
+    },
     stop() {
       try {
         own ? process.kill(-proc.pid) : proc.kill();

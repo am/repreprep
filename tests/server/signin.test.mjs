@@ -210,6 +210,24 @@ test("Better Auth refuses sign-out from another site, and counts requests per vi
   assert.ok(limited, "rate limit reached");
 });
 
+test("no IP address or browser name is kept, in sessions or in the request counters", async () => {
+  const c = client(w.origin);
+  const ip = "203.0.113.77";
+  const headers = { "cf-connecting-ip": ip, "user-agent": "TestBrowser/1.0" };
+  await c.req("/api/auth/dev/sign-in", { method: "POST", json: {}, headers });
+  await c.req("/api/auth/get-session", { headers });
+  assert.ok(c.jar.get("rrr.session_token"));
+  const sessions = w.sql('SELECT "ipAddress", "userAgent" FROM "session"');
+  assert.ok(sessions.length >= 1);
+  for (const s of sessions) assert.deepEqual(s, { ipAddress: null, userAgent: null });
+  const counters = w.sql('SELECT "key" FROM "rateLimit"');
+  assert.ok(counters.length >= 1, "requests are still counted");
+  for (const { key } of counters) assert.match(key, /^[0-9a-f]{64}$/);
+  assert.ok(!JSON.stringify(w.sql('SELECT * FROM "rateLimit"')).includes(ip));
+  const body = await (await c.req("/api/export")).json();
+  assert.deepEqual(Object.keys(body.sessions[0]), ["loggedInAt", "expiresAt"]);
+});
+
 test("a sign-in link by email signs you in once, and only for this site", async () => {
   const c = client(w.origin);
   const email = `learner-${Date.now()}@example.com`;
