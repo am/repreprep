@@ -14,7 +14,9 @@
     "messages": "wrangler d1 execute repreprep --remote --command \"SELECT id, datetime(created_at/1000,'unixepoch') AS sent, reply_to, body FROM messages ORDER BY created_at DESC LIMIT 50\"",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "test": "npm run format:check && npm run check && node --test 'tests/unit/*.test.mjs' && astro build && node --test 'tests/site/*.test.mjs' 'tests/server/*.test.mjs' && playwright test",
+    "lint": "eslint .",
+    "typecheck": "astro check",
+    "test": "npm run format:check && npm run lint && npm run typecheck && npm run check && node --test 'tests/unit/*.test.mjs' && astro build && node --test 'tests/site/*.test.mjs' 'tests/server/*.test.mjs' && playwright test",
     "test:unit": "node --test 'tests/unit/*.test.mjs'",
     "compare": "node scripts/compare.mjs",
     "mcprj": "node tools/mcprj/bin/mcprj.mjs"
@@ -25,10 +27,17 @@
     "better-auth": "1.7.18"
   },
   "devDependencies": {
+    "@astrojs/check": "0.9.12",
+    "@eslint/js": "10.0.1",
     "@playwright/test": "1.56.1",
     "devalue": "^6.0.3",
+    "eslint": "10.15.0",
+    "eslint-plugin-astro": "3.2.1",
+    "globals": "17.14.0",
     "prettier": "3.9.10",
     "prettier-plugin-astro": "1.1.1",
+    "typescript": "6.0.3",
+    "typescript-eslint": "8.72.2",
     "wrangler": "^4.157.0",
     "yaml": "^2.9.1"
   },

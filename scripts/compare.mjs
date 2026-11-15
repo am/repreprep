@@ -17,6 +17,7 @@ import {
 } from "node:fs";
 import { join, relative } from "node:path";
 import { chromium } from "@playwright/test";
+import { COURSES } from "../src/course/files.js";
 
 /* --no-scripts and --no-styles leave script tags, or style tags and stylesheet links, out of the HTML
    comparison, for changes that only move browser code or CSS (the screenshots still compare the result).
@@ -157,6 +158,12 @@ const PAGES = [
 ];
 /* pages in a state a visitor gets to by clicking: open menus, answered questions, saved progress */
 const L1 = "/model-cycles/lessons/01";
+/* steps of lesson 1 found by kind, so the states below survive lessons growing: its first Check step, its first
+   step showing the panel (a Play step without a drawing) and its first playable grid */
+const L1_STEPS = COURSES[0].lessons.find((l) => l.id === "w01").steps;
+const L1_QUIZ = L1_STEPS.findIndex((s) => s.k === "check");
+const L1_PANEL = L1_STEPS.findIndex((s) => (s.k || "play") === "play" && !s.fig);
+const L1_GRID = L1_STEPS.findIndex((s) => s.fig?.grid);
 const SEEDED = {
   updatedAt: 1,
   introSteps: 1,
@@ -181,15 +188,15 @@ const STATES = [
   { name: "picker-open", path: `${L1}/3`, run: (p) => p.click("summary.ttl") },
   {
     name: "quiz-answered",
-    path: `${L1}/13`,
+    path: `${L1}/${L1_QUIZ}`,
     run: async (p) => {
       await p.click('.opt[data-opt="0"]');
       await p.click('.opt[data-opt="1"]');
     },
   },
-  { name: "full-window", path: `${L1}/4`, run: (p) => p.click("[data-max]") },
-  { name: "control-info", path: `${L1}/4`, run: (p) => p.click('#player svg .c[data-id="play"]') },
-  { name: "grid-edited", path: `${L1}/2`, run: (p) => p.click('.gp .cell[data-r="0"][data-i="2"]') },
+  { name: "full-window", path: `${L1}/${L1_PANEL}`, run: (p) => p.click("[data-max]") },
+  { name: "control-info", path: `${L1}/${L1_PANEL}`, run: (p) => p.click('#player svg .c[data-id="play"]') },
+  { name: "grid-edited", path: `${L1}/${L1_GRID}`, run: (p) => p.click('.gp .cell[data-r="0"][data-i="2"]') },
   { name: "note-editing", path: `${L1}/1`, run: (p) => p.click("[data-note-edit]") },
   { name: "with-progress-map", path: "/model-cycles", seed: SEEDED },
   { name: "with-progress-lesson", path: `${L1}/3`, seed: SEEDED },
@@ -205,7 +212,8 @@ const serve = (port, dir) => spawn(process.execPath, [join(ROOT, "tests/serve.mj
 const servers = [serve(4401, join(BASE, "dist/client")), serve(4402, join(ROOT, "dist/client"))];
 await new Promise((r) => setTimeout(r, 500));
 
-const browser = await chromium.launch();
+/* PW_CHROMIUM: a Chromium to use instead of the one Playwright installed */
+const browser = await chromium.launch(process.env.PW_CHROMIUM ? { executablePath: process.env.PW_CHROMIUM } : {});
 async function shoot(port, view, theme, path, state = {}) {
   const ctx = await browser.newContext({ ...VIEWS[view], colorScheme: theme, reducedMotion: "reduce" });
   if (state.seed)

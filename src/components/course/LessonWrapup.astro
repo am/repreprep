@@ -72,30 +72,30 @@ const { I, L } = Astro.props;
   import { navigate } from "astro:transitions/client";
   import { curLesson } from "../../client/lesson.js";
 
-  function showNote(s, id, saved) {
-    const box = document.querySelector(`[data-notebox="${id}"]`);
+  function showNote(s, id, saved?: boolean) {
+    const box = document.querySelector<HTMLElement>(`[data-notebox="${id}"]`);
     if (!box) return;
     const t = s.notes[id] || "",
-      txt = box.querySelector(".nb-text");
+      txt = box.querySelector<HTMLElement>(".nb-text");
     txt.textContent = t;
     txt.hidden = !t;
-    box.querySelector(".nb-empty").hidden = !!t;
-    const ed = box.querySelector("[data-note-edit]");
+    box.querySelector<HTMLElement>(".nb-empty").hidden = !!t;
+    const ed = box.querySelector<HTMLElement>("[data-note-edit]");
     ed.textContent = t ? "Edit" : "Add a note";
     if (!box.classList.contains("editing")) {
-      box.querySelector(".nb-view").hidden = false;
-      box.querySelector(".nb-edit").hidden = true;
+      box.querySelector<HTMLElement>(".nb-view").hidden = false;
+      box.querySelector<HTMLElement>(".nb-edit").hidden = true;
       ed.hidden = false;
     }
-    const st = box.querySelector(".nb-stamp");
+    const st = box.querySelector<HTMLElement>(".nb-stamp");
     if (saved !== undefined) st.hidden = !saved;
   }
-  function noteMode(box, edit) {
+  function noteMode(box: HTMLElement, edit: boolean) {
     box.classList.toggle("editing", edit);
-    box.querySelector(".nb-view").hidden = edit;
-    box.querySelector(".nb-edit").hidden = !edit;
-    box.querySelector("[data-note-edit]").hidden = edit;
-    box.querySelector(".nb-stamp").hidden = true;
+    box.querySelector<HTMLElement>(".nb-view").hidden = edit;
+    box.querySelector<HTMLElement>(".nb-edit").hidden = !edit;
+    box.querySelector<HTMLElement>("[data-note-edit]").hidden = edit;
+    box.querySelector<HTMLElement>(".nb-stamp").hidden = true;
   }
 
   onProgress(() => {
@@ -103,8 +103,8 @@ const { I, L } = Astro.props;
     if (!c) return;
     const s = ist(c.k),
       done = s.done[c.id];
-    const fb = document.querySelector("[data-finish]"),
-      stamp = document.querySelector(".finish .stamp");
+    const fb = document.querySelector<HTMLElement>("[data-finish]"),
+      stamp = document.querySelector<HTMLElement>(".finish .stamp");
     if (fb) {
       fb.textContent = done ? "Completed" : fb.dataset.label;
       fb.classList.toggle("primary", !done);
@@ -113,7 +113,7 @@ const { I, L } = Astro.props;
       stamp.hidden = !done;
       if (done) stamp.textContent = "Done on " + new Date(done).toLocaleDateString();
     }
-    const cb = document.querySelector("[data-clear]");
+    const cb = document.querySelector<HTMLElement>("[data-clear]");
     if (cb) cb.hidden = !started(s, c);
     showNote(s, c.id);
   });
@@ -124,7 +124,7 @@ const { I, L } = Astro.props;
 
   /* Clear progress: unticks the lesson's steps, un-finishes it and starts it again from the intro. Notes stay. */
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-clear]"),
+    const b = (e.target as Element).closest<HTMLElement>("[data-clear]"),
       c = b && curLesson();
     if (!c) return;
     if (
@@ -147,7 +147,7 @@ const { I, L } = Astro.props;
   document.addEventListener(
     "click",
     (e) => {
-      const fin = e.target.closest("[data-finish]"),
+      const fin = (e.target as Element).closest("[data-finish]"),
         c = fin && curLesson();
       if (!c) return;
       const s = ist(c.k);
@@ -166,9 +166,9 @@ const { I, L } = Astro.props;
   );
 
   document.addEventListener("click", (e) => {
-    const b = e.target.closest("[data-note-edit],[data-note-save],[data-note-cancel]");
+    const b = (e.target as Element).closest("[data-note-edit],[data-note-save],[data-note-cancel]");
     if (!b) return;
-    const box = b.closest("[data-notebox]"),
+    const box = b.closest<HTMLElement>("[data-notebox]"),
       id = box.dataset.notebox,
       c = curLesson();
     if (!c) return;
@@ -188,18 +188,18 @@ const { I, L } = Astro.props;
     }
     noteMode(box, false);
     showNote(s, id, b.hasAttribute("data-note-save"));
-    box.querySelector("[data-note-edit]").focus();
+    box.querySelector<HTMLElement>("[data-note-edit]").focus();
   });
   document.addEventListener("keydown", (e) => {
-    const ta = e.target.closest && e.target.closest("[data-notebox] textarea");
+    const ta = (e.target as Element).closest && (e.target as Element).closest("[data-notebox] textarea");
     if (!ta) return;
     const box = ta.closest("[data-notebox]");
     if (e.key === "Escape") {
       e.preventDefault();
-      box.querySelector("[data-note-cancel]").click();
+      box.querySelector<HTMLElement>("[data-note-cancel]").click();
     } else if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) {
       e.preventDefault();
-      box.querySelector("[data-note-save]").click();
+      box.querySelector<HTMLElement>("[data-note-save]").click();
     }
   });
 </script>

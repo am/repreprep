@@ -65,7 +65,7 @@ test("unpack refuses a payload with a wrong checksum", () => {
 
 test("the manifest is written with CRLF like the unit's", () => {
   const manifest = new TextDecoder().decode(readZip(MAP3.toBytes()).get("manifest.json"));
-  assert.match(manifest, /^\{\r\n  "FormatVersion": "1.0",\r\n/);
+  assert.match(manifest, /^\{\r\n {2}"FormatVersion": "1.0",\r\n/);
 });
 
 test("project settings", () => {

@@ -1,4 +1,3 @@
-import { esc } from "../shared/html.js";
 import { CYCLES_ICONS } from "./icons.js";
 
 /* ---------- Model:Cycles controls ----------

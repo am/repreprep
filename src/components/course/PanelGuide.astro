@@ -47,8 +47,8 @@ const c = I.controls[sel];
   document.addEventListener(
     "click",
     (e) => {
-      const ctl = e.target.closest("svg .c"),
-        guide = ctl && ctl.closest("[data-panel-guide]");
+      const ctl = (e.target as Element).closest<SVGElement>("svg .c"),
+        guide = ctl && ctl.closest<HTMLElement>("[data-panel-guide]");
       if (guide) {
         keepScroll = window.scrollY;
         navigate(`${guide.dataset.panelGuide}/${ctl.dataset.id}`);
