@@ -32,8 +32,8 @@ export function fontPreloads(html) {
     const url = face.match(/url\(["']?(\/[^"')]+\.woff2)["']?\)/)?.[1];
     if (!url || !get("unicode-range")?.startsWith(LATIN)) continue;
     const want = FONTS.some(
-      ([f, style, weight]) =>
-        family?.startsWith(f + "-") && get("font-style") === style && get("font-weight") === weight
+      ([name, style, weight]) =>
+        family?.startsWith(name + "-") && get("font-style") === style && get("font-weight") === weight
     );
     if (want && !urls.includes(url)) urls.push(url);
   }
@@ -55,35 +55,37 @@ export default function preload({ dynamic = false } = {}) {
             deps.set(
               url,
               [...code.matchAll(STATIC), ...(dynamic ? code.matchAll(DYNAMIC) : [])].map(
-                (m) => new URL(m[1], "http://x" + base).pathname
+                (match) => new URL(match[1], "http://x" + base).pathname
               )
             );
           }
-          for (const d of deps.get(url))
-            if (!out.has(d)) {
-              out.add(d);
-              walk(d, out);
+          for (const dep of deps.get(url))
+            if (!out.has(dep)) {
+              out.add(dep);
+              walk(dep, out);
             }
           return out;
         };
         let count = 0;
-        (function pages(d) {
-          for (const e of readdirSync(d, { withFileTypes: true })) {
-            const p = join(d, e.name);
-            if (e.isDirectory()) pages(p);
-            else if (e.name.endsWith(".html")) {
-              const html = readFileSync(p, "utf8");
+        (function pages(folder) {
+          for (const entry of readdirSync(folder, { withFileTypes: true })) {
+            const file = join(folder, entry.name);
+            if (entry.isDirectory()) pages(file);
+            else if (entry.name.endsWith(".html")) {
+              const html = readFileSync(file, "utf8");
               if (!html.includes("</head>")) continue;
-              const entries = [...html.matchAll(/<script type="module" src="(\/_astro\/[^"]+\.js)"/g)].map((m) => m[1]);
+              const entries = [...html.matchAll(/<script type="module" src="(\/_astro\/[^"]+\.js)"/g)].map(
+                (match) => match[1]
+              );
               const scripts = new Set();
-              for (const s of entries) walk(s, scripts);
-              for (const s of entries) scripts.delete(s);
+              for (const entry of entries) walk(entry, scripts);
+              for (const entry of entries) scripts.delete(entry);
               const links =
                 fontPreloads(html)
-                  .map((u) => `<link rel="preload" href="${u}" as="font" type="font/woff2" crossorigin>`)
-                  .join("") + [...scripts].map((u) => `<link rel="modulepreload" href="${u}">`).join("");
+                  .map((url) => `<link rel="preload" href="${url}" as="font" type="font/woff2" crossorigin>`)
+                  .join("") + [...scripts].map((url) => `<link rel="modulepreload" href="${url}">`).join("");
               if (!links) continue;
-              writeFileSync(p, html.replace("</head>", links + "</head>"));
+              writeFileSync(file, html.replace("</head>", links + "</head>"));
               count++;
             }
           }

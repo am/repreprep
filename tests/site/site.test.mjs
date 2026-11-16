@@ -89,11 +89,11 @@ test("pages start loading their styles, top fonts and script imports with the HT
     const html = page(path);
     const head = html.slice(0, html.indexOf("</head>"));
     assert.doesNotMatch(head, /<link rel="stylesheet"/, `${path}: the styles are inside the page`);
-    const fonts = [...head.matchAll(/<link rel="preload" href="([^"]+\.woff2)" as="font"/g)].map((m) => m[1]);
+    const fonts = [...head.matchAll(/<link rel="preload" href="([^"]+\.woff2)" as="font"/g)].map((match) => match[1]);
     assert.equal(fonts.length, 4, `${path}: Manrope, Rasa and Plex Mono 500/700 (Latin) are preloaded`);
-    for (const f of fonts) assert.ok(exists(f), `${path}: ${f} exists`);
-    const scripts = [...head.matchAll(/<link rel="modulepreload" href="([^"]+)"/g)].map((m) => m[1]);
+    for (const font of fonts) assert.ok(exists(font), `${path}: ${font} exists`);
+    const scripts = [...head.matchAll(/<link rel="modulepreload" href="([^"]+)"/g)].map((match) => match[1]);
     assert.ok(scripts.length > 0, `${path}: the scripts' imports are preloaded`);
-    for (const s of scripts) assert.ok(exists(s), `${path}: ${s} exists`);
+    for (const script of scripts) assert.ok(exists(script), `${path}: ${script} exists`);
   }
 });
